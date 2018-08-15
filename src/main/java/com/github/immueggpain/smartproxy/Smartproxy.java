@@ -871,6 +871,10 @@ public class Smartproxy {
 		}
 	}
 
+	private static class Settings {
+		
+	}
+
 	private static void setSocketOptions(Socket s) throws SocketException {
 		s.setTcpNoDelay(true);
 	}
