@@ -42,5 +42,5 @@ And lastly, if all miss, it uses default rule, which is **proxy**.
 
 ## Build
 You need **Maven** to build **smartproxy**.  
-Just run `maven install` and you will find jar and zip generated in `target` folder.  
+Just run `maven install` and you will find the jar and zip generated in the `target` folder.  
 You can also import the project using **Eclipse**.
