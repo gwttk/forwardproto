@@ -41,6 +41,6 @@ Then it checks **.sub.domain.com**. Then **.domain.com**. Then **.com**.
 And lastly, if all miss, it uses default rule, which is **proxy**.
 
 ## Build
-You need **Maven** to build **smartproxy**.  
+You need [**Maven**](https://maven.apache.org/) to build **smartproxy**.  
 Just run `maven install` and you will find the jar and zip generated in the `target` folder.  
-You can also import the project using **Eclipse**.
+You can also import the project using [**Eclipse**](https://www.eclipse.org/).
