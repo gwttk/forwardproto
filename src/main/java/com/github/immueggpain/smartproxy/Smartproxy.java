@@ -140,7 +140,8 @@ public class Smartproxy {
 
 		settings = new Gson().fromJson(FileUtils.readFileToString(new File("settings.json"), sc.utf8), Settings.class);
 
-		nextproxy_addr = new InetSocketAddress(InetAddress.getByName("127.0.0.1"), 1081);
+		nextproxy_addr = new InetSocketAddress(InetAddress.getByName(settings.backend_proxy_ip),
+				settings.backend_proxy_port);
 		next_proxy = new Proxy(Type.SOCKS, nextproxy_addr);
 		nn_direct = new NextNode(NextNode.Type.DIRECT, Proxy.NO_PROXY);
 		nn_ban = new NextNode(NextNode.Type.BAN, null);
@@ -882,6 +883,8 @@ public class Smartproxy {
 	private static class Settings {
 		public String local_listen_ip;
 		public int local_listen_port;
+		public String backend_proxy_ip;
+		public int backend_proxy_port;
 	}
 
 	private static void setSocketOptions(Socket s) throws SocketException {
