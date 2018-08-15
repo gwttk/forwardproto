@@ -9,7 +9,7 @@ whether direct connect or through another backend proxy.
 
 ## QuickStart
 * Make sure you have java 8+ installed
-* [Download latest build](https://github.com/Immueggpain/smartproxy/releases)
+* [Download latest build](https://github.com/Immueggpain/smartproxy/releases). Unzip it.
 * Setup your backend proxy to use 127.0.0.1:1080
 * Run `java -jar smartproxy-x.x.x.jar`
 * Set your system proxy to 127.0.0.1:1082
