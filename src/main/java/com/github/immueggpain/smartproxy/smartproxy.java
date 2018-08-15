@@ -74,7 +74,7 @@ import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
 import com.github.immueggpain.common.sctp;
 
-public class smartproxy {
+public class Smartproxy {
 
 	private static final int HTTP_CONN_BUF_SIZE = 8 * 1024;
 	private static final int SOCKET_CONNECT_TIMEOUT = 1000 * 30;
@@ -101,7 +101,7 @@ public class smartproxy {
 
 	public static void main(String[] args) {
 		try {
-			new smartproxy().run();
+			new Smartproxy().run();
 		} catch (Exception e) {
 			e.printStackTrace(log);
 		}
@@ -136,6 +136,7 @@ public class smartproxy {
 		connpool.setDefaultMaxPerRoute(10);
 
 		try (ServerSocket ss = new ServerSocket(1082, 50, InetAddress.getByName("127.0.0.1"))) {
+			log.println("listened on port");
 			while (true) {
 				Socket s = ss.accept();
 				setSocketOptions(s);
@@ -758,11 +759,11 @@ public class smartproxy {
 				if (!domain_regex.matcher(segments[0]).matches())
 					throw new Exception("nn_table bad line " + line);
 				NextNode target;
-				if (segments[1].equals("localproxy"))
+				if (segments[1].equals("direct"))
 					target = nn_direct;
 				else if (segments[1].equals("reject"))
 					target = nn_ban;
-				else if (segments[1].equals("remoteproxy"))
+				else if (segments[1].equals("proxy"))
 					target = nn_proxy;
 				else
 					throw new Exception("nn_table bad line " + line);
