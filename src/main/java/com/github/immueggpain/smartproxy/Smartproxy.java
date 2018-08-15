@@ -27,6 +27,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -61,6 +62,7 @@ import java.net.Proxy.Type;
 
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.http.ConnectionClosedException;
@@ -96,6 +98,7 @@ import com.github.immueggpain.common.sc;
 import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
 import com.github.immueggpain.common.sctp;
+import com.google.gson.Gson;
 
 public class Smartproxy {
 
@@ -114,6 +117,7 @@ public class Smartproxy {
 	private Set<String> encountered_request_headers = new HashSet<>();
 	private Set<String> encountered_response_headers = new HashSet<>();
 
+	private Settings settings;
 	private SocketAddress nextproxy_addr;
 	private Proxy next_proxy;
 	private BasicConnPool connpool;
@@ -133,6 +137,9 @@ public class Smartproxy {
 	private void run() throws Exception {
 		log = new PrintWriter(
 				new BufferedWriter(new OutputStreamWriter(new FileOutputStream("smartproxy.log"), sc.utf8)), true);
+
+		settings = new Gson().fromJson(FileUtils.readFileToString(new File("settings.json"), sc.utf8), Settings.class);
+
 		nextproxy_addr = new InetSocketAddress(InetAddress.getByName("127.0.0.1"), 1081);
 		next_proxy = new Proxy(Type.SOCKS, nextproxy_addr);
 		nn_direct = new NextNode(NextNode.Type.DIRECT, Proxy.NO_PROXY);
