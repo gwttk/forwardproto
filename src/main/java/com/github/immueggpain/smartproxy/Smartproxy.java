@@ -873,6 +873,7 @@ public class Smartproxy {
 
 	private static class Settings {
 		public String local_listen_ip;
+		public int local_listen_port;
 	}
 
 	private static void setSocketOptions(Socket s) throws SocketException {
