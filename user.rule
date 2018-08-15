@@ -1,21 +1,8 @@
-﻿# A line which start with "#" is comment
-# The new one will overwrite the same item before
-# "a.com" means "a.com" only, "*.a.com" means all sub domains of "a.com" only, ".a.com" means "*.a.com" & "a.com"
-
-# my rules
-.gwent.win direct
-.geetest.com direct
-.qiyukf.com direct
-.worldofwarships.cn direct
-.diyidan.net direct
-.diyidan.com direct
-.amazonaws-china.com direct
-.huihui.cn direct
-.panda.tv direct
-.3.cn direct
-.nvidia.cn direct
-.battlenet.com.cn direct
-.8686c.com direct
+﻿# A line which starts with "#" is comment
+# "a.com" means "a.com" only, ".a.com" means "a.com" and all sub domains of "a.com" 
+# "direct" means connect without proxy
+# "proxy" means forward to backend proxy
+# "reject" means drop connection
 
 #tc
 .wegame.com direct
@@ -25,6 +12,7 @@
 .alipcsec.com direct
 
 #blz
+.battlenet.com.cn direct
 .cn.news.blizzard.com direct
 .cache-cn.battle.net direct
 
@@ -46,6 +34,20 @@
 #ipip.net
 .ipip.net direct
 .rtbasia.com direct
+
+
+.gwent.win direct
+.geetest.com direct
+.qiyukf.com direct
+.worldofwarships.cn direct
+.diyidan.net direct
+.diyidan.com direct
+.amazonaws-china.com direct
+.huihui.cn direct
+.panda.tv direct
+.3.cn direct
+.nvidia.cn direct
+.8686c.com direct
 
 .adnxs.com proxy
 .oculus.com proxy
