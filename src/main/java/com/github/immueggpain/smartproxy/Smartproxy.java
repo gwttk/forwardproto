@@ -165,7 +165,8 @@ public class Smartproxy {
 		connpool.setMaxTotal(200);
 		connpool.setDefaultMaxPerRoute(10);
 
-		try (ServerSocket ss = new ServerSocket(1082, 50, InetAddress.getByName("127.0.0.1"))) {
+		try (ServerSocket ss = new ServerSocket(settings.local_listen_port, 50,
+				InetAddress.getByName(settings.local_listen_ip))) {
 			log.println("listened on port");
 			while (true) {
 				Socket s = ss.accept();
