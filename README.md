@@ -5,6 +5,8 @@ whether direct connect or through another backend proxy.
 
 **smartproxy** accepts HTTP, HTTPS, SOCKS4, SOCKS4a, SOCKS5 as incoming connections and connects backend proxy with SOCKS5.
 
+**smartproxy** also redispatches HTTP requests, so some old HTTP clients without keep-alive support will enjoy huge performance boost.
+
 ## QuickStart
 * Make sure you have java 8+ installed
 * Download latest build
