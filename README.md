@@ -8,9 +8,9 @@ whether direct connect or through another backend proxy.
 **smartproxy** also redispatches HTTP requests, so some old HTTP clients without keep-alive support will enjoy huge performance boost.
 
 ## QuickStart
-* Make sure you have java 8+ installed
+* Make sure you have **[Java](https://java.com/) 8+** installed
 * [Download latest build](https://github.com/Immueggpain/smartproxy/releases). Unzip it
-* Setup your backend proxy to use 127.0.0.1:1080
+* Setup your backend proxy, supposedly ss, to use 127.0.0.1:1080
 * Run `java -jar smartproxy-x.x.x.jar`. x.x.x is the version you downloaded
 * Set your system proxy to 127.0.0.1:1082
 * Enjoy!
