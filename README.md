@@ -9,9 +9,9 @@ whether direct connect or through another backend proxy.
 
 ## QuickStart
 * Make sure you have java 8+ installed
-* [Download latest build](https://github.com/Immueggpain/smartproxy/releases). Unzip it.
+* [Download latest build](https://github.com/Immueggpain/smartproxy/releases). Unzip it
 * Setup your backend proxy to use 127.0.0.1:1080
-* Run `java -jar smartproxy-x.x.x.jar`
+* Run `java -jar smartproxy-x.x.x.jar`. x.x.x is the version you downloaded
 * Set your system proxy to 127.0.0.1:1082
 * Enjoy!
 
@@ -39,3 +39,8 @@ Here are the default values. Modify it if you need.
 For example, when deciding routes of **sub.domain.com**, smartproxy first checks if there's a **sub.domain.com** rule.  
 Then it checks **.sub.domain.com**. Then **.domain.com**. Then **.com**.  
 And lastly, if all miss, it uses default rule, which is **proxy**.
+
+## Build
+You need **Maven** to build **smartproxy**.  
+Just run `maven install` and you will find jar and zip generated in `target` folder.  
+You can also import the project using **Eclipse**.
