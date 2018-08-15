@@ -69,12 +69,22 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
-							<tasks>
+							<target>
 								<copy file="settings.json"
 									tofile="${project.build.directory}/settings.json" />
 								<copy file="user.rule"
 									tofile="${project.build.directory}/user.rule" />
-							</tasks>
+								<zip
+									destfile="${project.build.directory}/smartproxy-${project.version}.zip"
+									basedir="${project.build.directory}" includes="lib/**">
+									<fileset dir="${project.build.directory}"
+										includes="user.rule" />
+									<fileset dir="${project.build.directory}"
+										includes="settings.json" />
+									<fileset dir="${project.build.directory}"
+										includes="${project.artifactId}-${project.version}.jar" />
+								</zip>
+							</target>
 						</configuration>
 					</execution>
 				</executions>
