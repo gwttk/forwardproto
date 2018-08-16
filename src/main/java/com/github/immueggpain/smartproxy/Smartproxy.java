@@ -736,7 +736,7 @@ public class Smartproxy {
 				}
 			}
 		} else {
-			System.err.println("connect with ip that resolved locally is dangerous for the server");
+			log.println("connect with ip that resolved locally is dangerous for the server");
 			throw new Exception("don't connect with ip");
 		}
 
