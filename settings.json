@@ -1,6 +1,6 @@
 {
 	"local_listen_port": 1082,
-	"local_listen_ip": "127.0.0.1",
+	"local_listen_ip": "0.0.0.0",
 	"backend_proxy_port": 1080,
 	"backend_proxy_ip": "127.0.0.1"
 }

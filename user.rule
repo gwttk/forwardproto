@@ -35,6 +35,9 @@
 .ipip.net direct
 .rtbasia.com direct
 
+#163
+.163yun.com direct
+
 
 .gwent.win direct
 .geetest.com direct
@@ -116,9 +119,7 @@
 .hyperxgaming.com proxy
 .battle.net proxy
 .prezi.com proxy
-# my rules end
 
-# proxy: transfer with server
 
 .0rz.tw proxy
 .0to255.com proxy
