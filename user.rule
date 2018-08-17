@@ -44,6 +44,14 @@
 #ms
 .msedge.net proxy
 .live.net proxy
+.windowsupdate.com proxy
+.s-microsoft.com proxy
+.gfx.ms proxy
+
+#google
+.gvt1.com proxy
+.gvt3.com proxy
+.ipv6test.net proxy
 
 
 .mengniang.org direct
@@ -63,6 +71,7 @@
 .nvidia.cn direct
 .8686c.com direct
 
+.digicert.com proxy
 .adnxs.com proxy
 .oculus.com proxy
 .oracle.com proxy
