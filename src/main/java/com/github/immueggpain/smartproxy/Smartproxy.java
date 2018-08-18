@@ -91,7 +91,6 @@ import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicTokenIterator;
 import org.apache.http.pool.ConnFactory;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.util.Args;
 import org.apache.http.util.EntityUtils;
 
 import com.github.immueggpain.common.sc;
@@ -893,9 +892,6 @@ public class Smartproxy {
 	}
 
 	private static boolean keepAlive(final HttpRequest request, final HttpResponse response) {
-		Args.notNull(response, "HTTP response");
-		Args.notNull(request, "HTTP request");
-
 		if (request != null) {
 			try {
 				final TokenIterator ti = new BasicTokenIterator(request.headerIterator(HttpHeaders.CONNECTION));
