@@ -56,7 +56,11 @@
 .gvt3.com proxy
 .ipv6test.net proxy
 
+#steam
+.steam-chat.com proxy
 
+
+.youzan.com direct
 .junpin.com direct
 .mengniang.org direct
 .insightexpressai.com direct
@@ -75,6 +79,8 @@
 .nvidia.cn direct
 .8686c.com direct
 
+.imgur.com proxy
+.genuitec.com proxy
 .digicert.com proxy
 .adnxs.com proxy
 .oculus.com proxy
