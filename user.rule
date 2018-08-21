@@ -59,7 +59,11 @@
 #steam
 .steam-chat.com proxy
 
+#bilibili
+.biliapi.com direct
 
+
+.plyh.com direct
 .youzan.com direct
 .junpin.com direct
 .mengniang.org direct
