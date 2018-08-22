@@ -153,7 +153,7 @@ public class Smartproxy {
 						route.getPort());
 				Socket socket_nn = null;
 				try {
-					socket_nn = create_connect_config_socket(dest_sockaddr);
+					socket_nn = create_connect_config_socket(dest_sockaddr, "http");
 				} catch (Exception e) {
 					e.printStackTrace(log);
 				}
@@ -205,20 +205,25 @@ public class Smartproxy {
 				return;
 			}
 
+			String client_protocol = null;
 			byte first_byte = (byte) byte1;
 			if (first_byte == 5) {
 				// socks5
+				client_protocol = "socks5";
 				dest_sockaddr = socks5(first_byte, is, s_client.os);
 			} else if (first_byte == 4) {
 				// socks4
+				client_protocol = "socks4";
 				dest_sockaddr = socks4(first_byte, is, s_client.os);
 			} else if (first_byte == 0x43) {
 				// 0x43 'C' http connect
+				client_protocol = "connect";
 				dest_sockaddr = http_connect(first_byte, is, s_client.os);
 			} else if (first_byte == 0x47 || first_byte == 0x50 || first_byte == 0x48) {
 				// 0x47 'G' http get
 				// 0x50 'P' http post/put
 				// 0x48 'H' http head
+				client_protocol = "http";
 				is.reset();
 				http_other(is, s_client.os, raw);
 				// cuz http proxy does not forward connection
@@ -228,7 +233,7 @@ public class Smartproxy {
 				throw new Exception("error unknown proxy protocol first_byte " + sctp.byte_to_string(first_byte));
 			}
 
-			raw_to_nn = create_connect_config_socket(dest_sockaddr);
+			raw_to_nn = create_connect_config_socket(dest_sockaddr, client_protocol);
 			if (raw_to_nn == null) {
 				// can't connect
 				s_client.close();
@@ -708,13 +713,17 @@ public class Smartproxy {
 	/**
 	 * return null means connection refused, or connect timed out, or can't resolve
 	 * hostname
+	 * 
+	 * @param client_protocol
 	 */
-	private Socket create_connect_config_socket(InetSocketAddress dest_sockaddr) throws Exception {
+	private Socket create_connect_config_socket(InetSocketAddress dest_sockaddr, String client_protocol)
+			throws Exception {
 		NextNode nextNode;
 		if (dest_sockaddr.isUnresolved()) {
 			nextNode = domain_to_nn.get(dest_sockaddr.getHostString());
 			if (nextNode != null) {
-				log.println(String.format("%-6s <- %s", nextNode, dest_sockaddr.getHostString()));
+				log.println(
+						String.format("%-7s: %-6s <- %s", client_protocol, nextNode, dest_sockaddr.getHostString()));
 			} else {
 				String intermediate = "." + dest_sockaddr.getHostString();
 				while (true) {
@@ -728,10 +737,11 @@ public class Smartproxy {
 				}
 				if (nextNode == null) {
 					nextNode = nn_proxy;
-					log.println(String.format("%-6s <- default <- %s", nextNode, dest_sockaddr.getHostString()));
+					log.println(String.format("%-7s: %-6s <- default <- %s", client_protocol, nextNode,
+							dest_sockaddr.getHostString()));
 				} else {
-					log.println(
-							String.format("%-6s <- %s <- %s", nextNode, intermediate, dest_sockaddr.getHostString()));
+					log.println(String.format("%-7s: %-6s <- %s <- %s", client_protocol, nextNode, intermediate,
+							dest_sockaddr.getHostString()));
 				}
 			}
 		} else {
@@ -859,7 +869,7 @@ public class Smartproxy {
 				if (!list.isEmpty())
 					return list.remove(list.size() - 1).s;
 			}
-			Socket new_socket = create_connect_config_socket(dest_sockaddr);
+			Socket new_socket = create_connect_config_socket(dest_sockaddr, "http");
 			return new_socket;
 		}
 
