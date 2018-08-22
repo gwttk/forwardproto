@@ -62,6 +62,10 @@
 #bilibili
 .biliapi.com direct
 
+#redit
+.redditmedia.com proxy
+.reddit.com proxy
+
 
 .plyh.com direct
 .youzan.com direct
@@ -83,6 +87,8 @@
 .nvidia.cn direct
 .8686c.com direct
 
+
+.capcom-unity.com proxy
 .imgur.com proxy
 .genuitec.com proxy
 .digicert.com proxy
