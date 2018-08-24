@@ -60,6 +60,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.net.Proxy.Type;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.FileUtils;
@@ -127,17 +131,48 @@ public class Smartproxy {
 
 	public static void main(String[] args) {
 		try {
-			new Smartproxy().run();
+			new Smartproxy().run(args);
 		} catch (Exception e) {
 			e.printStackTrace(log);
 		}
 	}
 
-	private void run() throws Exception {
-		log = new PrintWriter(
-				new BufferedWriter(new OutputStreamWriter(new FileOutputStream("smartproxy.log"), sc.utf8)), true);
+	private void run(String[] args) throws Exception {
+		log = new PrintWriter(System.err, true);
 
+		// option long names
+		String backend_proxy_port = "backend_proxy_port";
+		String local_listen_port = "local_listen_port";
+
+		// define options
+		Options options = new Options();
+		options.addOption("h", "help", false, "print help");
+		options.addOption("p", backend_proxy_port, true, "backend proxy port");
+		options.addOption("n", local_listen_port, true, "local listening port");
+		options.addOption("l", "log", true, "log file path");
+
+		// parse from cmd args
+		DefaultParser parser = new DefaultParser();
+		CommandLine cmd = parser.parse(options, args);
+
+		// parse from settings.json file
 		settings = new Gson().fromJson(FileUtils.readFileToString(new File("settings.json"), sc.utf8), Settings.class);
+
+		if (cmd.hasOption('h')) {
+			HelpFormatter formatter = new HelpFormatter();
+			formatter.printHelp("smartproxy", options, true);
+			return;
+		}
+		if (cmd.hasOption(backend_proxy_port)) {
+			settings.backend_proxy_port = Integer.parseInt(cmd.getOptionValue(backend_proxy_port));
+		}
+		if (cmd.hasOption(local_listen_port)) {
+			settings.local_listen_port = Integer.parseInt(cmd.getOptionValue(local_listen_port));
+		}
+		// set log output to '-l' option or 'smartproxy.log' by default
+		log = new PrintWriter(new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream(cmd.getOptionValue('l', "smartproxy.log")), sc.utf8)),
+				true);
 
 		nextproxy_addr = new InetSocketAddress(InetAddress.getByName(settings.backend_proxy_ip),
 				settings.backend_proxy_port);
@@ -167,7 +202,7 @@ public class Smartproxy {
 
 		try (ServerSocket ss = new ServerSocket(settings.local_listen_port, 50,
 				InetAddress.getByName(settings.local_listen_ip))) {
-			log.println("listened on port");
+			log.println("listened on port " + settings.local_listen_port);
 			while (true) {
 				Socket s = ss.accept();
 				setSocketOptions(s);
