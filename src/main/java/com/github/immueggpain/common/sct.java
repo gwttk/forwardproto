@@ -76,6 +76,14 @@ public final class sct {
 	}
 
 	/**
+	 * {@link #datetime(long, String, TimeZone) datetime(now, "yyyy-MM-dd HH:mm:ss",
+	 * TimeZone.getDefault())}
+	 */
+	public static String datetime() {
+		return datetime(time_ms(), "yyyy-MM-dd HH:mm:ss", TimeZone.getDefault());
+	}
+
+	/**
 	 * {@link #datetime(long, String, TimeZone) datetime(time_ms,
 	 * "yyyy-MM-dd-HH-mm-ss-SSSXX", TimeZone.getDefault())}
 	 */

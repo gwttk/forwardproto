@@ -757,8 +757,8 @@ public class Smartproxy {
 		if (dest_sockaddr.isUnresolved()) {
 			nextNode = domain_to_nn.get(dest_sockaddr.getHostString());
 			if (nextNode != null) {
-				log.println(
-						String.format("%-7s: %-6s <- %s", client_protocol, nextNode, dest_sockaddr.getHostString()));
+				log.println(String.format("%s %-7s: %-6s <- %s", sct.datetime(), client_protocol, nextNode,
+						dest_sockaddr.getHostString()));
 			} else {
 				String intermediate = "." + dest_sockaddr.getHostString();
 				while (true) {
@@ -772,11 +772,11 @@ public class Smartproxy {
 				}
 				if (nextNode == null) {
 					nextNode = nn_proxy;
-					log.println(String.format("%-7s: %-6s <- default <- %s", client_protocol, nextNode,
-							dest_sockaddr.getHostString()));
+					log.println(String.format("%s %-7s: %-6s <- default <- %s", sct.datetime(), client_protocol,
+							nextNode, dest_sockaddr.getHostString()));
 				} else {
-					log.println(String.format("%-7s: %-6s <- %s <- %s", client_protocol, nextNode, intermediate,
-							dest_sockaddr.getHostString()));
+					log.println(String.format("%s %-7s: %-6s <- %s <- %s", sct.datetime(), client_protocol, nextNode,
+							intermediate, dest_sockaddr.getHostString()));
 				}
 			}
 		} else {
