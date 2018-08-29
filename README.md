@@ -33,6 +33,8 @@ Here are the default values. Modify it if you need.
 ```
 # A line which starts with "#" is comment
 # "a.com" means "a.com" only, ".a.com" means "a.com" and all sub domains of "a.com" 
+# we can also use ip range like "192.168.0.0 192.168.255.255"
+#
 # "direct" means connect without proxy
 # "proxy" means forward to backend proxy
 # "reject" means drop connection
