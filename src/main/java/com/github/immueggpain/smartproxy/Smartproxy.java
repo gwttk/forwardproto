@@ -53,7 +53,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -128,6 +130,7 @@ public class Smartproxy {
 	private NextNode nn_ban;
 	private NextNode nn_proxy;
 	private Map<String, NextNode> domain_to_nn;
+	private NavigableMap<Long, IpRange> ip_to_nn;
 
 	public static void main(String[] args) {
 		try {
@@ -755,28 +758,45 @@ public class Smartproxy {
 			throws Exception {
 		NextNode nextNode;
 		if (dest_sockaddr.isUnresolved()) {
-			nextNode = domain_to_nn.get(dest_sockaddr.getHostString());
-			if (nextNode != null) {
-				log.println(String.format("%s %-7s: %-6s <- %s", sct.datetime(), client_protocol, nextNode,
-						dest_sockaddr.getHostString()));
-			} else {
-				String intermediate = "." + dest_sockaddr.getHostString();
-				while (true) {
-					nextNode = domain_to_nn.get(intermediate);
-					if (nextNode != null)
-						break;
-					int indexOf = intermediate.indexOf('.', 1);
-					if (indexOf == -1)
-						break;
-					intermediate = intermediate.substring(indexOf);
-				}
-				if (nextNode == null) {
+			String hostString = dest_sockaddr.getHostString();
+			if (ip_regex.matcher(hostString).matches()) {
+				// is an ip string
+				long ip = ip2long(hostString);
+				IpRange ipRange = ip_to_nn.floorEntry(ip).getValue();
+				if (ip > ipRange.end) {
 					nextNode = nn_proxy;
 					log.println(String.format("%s %-7s: %-6s <- default <- %s", sct.datetime(), client_protocol,
-							nextNode, dest_sockaddr.getHostString()));
+							nextNode, hostString));
 				} else {
-					log.println(String.format("%s %-7s: %-6s <- %s <- %s", sct.datetime(), client_protocol, nextNode,
-							intermediate, dest_sockaddr.getHostString()));
+					nextNode = ipRange.nextnode;
+					log.println(String.format("%s %-7s: %-6s <- %s ~ %s <- %s", sct.datetime(), client_protocol,
+							nextNode, long2ip(ipRange.begin), long2ip(ipRange.end), hostString));
+				}
+			} else {
+				// is a domain string
+				nextNode = domain_to_nn.get(hostString);
+				if (nextNode != null) {
+					log.println(String.format("%s %-7s: %-6s <- %s", sct.datetime(), client_protocol, nextNode,
+							hostString));
+				} else {
+					String intermediate = "." + hostString;
+					while (true) {
+						nextNode = domain_to_nn.get(intermediate);
+						if (nextNode != null)
+							break;
+						int indexOf = intermediate.indexOf('.', 1);
+						if (indexOf == -1)
+							break;
+						intermediate = intermediate.substring(indexOf);
+					}
+					if (nextNode == null) {
+						nextNode = nn_proxy;
+						log.println(String.format("%s %-7s: %-6s <- default <- %s", sct.datetime(), client_protocol,
+								nextNode, hostString));
+					} else {
+						log.println(String.format("%s %-7s: %-6s <- %s <- %s", sct.datetime(), client_protocol,
+								nextNode, intermediate, hostString));
+					}
 				}
 			}
 		} else {
@@ -819,6 +839,7 @@ public class Smartproxy {
 
 	private void load_domain_nn_table() throws Exception {
 		domain_to_nn = new HashMap<>();
+		ip_to_nn = new TreeMap<>();
 		Path path = Paths.get("user.rule");
 		try (BOMInputStream is = new BOMInputStream(new FileInputStream(path.toFile()))) {
 			for (String line : IOUtils.readLines(is, sc.utf8)) {
@@ -828,8 +849,26 @@ public class Smartproxy {
 				if (line.startsWith("#"))
 					continue;
 				String[] segments = line.split(" ");
-				if (ip_regex.matcher(segments[0]).matches())
+				if (ip_regex.matcher(segments[0]).matches()) {
+					// ip
+					if (segments.length != 3)
+						throw new Exception("nn_table bad line " + line);
+					if (!ip_regex.matcher(segments[1]).matches())
+						throw new Exception("nn_table bad line " + line);
+					NextNode target;
+					if (segments[2].equals("direct"))
+						target = nn_direct;
+					else if (segments[2].equals("reject"))
+						target = nn_ban;
+					else if (segments[2].equals("proxy"))
+						target = nn_proxy;
+					else
+						throw new Exception("nn_table bad line " + line);
+					long begin = ip2long(segments[0]);
+					long end = ip2long(segments[1]);
+					ip_to_nn.put(begin, new IpRange(begin, end, target));
 					continue;
+				}
 				// domain
 				if (segments.length != 2)
 					throw new Exception("nn_table bad line " + line);
@@ -872,6 +911,18 @@ public class Smartproxy {
 			return type.toString();
 		}
 
+	}
+
+	private static class IpRange {
+		public final long begin;
+		public final long end;
+		private final NextNode nextnode;
+
+		public IpRange(long begin, long end, NextNode target) {
+			this.begin = begin;
+			this.end = end;
+			this.nextnode = target;
+		}
 	}
 
 	@SuppressWarnings("unused")
@@ -930,6 +981,19 @@ public class Smartproxy {
 		public int local_listen_port;
 		public String backend_proxy_ip;
 		public int backend_proxy_port;
+	}
+
+	private static long ip2long(String ip) {
+		String[] parts = ip.split("\\.");
+		long ipLong = 0;
+		for (int i = 0; i < 4; i++)
+			ipLong += Integer.parseInt(parts[i]) << (24 - (8 * i));
+		return ipLong;
+	}
+
+	private static String long2ip(long l) {
+		String ip = (l >> 24 & 0xff) + "." + (l >> 16 & 0xff) + "." + (l >> 8 & 0xff) + "." + (l & 0xff);
+		return ip;
 	}
 
 	private static void setSocketOptions(Socket s) throws SocketException {
