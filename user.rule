@@ -20,6 +20,8 @@
 .battlenet.com.cn direct
 .cn.news.blizzard.com direct
 .cache-cn.battle.net direct
+pmt-origin-cn.battle.net direct
+.serving-sys.com proxy
 
 #jd
 .jdpay.com direct
@@ -69,6 +71,8 @@
 .reddit.com proxy
 
 
+.miaopai.com direct
+.tiqcdn.com direct
 .zteict.com direct
 .lkong.net direct
 .plyh.com direct
@@ -92,6 +96,8 @@
 .8686c.com direct
 
 
+.hotjar.com proxy
+.optimizely.com proxy
 .bluekai.com proxy
 .pubmatic.com proxy
 .capcom-unity.com proxy
@@ -4679,7 +4685,6 @@
 .blsy.net direct
 .bluehn.com direct
 .blueidea.com direct
-.bluekai.com direct
 .blyol.com direct
 .blyun.com direct
 .bmjob.net direct
