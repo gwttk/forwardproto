@@ -225,7 +225,6 @@ public class Smartproxy {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private void recv_client(Socket raw, int id) {
 		// wrap socket. if failed, just close socket and quit.
 		SecTcpSocket s_client = null;
@@ -233,7 +232,11 @@ public class Smartproxy {
 			s_client = new SecTcpSocket(raw);
 		} catch (IOException e) {
 			e.printStackTrace(log);
-			IOUtils.closeQuietly(raw);
+			try {
+				raw.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			return;
 		}
 
@@ -322,13 +325,16 @@ public class Smartproxy {
 				}
 			synchronized (cc) {
 				s_client.close();
-				IOUtils.closeQuietly(raw_to_nn);
+				try {
+					raw_to_nn.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				cc.shutdown_sum += 1;
 			}
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private void recv_nextnode(Socket raw_to_nn, SecTcpSocket s_client, ConnectionContext cc) {
 		try {
 			InputStream is_nn = raw_to_nn.getInputStream();
@@ -359,7 +365,11 @@ public class Smartproxy {
 			}
 			synchronized (cc) {
 				s_client.close();
-				IOUtils.closeQuietly(raw_to_nn);
+				try {
+					raw_to_nn.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				cc.shutdown_sum += 2;
 			}
 		}
