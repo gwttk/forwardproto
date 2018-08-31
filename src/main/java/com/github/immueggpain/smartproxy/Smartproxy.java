@@ -69,6 +69,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.http.ConnectionClosedException;
@@ -191,7 +192,7 @@ public class Smartproxy {
 				Settings.ProcessRule v = entry.getValue();
 				NextProxy np = new NextProxy(name, v.backend_proxy_ip, v.backend_proxy_port);
 				for (String imageName : v.image_names) {
-					image_to_np.put(imageName, np);
+					image_to_np.put(imageName.toLowerCase(), np);
 				}
 			}
 		}
@@ -829,8 +830,9 @@ public class Smartproxy {
 			proxy = nextNode.next_node;
 		} else if (nextNode.type == NextNode.Type.PROXY) {
 			// based on process rule
-			String imageName = get_image_name(client_remote_port, settings.local_listen_port);
-			System.out.println("img: " + imageName);
+			String imageName = get_image_path(client_remote_port, settings.local_listen_port);
+			imageName = FilenameUtils.getName(imageName).toLowerCase();
+			log.println("img: " + imageName);
 			NextProxy np = image_to_np.get(imageName);
 			if (np != null)
 				proxy = np.proxy;
@@ -910,7 +912,7 @@ public class Smartproxy {
 		}
 	}
 
-	private String get_image_name(int remote_port, int local_port) {
+	private String get_image_path(int remote_port, int local_port) {
 		MIB_TCPTABLE_OWNER_PID table = new MIB_TCPTABLE_OWNER_PID();
 		IntByReference psize = new IntByReference(table.size());
 		int status = Iphlpapi.INSTANCE.GetExtendedTcpTable(table, psize, false, 2, 5, 0);
@@ -922,9 +924,9 @@ public class Smartproxy {
 			for (MIB_TCPROW_OWNER_PID e : table.table) {
 				int localPort = nwb_short(e.dwLocalPort);
 				int remotePort = nwb_short(e.dwRemotePort);
-				if (localPort != local_port)
+				if (localPort != remote_port)
 					continue;
-				if (remotePort != remote_port)
+				if (remotePort != local_port)
 					continue;
 
 				if (e.dwOwningPid.intValue() == 4)
@@ -961,8 +963,7 @@ public class Smartproxy {
 		Iphlpapi INSTANCE = com.sun.jna.Native.loadLibrary("iphlpapi", Iphlpapi.class);
 	}
 
-	@SuppressWarnings("unused")
-	private static class MIB_TCPROW_OWNER_PID extends Structure {
+	public static class MIB_TCPROW_OWNER_PID extends Structure {
 		public DWORD dwState;
 		public DWORD dwLocalAddr;
 		public DWORD dwLocalPort;
@@ -978,8 +979,7 @@ public class Smartproxy {
 
 	}
 
-	private static class MIB_TCPTABLE_OWNER_PID extends Structure {
-		@SuppressWarnings("unused")
+	public static class MIB_TCPTABLE_OWNER_PID extends Structure {
 		public DWORD dwNumEntries;
 		public MIB_TCPROW_OWNER_PID[] table = new MIB_TCPROW_OWNER_PID[1];
 
