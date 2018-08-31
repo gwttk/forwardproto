@@ -49,6 +49,7 @@ import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -98,6 +99,16 @@ import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
 import com.github.immueggpain.common.sctp;
 import com.google.gson.Gson;
+import com.sun.jna.Structure;
+import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.Kernel32Util;
+import com.sun.jna.platform.win32.W32Errors;
+import com.sun.jna.platform.win32.Win32Exception;
+import com.sun.jna.platform.win32.WinNT;
+import com.sun.jna.platform.win32.WinDef.DWORD;
+import com.sun.jna.platform.win32.WinNT.HANDLE;
+import com.sun.jna.ptr.IntByReference;
+import com.sun.jna.win32.StdCallLibrary;
 
 public class Smartproxy {
 
@@ -267,7 +278,7 @@ public class Smartproxy {
 				throw new Exception("error unknown proxy protocol first_byte " + sctp.byte_to_string(first_byte));
 			}
 
-			raw_to_nn = create_connect_config_socket(dest_sockaddr, client_protocol);
+			raw_to_nn = create_connect_config_socket(dest_sockaddr, client_protocol, raw.getPort());
 			if (raw_to_nn == null) {
 				// can't connect
 				s_client.close();
@@ -627,7 +638,7 @@ public class Smartproxy {
 
 				// connect nextnode
 				InetSocketAddress dest_sockaddr = InetSocketAddress.createUnresolved(host, port);
-				DefaultBHttpClientConnection http_conn_nn = socketPool.get(dest_sockaddr);
+				DefaultBHttpClientConnection http_conn_nn = socketPool.get(dest_sockaddr, socket.getPort());
 				try {
 					// make status line for nextnode
 					BasicHttpRequest request_nn = null;
@@ -753,8 +764,8 @@ public class Smartproxy {
 	 * 
 	 * @param client_protocol
 	 */
-	private Socket create_connect_config_socket(InetSocketAddress dest_sockaddr, String client_protocol)
-			throws Exception {
+	private Socket create_connect_config_socket(InetSocketAddress dest_sockaddr, String client_protocol,
+			int client_remote_port) throws Exception {
 		NextNode nextNode;
 		if (dest_sockaddr.isUnresolved()) {
 			String hostString = dest_sockaddr.getHostString();
@@ -818,7 +829,8 @@ public class Smartproxy {
 			proxy = nextNode.next_node;
 		} else if (nextNode.type == NextNode.Type.PROXY) {
 			// based on process rule
-			String imageName = "";
+			String imageName = get_image_name(client_remote_port, settings.local_listen_port);
+			System.out.println("img: " + imageName);
 			NextProxy np = image_to_np.get(imageName);
 			if (np != null)
 				proxy = np.proxy;
@@ -896,6 +908,94 @@ public class Smartproxy {
 				domain_to_nn.put(segments[0], target);
 			}
 		}
+	}
+
+	private String get_image_name(int remote_port, int local_port) {
+		MIB_TCPTABLE_OWNER_PID table = new MIB_TCPTABLE_OWNER_PID();
+		IntByReference psize = new IntByReference(table.size());
+		int status = Iphlpapi.INSTANCE.GetExtendedTcpTable(table, psize, false, 2, 5, 0);
+		if (status == W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+			table = new MIB_TCPTABLE_OWNER_PID((psize.getValue() - 4) / table.table[0].size());
+			psize.setValue(table.size());
+
+			status = Iphlpapi.INSTANCE.GetExtendedTcpTable(table, psize, false, 2, 5, 0);
+			for (MIB_TCPROW_OWNER_PID e : table.table) {
+				int localPort = nwb_short(e.dwLocalPort);
+				int remotePort = nwb_short(e.dwRemotePort);
+				if (localPort != local_port)
+					continue;
+				if (remotePort != remote_port)
+					continue;
+
+				if (e.dwOwningPid.intValue() == 4)
+					return "System";
+				if (e.dwOwningPid.intValue() == 0)
+					return "";
+				HANDLE hproc = Kernel32.INSTANCE.OpenProcess(WinNT.PROCESS_QUERY_LIMITED_INFORMATION, false,
+						e.dwOwningPid.intValue());
+				if (hproc == null) {
+					throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
+				} else {
+					String processImageName = Kernel32Util.QueryFullProcessImageName(hproc, 0);
+					Kernel32Util.closeHandle(hproc);
+					return processImageName;
+				}
+			}
+			return "";
+		} else {
+			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
+		}
+	}
+
+	private static int nwb_short(DWORD value) {
+		int b1 = (value.intValue() & 0xFF00) >> 8;
+		int b2 = value.intValue() & 0xFF;
+		int port = (b2 << 8) + b1;
+		return port;
+	}
+
+	public static interface Iphlpapi extends StdCallLibrary {
+		int GetExtendedTcpTable(MIB_TCPTABLE_OWNER_PID pTcpTable, IntByReference pdwSize, boolean bOrder, long ulAf,
+				int table, long reserved);
+
+		Iphlpapi INSTANCE = com.sun.jna.Native.loadLibrary("iphlpapi", Iphlpapi.class);
+	}
+
+	@SuppressWarnings("unused")
+	private static class MIB_TCPROW_OWNER_PID extends Structure {
+		public DWORD dwState;
+		public DWORD dwLocalAddr;
+		public DWORD dwLocalPort;
+		public DWORD dwRemoteAddr;
+		public DWORD dwRemotePort;
+		public DWORD dwOwningPid;
+
+		@Override
+		protected List<String> getFieldOrder() {
+			return Arrays.asList(new String[] { "dwState", "dwLocalAddr", "dwLocalPort", "dwRemoteAddr", "dwRemotePort",
+					"dwOwningPid" });
+		}
+
+	}
+
+	private static class MIB_TCPTABLE_OWNER_PID extends Structure {
+		@SuppressWarnings("unused")
+		public DWORD dwNumEntries;
+		public MIB_TCPROW_OWNER_PID[] table = new MIB_TCPROW_OWNER_PID[1];
+
+		public MIB_TCPTABLE_OWNER_PID() {
+		}
+
+		public MIB_TCPTABLE_OWNER_PID(int size) {
+			this.dwNumEntries = new DWORD(size);
+			this.table = (MIB_TCPROW_OWNER_PID[]) new MIB_TCPROW_OWNER_PID().toArray(size);
+		}
+
+		@Override
+		protected List<String> getFieldOrder() {
+			return Arrays.asList(new String[] { "dwNumEntries", "table" });
+		}
+
 	}
 
 	private static class ConnectionContext {
@@ -983,7 +1083,8 @@ public class Smartproxy {
 			}
 		}
 
-		public DefaultBHttpClientConnection get(InetSocketAddress dest_sockaddr) throws Exception {
+		public DefaultBHttpClientConnection get(InetSocketAddress dest_sockaddr, int client_remote_port)
+				throws Exception {
 			synchronized (unused) {
 				List<UnusedConn> list = unused.get(dest_sockaddr);
 				if (!list.isEmpty()) {
@@ -991,7 +1092,7 @@ public class Smartproxy {
 					return list.remove(list.size() - 1).conn;
 				}
 			}
-			Socket new_socket = create_connect_config_socket(dest_sockaddr, "http");
+			Socket new_socket = create_connect_config_socket(dest_sockaddr, "http", client_remote_port);
 			DefaultBHttpClientConnection conn = new DefaultBHttpClientConnection(HTTP_CONN_BUF_SIZE);
 			conn.bind(new_socket);
 			log.println(sct.datetime() + " socketPool " + dest_sockaddr + " created");
