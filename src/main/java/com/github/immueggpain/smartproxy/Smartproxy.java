@@ -56,8 +56,6 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.net.Proxy.Type;
@@ -74,11 +72,9 @@ import org.apache.commons.io.input.BOMInputStream;
 import org.apache.http.ConnectionClosedException;
 import org.apache.http.Header;
 import org.apache.http.HeaderIterator;
-import org.apache.http.HttpClientConnection;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpHeaders;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -89,13 +85,10 @@ import org.apache.http.RequestLine;
 import org.apache.http.TokenIterator;
 import org.apache.http.impl.DefaultBHttpClientConnection;
 import org.apache.http.impl.DefaultBHttpServerConnection;
-import org.apache.http.impl.pool.BasicConnPool;
-import org.apache.http.impl.pool.BasicPoolEntry;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.http.message.BasicHttpRequest;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicTokenIterator;
-import org.apache.http.pool.ConnFactory;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
@@ -107,11 +100,11 @@ import com.google.gson.Gson;
 
 public class Smartproxy {
 
-	private static final int HTTP_CONN_BUF_SIZE = 8 * 1024;
+	private static final int HTTP_CONN_BUF_SIZE = 32 * 1024;
 	private static final int SOCKET_CONNECT_TIMEOUT = 1000 * 30;
 	private static final int SOCKET_SO_TIMEOUT_CLIENT = 0;
 	private static final int SOCKET_SO_TIMEOUT_NEXTPROXY = 0;
-	private static final int CONNECTION_POOL_TIMEOUT = 120 * 1000;
+	private static final int HTTP_POOL_TIMEOUT = 120 * 1000;
 	private static final Pattern httpconnect_regex = Pattern.compile("CONNECT (.+):([0-9]+) HTTP/1[.][01]");
 	private static final byte[] httpconnect_okresponse = sc.s2b("HTTP/1.1 200 OK\r\n\r\n");
 	private static final Pattern ip_regex = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
@@ -125,12 +118,12 @@ public class Smartproxy {
 	private Settings settings;
 	private SocketAddress nextproxy_addr;
 	private Proxy next_proxy;
-	private BasicConnPool connpool;
 	private NextNode nn_direct;
 	private NextNode nn_ban;
 	private NextNode nn_proxy;
 	private Map<String, NextNode> domain_to_nn;
 	private NavigableMap<Long, IpRange> ip_to_nn;
+	private ConnPool socketPool;
 
 	public static void main(String[] args) {
 		try {
@@ -153,13 +146,19 @@ public class Smartproxy {
 		options.addOption("p", backend_proxy_port, true, "backend proxy port");
 		options.addOption("n", local_listen_port, true, "local listening port");
 		options.addOption("l", "log", true, "log file path");
+		options.addOption("s", "settings", true, "settings.json file path");
 
 		// parse from cmd args
 		DefaultParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse(options, args);
 
 		// parse from settings.json file
-		settings = new Gson().fromJson(FileUtils.readFileToString(new File("settings.json"), sc.utf8), Settings.class);
+		settings = new Gson().fromJson(
+				FileUtils.readFileToString(new File(cmd.getOptionValue('s', "settings.json")), sc.utf8),
+				Settings.class);
+		if (settings.process_rules == null) {
+			settings.process_rules = new HashMap<>();
+		}
 
 		if (cmd.hasOption('h')) {
 			HelpFormatter formatter = new HelpFormatter();
@@ -184,24 +183,7 @@ public class Smartproxy {
 		nn_ban = new NextNode(NextNode.Type.BAN, null);
 		nn_proxy = new NextNode(NextNode.Type.PROXY, next_proxy);
 		load_domain_nn_table();
-		connpool = new BasicConnPool(new ConnFactory<HttpHost, HttpClientConnection>() {
-			@Override
-			public HttpClientConnection create(HttpHost route) throws IOException {
-				InetSocketAddress dest_sockaddr = InetSocketAddress.createUnresolved(route.getHostName(),
-						route.getPort());
-				Socket socket_nn = null;
-				try {
-					socket_nn = create_connect_config_socket(dest_sockaddr, "http");
-				} catch (Exception e) {
-					e.printStackTrace(log);
-				}
-				DefaultBHttpClientConnection http_conn_nn = new DefaultBHttpClientConnection(HTTP_CONN_BUF_SIZE);
-				http_conn_nn.bind(socket_nn);
-				return http_conn_nn;
-			}
-		});
-		connpool.setMaxTotal(200);
-		connpool.setDefaultMaxPerRoute(10);
+		socketPool = new ConnPool(HTTP_POOL_TIMEOUT);
 
 		try (ServerSocket ss = new ServerSocket(settings.local_listen_port, 50,
 				InetAddress.getByName(settings.local_listen_ip))) {
@@ -592,7 +574,7 @@ public class Smartproxy {
 				try {
 					request = http_conn.receiveRequestHeader();
 				} catch (ConnectionClosedException e) {
-					log.println("error http_conn.receiveRequestHeader " + e.getMessage());
+					// client just closed the socket
 					return;
 				}
 				HttpEntity entity = null;
@@ -630,13 +612,9 @@ public class Smartproxy {
 				}
 
 				// connect nextnode
-				HttpHost target = new HttpHost(host, port, uri.getScheme());
-				Future<BasicPoolEntry> future = connpool.lease(target, null);
-				BasicPoolEntry poolEntry = future.get();
-				poolEntry.updateExpiry(CONNECTION_POOL_TIMEOUT, TimeUnit.MILLISECONDS);
+				InetSocketAddress dest_sockaddr = InetSocketAddress.createUnresolved(host, port);
+				DefaultBHttpClientConnection http_conn_nn = socketPool.get(dest_sockaddr);
 				try {
-					HttpClientConnection http_conn_nn = poolEntry.getConnection();
-
 					// make status line for nextnode
 					BasicHttpRequest request_nn = null;
 					String newuri = uri.getRawPath();
@@ -722,27 +700,34 @@ public class Smartproxy {
 
 					boolean keepAlive_nn = keepAlive(request_nn, response_nn);
 					if (keepAlive_nn) {
-					} else
+						socketPool.giveback(dest_sockaddr, http_conn_nn);
+					} else {
 						log.println("nc");
+						try {
+							http_conn_nn.close();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
 
 					if (keepAlive) {
 					} else {
 						log.println("c");
-						connpool.release(poolEntry, keepAlive_nn);
 						// return to close http_conn
 						return;
 					}
-					connpool.release(poolEntry, keepAlive_nn);
 				} catch (Exception e) {
 					log.println(requestLine);
 					e.printStackTrace(log);
-					connpool.release(poolEntry, false);
+					try {
+						http_conn_nn.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 					// return to close http_conn
 					return;
-				} finally {
-					connpool.closeExpired();
 				}
-			} // end of while
+			} // end of while, continue next http request
 		} catch (Exception e) {
 			e.printStackTrace(log);
 		}
@@ -925,13 +910,12 @@ public class Smartproxy {
 		}
 	}
 
-	@SuppressWarnings("unused")
-	private class SocketPool {
+	private class ConnPool {
 
-		private ArrayListValuedHashMap<InetSocketAddress, UnusedSocket> unused = new ArrayListValuedHashMap<>();
+		private ArrayListValuedHashMap<InetSocketAddress, UnusedConn> unused = new ArrayListValuedHashMap<>();
 		private int timeout_ms;
 
-		public SocketPool(int timeout_ms) {
+		public ConnPool(int timeout_ms) {
 			this.timeout_ms = timeout_ms;
 			scmt.execAsync("pool_monitor", this::job_pool_monitor);
 		}
@@ -939,39 +923,54 @@ public class Smartproxy {
 		private void job_pool_monitor() {
 			while (true) {
 				scmt.sleep(1000 * 30);
-				MapIterator<InetSocketAddress, UnusedSocket> iterator = unused.mapIterator();
-				while (iterator.hasNext()) {
-					iterator.next();
-					UnusedSocket value = iterator.getValue();
-					if (sct.time_ms() - value.lastUsedTime > timeout_ms)
-						iterator.remove();
+				synchronized (unused) {
+					MapIterator<InetSocketAddress, UnusedConn> iterator = unused.mapIterator();
+					while (iterator.hasNext()) {
+						iterator.next();
+						UnusedConn value = iterator.getValue();
+						if (sct.time_ms() - value.lastUsedTime > timeout_ms) {
+							log.println(sct.datetime() + " socketPool " + iterator.getKey() + " expired");
+							iterator.remove();
+							try {
+								value.conn.close();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					}
 				}
 			}
 		}
 
-		public Socket get(InetSocketAddress dest_sockaddr) throws Exception {
+		public DefaultBHttpClientConnection get(InetSocketAddress dest_sockaddr) throws Exception {
 			synchronized (unused) {
-				List<UnusedSocket> list = unused.get(dest_sockaddr);
-				if (!list.isEmpty())
-					return list.remove(list.size() - 1).s;
+				List<UnusedConn> list = unused.get(dest_sockaddr);
+				if (!list.isEmpty()) {
+					log.println(sct.datetime() + " socketPool " + dest_sockaddr + " reused");
+					return list.remove(list.size() - 1).conn;
+				}
 			}
 			Socket new_socket = create_connect_config_socket(dest_sockaddr, "http");
-			return new_socket;
+			DefaultBHttpClientConnection conn = new DefaultBHttpClientConnection(HTTP_CONN_BUF_SIZE);
+			conn.bind(new_socket);
+			log.println(sct.datetime() + " socketPool " + dest_sockaddr + " created");
+			return conn;
 		}
 
-		public void giveback(InetSocketAddress dest_sockaddr, Socket s) {
+		public void giveback(InetSocketAddress dest_sockaddr, DefaultBHttpClientConnection conn) {
 			synchronized (unused) {
-				unused.put(dest_sockaddr, new UnusedSocket(s, sct.time_ms()));
+				unused.put(dest_sockaddr, new UnusedConn(conn, sct.time_ms()));
+				log.println(sct.datetime() + " socketPool " + dest_sockaddr + " givenback");
 			}
 		}
 	}
 
-	private static class UnusedSocket {
-		public Socket s;
+	private static class UnusedConn {
+		public DefaultBHttpClientConnection conn;
 		public long lastUsedTime;
 
-		public UnusedSocket(Socket s, long lastUsedTime) {
-			this.s = s;
+		public UnusedConn(DefaultBHttpClientConnection conn, long lastUsedTime) {
+			this.conn = conn;
 			this.lastUsedTime = lastUsedTime;
 		}
 	}
@@ -981,6 +980,13 @@ public class Smartproxy {
 		public int local_listen_port;
 		public String backend_proxy_ip;
 		public int backend_proxy_port;
+		public HashMap<String, ProcessRule> process_rules;
+
+		public static class ProcessRule {
+			public ArrayList<String> image_names;
+			public String backend_proxy_ip;
+			public int backend_proxy_port;
+		}
 	}
 
 	private static long ip2long(String ip) {
