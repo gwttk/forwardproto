@@ -187,6 +187,7 @@ public class Smartproxy {
 		if (settings.process_rules == null) {
 			image_to_np = new HashMap<>();
 		} else {
+			image_to_np = new HashMap<>();
 			for (Entry<String, Settings.ProcessRule> entry : settings.process_rules.entrySet()) {
 				String name = entry.getKey();
 				Settings.ProcessRule v = entry.getValue();
