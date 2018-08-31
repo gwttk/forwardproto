@@ -53,6 +53,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
@@ -123,6 +124,7 @@ public class Smartproxy {
 	private NextNode nn_proxy;
 	private Map<String, NextNode> domain_to_nn;
 	private NavigableMap<Long, IpRange> ip_to_nn;
+	private Map<String, NextProxy> image_to_np;
 	private ConnPool socketPool;
 
 	public static void main(String[] args) {
@@ -156,9 +158,6 @@ public class Smartproxy {
 		settings = new Gson().fromJson(
 				FileUtils.readFileToString(new File(cmd.getOptionValue('s', "settings.json")), sc.utf8),
 				Settings.class);
-		if (settings.process_rules == null) {
-			settings.process_rules = new HashMap<>();
-		}
 
 		if (cmd.hasOption('h')) {
 			HelpFormatter formatter = new HelpFormatter();
@@ -171,7 +170,22 @@ public class Smartproxy {
 		if (cmd.hasOption(local_listen_port)) {
 			settings.local_listen_port = Integer.parseInt(cmd.getOptionValue(local_listen_port));
 		}
-		// set log output to '-l' option or 'smartproxy.log' by default
+
+		// load process rules
+		if (settings.process_rules == null) {
+			image_to_np = new HashMap<>();
+		} else {
+			for (Entry<String, Settings.ProcessRule> entry : settings.process_rules.entrySet()) {
+				String name = entry.getKey();
+				Settings.ProcessRule v = entry.getValue();
+				NextProxy np = new NextProxy(name, v.backend_proxy_ip, v.backend_proxy_port);
+				for (String imageName : v.image_names) {
+					image_to_np.put(imageName, np);
+				}
+			}
+		}
+
+		// from now on, log output to '-l' option or 'smartproxy.log' by default
 		log = new PrintWriter(new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(cmd.getOptionValue('l', "smartproxy.log")), sc.utf8)),
 				true);
@@ -789,10 +803,10 @@ public class Smartproxy {
 			throw new Exception("don't connect with ip");
 		}
 
+		Proxy proxy;
 		if (nextNode.type == NextNode.Type.BAN) {
 			throw new Exception("this address is banned");
-		}
-		if (nextNode.type == NextNode.Type.DIRECT) {
+		} else if (nextNode.type == NextNode.Type.DIRECT) {
 			// dns resolve
 			InetAddress dest_addr = null;
 			try {
@@ -801,8 +815,19 @@ public class Smartproxy {
 				return null;
 			}
 			dest_sockaddr = new InetSocketAddress(dest_addr, dest_sockaddr.getPort());
-		}
-		Socket raw_to_nn = new Socket(nextNode.next_node);
+			proxy = nextNode.next_node;
+		} else if (nextNode.type == NextNode.Type.PROXY) {
+			// based on process rule
+			String imageName = "";
+			NextProxy np = image_to_np.get(imageName);
+			if (np != null)
+				proxy = np.proxy;
+			else
+				proxy = nextNode.next_node;
+		} else
+			throw new RuntimeException("impossible");
+
+		Socket raw_to_nn = new Socket(proxy);
 		setSocketOptions(raw_to_nn);
 		try {
 			raw_to_nn.connect(dest_sockaddr, SOCKET_CONNECT_TIMEOUT);
@@ -883,8 +908,8 @@ public class Smartproxy {
 			DIRECT, PROXY, BAN
 		};
 
-		public Type type;
-		public Proxy next_node;
+		public final Type type;
+		public final Proxy next_node;
 
 		public NextNode(Type type, Proxy next_node) {
 			this.type = type;
@@ -894,6 +919,22 @@ public class Smartproxy {
 		@Override
 		public String toString() {
 			return type.toString();
+		}
+
+	}
+
+	private static class NextProxy {
+		public String name;
+		public Proxy proxy;
+
+		public NextProxy(String name, String ip, int port) throws UnknownHostException {
+			this.name = name;
+			proxy = new Proxy(Type.SOCKS, new InetSocketAddress(InetAddress.getByName(ip), port));
+		}
+
+		@Override
+		public String toString() {
+			return name;
 		}
 
 	}
