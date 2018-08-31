@@ -114,7 +114,7 @@ import com.sun.jna.win32.StdCallLibrary;
 public class Smartproxy {
 
 	private static final int HTTP_CONN_BUF_SIZE = 32 * 1024;
-	private static final int SOCKET_CONNECT_TIMEOUT = 1000 * 30;
+	private static final int SOCKET_CONNECT_TIMEOUT = 1000 * 15;
 	private static final int SOCKET_SO_TIMEOUT_CLIENT = 0;
 	private static final int SOCKET_SO_TIMEOUT_NEXTPROXY = 0;
 	private static final int HTTP_POOL_TIMEOUT = 120 * 1000;
