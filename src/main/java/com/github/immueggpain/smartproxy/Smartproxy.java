@@ -927,6 +927,7 @@ public class Smartproxy {
 		}
 	}
 
+	/** return process image name, or "System", or "", or "Access denied" */
 	private String get_image_path(int remote_port, int local_port) {
 		MIB_TCPTABLE_OWNER_PID table = new MIB_TCPTABLE_OWNER_PID();
 		IntByReference psize = new IntByReference(table.size());
@@ -951,7 +952,11 @@ public class Smartproxy {
 				HANDLE hproc = Kernel32.INSTANCE.OpenProcess(WinNT.PROCESS_QUERY_LIMITED_INFORMATION, false,
 						e.dwOwningPid.intValue());
 				if (hproc == null) {
-					throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
+					int error_code = Kernel32.INSTANCE.GetLastError();
+					if (error_code == 5)
+						return "Access denied";
+					log.println("windows error code: " + error_code);
+					throw new Win32Exception(error_code);
 				} else {
 					String processImageName = Kernel32Util.QueryFullProcessImageName(hproc, 0);
 					Kernel32Util.closeHandle(hproc);
