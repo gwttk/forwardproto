@@ -235,7 +235,7 @@ public class Smartproxy {
 			try {
 				raw.close();
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				e1.printStackTrace(log);
 			}
 			return;
 		}
@@ -325,11 +325,12 @@ public class Smartproxy {
 				}
 			synchronized (cc) {
 				s_client.close();
-				try {
-					raw_to_nn.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				if (raw_to_nn != null)
+					try {
+						raw_to_nn.close();
+					} catch (IOException e) {
+						e.printStackTrace(log);
+					}
 				cc.shutdown_sum += 1;
 			}
 		}
@@ -368,7 +369,7 @@ public class Smartproxy {
 				try {
 					raw_to_nn.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					e.printStackTrace(log);
 				}
 				cc.shutdown_sum += 2;
 			}
@@ -743,7 +744,7 @@ public class Smartproxy {
 						try {
 							http_conn_nn.close();
 						} catch (IOException e1) {
-							e1.printStackTrace();
+							e1.printStackTrace(log);
 						}
 					}
 
@@ -759,7 +760,7 @@ public class Smartproxy {
 					try {
 						http_conn_nn.close();
 					} catch (IOException e1) {
-						e1.printStackTrace();
+						e1.printStackTrace(log);
 					}
 					// return to close http_conn
 					return;
@@ -840,14 +841,17 @@ public class Smartproxy {
 			dest_sockaddr = new InetSocketAddress(dest_addr, dest_sockaddr.getPort());
 			proxy = nextNode.next_node;
 		} else if (nextNode.type == NextNode.Type.PROXY) {
-			// based on process rule
-			String imageName = get_image_path(client_remote_port, settings.local_listen_port);
-			imageName = FilenameUtils.getName(imageName).toLowerCase();
-			log.println("img: " + imageName);
-			NextProxy np = image_to_np.get(imageName);
-			if (np != null)
-				proxy = np.proxy;
-			else
+			if (settings.process_rules != null) {
+				// based on process rule
+				String imageName = get_image_path(client_remote_port, settings.local_listen_port);
+				imageName = FilenameUtils.getName(imageName).toLowerCase();
+				log.println("img: " + imageName);
+				NextProxy np = image_to_np.get(imageName);
+				if (np != null)
+					proxy = np.proxy;
+				else
+					proxy = nextNode.next_node;
+			} else
 				proxy = nextNode.next_node;
 		} else
 			throw new RuntimeException("impossible");
@@ -1086,7 +1090,7 @@ public class Smartproxy {
 							try {
 								value.conn.close();
 							} catch (IOException e) {
-								e.printStackTrace();
+								e.printStackTrace(log);
 							}
 						}
 					}
