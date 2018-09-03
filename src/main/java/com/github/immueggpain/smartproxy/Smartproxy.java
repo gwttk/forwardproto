@@ -823,8 +823,18 @@ public class Smartproxy {
 				}
 			}
 		} else {
-			log.println("connect with ip that resolved locally is dangerous for the server");
-			throw new Exception("don't connect with ip");
+			String hostString = dest_sockaddr.getAddress().getHostAddress();
+			long ip = ip2long(dest_sockaddr.getAddress());
+			IpRange ipRange = ip_to_nn.floorEntry(ip).getValue();
+			if (ip > ipRange.end) {
+				nextNode = nn_proxy;
+				log.println(String.format("%s %-7s: %-6s <- default <- %s", sct.datetime(), client_protocol, nextNode,
+						hostString));
+			} else {
+				nextNode = ipRange.nextnode;
+				log.println(String.format("%s %-7s: %-6s <- %s ~ %s <- %s", sct.datetime(), client_protocol, nextNode,
+						long2ip(ipRange.begin), long2ip(ipRange.end), hostString));
+			}
 		}
 
 		Proxy proxy;
@@ -1156,6 +1166,14 @@ public class Smartproxy {
 		long ipLong = 0;
 		for (int i = 0; i < 4; i++)
 			ipLong += Integer.parseInt(parts[i]) << (24 - (8 * i));
+		return ipLong;
+	}
+
+	private static long ip2long(InetAddress ip) {
+		byte[] parts = ip.getAddress();
+		long ipLong = 0;
+		for (int i = 0; i < 4; i++)
+			ipLong += (parts[i] & 0xff) << (24 - (8 * i));
 		return ipLong;
 	}
 
