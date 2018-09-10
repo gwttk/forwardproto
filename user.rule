@@ -48,7 +48,7 @@ pmt-origin-cn.battle.net direct
 #163
 .163yun.com direct
 
-#ms
+#microsoft
 .msedge.net proxy
 .live.net proxy
 .windowsupdate.com proxy
@@ -72,6 +72,18 @@ pmt-origin-cn.battle.net direct
 
 #baidu
 .baiducontent.com direct
+.bcebos.com direct
+.baidupcs.com direct
+
+#amazon
+images-cn.ssl-images-amazon.com direct
+images-cn-4.ssl-images-amazon.com direct
+unagi-cn.amazon.com direct
+fls-cn.amazon.com direct
+.amazon.com proxy
+.media-amazon.com proxy
+.amazon-adsystem.com proxy
+.amazonaws-china.com direct
 
 
 .intsig.net direct
@@ -95,7 +107,6 @@ pmt-origin-cn.battle.net direct
 .worldofwarships.cn direct
 .diyidan.net direct
 .diyidan.com direct
-.amazonaws-china.com direct
 .huihui.cn direct
 .panda.tv direct
 .3.cn direct
@@ -126,9 +137,7 @@ pmt-origin-cn.battle.net direct
 .rubiconproject.com proxy
 .mxptint.net proxy
 .media.net proxy
-.ssl-images-amazon.com proxy
 .adform.net proxy
-.amazon-adsystem.com proxy
 .geforce.com proxy
 .nvidia.com proxy
 .bkrtx.com proxy
@@ -140,7 +149,6 @@ pmt-origin-cn.battle.net direct
 .akamaized.net proxy
 .akamaihd.net proxy
 .dmm.co.jp proxy
-.amazon.com proxy
 .stackoverflow.com proxy
 .steamdb.info proxy
 .google-analytics.com proxy
