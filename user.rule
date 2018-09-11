@@ -40,6 +40,7 @@ pmt-origin-cn.battle.net direct
 .sobot.com direct
 .smtcdns.net direct
 .haplat.net direct
+.xycdn.com direct
 
 #ipip.net
 .ipip.net direct
@@ -115,6 +116,9 @@ fls-cn.amazon.com direct
 .8686c.com direct
 
 
+.godaddy.com proxy
+.whois.com proxy
+.apache.org proxy
 .eclipse.org proxy
 .hotjar.com proxy
 .optimizely.com proxy
