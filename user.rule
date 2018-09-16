@@ -15,6 +15,7 @@
 .liangxinyao.com direct
 .aliapp.org direct
 .alijk.com direct
+.autonavi.com direct
 
 #blz
 .battlenet.com.cn direct
@@ -57,6 +58,7 @@ pmt-origin-cn.battle.net direct
 .s-microsoft.com proxy
 .gfx.ms proxy
 .office365.com proxy
+.azureedge.net proxy
 
 #google
 .gvt1.com proxy
