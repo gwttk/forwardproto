@@ -60,6 +60,7 @@ pmt-origin-cn.battle.net direct
 .office365.com proxy
 .azureedge.net proxy
 cloudfront-vs-afd.azurefd.net direct
+.xboxlive.com proxy
 
 #google
 .gvt1.com proxy
@@ -91,7 +92,13 @@ fls-cn.amazon.com direct
 .amazon-adsystem.com proxy
 .amazonaws-china.com direct
 
+#youku
+.cibntv.net direct
 
+
+.gentags.net direct
+.mct01.com direct
+.365dmp.com direct
 .kanbilibili.com direct
 .intsig.net direct
 .qhres.com direct
