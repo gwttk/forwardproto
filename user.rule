@@ -66,6 +66,7 @@ cloudfront-vs-afd.azurefd.net direct
 .gvt1.com proxy
 .gvt3.com proxy
 .ipv6test.net proxy
+.googleadservices.com proxy
 
 #steam
 .steam-chat.com proxy
