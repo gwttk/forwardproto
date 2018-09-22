@@ -23,6 +23,7 @@
 .cache-cn.battle.net direct
 pmt-origin-cn.battle.net direct
 .serving-sys.com proxy
+.blizzard.com proxy
 
 #jd
 .jdpay.com direct
