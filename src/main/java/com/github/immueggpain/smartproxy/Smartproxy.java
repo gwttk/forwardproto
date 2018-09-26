@@ -116,7 +116,7 @@ public class Smartproxy {
 	private static final int HTTP_CONN_BUF_SIZE = 32 * 1024;
 	private static final int SOCKET_CONNECT_TIMEOUT = 1000 * 15;
 	private static final int SOCKET_SO_TIMEOUT_CLIENT = 0;
-	private static final int SOCKET_SO_TIMEOUT_NEXTPROXY = 0;
+	private static final int SOCKET_SO_TIMEOUT_NEXTNODE = 0;
 	private static final int HTTP_POOL_TIMEOUT = 120 * 1000;
 	private static final Pattern httpconnect_regex = Pattern.compile("CONNECT (.+):([0-9]+) HTTP/1[.][01]");
 	private static final byte[] httpconnect_okresponse = sc.s2b("HTTP/1.1 200 OK\r\n\r\n");
@@ -837,20 +837,22 @@ public class Smartproxy {
 			}
 		}
 
-		Proxy proxy;
 		if (nextNode.type == NextNode.Type.BAN) {
 			throw new Exception("this address is banned");
 		} else if (nextNode.type == NextNode.Type.DIRECT) {
 			// dns resolve
 			InetAddress dest_addr = null;
 			try {
+				// if it's already resolved, will simply return textual ip
 				dest_addr = InetAddress.getByName(dest_sockaddr.getHostString());
 			} catch (UnknownHostException e) {
+				// can't resolve name
 				return null;
 			}
 			dest_sockaddr = new InetSocketAddress(dest_addr, dest_sockaddr.getPort());
-			proxy = nextNode.next_node;
+			return direct_create_config_connect_socket(dest_sockaddr);
 		} else if (nextNode.type == NextNode.Type.PROXY) {
+			Proxy proxy;
 			if (settings.process_rules != null) {
 				// based on process rule
 				String imageName = get_image_path(client_remote_port, settings.local_listen_port);
@@ -863,13 +865,33 @@ public class Smartproxy {
 					proxy = nextNode.next_node;
 			} else
 				proxy = nextNode.next_node;
+			Socket raw_to_nn = new Socket(proxy);
+			setSocketOptions(raw_to_nn);
+			try {
+				raw_to_nn.connect(dest_sockaddr, SOCKET_CONNECT_TIMEOUT);
+			} catch (ConnectException e) {
+				if (e.getMessage().equals("Connection refused: connect")
+						|| e.getMessage().equals("Connection timed out: connect"))
+					return null;
+				else
+					throw e;
+			} catch (SocketTimeoutException e) {
+				if (e.getMessage().equals("connect timed out"))
+					return null;
+				else
+					throw e;
+			}
+			return raw_to_nn;
 		} else
 			throw new RuntimeException("impossible");
+	}
 
-		Socket raw_to_nn = new Socket(proxy);
-		setSocketOptions(raw_to_nn);
+	/** return null means connection refused, or connect timed out */
+	private Socket direct_create_config_connect_socket(SocketAddress dest_sockaddr) throws IOException {
+		Socket s = new Socket(Proxy.NO_PROXY);
+		setSocketOptions(s);
 		try {
-			raw_to_nn.connect(dest_sockaddr, SOCKET_CONNECT_TIMEOUT);
+			s.connect(dest_sockaddr, SOCKET_CONNECT_TIMEOUT);
 		} catch (ConnectException e) {
 			if (e.getMessage().equals("Connection refused: connect")
 					|| e.getMessage().equals("Connection timed out: connect"))
@@ -882,8 +904,7 @@ public class Smartproxy {
 			else
 				throw e;
 		}
-		raw_to_nn.setSoTimeout(SOCKET_SO_TIMEOUT_NEXTPROXY);
-		return raw_to_nn;
+		return s;
 	}
 
 	private void load_domain_nn_table() throws Exception {
@@ -1184,6 +1205,7 @@ public class Smartproxy {
 
 	private static void setSocketOptions(Socket s) throws SocketException {
 		s.setTcpNoDelay(true);
+		s.setSoTimeout(SOCKET_SO_TIMEOUT_NEXTNODE);
 	}
 
 	private static boolean keepAlive(final HttpRequest request, final HttpResponse response) {
