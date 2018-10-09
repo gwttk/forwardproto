@@ -614,6 +614,11 @@ public class Smartproxy {
 				} catch (ConnectionClosedException e) {
 					// client just closed the socket
 					return;
+				} catch (SocketException e) {
+					if (e.getMessage().equals("Connection reset"))
+						return;
+					else
+						throw e;
 				}
 				HttpEntity entity = null;
 				if (request instanceof HttpEntityEnclosingRequest) {
