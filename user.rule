@@ -62,6 +62,7 @@ pmt-origin-cn.battle.net direct
 .azureedge.net proxy
 cloudfront-vs-afd.azurefd.net direct
 .xboxlive.com proxy
+.windows.com proxy
 
 #google
 .gvt1.com proxy
