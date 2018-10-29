@@ -75,6 +75,7 @@ cloudfront-vs-afd.azurefd.net direct
 
 #bilibili
 .biliapi.com direct
+.biligame.net direct
 
 #redit
 .redditmedia.com proxy
