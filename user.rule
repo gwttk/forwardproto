@@ -100,6 +100,8 @@ fls-cn.amazon.com direct
 .cibntv.net direct
 
 
+.webdissector.com direct
+.easemob.com direct
 .laoyuegou.com direct
 cms-origin-cn.battle.net direct
 render-api-cn.worldofwarcraft.com direct
@@ -143,6 +145,10 @@ assets.adobedtm.com direct
 .8686c.com direct
 
 
+.akstat.io proxy
+.go-mpulse.net proxy
+.tealiumiq.com proxy
+.ikea.com proxy
 .wowhead.com proxy
 .sonobi.com proxy
 .lijit.com proxy
