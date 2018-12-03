@@ -121,7 +121,7 @@ public class Smartproxy {
 	private static final Pattern httpconnect_regex = Pattern.compile("CONNECT (.+):([0-9]+) HTTP/1[.][01]");
 	private static final byte[] httpconnect_okresponse = sc.s2b("HTTP/1.1 200 OK\r\n\r\n");
 	private static final Pattern ip_regex = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
-	private static final Pattern domain_regex = Pattern.compile("[a-z0-9-]*(\\.[a-z0-9-]+)+");
+	private static final Pattern domain_regex = Pattern.compile("[a-z0-9-]*(\\.[a-z0-9-]+)*");
 
 	private static PrintWriter log;
 
@@ -946,9 +946,9 @@ public class Smartproxy {
 				}
 				// domain
 				if (segments.length != 2)
-					throw new Exception("nn_table bad line " + line);
+					throw new Exception("nn_table bad line: " + line);
 				if (!domain_regex.matcher(segments[0]).matches())
-					throw new Exception("nn_table bad line " + line);
+					throw new Exception("nn_table bad line: " + line);
 				NextNode target;
 				if (segments[1].equals("direct"))
 					target = nn_direct;
