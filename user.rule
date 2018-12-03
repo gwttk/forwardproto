@@ -146,6 +146,7 @@ assets.adobedtm.com direct
 .8686c.com direct
 
 
+.designwithfontforge.com proxy
 .akstat.io proxy
 .go-mpulse.net proxy
 .tealiumiq.com proxy
@@ -260,6 +261,11 @@ software.intel.com proxy
 .hyperxgaming.com proxy
 .battle.net proxy
 .prezi.com proxy
+
+
+wtipthfgz reject
+zteulsmxcz reject
+yynykdlkeitnjn reject
 
 
 .0rz.tw proxy
