@@ -35,6 +35,7 @@ pmt-origin-cn.battle.net direct
 .jdwl.com direct
 .toplife.com direct
 .jcloudcache.com direct
+.jd.hk direct
 
 #panda.tv
 .pdim.gs direct
@@ -99,7 +100,14 @@ fls-cn.amazon.com direct
 #youku
 .cibntv.net direct
 
+#acfun
+.aixifan.com direct
 
+
+.thingjs.com direct
+.3dmomoda.com direct
+.wangyuan.com direct
+.yfp2p.net direct
 .00cdn.com direct
 .webdissector.com direct
 .easemob.com direct
@@ -146,6 +154,7 @@ assets.adobedtm.com direct
 .8686c.com direct
 
 
+.adobe.com proxy
 .designwithfontforge.com proxy
 .akstat.io proxy
 .go-mpulse.net proxy
@@ -4282,7 +4291,6 @@ yynykdlkeitnjn reject
 .admin5.com direct
 .admin5.net direct
 .admin6.com direct
-.adobe.com direct
 .ads8.com direct
 .adsage.com direct
 .adsame.com direct
