@@ -1,16 +1,24 @@
 package com.github.immueggpain.smartproxytool;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.BOMInputStream;
+
+import com.github.immueggpain.common.sc;
 import com.github.immueggpain.common.scp;
 import com.github.immueggpain.common.scp.ProcessResult;
 
@@ -20,8 +28,23 @@ import com.github.immueggpain.common.scp.ProcessResult;
  */
 class LogProcessor {
 
+	private static final Pattern ip_regex = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
 	private static final Pattern ping_regex_win = Pattern.compile("time([=<])([0-9]+)ms");
 	private static final Pattern default_line = Pattern.compile(".+ socks5 : PROXY  <- default <- (.+)");
+
+	private NavigableMap<Long, IpRange> ip_to_nn;
+
+	public static class IpRange {
+		public final long begin;
+		public final long end;
+		public final String target;
+
+		public IpRange(long begin, long end, String target) {
+			this.begin = begin;
+			this.end = end;
+			this.target = target;
+		}
+	}
 
 	public static void main(String[] args) {
 		try {
@@ -31,7 +54,8 @@ class LogProcessor {
 		}
 	}
 
-	private void run(String logFilePath) throws IOException {
+	private void run(String logFilePath) throws Exception {
+		load_domain_nn_table();
 		HashSet<String> rules = new HashSet<>();
 		HashSet<String> recordedDomains = new HashSet<>();
 		HashSet<String> unpingableDomains = new HashSet<>();
@@ -54,24 +78,30 @@ class LogProcessor {
 					continue;
 				}
 
+				float latency = -1;
+				String target = null;
+
 				float latency1 = ping_win(addr);
 				float latency2 = ping_win(addr);
 				if (latency1 < 0 || latency2 < 0) {
-					System.out.println("#### can't ping: " + domainName + " " + addr.getHostAddress());
 					unpingableDomains.add(domainName);
-					
+					target = queryIpRules(addr);
+					rules.add(domainName + " " + target);
 				} else {
-					float latency = (latency1 + latency2) / 2;
-					System.out.println(domainName + " " + latency + "ms" + " " + addr.getHostAddress());
+					latency = (latency1 + latency2) / 2;
 
 					if (latency <= 50) {
-						rules.add(domainName + " direct");
+						target = "direct";
 					} else if (latency > 160) {
-						rules.add(domainName + " proxy");
+						target = "proxy";
 					} else {
-
+						target = queryIpRules(addr);
 					}
+					rules.add(domainName + " " + target);
+
 				}
+
+				System.out.println(domainName + " " + addr.getHostAddress() + " " + latency + "ms " + target);
 			}
 		}
 		System.out.println("==========rules:");
@@ -90,6 +120,67 @@ class LogProcessor {
 				return Float.parseFloat(m.group(2));
 		} else
 			return -1;
+	}
+
+	private String queryIpRules(InetAddress addr) {
+		long ip = ip2long(addr);
+		IpRange ipRange = ip_to_nn.floorEntry(ip).getValue();
+		if (ip > ipRange.end) {
+			return null;
+		} else {
+			return ipRange.target;
+		}
+	}
+
+	private static long ip2long(InetAddress ip) {
+		byte[] parts = ip.getAddress();
+		long ipLong = 0;
+		for (int i = 0; i < 4; i++)
+			ipLong += (parts[i] & 0xff) << (24 - (8 * i));
+		return ipLong;
+	}
+
+	private static long ip2long(String ip) {
+		String[] parts = ip.split("\\.");
+		long ipLong = 0;
+		for (int i = 0; i < 4; i++)
+			ipLong += Integer.parseInt(parts[i]) << (24 - (8 * i));
+		return ipLong;
+	}
+
+	private void load_domain_nn_table() throws Exception {
+		ip_to_nn = new TreeMap<>();
+		Path path = Paths.get("user.rule");
+		try (BOMInputStream is = new BOMInputStream(new FileInputStream(path.toFile()))) {
+			for (String line : IOUtils.readLines(is, sc.utf8)) {
+				line = line.trim();
+				if (line.isEmpty())
+					continue;
+				if (line.startsWith("#"))
+					continue;
+				String[] segments = line.split(" ");
+				if (ip_regex.matcher(segments[0]).matches()) {
+					// ip
+					if (segments.length != 3)
+						throw new Exception("nn_table bad line " + line);
+					if (!ip_regex.matcher(segments[1]).matches())
+						throw new Exception("nn_table bad line " + line);
+					String target;
+					if (segments[2].equals("direct"))
+						target = segments[2];
+					else if (segments[2].equals("reject"))
+						target = segments[2];
+					else if (segments[2].equals("proxy"))
+						target = segments[2];
+					else
+						throw new Exception("nn_table bad line " + line);
+					long begin = ip2long(segments[0]);
+					long end = ip2long(segments[1]);
+					ip_to_nn.put(begin, new IpRange(begin, end, target));
+					continue;
+				}
+			}
+		}
 	}
 
 }
