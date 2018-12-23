@@ -269,8 +269,8 @@ public class Smartproxy {
 				throw new Exception("error unknown proxy protocol first_byte " + sctp.byte_to_string(first_byte));
 			}
 
-			raw_to_nn = create_connect_config_socket(dest_sockaddr, client_protocol, raw.getPort());
-			if (raw_to_nn == null) {
+			SocketBundle sb_to_nn = create_connect_config_socket(dest_sockaddr, client_protocol, raw.getPort());
+			if (sb_to_nn == null) {
 				// can't connect
 				s_client.close();
 				return;
@@ -279,9 +279,8 @@ public class Smartproxy {
 			// transfer data
 			cc.dest = dest_sockaddr.toString();
 			SecTcpSocket copy_of_s = s_client;
-			Socket copy_of_raw_to_nn = raw_to_nn;
-			scmt.execAsync("recv_" + id + "_nextnode", () -> recv_nextnode(copy_of_raw_to_nn, copy_of_s, cc));
-			os_nn = raw_to_nn.getOutputStream();
+			scmt.execAsync("recv_" + id + "_nextnode", () -> recv_nextnode(sb_to_nn, copy_of_s, cc));
+			os_nn = sb_to_nn.os;
 			IOUtils.copy(is, os_nn, 32 * 1024);
 		} catch (Exception e) {
 			int cc_shutdown_sum;
@@ -322,9 +321,9 @@ public class Smartproxy {
 		}
 	}
 
-	private void recv_nextnode(Socket raw_to_nn, SecTcpSocket s_client, ConnectionContext cc) {
+	private void recv_nextnode(SocketBundle sb_to_nn, SecTcpSocket s_client, ConnectionContext cc) {
 		try {
-			InputStream is_nn = raw_to_nn.getInputStream();
+			InputStream is_nn = sb_to_nn.is;
 			IOUtils.copy(is_nn, s_client.os, 32 * 1024);
 		} catch (Exception e) {
 			int cc_shutdown_sum;
@@ -353,7 +352,7 @@ public class Smartproxy {
 			synchronized (cc) {
 				s_client.close();
 				try {
-					raw_to_nn.close();
+					sb_to_nn.socket.close();
 				} catch (IOException e) {
 					e.printStackTrace(log);
 				}
@@ -438,8 +437,8 @@ public class Smartproxy {
 			dest_sockaddr = InetSocketAddress.createUnresolved(dest_domain, dest_port);
 
 		// now we connect next node
-		Socket raw_to_nn = create_connect_config_socket(dest_sockaddr, "socks5", s_client.getRaw().getPort());
-		if (raw_to_nn == null) {
+		SocketBundle sb_to_nn = create_connect_config_socket(dest_sockaddr, "socks5", s_client.getRaw().getPort());
+		if (sb_to_nn == null) {
 			// can't connect
 			buf = new byte[10];
 
@@ -491,9 +490,8 @@ public class Smartproxy {
 		ConnectionContext cc = new ConnectionContext();
 		cc.dest = dest_sockaddr.toString();
 		SecTcpSocket copy_of_s = s_client;
-		Socket copy_of_raw_to_nn = raw_to_nn;
-		scmt.execAsync("recv_" + id + "_nextnode", () -> recv_nextnode(copy_of_raw_to_nn, copy_of_s, cc));
-		OutputStream os_nn = raw_to_nn.getOutputStream();
+		scmt.execAsync("recv_" + id + "_nextnode", () -> recv_nextnode(sb_to_nn, copy_of_s, cc));
+		OutputStream os_nn = sb_to_nn.os;
 		IOUtils.copy(is, os_nn, 32 * 1024);
 		s_client.close();
 	}
@@ -807,10 +805,8 @@ public class Smartproxy {
 	/**
 	 * return null means connection refused, or connect timed out, or can't resolve
 	 * hostname
-	 * 
-	 * @param client_protocol
 	 */
-	private Socket create_connect_config_socket(InetSocketAddress dest_sockaddr, String client_protocol,
+	private SocketBundle create_connect_config_socket(InetSocketAddress dest_sockaddr, String client_protocol,
 			int client_remote_port) throws Exception {
 		NextNode nextNode;
 		if (dest_sockaddr.isUnresolved()) {
@@ -883,7 +879,8 @@ public class Smartproxy {
 				return null;
 			}
 			dest_sockaddr = new InetSocketAddress(dest_addr, dest_sockaddr.getPort());
-			return direct_create_config_connect_socket(dest_sockaddr);
+			Socket raw = direct_create_config_connect_socket(dest_sockaddr);
+			return new SocketBundle(raw, raw.getInputStream(), raw.getOutputStream());
 		} else if (nextNode.type == NextNode.Type.PROXY) {
 			Socket raw_to_nn = new Socket(Proxy.NO_PROXY);
 			setSocketOptions(raw_to_nn);
@@ -902,7 +899,9 @@ public class Smartproxy {
 				else
 					throw e;
 			}
-			return raw_to_nn;
+			InputStream is = raw_to_nn.getInputStream();
+			OutputStream os = raw_to_nn.getOutputStream();
+			return new SocketBundle(raw_to_nn, is, os);
 		} else
 			throw new RuntimeException("impossible");
 	}
@@ -976,6 +975,18 @@ public class Smartproxy {
 					throw new Exception("nn_table bad line " + line);
 				domain_to_nn.put(segments[0], target);
 			}
+		}
+	}
+
+	private static class SocketBundle {
+		public Socket socket;
+		public InputStream is;
+		public OutputStream os;
+
+		public SocketBundle(Socket socket, InputStream is, OutputStream os) {
+			this.socket = socket;
+			this.is = is;
+			this.os = os;
 		}
 	}
 
@@ -1097,9 +1108,17 @@ public class Smartproxy {
 					return list.remove(list.size() - 1).conn;
 				}
 			}
-			Socket new_socket = create_connect_config_socket(dest_sockaddr, "http", client_remote_port);
-			DefaultBHttpClientConnection conn = new DefaultBHttpClientConnection(HTTP_CONN_BUF_SIZE);
-			conn.bind(new_socket);
+			SocketBundle new_socketb = create_connect_config_socket(dest_sockaddr, "http", client_remote_port);
+			DefaultBHttpClientConnection conn = new DefaultBHttpClientConnection(HTTP_CONN_BUF_SIZE) {
+				protected InputStream getSocketInputStream(final Socket socket) throws IOException {
+					return new_socketb.is;
+				}
+
+				protected OutputStream getSocketOutputStream(final Socket socket) throws IOException {
+					return new_socketb.os;
+				}
+			};
+			conn.bind(new_socketb.socket);
 			log.println(sct.datetime() + " socketPool " + dest_sockaddr + " created");
 			return conn;
 		}
