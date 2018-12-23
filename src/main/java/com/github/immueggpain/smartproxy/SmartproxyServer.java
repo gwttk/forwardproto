@@ -22,6 +22,8 @@ import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import org.apache.commons.io.IOUtils;
 
+import com.github.immueggpain.common.scmt;
+
 public class SmartproxyServer {
 
 	private static final int PORT = 9039;
@@ -77,7 +79,7 @@ public class SmartproxyServer {
 			// config s here
 			s.setSoTimeout(SO_TIMEOUT);
 
-			handleConnection(s);
+			scmt.execAsync("multi-thread-handle-conn", () -> handleConnection(s));
 		}
 	}
 
