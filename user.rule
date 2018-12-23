@@ -104,6 +104,7 @@ fls-cn.amazon.com direct
 .aixifan.com direct
 
 
+.sonkwo.hk direct
 netstorage.unity3d.com direct
 download.unity3d.com direct
 .tapimg.com direct
@@ -297,6 +298,12 @@ yynykdlkeitnjn reject
 
 
 #auto rules
+vid-io.springserve.com proxy
+pix.us.criteo.net proxy
+dts.innovid.com proxy
+cat.sv.us.criteo.com proxy
+rdi.us.criteo.com proxy
+csm.sv.us.criteo.net proxy
 ss3.zedo.com proxy
 prg.smartadserver.com proxy
 tags.rd.linksynergy.com proxy
