@@ -1,6 +1,8 @@
 package com.github.immueggpain.smartproxy;
 
 import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,10 +18,14 @@ import java.util.Collection;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
 import org.apache.commons.io.IOUtils;
 
 public class SmartproxyServer {
+
+	private static final int PORT = 9039;
+	private static final int SO_TIMEOUT = 1000 * 60;
 
 	public static void main(String[] args) {
 		try {
@@ -54,6 +60,29 @@ public class SmartproxyServer {
 
 		SSLContext context = SSLContext.getInstance("TLSv1.2");
 		context.init(keyManagers, null, null);
+
+		SSLServerSocketFactory ssf = context.getServerSocketFactory();
+
+		SSLServerSocket ss = (SSLServerSocket) ssf.createServerSocket();
+
+		// config ss here
+		ss.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
+		ss.setPerformancePreferences(0, 0, 1);
+
+		ss.bind(new InetSocketAddress(PORT));
+
+		while (true) {
+			Socket s = ss.accept();
+
+			// config s here
+			s.setSoTimeout(SO_TIMEOUT);
+
+			handleConnection(s);
+		}
+	}
+
+	private void handleConnection(Socket s) {
+
 	}
 
 }
