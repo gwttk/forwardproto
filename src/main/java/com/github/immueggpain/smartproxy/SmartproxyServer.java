@@ -29,6 +29,7 @@ import javax.net.ssl.SSLServerSocketFactory;
 import org.apache.commons.io.IOUtils;
 
 import com.github.immueggpain.common.scmt;
+import com.github.immueggpain.smartproxy.Smartproxy.Settings;
 
 public class SmartproxyServer {
 
@@ -40,15 +41,18 @@ public class SmartproxyServer {
 	public static void main(String[] args) {
 		try {
 			System.out.println("server test run");
-			new SmartproxyServer().run();
+			new SmartproxyServer().run(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private byte[] realpswd;
+	private byte[] realpswd = new byte[64];
 
-	public void run() throws Exception {
+	public void run(Settings settings) throws Exception {
+		byte[] bytes = settings.password.getBytes(StandardCharsets.UTF_8);
+		System.arraycopy(bytes, 0, realpswd, 0, bytes.length);
+
 		InputStream certFile = Files.newInputStream(Paths.get("fullchain.pem"));
 		InputStream privateKeyFile = Files.newInputStream(Paths.get("privkey.pem"));
 
@@ -108,6 +112,7 @@ public class SmartproxyServer {
 
 			String dest_hostname = is.readUTF();
 			int dest_port = is.readUnsignedShort();
+			System.out.println("client request connect " + dest_hostname + ":" + dest_port);
 			try {
 				InetAddress.getByName(dest_hostname);
 			} catch (UnknownHostException e) {

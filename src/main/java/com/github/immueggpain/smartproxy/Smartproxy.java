@@ -45,6 +45,7 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -58,7 +59,10 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.net.Proxy.Type;
+
+import javax.net.SocketFactory;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -117,8 +121,10 @@ public class Smartproxy {
 	private Set<String> encountered_request_headers = new HashSet<>();
 	private Set<String> encountered_response_headers = new HashSet<>();
 
+	private SocketFactory ssf = SSLSocketFactory.getDefault();
+	private byte[] password = new byte[64];
+
 	private Settings settings;
-	private SocketAddress nextproxy_addr;
 	private Proxy next_proxy;
 	private NextNode nn_direct;
 	private NextNode nn_ban;
@@ -144,6 +150,7 @@ public class Smartproxy {
 		String server_ip = "server_ip";
 		String server_port = "server_port";
 		String mode = "mode";
+		String password = "password";
 
 		// define options
 		Options options = new Options();
@@ -152,19 +159,22 @@ public class Smartproxy {
 		options.addOption("n", local_listen_port, true, "local listening port");
 		options.addOption("s", server_ip, true, "server ip");
 		options.addOption("p", server_port, true, "server port");
+		options.addOption("w", password, true, "passwords of server & client must be same");
 		options.addOption("l", "log", true, "log file path");
 		options.addOption("m", mode, true, "mode, server or client, default is client");
 
 		// parse from cmd args
 		DefaultParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse(options, args);
+		settings = new Settings();
 
 		// maybe it's server?
 		if (cmd.hasOption(mode)) {
 			if (cmd.getOptionValue(mode).equals("server")) {
 				// run as server
 				try {
-					new SmartproxyServer().run();
+					settings.password = cmd.getOptionValue(password);
+					new SmartproxyServer().run(settings);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -172,11 +182,11 @@ public class Smartproxy {
 			}
 		}
 
-		settings = new Settings();
 		settings.local_listen_ip = cmd.getOptionValue(local_listen_ip, "127.0.0.1");
 		settings.local_listen_port = Integer.parseInt(cmd.getOptionValue(local_listen_port, "1083"));
 		settings.server_ip = cmd.getOptionValue(server_ip);
 		settings.server_port = Integer.parseInt(cmd.getOptionValue(server_port));
+		settings.password = cmd.getOptionValue(password);
 
 		if (cmd.hasOption('h')) {
 			HelpFormatter formatter = new HelpFormatter();
@@ -189,7 +199,9 @@ public class Smartproxy {
 				new OutputStreamWriter(new FileOutputStream(cmd.getOptionValue('l', "smartproxy.log")), sc.utf8)),
 				true);
 
-		next_proxy = new Proxy(Type.SOCKS, nextproxy_addr);
+		byte[] bytes = settings.password.getBytes(StandardCharsets.UTF_8);
+		System.arraycopy(bytes, 0, this.password, 0, bytes.length);
+
 		nn_direct = new NextNode(NextNode.Type.DIRECT, Proxy.NO_PROXY);
 		nn_ban = new NextNode(NextNode.Type.BAN, null);
 		nn_proxy = new NextNode(NextNode.Type.PROXY, next_proxy);
@@ -882,7 +894,8 @@ public class Smartproxy {
 			Socket raw = direct_create_config_connect_socket(dest_sockaddr);
 			return new SocketBundle(raw, raw.getInputStream(), raw.getOutputStream());
 		} else if (nextNode.type == NextNode.Type.PROXY) {
-			Socket raw_to_nn = new Socket(Proxy.NO_PROXY);
+			SSLSocket raw_to_nn = (SSLSocket) ssf.createSocket();
+			raw_to_nn.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
 			setSocketOptions(raw_to_nn);
 			try {
 				raw_to_nn.connect(new InetSocketAddress(settings.server_ip, settings.server_port),
@@ -899,8 +912,16 @@ public class Smartproxy {
 				else
 					throw e;
 			}
-			InputStream is = raw_to_nn.getInputStream();
-			OutputStream os = raw_to_nn.getOutputStream();
+			DataInputStream is = new DataInputStream(raw_to_nn.getInputStream());
+			DataOutputStream os = new DataOutputStream(raw_to_nn.getOutputStream());
+			os.write(password);
+			os.writeUTF(dest_sockaddr.getHostString());
+			os.writeShort(dest_sockaddr.getPort());
+			byte rcode = is.readByte();
+			if (rcode != 0) {
+				raw_to_nn.close();
+				return null;
+			}
 			return new SocketBundle(raw_to_nn, is, os);
 		} else
 			throw new RuntimeException("impossible");
@@ -1141,11 +1162,12 @@ public class Smartproxy {
 		}
 	}
 
-	private static class Settings {
+	public static class Settings {
 		public String local_listen_ip;
 		public int local_listen_port;
 		public String server_ip;
 		public int server_port;
+		public String password;
 	}
 
 	private static long ip2long(String ip) {
