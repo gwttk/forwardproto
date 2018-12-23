@@ -260,7 +260,9 @@ public class Smartproxy {
 			if (first_byte == 5) {
 				// socks5
 				client_protocol = "socks5";
-				dest_sockaddr = socks5(first_byte, is, s_client.os);
+				socks5(first_byte, is, s_client.os, s_client, id);
+				// socks5() returns/throws means socket is closed
+				return;
 			} else if (first_byte == 4) {
 				// socks4
 				client_protocol = "socks4";
@@ -376,7 +378,8 @@ public class Smartproxy {
 		}
 	}
 
-	private InetSocketAddress socks5(byte first_byte, InputStream is1, OutputStream os1) throws Exception {
+	private void socks5(byte first_byte, InputStream is1, OutputStream os1, SecTcpSocket s_client, int id)
+			throws Exception {
 		@SuppressWarnings("unused")
 		byte socks_version = first_byte;
 		// System.out.println("socks_version " + sctp.byte_to_string(socks_version));
@@ -450,13 +453,42 @@ public class Smartproxy {
 		else
 			dest_sockaddr = InetSocketAddress.createUnresolved(dest_domain, dest_port);
 
-		// System.out.println("socks5 dest_sockaddr " + dest_sockaddr);
+		// now we connect next node
+		Socket raw_to_nn = create_connect_config_socket(dest_sockaddr, "socks5", s_client.getRaw().getPort());
+		if (raw_to_nn == null) {
+			// can't connect
+			buf = new byte[10];
 
+			// reply socks version again
+			buf[0] = 5;
+
+			// reply status
+			// X'04' Host unreachable
+			buf[1] = 4;
+
+			// reserved
+			buf[2] = 0;
+
+			// bind address data, not used
+			buf[3] = 1;
+
+			// buf[4~7] is ip 0.0.0.0
+			// buf[8~9] is port 0
+
+			os.write(buf);
+			os.flush();
+			s_client.close();
+			return;
+		}
+
+		// reply ok
 		buf = new byte[10];
+
 		// reply socks version again
 		buf[0] = 5;
 
 		// reply status
+		// X'00' succeeded
 		buf[1] = 0;
 
 		// reserved
@@ -464,10 +496,22 @@ public class Smartproxy {
 
 		// bind address data, not used
 		buf[3] = 1;
+
+		// buf[4~7] is ip 0.0.0.0
+		// buf[8~9] is port 0
+
 		os.write(buf);
 		os.flush();
 
-		return dest_sockaddr;
+		// transfer data
+		ConnectionContext cc = new ConnectionContext();
+		cc.dest = dest_sockaddr.toString();
+		SecTcpSocket copy_of_s = s_client;
+		Socket copy_of_raw_to_nn = raw_to_nn;
+		scmt.execAsync("recv_" + id + "_nextnode", () -> recv_nextnode(copy_of_raw_to_nn, copy_of_s, cc));
+		OutputStream os_nn = raw_to_nn.getOutputStream();
+		IOUtils.copy(is, os_nn, 32 * 1024);
+		s_client.close();
 	}
 
 	private InetSocketAddress socks4(byte first_byte, InputStream is1, OutputStream os1) throws Exception {

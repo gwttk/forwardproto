@@ -19,7 +19,7 @@
 
 	<groupId>com.github.immueggpain</groupId>
 	<artifactId>smartproxy</artifactId>
-	<version>0.5.0</version>
+	<version>0.6.0</version>
 	<packaging>jar</packaging>
 
 	<name>smartproxy</name>
