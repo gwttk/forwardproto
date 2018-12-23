@@ -1,8 +1,13 @@
 package com.github.immueggpain.smartproxy;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -12,6 +17,7 @@ import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
 
@@ -28,6 +34,8 @@ public class SmartproxyServer {
 
 	private static final int PORT = 9039;
 	private static final int SO_TIMEOUT = 1000 * 60;
+	private static final int CONNECT_TIMEOUT = 1000 * 10;
+	private static final int BUF_SIZE = 1024 * 16;
 
 	public static void main(String[] args) {
 		try {
@@ -38,8 +46,10 @@ public class SmartproxyServer {
 		}
 	}
 
+	private byte[] realpswd;
+
 	public void run() throws Exception {
-		InputStream certFile = Files.newInputStream(Paths.get("cert.pem"));
+		InputStream certFile = Files.newInputStream(Paths.get("fullchain.pem"));
 		InputStream privateKeyFile = Files.newInputStream(Paths.get("privkey.pem"));
 
 		CertificateFactory cf = CertificateFactory.getInstance("X.509");
@@ -84,7 +94,64 @@ public class SmartproxyServer {
 	}
 
 	private void handleConnection(Socket s) {
+		try {
+			DataInputStream is = new DataInputStream(s.getInputStream());
+			DataOutputStream os = new DataOutputStream(s.getOutputStream());
+			byte[] pswd = new byte[64];
+			is.readFully(pswd);
+			if (!Arrays.equals(pswd, realpswd)) {
+				// abortive close socket
+				s.setSoLinger(true, 0);
+				s.close();
+				System.out.println("someone is scanning you, do something!");
+			}
 
+			String dest_hostname = is.readUTF();
+			int dest_port = is.readUnsignedShort();
+			try {
+				InetAddress.getByName(dest_hostname);
+			} catch (UnknownHostException e) {
+				os.writeByte(1);
+				os.close();
+				return;
+			}
+			InetSocketAddress dest_sockaddr = new InetSocketAddress(dest_hostname, dest_port);
+
+			Socket cdest_s = new Socket();
+			cdest_s.connect(dest_sockaddr, CONNECT_TIMEOUT);
+			os.writeByte(0);
+
+			InputStream cdest_is = cdest_s.getInputStream();
+			OutputStream cdest_os = cdest_s.getOutputStream();
+
+			scmt.execAsync("multi-thread-handle-conn2", () -> handleConnection2(cdest_is, os));
+
+			byte[] buf = new byte[BUF_SIZE];
+			while (true) {
+				int n = is.read(buf);
+				if (n == -1)
+					break;
+				cdest_os.write(buf, 0, n);
+			}
+
+			cdest_s.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void handleConnection2(InputStream is, OutputStream os) {
+		try {
+			byte[] buf = new byte[BUF_SIZE];
+			while (true) {
+				int n = is.read(buf);
+				if (n == -1)
+					break;
+				os.write(buf, 0, n);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

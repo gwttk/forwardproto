@@ -27,7 +27,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -54,7 +53,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
@@ -68,8 +66,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.http.ConnectionClosedException;
@@ -99,15 +95,8 @@ import com.github.immueggpain.common.sc;
 import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
 import com.github.immueggpain.common.sctp;
-import com.google.gson.Gson;
 import com.sun.jna.Structure;
-import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.Kernel32Util;
-import com.sun.jna.platform.win32.W32Errors;
-import com.sun.jna.platform.win32.Win32Exception;
-import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.WinDef.DWORD;
-import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.win32.StdCallLibrary;
 
@@ -136,7 +125,6 @@ public class Smartproxy {
 	private NextNode nn_proxy;
 	private Map<String, NextNode> domain_to_nn;
 	private NavigableMap<Long, IpRange> ip_to_nn;
-	private Map<String, NextProxy> image_to_np;
 	private ConnPool socketPool;
 
 	public static void main(String[] args) {
@@ -151,51 +139,49 @@ public class Smartproxy {
 		log = new PrintWriter(System.err, true);
 
 		// option long names
-		String backend_proxy_port = "backend_proxy_port";
+		String local_listen_ip = "local_listen_ip";
 		String local_listen_port = "local_listen_port";
+		String server_ip = "server_ip";
+		String server_port = "server_port";
+		String mode = "mode";
 
 		// define options
 		Options options = new Options();
 		options.addOption("h", "help", false, "print help");
-		options.addOption("p", backend_proxy_port, true, "backend proxy port");
+		options.addOption("l", local_listen_ip, true, "local listening ip");
 		options.addOption("n", local_listen_port, true, "local listening port");
+		options.addOption("s", server_ip, true, "server ip");
+		options.addOption("p", server_port, true, "server port");
 		options.addOption("l", "log", true, "log file path");
-		options.addOption("s", "settings", true, "settings.json file path");
+		options.addOption("m", mode, true, "mode, server or client, default is client");
 
 		// parse from cmd args
 		DefaultParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse(options, args);
 
-		// parse from settings.json file
-		settings = new Gson().fromJson(
-				FileUtils.readFileToString(new File(cmd.getOptionValue('s', "settings.json")), sc.utf8),
-				Settings.class);
+		// maybe it's server?
+		if (cmd.hasOption(mode)) {
+			if (cmd.getOptionValue(mode).equals("server")) {
+				// run as server
+				try {
+					new SmartproxyServer().run();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+		}
+
+		settings = new Settings();
+		settings.local_listen_ip = cmd.getOptionValue(local_listen_ip, "127.0.0.1");
+		settings.local_listen_port = Integer.parseInt(cmd.getOptionValue(local_listen_port, "1083"));
+		settings.server_ip = cmd.getOptionValue(server_ip);
+		settings.server_port = Integer.parseInt(cmd.getOptionValue(server_port));
 
 		if (cmd.hasOption('h')) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp("smartproxy", options, true);
 			return;
-		}
-		if (cmd.hasOption(backend_proxy_port)) {
-			settings.backend_proxy_port = Integer.parseInt(cmd.getOptionValue(backend_proxy_port));
-		}
-		if (cmd.hasOption(local_listen_port)) {
-			settings.local_listen_port = Integer.parseInt(cmd.getOptionValue(local_listen_port));
-		}
-
-		// load process rules
-		if (settings.process_rules == null) {
-			image_to_np = new HashMap<>();
-		} else {
-			image_to_np = new HashMap<>();
-			for (Entry<String, Settings.ProcessRule> entry : settings.process_rules.entrySet()) {
-				String name = entry.getKey();
-				Settings.ProcessRule v = entry.getValue();
-				NextProxy np = new NextProxy(name, v.backend_proxy_ip, v.backend_proxy_port);
-				for (String imageName : v.image_names) {
-					image_to_np.put(imageName.toLowerCase(), np);
-				}
-			}
 		}
 
 		// from now on, log output to '-l' option or 'smartproxy.log' by default
@@ -203,8 +189,6 @@ public class Smartproxy {
 				new OutputStreamWriter(new FileOutputStream(cmd.getOptionValue('l', "smartproxy.log")), sc.utf8)),
 				true);
 
-		nextproxy_addr = new InetSocketAddress(InetAddress.getByName(settings.backend_proxy_ip),
-				settings.backend_proxy_port);
 		next_proxy = new Proxy(Type.SOCKS, nextproxy_addr);
 		nn_direct = new NextNode(NextNode.Type.DIRECT, Proxy.NO_PROXY);
 		nn_ban = new NextNode(NextNode.Type.BAN, null);
@@ -901,23 +885,11 @@ public class Smartproxy {
 			dest_sockaddr = new InetSocketAddress(dest_addr, dest_sockaddr.getPort());
 			return direct_create_config_connect_socket(dest_sockaddr);
 		} else if (nextNode.type == NextNode.Type.PROXY) {
-			Proxy proxy;
-			if (settings.process_rules != null) {
-				// based on process rule
-				String imageName = get_image_path(client_remote_port, settings.local_listen_port);
-				imageName = FilenameUtils.getName(imageName).toLowerCase();
-				log.println("img: " + imageName);
-				NextProxy np = image_to_np.get(imageName);
-				if (np != null)
-					proxy = np.proxy;
-				else
-					proxy = nextNode.next_node;
-			} else
-				proxy = nextNode.next_node;
-			Socket raw_to_nn = new Socket(proxy);
+			Socket raw_to_nn = new Socket(Proxy.NO_PROXY);
 			setSocketOptions(raw_to_nn);
 			try {
-				raw_to_nn.connect(dest_sockaddr, SOCKET_CONNECT_TIMEOUT);
+				raw_to_nn.connect(new InetSocketAddress(settings.server_ip, settings.server_port),
+						SOCKET_CONNECT_TIMEOUT);
 			} catch (ConnectException e) {
 				if (e.getMessage().equals("Connection refused: connect")
 						|| e.getMessage().equals("Connection timed out: connect"))
@@ -1007,55 +979,6 @@ public class Smartproxy {
 		}
 	}
 
-	/** return process image name, or "System", or "", or "Access denied" */
-	private String get_image_path(int remote_port, int local_port) {
-		MIB_TCPTABLE_OWNER_PID table = new MIB_TCPTABLE_OWNER_PID();
-		IntByReference psize = new IntByReference(table.size());
-		int status = Iphlpapi.INSTANCE.GetExtendedTcpTable(table, psize, false, 2, 5, 0);
-		if (status == W32Errors.ERROR_INSUFFICIENT_BUFFER) {
-			table = new MIB_TCPTABLE_OWNER_PID((psize.getValue() - 4) / table.table[0].size());
-			psize.setValue(table.size());
-
-			status = Iphlpapi.INSTANCE.GetExtendedTcpTable(table, psize, false, 2, 5, 0);
-			for (MIB_TCPROW_OWNER_PID e : table.table) {
-				int localPort = nwb_short(e.dwLocalPort);
-				int remotePort = nwb_short(e.dwRemotePort);
-				if (localPort != remote_port)
-					continue;
-				if (remotePort != local_port)
-					continue;
-
-				if (e.dwOwningPid.intValue() == 4)
-					return "System";
-				if (e.dwOwningPid.intValue() == 0)
-					return "";
-				HANDLE hproc = Kernel32.INSTANCE.OpenProcess(WinNT.PROCESS_QUERY_LIMITED_INFORMATION, false,
-						e.dwOwningPid.intValue());
-				if (hproc == null) {
-					int error_code = Kernel32.INSTANCE.GetLastError();
-					if (error_code == 5)
-						return "Access denied";
-					log.println("windows error code: " + error_code);
-					throw new Win32Exception(error_code);
-				} else {
-					String processImageName = Kernel32Util.QueryFullProcessImageName(hproc, 0);
-					Kernel32Util.closeHandle(hproc);
-					return processImageName;
-				}
-			}
-			return "";
-		} else {
-			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
-		}
-	}
-
-	private static int nwb_short(DWORD value) {
-		int b1 = (value.intValue() & 0xFF00) >> 8;
-		int b2 = value.intValue() & 0xFF;
-		int port = (b2 << 8) + b1;
-		return port;
-	}
-
 	public static interface Iphlpapi extends StdCallLibrary {
 		int GetExtendedTcpTable(MIB_TCPTABLE_OWNER_PID pTcpTable, IntByReference pdwSize, boolean bOrder, long ulAf,
 				int table, long reserved);
@@ -1109,32 +1032,14 @@ public class Smartproxy {
 		};
 
 		public final Type type;
-		public final Proxy next_node;
 
 		public NextNode(Type type, Proxy next_node) {
 			this.type = type;
-			this.next_node = next_node;
 		}
 
 		@Override
 		public String toString() {
 			return type.toString();
-		}
-
-	}
-
-	private static class NextProxy {
-		public String name;
-		public Proxy proxy;
-
-		public NextProxy(String name, String ip, int port) throws UnknownHostException {
-			this.name = name;
-			proxy = new Proxy(Type.SOCKS, new InetSocketAddress(InetAddress.getByName(ip), port));
-		}
-
-		@Override
-		public String toString() {
-			return name;
 		}
 
 	}
@@ -1220,15 +1125,8 @@ public class Smartproxy {
 	private static class Settings {
 		public String local_listen_ip;
 		public int local_listen_port;
-		public String backend_proxy_ip;
-		public int backend_proxy_port;
-		public HashMap<String, ProcessRule> process_rules;
-
-		public static class ProcessRule {
-			public ArrayList<String> image_names;
-			public String backend_proxy_ip;
-			public int backend_proxy_port;
-		}
+		public String server_ip;
+		public int server_port;
 	}
 
 	private static long ip2long(String ip) {
