@@ -29,7 +29,7 @@ import javax.net.ssl.SSLServerSocketFactory;
 import org.apache.commons.io.IOUtils;
 
 import com.github.immueggpain.common.scmt;
-import com.github.immueggpain.smartproxy.Smartproxy.Settings;
+import com.github.immueggpain.smartproxy.Launcher.Settings;
 
 public class SmartproxyServer {
 
@@ -37,15 +37,6 @@ public class SmartproxyServer {
 	private static final int SO_TIMEOUT = 1000 * 60;
 	private static final int CONNECT_TIMEOUT = 1000 * 10;
 	private static final int BUF_SIZE = 1024 * 16;
-
-	public static void main(String[] args) {
-		try {
-			System.out.println("server test run");
-			new SmartproxyServer().run(null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	private byte[] realpswd = new byte[64];
 
@@ -140,6 +131,7 @@ public class SmartproxyServer {
 			}
 
 			cdest_s.close();
+			s.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

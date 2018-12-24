@@ -64,10 +64,6 @@ import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.IOUtils;
@@ -99,6 +95,7 @@ import com.github.immueggpain.common.sc;
 import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
 import com.github.immueggpain.common.sctp;
+import com.github.immueggpain.smartproxy.Launcher.Settings;
 import com.sun.jna.Structure;
 import com.sun.jna.platform.win32.WinDef.DWORD;
 import com.sun.jna.ptr.IntByReference;
@@ -133,71 +130,11 @@ public class Smartproxy {
 	private NavigableMap<Long, IpRange> ip_to_nn;
 	private ConnPool socketPool;
 
-	public static void main(String[] args) {
-		try {
-			new Smartproxy().run(args);
-		} catch (Exception e) {
-			e.printStackTrace(log);
-		}
-	}
-
-	private void run(String[] args) throws Exception {
-		log = new PrintWriter(System.err, true);
-
-		// option long names
-		String local_listen_ip = "local_listen_ip";
-		String local_listen_port = "local_listen_port";
-		String server_ip = "server_ip";
-		String server_port = "server_port";
-		String mode = "mode";
-		String password = "password";
-
-		// define options
-		Options options = new Options();
-		options.addOption("h", "help", false, "print help");
-		options.addOption("l", local_listen_ip, true, "local listening ip");
-		options.addOption("n", local_listen_port, true, "local listening port");
-		options.addOption("s", server_ip, true, "server ip");
-		options.addOption("p", server_port, true, "server port");
-		options.addOption("w", password, true, "passwords of server & client must be same");
-		options.addOption("l", "log", true, "log file path");
-		options.addOption("m", mode, true, "mode, server or client, default is client");
-
-		// parse from cmd args
-		DefaultParser parser = new DefaultParser();
-		CommandLine cmd = parser.parse(options, args);
-		settings = new Settings();
-
-		// maybe it's server?
-		if (cmd.hasOption(mode)) {
-			if (cmd.getOptionValue(mode).equals("server")) {
-				// run as server
-				try {
-					settings.password = cmd.getOptionValue(password);
-					new SmartproxyServer().run(settings);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return;
-			}
-		}
-
-		settings.local_listen_ip = cmd.getOptionValue(local_listen_ip, "127.0.0.1");
-		settings.local_listen_port = Integer.parseInt(cmd.getOptionValue(local_listen_port, "1083"));
-		settings.server_ip = cmd.getOptionValue(server_ip);
-		settings.server_port = Integer.parseInt(cmd.getOptionValue(server_port));
-		settings.password = cmd.getOptionValue(password);
-
-		if (cmd.hasOption('h')) {
-			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp("smartproxy", options, true);
-			return;
-		}
-
+	public void run(Settings settings) throws Exception {
+		this.settings = settings;
 		// from now on, log output to '-l' option or 'smartproxy.log' by default
-		log = new PrintWriter(new BufferedWriter(
-				new OutputStreamWriter(new FileOutputStream(cmd.getOptionValue('l', "smartproxy.log")), sc.utf8)),
-				true);
+		log = new PrintWriter(
+				new BufferedWriter(new OutputStreamWriter(new FileOutputStream(settings.logfile), sc.utf8)), true);
 
 		byte[] bytes = settings.password.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, this.password, 0, bytes.length);
@@ -1160,14 +1097,6 @@ public class Smartproxy {
 			this.conn = conn;
 			this.lastUsedTime = lastUsedTime;
 		}
-	}
-
-	public static class Settings {
-		public String local_listen_ip;
-		public int local_listen_port;
-		public String server_ip;
-		public int server_port;
-		public String password;
 	}
 
 	private static long ip2long(String ip) {

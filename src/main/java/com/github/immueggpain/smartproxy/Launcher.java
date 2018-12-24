@@ -1,15 +1,21 @@
 package com.github.immueggpain.smartproxy;
 
-import java.io.PrintWriter;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
-
-import com.github.immueggpain.smartproxy.Smartproxy.Settings;
+import org.apache.commons.cli.ParseException;
 
 public class Launcher {
+
+	public static class Settings {
+		public String local_listen_ip;
+		public int local_listen_port;
+		public String server_ip;
+		public int server_port;
+		public String password;
+		public String logfile;
+	}
 
 	public static void main(String[] args) {
 		// in laucher, we dont use log file, just print to console
@@ -21,7 +27,7 @@ public class Launcher {
 		}
 	}
 
-	private void run(String[] args) {
+	private void run(String[] args) throws ParseException {
 		// option long names
 		String help = "help";
 		String log = "log";
@@ -46,32 +52,38 @@ public class Launcher {
 		// parse from cmd args
 		DefaultParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse(options, args);
-		settings = new Settings();
 
-		// maybe it's server?
-		if (cmd.hasOption(mode)) {
-			if (cmd.getOptionValue(mode).equals("server")) {
-				// run as server
-				try {
-					settings.password = cmd.getOptionValue(password);
-					new SmartproxyServer().run(settings);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return;
-			}
-		}
-
-		settings.local_listen_ip = cmd.getOptionValue(local_listen_ip, "127.0.0.1");
-		settings.local_listen_port = Integer.parseInt(cmd.getOptionValue(local_listen_port, "1083"));
-		settings.server_ip = cmd.getOptionValue(server_ip);
-		settings.server_port = Integer.parseInt(cmd.getOptionValue(server_port));
-		settings.password = cmd.getOptionValue(password);
-
+		// first let's check if it's help
 		if (cmd.hasOption('h')) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp("smartproxy", options, true);
 			return;
+		}
+
+		Settings settings = new Settings();
+
+		// server or client
+		if (cmd.hasOption(mode) && cmd.getOptionValue(mode).equals("server")) {
+			// run as server
+			try {
+				settings.password = cmd.getOptionValue(password);
+				new SmartproxyServer().run(settings);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return;
+		} else {
+			// run as client
+			try {
+				settings.local_listen_ip = cmd.getOptionValue(local_listen_ip, "127.0.0.1");
+				settings.local_listen_port = Integer.parseInt(cmd.getOptionValue(local_listen_port, "1083"));
+				settings.server_ip = cmd.getOptionValue(server_ip);
+				settings.server_port = Integer.parseInt(cmd.getOptionValue(server_port));
+				settings.password = cmd.getOptionValue(password);
+				new Smartproxy().run(settings);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
