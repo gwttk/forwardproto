@@ -9,7 +9,7 @@ import org.apache.commons.cli.ParseException;
 
 public class Launcher {
 
-	private static final String VERSTR = "0.6.0";
+	private static final String VERSTR = "0.6.1";
 
 	public static class Settings {
 		public String local_listen_ip;
@@ -22,6 +22,8 @@ public class Launcher {
 
 	public static class ServerSettings {
 		public String password;
+		public String cert;
+		public String private_key;
 	}
 
 	public static void main(String[] args) {
@@ -45,6 +47,8 @@ public class Launcher {
 		String local_listen_port = "local_listen_port";
 		String server_ip = "server_ip";
 		String server_port = "server_port";
+		String cert = "cert";
+		String private_key = "private_key";
 
 		// define options
 		Options options = new Options();
@@ -62,6 +66,10 @@ public class Launcher {
 		options.addOption(Option.builder("s").longOpt(server_ip).hasArg().desc("server ip").argName("IP").build());
 		options.addOption(
 				Option.builder("p").longOpt(server_port).hasArg().desc("server port").argName("PORT").build());
+		options.addOption(Option.builder("c").longOpt(cert).hasArg()
+				.desc("SSL cert chain file path. default is fullchain.pem").argName("PATH").build());
+		options.addOption(Option.builder("k").longOpt(private_key).hasArg()
+				.desc("SSL private key file path. default is privkey.pem").argName("PATH").build());
 
 		// parse from cmd args
 		DefaultParser parser = new DefaultParser();
@@ -82,6 +90,8 @@ public class Launcher {
 			// run as server
 			ServerSettings settings = new ServerSettings();
 			settings.password = cmd.getOptionValue(password);
+			settings.cert = cmd.getOptionValue(cert, "fullchain.pem");
+			settings.private_key = cmd.getOptionValue(private_key, "privkey.pem");
 			try {
 				new SmartproxyServer().run(settings);
 			} catch (Exception e) {

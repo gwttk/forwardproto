@@ -44,8 +44,8 @@ public class SmartproxyServer {
 		byte[] bytes = settings.password.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, realpswd, 0, bytes.length);
 
-		InputStream certFile = Files.newInputStream(Paths.get("fullchain.pem"));
-		InputStream privateKeyFile = Files.newInputStream(Paths.get("privkey.pem"));
+		InputStream certFile = Files.newInputStream(Paths.get(settings.cert));
+		InputStream privateKeyFile = Files.newInputStream(Paths.get(settings.private_key));
 
 		CertificateFactory cf = CertificateFactory.getInstance("X.509");
 		Collection<? extends Certificate> certificates = cf.generateCertificates(certFile);
