@@ -29,7 +29,7 @@ import javax.net.ssl.SSLServerSocketFactory;
 import org.apache.commons.io.IOUtils;
 
 import com.github.immueggpain.common.scmt;
-import com.github.immueggpain.smartproxy.Launcher.Settings;
+import com.github.immueggpain.smartproxy.Launcher.ServerSettings;
 
 public class SmartproxyServer {
 
@@ -40,7 +40,7 @@ public class SmartproxyServer {
 
 	private byte[] realpswd = new byte[64];
 
-	public void run(Settings settings) throws Exception {
+	public void run(ServerSettings settings) throws Exception {
 		byte[] bytes = settings.password.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, realpswd, 0, bytes.length);
 
