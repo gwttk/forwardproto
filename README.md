@@ -13,7 +13,7 @@ whether direct connect or through a smartproxy server.
 * [Download latest build](https://github.com/Immueggpain/smartproxy/releases). Unzip it
 * Run `java -jar smartproxy-x.x.x.jar --help` to get help.
 * Run client `java -jar smartproxy-x.x.x.jar -m client -i 127.0.0.1 -n 1083 -p <server_port> -s <server_ip> -w <your secret password>`.
-* Run server `java -jar smartproxy-x.x.x.jar -m server -w <your secret password>`.
+* Run server `java -jar smartproxy-x.x.x.jar -m server -c <cert file> -k <private key file> -w <your secret password>`.
 * Set your system proxy to 127.0.0.1:1083
 * Enjoy!
 
