@@ -41,7 +41,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.github.immueggpain.smartproxy.Smartproxy</mainClass>
+							<mainClass>com.github.immueggpain.smartproxy.Launcher</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
