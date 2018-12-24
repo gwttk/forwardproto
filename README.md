@@ -1,34 +1,24 @@
 ## Introduction
+[Old README for v0.5.0](README-0.5.0.md) 
 
 When using **smartproxy** as your system's default proxy, it can redirect traffic on user rules, 
-whether direct connect or through another backend proxy.
+whether direct connect or through a smartproxy server.
 
-**smartproxy** accepts HTTP, HTTPS, SOCKS4, SOCKS4a, SOCKS5 as incoming connections and connects backend proxy with SOCKS5.
+**smartproxy** accepts HTTP, HTTPS, SOCKS4, SOCKS4a, SOCKS5 as incoming connections.
 
-**smartproxy** also redispatches HTTP requests, so some old HTTP clients without keep-alive support will enjoy huge performance boost.
+**smartproxy** also redispatches HTTP requests, so some old HTTP clients without keep-alive support will enjoy some performance boost.
 
 ## QuickStart
-* Make sure you have **[Java](https://java.com/) 8+** installed
+* Make sure you have **[Java](https://jdk.java.net/11/) 8+** installed
 * [Download latest build](https://github.com/Immueggpain/smartproxy/releases). Unzip it
-* Setup your backend proxy, supposedly ss, to use 127.0.0.1:1080
-* Run `java -jar smartproxy-x.x.x.jar`. x.x.x is the version you downloaded
-* Set your system proxy to 127.0.0.1:1082
+* Run `java -jar smartproxy-x.x.x.jar --help` to get help.
+* Run client `java -jar smartproxy-x.x.x.jar -m client -i 127.0.0.1 -n 1083 -p <server_port> -s <server_ip> -w <your secret password>`.
+* Run server `java -jar smartproxy-x.x.x.jar -m server -w <your secret password>`.
+* Set your system proxy to 127.0.0.1:1083
 * Enjoy!
 
-## settings.json
-**smartproxy** automatically uses settings.json file in current working directory as config file.  
-Here are the default values. Modify it if you need.
-```json
-{
-	"local_listen_port": 1082,
-	"local_listen_ip": "127.0.0.1",
-	"backend_proxy_port": 1080,
-	"backend_proxy_ip": "127.0.0.1"
-}
-```
-
 ## user.rule
-[The lastest user.rule can be downloaded here.](https://github.com/Immueggpain/smartproxy/blob/master/user.rule)  
+[The lastest user.rule can be downloaded here.](user.rule)  
 **smartproxy** automatically uses user.rule file in current working directory as routing configuration.  
 ```
 # A line which starts with "#" is comment

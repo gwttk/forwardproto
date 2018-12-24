@@ -28,7 +28,7 @@ Here are the default values. Modify it if you need.
 ```
 
 ## user.rule
-[The lastest user.rule can be downloaded here.](https://github.com/Immueggpain/smartproxy/blob/master/user.rule)  
+[The lastest user.rule can be downloaded here.](user.rule)  
 **smartproxy** automatically uses user.rule file in current working directory as routing configuration.  
 ```
 # A line which starts with "#" is comment
