@@ -18,7 +18,7 @@ whether direct connect or through a smartproxy server.
 * Enjoy!
 
 ## user.rule
-You may also update your user.rule file for better experience. Just download it and replace the old one.
+You may also update your user.rule file for better experience. Just download it and replace the old one.  
 [The lastest user.rule can be downloaded here.](user.rule)  
 **smartproxy** automatically uses user.rule file in current working directory as routing configuration.  
 ```
