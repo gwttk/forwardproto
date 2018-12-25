@@ -237,6 +237,7 @@ public class SmartproxyServer {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static class Connection {
 
 		private Socket s;
