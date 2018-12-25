@@ -298,7 +298,21 @@ yynykdlkeitnjn reject
 
 
 #auto rules
-tps703.doubleverify.com proxy
+secure-ads.pictela.net proxy
+.cn-hangzhou.oss.aliyun-inc.com direct
+.tingyun.com direct
+.acuityplatform.com proxy
+.flagcounter.com proxy
+cdn.boardhost.com proxy
+adblockplus.org proxy
+.doubleverify.com proxy
+static.agkn.com proxy
+cracl.meitubase.com direct
+tracking-ue1.t.domdex.com proxy
+.meitudata.com direct
+p.univide.com proxy
+.umeng.com direct
+.douyu.com direct
 .humblebundle.com proxy
 n4.hdfimg.com direct
 cdn0.undeveloped.com proxy
@@ -328,7 +342,6 @@ media.licdn.com direct
 css.rouding.com direct
 gov.aniview.com proxy
 yingyu.nmhfw.com direct
-tps706.doubleverify.com proxy
 tongji.rouding.com direct
 static.atgsvcs.com proxy
 cdn.rouding.com direct
