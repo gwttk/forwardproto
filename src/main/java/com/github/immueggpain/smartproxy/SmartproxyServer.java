@@ -2,11 +2,13 @@ package com.github.immueggpain.smartproxy;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -29,12 +31,14 @@ import javax.net.ssl.SSLServerSocketFactory;
 import org.apache.commons.io.IOUtils;
 
 import com.github.immueggpain.common.scmt;
+import com.github.immueggpain.common.sct;
 import com.github.immueggpain.smartproxy.Launcher.ServerSettings;
 
 public class SmartproxyServer {
 
 	private static final int PORT = 9039;
-	private static final int SO_TIMEOUT = 1000 * 60;
+	private static final int CLIENT_SO_TIMEOUT = 1000 * 60;
+	private static final int DEST_SO_TIMEOUT = 1000 * 60;
 	private static final int CONNECT_TIMEOUT = 1000 * 10;
 	private static final int BUF_SIZE = 1024 * 16;
 
@@ -44,6 +48,7 @@ public class SmartproxyServer {
 		byte[] bytes = settings.password.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, realpswd, 0, bytes.length);
 
+		// init SSL
 		InputStream certFile = Files.newInputStream(Paths.get(settings.cert));
 		InputStream privateKeyFile = Files.newInputStream(Paths.get(settings.private_key));
 
@@ -70,84 +75,197 @@ public class SmartproxyServer {
 
 		SSLServerSocketFactory ssf = context.getServerSocketFactory();
 
-		SSLServerSocket ss = (SSLServerSocket) ssf.createServerSocket();
+		try (SSLServerSocket ss = (SSLServerSocket) ssf.createServerSocket()) {
 
-		// config ss here
-		ss.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
-		ss.setPerformancePreferences(0, 0, 1);
+			// config ss here
+			ss.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
+			ss.setPerformancePreferences(0, 0, 1);
 
-		ss.bind(new InetSocketAddress(PORT));
+			ss.bind(new InetSocketAddress(PORT));
 
-		while (true) {
-			Socket s = ss.accept();
+			while (true) {
+				Socket sclient_s = ss.accept();
 
-			// config s here
-			s.setSoTimeout(SO_TIMEOUT);
+				try {
+					// config s here
+					sclient_s.setSoTimeout(CLIENT_SO_TIMEOUT);
+				} catch (Exception e) {
+					try {
+						sclient_s.close();
+					} catch (Exception ignore) {
+						// you know, s is already in error, we don't care if it makes more errors
+					}
+					throw e;
+				}
 
-			scmt.execAsync("multi-thread-handle-conn", () -> handleConnection(s));
+				scmt.execAsync("multi-thread-handle-conn", () -> handleConnection(sclient_s));
+			}
 		}
 	}
 
-	private void handleConnection(Socket s) {
+	private void handleConnection(Socket sclient_s) {
 		try {
-			DataInputStream is = new DataInputStream(s.getInputStream());
-			DataOutputStream os = new DataOutputStream(s.getOutputStream());
+			// authn this connection
+			DataInputStream is = new DataInputStream(sclient_s.getInputStream());
+			DataOutputStream os = new DataOutputStream(sclient_s.getOutputStream());
 			byte[] pswd = new byte[64];
 			is.readFully(pswd);
 			if (!Arrays.equals(pswd, realpswd)) {
-				// abortive close socket
-				s.setSoLinger(true, 0);
-				s.close();
+				// abortive close socket, close() is at finally block
+				sclient_s.setSoLinger(true, 0);
 				System.out.println("someone is scanning you, do something!");
 			}
 
 			String dest_hostname = is.readUTF();
 			int dest_port = is.readUnsignedShort();
 			System.out.println("client request connect " + dest_hostname + ":" + dest_port);
+
+			// do dns
+			InetAddress dest_addr;
 			try {
-				InetAddress.getByName(dest_hostname);
+				dest_addr = InetAddress.getByName(dest_hostname);
 			} catch (UnknownHostException e) {
+				e.printStackTrace();
+				// send error code & orderly release connection
 				os.writeByte(1);
 				os.close();
 				return;
 			}
-			InetSocketAddress dest_sockaddr = new InetSocketAddress(dest_hostname, dest_port);
 
-			Socket cdest_s = new Socket();
-			cdest_s.connect(dest_sockaddr, CONNECT_TIMEOUT);
-			os.writeByte(0);
-
-			InputStream cdest_is = cdest_s.getInputStream();
-			OutputStream cdest_os = cdest_s.getOutputStream();
-
-			scmt.execAsync("multi-thread-handle-conn2", () -> handleConnection2(cdest_is, os));
-
-			byte[] buf = new byte[BUF_SIZE];
-			while (true) {
-				int n = is.read(buf);
-				if (n == -1)
-					break;
-				cdest_os.write(buf, 0, n);
+			// validate dest_addr & dest_port
+			InetSocketAddress dest_sockaddr;
+			try {
+				dest_sockaddr = new InetSocketAddress(dest_addr, dest_port);
+			} catch (Exception e) {
+				e.printStackTrace();
+				// send error code & orderly release connection
+				os.writeByte(2);
+				os.close();
+				return;
 			}
 
-			cdest_s.close();
-			s.close();
+			try (Socket cdest_s = new Socket()) { // I'll just take that new Socket() won't throw
+				// connect cdest(client to destination) socket
+				try {
+					cdest_s.connect(dest_sockaddr, CONNECT_TIMEOUT);
+				} catch (SocketTimeoutException e) {
+					// send error code & orderly release connection
+					os.writeByte(3);
+					os.close();
+					return;
+				} catch (Exception e) {
+					e.printStackTrace();
+					// send error code & orderly release connection
+					os.writeByte(4);
+					os.close();
+					return;
+				}
+
+				cdest_s.setSoTimeout(DEST_SO_TIMEOUT);
+				InputStream cdest_is = cdest_s.getInputStream();
+				OutputStream cdest_os = cdest_s.getOutputStream();
+				TunnelContext contxt = new TunnelContext(dest_sockaddr.toString());
+
+				// everything seems ok, will tunnel data
+				os.writeByte(0);
+
+				Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn2",
+						() -> handleConnection2(contxt, cdest_is, os));
+
+				byte[] buf = new byte[BUF_SIZE];
+				while (true) {
+					int n;
+					try {
+						n = is.read(buf);
+					} catch (SocketTimeoutException e) {
+						// timeout cuz read no data
+						// if we are writing, then continue
+						// if we are not writing, just RST close connection
+						if (sct.time_ms() - contxt.lastWriteToClient < CLIENT_SO_TIMEOUT)
+							continue;
+						else {
+							// prepare RST close
+							// break transfering loop, close() is at finally block
+							sclient_s.setSoLinger(true, 0);
+							break;
+						}
+					}
+					if (n == -1)
+						break;
+					try {
+						cdest_os.write(buf, 0, n);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+
+				handleConn2.join();
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				sclient_s.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void handleConnection2(TunnelContext contxt, InputStream cdest_is, OutputStream sclient_os) {
+		try {
+			byte[] buf = new byte[BUF_SIZE];
+			while (true) {
+				int n = cdest_is.read(buf);
+				if (n == -1)
+					break;
+				sclient_os.write(buf, 0, n);
+				contxt.lastWriteToClient = sct.time_ms();
+			}
+		} catch (Exception e) {
+			System.err.println("@" + contxt.dest_name);
 			e.printStackTrace();
 		}
 	}
 
-	private void handleConnection2(InputStream is, OutputStream os) {
-		try {
-			byte[] buf = new byte[BUF_SIZE];
-			while (true) {
-				int n = is.read(buf);
-				if (n == -1)
-					break;
-				os.write(buf, 0, n);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+	private static class TunnelContext {
+		public volatile long lastWriteToClient = 0;
+		public final String dest_name;
+
+		public TunnelContext(String dest_name) {
+			this.dest_name = dest_name;
+		}
+	}
+
+	private static class Connection {
+
+		private Socket s;
+		private boolean closed1 = false;
+		private boolean closed2 = false;
+
+		public Connection(Socket s) {
+			this.s = s;
+
+		}
+
+		public synchronized void close1() throws IOException {
+			if (closed1 && closed2)
+				return;
+			closed1 = true;
+			if (closed1 && closed2)
+				close();
+		}
+
+		public synchronized void close2() throws IOException {
+			if (closed1 && closed2)
+				return;
+			closed2 = true;
+			if (closed1 && closed2)
+				close();
+		}
+
+		private void close() throws IOException {
+			s.close();
 		}
 	}
 
