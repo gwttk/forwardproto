@@ -144,8 +144,10 @@ public class SmartproxyServer {
 				return;
 			}
 
-			try (Socket cdest_s = new Socket()) { // I'll just take that new Socket() won't throw
-				// connect cdest(client to destination) socket
+			// create cdest(client to destination) socket
+			Socket cdest_s = new Socket();
+			try {
+				// connect cdest
 				try {
 					cdest_s.connect(dest_sockaddr, CONNECT_TIMEOUT);
 				} catch (SocketTimeoutException e) {
@@ -164,7 +166,7 @@ public class SmartproxyServer {
 				cdest_s.setSoTimeout(DEST_SO_TIMEOUT);
 				InputStream cdest_is = cdest_s.getInputStream();
 				OutputStream cdest_os = cdest_s.getOutputStream();
-				TunnelContext contxt = new TunnelContext(dest_sockaddr.toString());
+				TunnelContext contxt = new TunnelContext(dest_sockaddr.toString(), cdest_s, sclient_s);
 
 				// everything seems ok, will tunnel data
 				os.writeByte(0);
@@ -172,41 +174,62 @@ public class SmartproxyServer {
 				Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn2",
 						() -> handleConnection2(contxt, cdest_is, os));
 
-				byte[] buf = new byte[BUF_SIZE];
-				while (true) {
-					int n;
-					try {
-						n = is.read(buf);
-					} catch (SocketTimeoutException e) {
-						// timeout cuz read no data
-						// if we are writing, then continue
-						// if we are not writing, just RST close connection
-						if (sct.time_ms() - contxt.lastWriteToClient < CLIENT_SO_TIMEOUT)
-							continue;
-						else {
-							// prepare RST close
-							// break transfering loop, close() is at finally block
-							sclient_s.setSoLinger(true, 0);
-							break;
+				// this try makes sure that thread is joined
+				try {
+					byte[] buf = new byte[BUF_SIZE];
+					while (true) {
+						int n;
+						try {
+							n = is.read(buf);
+						} catch (SocketTimeoutException e) {
+							// timeout cuz read no data
+							// if we are writing, then continue
+							// if we are not writing, just RST close connection
+							if (sct.time_ms() - contxt.lastWriteToClient < CLIENT_SO_TIMEOUT)
+								continue;
+							else {
+								// prepare RST close
+								// break transfering loop, close() is at finally block
+								cdest_s.setSoLinger(true, 0);
+								sclient_s.setSoLinger(true, 0);
+								break;
+							}
 						}
-					}
-					if (n == -1)
-						break;
-					try {
+						if (n == -1)
+							break;
 						cdest_os.write(buf, 0, n);
-					} catch (Exception e) {
-						e.printStackTrace();
+						contxt.lastWriteToDest = sct.time_ms();
 					}
+				} finally {
+					handleConn2.join();
 				}
-
-				handleConn2.join();
+			} catch (Exception e) {
+				// if there is exception, use RST close
+				try {
+					cdest_s.setSoLinger(true, 0);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				throw e;
+			} finally {
+				try {
+					cdest_s.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			// if there is exception, use RST close
+			try {
+				sclient_s.setSoLinger(true, 0);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		} finally {
 			try {
 				sclient_s.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -216,7 +239,23 @@ public class SmartproxyServer {
 		try {
 			byte[] buf = new byte[BUF_SIZE];
 			while (true) {
-				int n = cdest_is.read(buf);
+				int n;
+				try {
+					n = cdest_is.read(buf);
+				} catch (SocketTimeoutException e) {
+					// timeout cuz read no data
+					// if we are writing, then continue
+					// if we are not writing, just RST close connection
+					if (sct.time_ms() - contxt.lastWriteToDest < DEST_SO_TIMEOUT)
+						continue;
+					else {
+						// prepare RST close
+						// break transfering loop, close() is at parent thread
+						contxt.cdest_s.setSoLinger(true, 0);
+						contxt.sclient_s.setSoLinger(true, 0);
+						break;
+					}
+				}
 				if (n == -1)
 					break;
 				sclient_os.write(buf, 0, n);
@@ -230,10 +269,15 @@ public class SmartproxyServer {
 
 	private static class TunnelContext {
 		public volatile long lastWriteToClient = 0;
+		public volatile long lastWriteToDest = 0;
 		public final String dest_name;
+		public Socket cdest_s;
+		public Socket sclient_s;
 
-		public TunnelContext(String dest_name) {
+		public TunnelContext(String dest_name, Socket cdest_s, Socket sclient_s) {
 			this.dest_name = dest_name;
+			this.cdest_s = cdest_s;
+			this.sclient_s = sclient_s;
 		}
 	}
 
