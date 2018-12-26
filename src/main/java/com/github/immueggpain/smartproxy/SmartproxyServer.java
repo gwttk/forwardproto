@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -125,7 +126,7 @@ public class SmartproxyServer {
 			try {
 				dest_addr = InetAddress.getByName(dest_hostname);
 			} catch (UnknownHostException e) {
-				e.printStackTrace();
+				System.err.println("unknown host " + dest_hostname);
 				// send error code & orderly release connection
 				os.writeByte(1);
 				os.close();
@@ -264,6 +265,17 @@ public class SmartproxyServer {
 		} catch (Exception e) {
 			System.err.println("@" + contxt.dest_name);
 			e.printStackTrace();
+			// if there is exception, use RST close
+			try {
+				contxt.cdest_s.setSoLinger(true, 0);
+			} catch (SocketException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				contxt.sclient_s.setSoLinger(true, 0);
+			} catch (SocketException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
