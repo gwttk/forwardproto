@@ -29,6 +29,8 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
+
 import org.apache.commons.io.IOUtils;
 
 import com.github.immueggpain.common.scmt;
@@ -85,7 +87,7 @@ public class SmartproxyServer {
 			ss.bind(new InetSocketAddress(PORT));
 
 			while (true) {
-				Socket sclient_s = ss.accept();
+				SSLSocket sclient_s = (SSLSocket) ss.accept();
 
 				try {
 					// config s here
@@ -252,8 +254,12 @@ public class SmartproxyServer {
 					else {
 						// prepare RST close
 						// break transfering loop, close() is at parent thread
-						contxt.cdest_s.setSoLinger(true, 0);
-						contxt.sclient_s.setSoLinger(true, 0);
+						// there is a chance that setSoLinger will throw java.net.SocketException:
+						// Socket Closed. I guess it means the remote peer has closed the connection?
+						// cuz we are sure that we only close socket on this side after thread join
+						HelperFunc.cullException(() -> contxt.cdest_s.setSoLinger(true, 0), SocketException.class, "");
+						if (!contxt.sclient_s.isClosed())
+							contxt.sclient_s.setSoLinger(true, 0);
 						break;
 					}
 				}
