@@ -73,6 +73,8 @@ cloudfront-vs-afd.azurefd.net direct
 
 #steam
 .steam-chat.com proxy
+.steampowered.com direct
+.bscstorage.net direct
 
 #bilibili
 .biliapi.com direct
@@ -273,7 +275,6 @@ software.intel.com proxy
 .ttvnw.net proxy
 .paypal.com proxy
 .paypalobjects.com proxy
-.steampowered.com proxy
 .steamstatic.com proxy
 .steamcommunity.com proxy
 .steamcontent.com proxy
