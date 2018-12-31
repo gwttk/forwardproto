@@ -30,7 +30,8 @@ class LogProcessor {
 
 	private static final Pattern ip_regex = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
 	private static final Pattern ping_regex_win = Pattern.compile("time([=<])([0-9]+)ms");
-	private static final Pattern default_line = Pattern.compile(".+ socks5 : PROXY  <- default <- (.+)");
+	private static final Pattern default_line = Pattern
+			.compile(".+ (?:socks5 |connect|http   ): PROXY  <- default <- (.+)");
 
 	private NavigableMap<Long, IpRange> ip_to_nn;
 
