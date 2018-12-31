@@ -73,7 +73,7 @@ cloudfront-vs-afd.azurefd.net direct
 
 #steam
 .steam-chat.com proxy
-.steampowered.com direct
+.steampowered.com proxy
 .bscstorage.net direct
 
 #bilibili
@@ -299,6 +299,68 @@ yynykdlkeitnjn reject
 
 
 #auto rules
+gruntjs.com proxy
+app.link proxy
+lodash.com proxy
+s4.xiaohongshu.com direct
+resources.blogblog.com proxy
+cdn-static-1.medium.com proxy
+a1720.casalemedia.com proxy
+api.flattr.com proxy
+analytics.gomakethings.com proxy
+static.flattr.net proxy
+widgets.wp.com proxy
+cdn.carbonads.com proxy
+hb.nexage.com proxy
+hb-api.omnitagjs.com proxy
+api2.branch.io proxy
+webmail.alibaba-inc.com direct
+agiledeveloper.com proxy
+srv.carbonads.net proxy
+beautifier.io proxy
+badjs.weixinbridge.com direct
+as.jivox.com proxy
+www.xiaohongshu.com direct
+ssc-cms.33across.com proxy
+t.xiaohongshu.com direct
+az479434.vo.msecnd.net proxy
+ide.atom.io proxy
+www.blogblog.com proxy
+cdn.embedly.com proxy
+sandbox.bidswitch.net proxy
+1255877643.vod2.myqcloud.com direct
+s1.listrakbi.com proxy
+img.xiaohongshu.com direct
+button.flattr.com proxy
+ci.xiaohongshu.com direct
+freecontent.manning.com proxy
+w1e1f7472.api.esales.apptus.cloud direct
+glyph.medium.com proxy
+s.xiaohongshu.com direct
+cdn-images-1.medium.com proxy
+cdn.listrakbi.com proxy
+i-cdn.embed.ly proxy
+m1.listrakbi.com proxy
+shihuo.hupucdn.com direct
+ghbtns.com proxy
+gomakethings.com proxy
+mdn.mozillademos.org proxy
+cdn.esales.apptus.com proxy
+embed.runkit.com proxy
+m.tiebaimg.com direct
+www.bram.us proxy
+slack.sp1.convertro.com proxy
+i0.wp.com proxy
+castatic.fengkongcloud.com direct
+fp.tongdun.net direct
+s.pubmine.com proxy
+cdn.branch.io proxy
+cdn4.buysellads.net proxy
+blog.agiledeveloper.com proxy
+atom.io proxy
+static.addtoany.com proxy
+img1.blogblog.com proxy
+nodejs.org proxy
 preferences.truste.com proxy
 p.skimresources.com proxy
 emoji.slack-edge.com proxy
