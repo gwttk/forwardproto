@@ -299,6 +299,20 @@ yynykdlkeitnjn reject
 
 
 #auto rules
+ms-trackingapi.phenompeople.com proxy
+ws-zeplin.pusher.com proxy
+www.lapin365.com direct
+geocoder.api.here.com proxy
+static1.yingjiesheng.net direct
+stats.pusher.com proxy
+.zeplin.io proxy
+static.amazon.jobs proxy
+autocomplete.geocoder.api.here.com proxy
+amazonhr.demdex.net proxy
+grajob.com proxy
+www.amazon.jobs direct
+media.glassdoor.com proxy
+amazonhramazonhra2d1prod.112.2o7.net proxy
 aeuuoics.micpn.com proxy
 j576j5dsib.execute-api.us-east-1.amazonaws.com proxy
 www.snh48club.com direct
