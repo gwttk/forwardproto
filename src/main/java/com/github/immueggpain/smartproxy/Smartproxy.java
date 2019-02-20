@@ -111,7 +111,7 @@ public class Smartproxy {
 	private static final Pattern httpconnect_regex = Pattern.compile("CONNECT (.+):([0-9]+) HTTP/1[.][01]");
 	private static final byte[] httpconnect_okresponse = sc.s2b("HTTP/1.1 200 OK\r\n\r\n");
 	private static final Pattern ip_regex = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
-	private static final Pattern domain_regex = Pattern.compile("[a-z0-9-]*(\\.[a-z0-9-]+)*");
+	private static final Pattern domain_regex = Pattern.compile("[a-z0-9-_]*(\\.[a-z0-9-_]+)*");
 
 	private static PrintWriter log;
 
