@@ -3,13 +3,11 @@ package com.github.immueggpain.smartproxytool;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -27,12 +25,7 @@ import com.github.immueggpain.common.scp.ProcessResult;
  */
 class MergeUserrule {
 
-	private static final Pattern ip_regex = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
 	private static final Pattern ping_regex_win = Pattern.compile("time([=<])([0-9]+)ms");
-	private static final Pattern default_line = Pattern
-			.compile(".+ (?:socks5 |connect|http   ): PROXY  <- default <- (.+)");
-
-	private NavigableMap<Long, IpRange> ip_to_nn;
 
 	public static class IpRange {
 		public final long begin;
@@ -48,66 +41,14 @@ class MergeUserrule {
 
 	public static void main(String[] args) {
 		try {
-			new MergeUserrule().run(args[0]);
+			new MergeUserrule().run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void run(String logFilePath) throws Exception {
+	private void run() throws Exception {
 		load_domain_nn_table();
-		HashSet<String> rules = new HashSet<>();
-		HashSet<String> recordedDomains = new HashSet<>();
-		HashSet<String> unpingableDomains = new HashSet<>();
-		List<String> lines = Files.readAllLines(Paths.get(logFilePath), StandardCharsets.UTF_8);
-		for (String line : lines) {
-			Matcher m = default_line.matcher(line);
-			if (m.find()) {
-				String domainName = m.group(1);
-
-				// check if already encountered
-				if (recordedDomains.contains(domainName))
-					continue;
-				recordedDomains.add(domainName);
-
-				// nslookup
-				InetAddress addr;
-				try {
-					addr = InetAddress.getByName(domainName);
-				} catch (UnknownHostException e) {
-					continue;
-				}
-
-				float latency = -1;
-				String target = null;
-
-				float latency1 = ping_win(addr);
-				float latency2 = ping_win(addr);
-				if (latency1 < 0 || latency2 < 0) {
-					unpingableDomains.add(domainName);
-					target = queryIpRules(addr);
-					rules.add(domainName + " " + target);
-				} else {
-					latency = (latency1 + latency2) / 2;
-
-					if (latency <= 50) {
-						target = "direct";
-					} else if (latency > 160) {
-						target = "proxy";
-					} else {
-						target = queryIpRules(addr);
-					}
-					rules.add(domainName + " " + target);
-
-				}
-
-				System.out.println(domainName + " " + addr.getHostAddress() + " " + latency + "ms " + target);
-			}
-		}
-		System.out.println("==========rules:");
-		for (String rule : rules) {
-			System.out.println(rule);
-		}
 	}
 
 	public static float ping_win(InetAddress ip) throws IOException {
@@ -148,7 +89,19 @@ class MergeUserrule {
 		return ipLong;
 	}
 
+	public class DomainInfo {
+		public String domain;
+		public int count_proxy;
+		public int count_direct;
+	}
+
+	private static final Pattern domain_regex = Pattern.compile("[a-z0-9-_]*(\\.[a-z0-9-_]+)*");
+	private static final Pattern ip_regex = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
+	private Map<String, DomainInfo> domain_to_nn;
+	private NavigableMap<Long, IpRange> ip_to_nn;
+
 	private void load_domain_nn_table() throws Exception {
+		domain_to_nn = new HashMap<>();
 		ip_to_nn = new TreeMap<>();
 		Path path = Paths.get("user.rule");
 		try (BOMInputStream is = new BOMInputStream(new FileInputStream(path.toFile()))) {
@@ -167,11 +120,11 @@ class MergeUserrule {
 						throw new Exception("nn_table bad line " + line);
 					String target;
 					if (segments[2].equals("direct"))
-						target = segments[2];
+						target = "direct";
 					else if (segments[2].equals("reject"))
-						target = segments[2];
+						target = "reject";
 					else if (segments[2].equals("proxy"))
-						target = segments[2];
+						target = "proxy";
 					else
 						throw new Exception("nn_table bad line " + line);
 					long begin = ip2long(segments[0]);
@@ -179,7 +132,64 @@ class MergeUserrule {
 					ip_to_nn.put(begin, new IpRange(begin, end, target));
 					continue;
 				}
+				// domain
+				if (segments.length != 2)
+					throw new Exception("nn_table bad line: " + line);
+				if (!domain_regex.matcher(segments[0]).matches())
+					throw new Exception("nn_table bad line: " + line);
+				String target;
+				if (segments[1].equals("direct"))
+					target = "direct";
+				else if (segments[1].equals("reject"))
+					target = "reject";
+				else if (segments[1].equals("proxy"))
+					target = "proxy";
+				else
+					throw new Exception("nn_table bad line " + line);
+				String fulldn = segments[0];
+
+				String intermediate;
+				if (!fulldn.startsWith(".")) {
+					DomainInfo domainInfo = domain_to_nn.get(fulldn);
+					if (domainInfo == null) {
+						domainInfo = new DomainInfo();
+						domainInfo.domain = fulldn;
+						domain_to_nn.put(fulldn, domainInfo);
+					}
+					if (target.equals("proxy"))
+						domainInfo.count_proxy++;
+					else if (target.equals("direct"))
+						domainInfo.count_direct++;
+
+					intermediate = "." + fulldn;
+				} else
+					intermediate = fulldn;
+
+				while (true) {
+					DomainInfo domainInfo = domain_to_nn.get(intermediate);
+					if (domainInfo == null) {
+						domainInfo = new DomainInfo();
+						domainInfo.domain = intermediate;
+						domain_to_nn.put(intermediate, domainInfo);
+					}
+					if (target.equals("proxy"))
+						domainInfo.count_proxy++;
+					else if (target.equals("direct"))
+						domainInfo.count_direct++;
+
+					int indexOf = intermediate.indexOf('.', 1);
+					if (indexOf == -1)
+						break;
+					intermediate = intermediate.substring(indexOf);
+				}
 			}
+		}
+
+		for (Entry<String, DomainInfo> entry : domain_to_nn.entrySet()) {
+			String dn = entry.getKey();
+			DomainInfo info = entry.getValue();
+			if (info.count_direct + info.count_proxy > 1)
+				System.out.println(dn + " d" + info.count_direct + " p" + info.count_proxy);
 		}
 	}
 
