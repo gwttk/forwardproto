@@ -63,6 +63,7 @@ class MergeUserrule {
 			return -1;
 	}
 
+	@SuppressWarnings("unused")
 	private String queryIpRules(InetAddress addr) {
 		long ip = ip2long(addr);
 		IpRange ipRange = ip_to_nn.floorEntry(ip).getValue();
