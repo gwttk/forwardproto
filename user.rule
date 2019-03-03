@@ -106,6 +106,7 @@ fls-cn.amazon.com direct
 .aixifan.com direct
 
 
+.300hu.com direct
 .tbcache.com direct
 .sonkwo.hk direct
 netstorage.unity3d.com direct
@@ -161,8 +162,15 @@ assets.adobedtm.com direct
 .3.cn direct
 .nvidia.cn direct
 .8686c.com direct
+.douyutv.com direct
+.dz11.com direct
 
 
+.informer.com proxy
+.tumblr.com proxy
+.dmm.com proxy
+.bose.com proxy
+.goo.gl proxy
 .githubassets.com proxy
 .intercom.io proxy
 .en25.com proxy
