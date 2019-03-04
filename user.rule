@@ -308,6 +308,11 @@ yynykdlkeitnjn reject
 
 
 #auto rules
+.digitaloceanspaces.com proxy
+.fengkongcloud.com direct
+.emxdgt.com proxy
+.dndtools.net proxy
+.ddowiki.com proxy
 cdn.brandmetrics.com proxy
 jgl.microad.net proxy
 fo-static-usa02.omnitagjs.com proxy
@@ -2862,7 +2867,6 @@ api.cofactordigital.com proxy
 a.slack-edge.com proxy
 cdn.connectad.io proxy
 horizon.sailthru.com proxy
-jdvod.300hu.com direct
 ced-ns.sascdn.com proxy
 ipac.ctnsnet.com proxy
 ovh.commander1.com proxy
@@ -2972,7 +2976,6 @@ img.onesignal.com proxy
 ct1.ra.linksynergy.com proxy
 edge-player.wirewax.com proxy
 ec-ns.sascdn.com proxy
-jdimg.300hu.com direct
 t.teads.tv proxy
 a1750.casalemedia.com proxy
 api.pinterest.com proxy
@@ -3213,7 +3216,6 @@ cdn.rouding.com direct
 cdn.adserve.video proxy
 images.response.unity3d.com proxy
 escapicon.net proxy
-vod.300hu.com direct
 java.sun.com proxy
 .cdn.sohucs.com direct
 i.pinimg.com proxy
@@ -3248,7 +3250,6 @@ static.cdn.responsys.net proxy
 s-86.algovid.com proxy
 lightnesspyramid.com proxy
 i1.wp.com proxy
-img.300hu.com direct
 i2.hdfimg.com direct
 cdn3.undeveloped.com proxy
 www.zuyushop.com direct
