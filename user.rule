@@ -308,6 +308,17 @@ yynykdlkeitnjn reject
 
 
 #auto rules
+.wit.ai proxy
+.arduino.cc proxy
+.timway.com direct
+.rasa.com proxy
+.zampda.net direct
+.gtags.net direct
+.tstdtz.com direct
+.mouser.com proxy
+.qbox.me direct
+.91160.com direct
+.seeedstudio.com direct
 .nubia.com direct
 .zhubajie.la direct
 .tianpeng.com direct
