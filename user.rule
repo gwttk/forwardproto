@@ -308,6 +308,11 @@ yynykdlkeitnjn reject
 
 
 #auto rules
+.itch.zone proxy
+.hempuli.com proxy
+.itch.io proxy
+.jdworldwide.com direct
+.jkcsjd.com direct
 .wit.ai proxy
 .arduino.cc proxy
 .timway.com direct
