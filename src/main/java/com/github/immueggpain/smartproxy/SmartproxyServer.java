@@ -120,16 +120,6 @@ public class SmartproxyServer {
 
 			while (true) {
 				SSLSocket sclient_s = (SSLSocket) ss.accept();
-
-				try {
-					// config s here
-					sclient_s.setSoTimeout(CLIENT_SO_TIMEOUT);
-				} catch (Exception e) {
-					// you know, socket is already in error, we don't care if it makes more errors
-					Util.abortiveCloseSocket(sclient_s);
-					throw e;
-				}
-
 				scmt.execAsync("multi-thread-handle-conn", () -> handleConnection(sclient_s));
 			}
 		}
@@ -143,8 +133,14 @@ public class SmartproxyServer {
 			// authn this connection
 			{
 				byte[] pswd = new byte[64];
+				// use small timeout when connection starts
+				sclient_s.setSoTimeout(1000 * 10);
 				try {
 					is.readFully(pswd);
+				} catch (SocketTimeoutException e) {
+					System.out.println("timeout during authn, possibly a scan");
+					Util.abortiveCloseSocket(sclient_s);
+					return;
 				} catch (Exception e) {
 					System.out.println("someone is scanning you, do something!");
 					Util.abortiveCloseSocket(sclient_s);
@@ -156,6 +152,9 @@ public class SmartproxyServer {
 					return;
 				}
 			}
+
+			// restore to normal timeout
+			sclient_s.setSoTimeout(CLIENT_SO_TIMEOUT);
 
 			String dest_hostname = is.readUTF();
 			int dest_port = is.readUnsignedShort();
@@ -246,6 +245,15 @@ public class SmartproxyServer {
 			} finally {
 				handleConn2.join();
 			}
+
+			// both directions EOF/broken, shutdown connections
+			if (contxt.isBroken) {
+				Util.abortiveCloseSocket(cdest_s);
+				Util.abortiveCloseSocket(sclient_s);
+			} else {
+				Util.orderlyCloseSocket(cdest_s);
+				Util.orderlyCloseSocket(sclient_s);
+			}
 		} catch (Throwable e) {
 			System.err.println("there shouldn't be any exception here");
 			e.printStackTrace();
@@ -273,7 +281,7 @@ public class SmartproxyServer {
 						// cuz we are sure that we only close socket on this side after thread join
 						Util.cullException(() -> contxt.cdest_s.setSoLinger(true, 0), SocketException.class, "");
 						if (!contxt.sclient_s.isClosed())
-							contxt.sclient_s.setSoLinger(true, 0);
+							contxt.isBroken = true;
 						break;
 					}
 				}
@@ -286,16 +294,7 @@ public class SmartproxyServer {
 			System.err.println("@" + contxt.dest_name);
 			e.printStackTrace();
 			// if there is exception, use RST close
-			try {
-				contxt.cdest_s.setSoLinger(true, 0);
-			} catch (SocketException e1) {
-				e1.printStackTrace();
-			}
-			try {
-				contxt.sclient_s.setSoLinger(true, 0);
-			} catch (SocketException e1) {
-				e1.printStackTrace();
-			}
+			contxt.isBroken = true;
 		}
 	}
 
@@ -305,6 +304,7 @@ public class SmartproxyServer {
 		public final String dest_name;
 		public Socket cdest_s;
 		public Socket sclient_s;
+		public boolean isBroken = false;
 
 		public TunnelContext(String dest_name, Socket cdest_s, Socket sclient_s) {
 			this.dest_name = dest_name;
