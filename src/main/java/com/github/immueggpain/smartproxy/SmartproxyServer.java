@@ -141,7 +141,7 @@ public class SmartproxyServer {
 					Util.abortiveCloseSocket(sclient_s);
 					return;
 				} catch (Exception e) {
-					System.out.println("someone is scanning you, do something!");
+					System.out.println("someone is scanning you, do something! " + e);
 					Util.abortiveCloseSocket(sclient_s);
 					return;
 				}
@@ -239,8 +239,7 @@ public class SmartproxyServer {
 				} catch (Throwable e) {
 					if (contxt.closing)
 						break;
-					System.err.println(String.format("sclient read exception %s", contxt.toString()));
-					e.printStackTrace();
+					System.err.println(String.format("sclient read exception %s (%s)", contxt.toString(), e));
 					contxt.isBroken = true;
 					break;
 				}
