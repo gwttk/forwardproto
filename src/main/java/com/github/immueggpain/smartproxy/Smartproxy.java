@@ -60,7 +60,6 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
@@ -103,6 +102,8 @@ import com.sun.jna.win32.StdCallLibrary;
 
 public class Smartproxy {
 
+	private static final int SP_SVR_CONNECT_TIMEOUT = 10 * 1000;
+	private static final int SP_SVR_SO_TIMEOUT = 60 * 1000;
 	private static final int HTTP_CONN_BUF_SIZE = 32 * 1024;
 	private static final int SOCKET_CONNECT_TIMEOUT = 1000 * 15;
 	private static final int SOCKET_SO_TIMEOUT_CLIENT = 0;
@@ -118,7 +119,7 @@ public class Smartproxy {
 	private Set<String> encountered_request_headers = new HashSet<>();
 	private Set<String> encountered_response_headers = new HashSet<>();
 
-	private SocketFactory ssf = SSLSocketFactory.getDefault();
+	private SSLSocketFactory ssf = (SSLSocketFactory) SSLSocketFactory.getDefault();
 	private byte[] password = new byte[64];
 
 	private ClientSettings settings;
@@ -831,37 +832,79 @@ public class Smartproxy {
 			Socket raw = direct_create_config_connect_socket(dest_sockaddr);
 			return new SocketBundle(raw, raw.getInputStream(), raw.getOutputStream());
 		} else if (nextNode.type == NextNode.Type.PROXY) {
-			SSLSocket raw_to_nn = (SSLSocket) ssf.createSocket();
-			raw_to_nn.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
-			setSocketOptions(raw_to_nn);
-			try {
-				raw_to_nn.connect(new InetSocketAddress(settings.server_ip, settings.server_port),
-						SOCKET_CONNECT_TIMEOUT);
-			} catch (ConnectException e) {
-				if (e.getMessage().equals("Connection refused: connect")
-						|| e.getMessage().equals("Connection timed out: connect"))
-					return null;
-				else
-					throw e;
-			} catch (SocketTimeoutException e) {
-				if (e.getMessage().equals("connect timed out"))
-					return null;
-				else
-					throw e;
-			}
-			DataInputStream is = new DataInputStream(raw_to_nn.getInputStream());
-			DataOutputStream os = new DataOutputStream(raw_to_nn.getOutputStream());
-			os.write(password);
-			os.writeUTF(dest_sockaddr.getHostString());
-			os.writeShort(dest_sockaddr.getPort());
-			byte rcode = is.readByte();
-			if (rcode != 0) {
-				raw_to_nn.close();
-				return null;
-			}
-			return new SocketBundle(raw_to_nn, is, os);
+			// connect through sp server
+			return create_tunnel(settings.server_ip, settings.server_port, ssf, password, dest_sockaddr.getHostString(),
+					dest_sockaddr.getPort());
 		} else
 			throw new RuntimeException("impossible");
+	}
+
+	private static SocketBundle create_tunnel(String server_hostname, int server_port, SSLSocketFactory ssf,
+			byte[] password, String dest_hostname, int dest_port) {
+		try {
+			// create sslsocket
+			SSLSocket cserver_s = (SSLSocket) ssf.createSocket();
+
+			// config sslsocket
+			cserver_s.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
+			// use small timeout first
+			cserver_s.setSoTimeout(1000 * 10);
+
+			// connect to sp server
+			try {
+				cserver_s.connect(new InetSocketAddress(server_hostname, server_port), SP_SVR_CONNECT_TIMEOUT);
+			} catch (Throwable e) {
+				e.printStackTrace();
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+
+			DataInputStream is = new DataInputStream(cserver_s.getInputStream());
+			DataOutputStream os = new DataOutputStream(cserver_s.getOutputStream());
+
+			// authn
+			try {
+				os.write(password);
+			} catch (Exception e) {
+				System.err.println("error when authn " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+
+			// send dest info
+			try {
+				os.writeUTF(dest_hostname);
+				os.writeShort(dest_port);
+			} catch (Exception e) {
+				System.err.println("error when send dest info " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+
+			// get server error code
+			byte ecode;
+			try {
+				ecode = is.readByte();
+			} catch (Exception e) {
+				System.err.println("error when read svr err code " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+			if (ecode != 0) {
+				System.out.println("server err code " + ecode);
+				Util.orderlyCloseSocket(cserver_s);
+				return null;
+			}
+
+			// restore to normal timeout
+			cserver_s.setSoTimeout(SP_SVR_SO_TIMEOUT);
+
+			return new SocketBundle(cserver_s, is, os);
+		} catch (Throwable e) {
+			System.err.println("there shouldn't be any exception here");
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/** return null means connection refused, or connect timed out */
