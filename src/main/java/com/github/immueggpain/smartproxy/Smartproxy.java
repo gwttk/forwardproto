@@ -943,7 +943,7 @@ public class Smartproxy {
 			// config sslsocket
 			cserver_s.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
 			// use small timeout first
-			cserver_s.setSoTimeout(1000 * 10);
+			cserver_s.setSoTimeout(1000 * 15);
 
 			// connect to sp server
 			try {

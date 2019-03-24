@@ -134,7 +134,7 @@ public class SmartproxyServer {
 			{
 				byte[] pswd = new byte[64];
 				// use small timeout when connection starts
-				sclient_s.setSoTimeout(1000 * 10);
+				sclient_s.setSoTimeout(1000 * 15);
 				try {
 					is.readFully(pswd);
 				} catch (SocketTimeoutException e) {
