@@ -1,6 +1,8 @@
 ## Introduction
 [Old README for v0.5.0](README-0.5.0.md) 
 
+**A naive implementation of tcp tunnel.**
+
 When using **smartproxy** as your system's default proxy, it can redirect traffic on user rules, 
 whether direct connect or through a smartproxy server.
 
