@@ -866,7 +866,7 @@ public class Smartproxy {
 			try {
 				os.write(password);
 			} catch (Exception e) {
-				System.err.println("error when authn " + e);
+				log.println("error when send pswd " + e);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
@@ -876,7 +876,7 @@ public class Smartproxy {
 				os.writeUTF(dest_hostname);
 				os.writeShort(dest_port);
 			} catch (Exception e) {
-				System.err.println("error when send dest info " + e);
+				log.println("error when send dest info " + e);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
@@ -886,12 +886,12 @@ public class Smartproxy {
 			try {
 				ecode = is.readByte();
 			} catch (Exception e) {
-				System.err.println("error when read svr err code " + e);
+				log.println("error when read svr err code " + e);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
 			if (ecode != 0) {
-				System.out.println("server err code " + ecode);
+				log.println("server err code " + ecode);
 				Util.orderlyCloseSocket(cserver_s);
 				return null;
 			}
@@ -901,7 +901,7 @@ public class Smartproxy {
 
 			return new SocketBundle(cserver_s, is, os);
 		} catch (Throwable e) {
-			System.err.println("there shouldn't be any exception here");
+			log.println("there shouldn't be any exception here");
 			e.printStackTrace();
 			return null;
 		}
