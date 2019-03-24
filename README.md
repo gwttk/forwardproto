@@ -10,6 +10,8 @@ whether direct connect or through a smartproxy server.
 
 ![diagram](diagram.svg)
 
+[//]: # (<img src="diagram.svg" width="90%">)
+
 ## QuickStart
 * Make sure you have **[Java](https://jdk.java.net/11/) 8+** installed
 * [Download latest build](https://github.com/Immueggpain/smartproxy/releases). Unzip it
