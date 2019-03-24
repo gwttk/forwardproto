@@ -112,6 +112,7 @@ public class SmartproxyServer {
 		try (SSLServerSocket ss = (SSLServerSocket) ssf.createServerSocket()) {
 
 			// config ss here
+			ss.setEnabledProtocols(new String[] { "TLSv1.2" });
 			ss.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
 			ss.setPerformancePreferences(0, 0, 1);
 
