@@ -319,8 +319,7 @@ public class SmartproxyServer {
 			} catch (Throwable e) {
 				if (contxt.closing)
 					break;
-				System.err.println(String.format("cdest read exception %s", contxt.toString()));
-				e.printStackTrace();
+				System.err.println(String.format("cdest read exception %s (%s)", contxt.toString(), e));
 				contxt.isBroken = true;
 				break;
 			}

@@ -500,15 +500,14 @@ public class Smartproxy {
 				else {
 					if (contxt.closing)
 						break;
-					log.println(String.format("cdest read timeout %s", contxt.toString()));
+					log.println(String.format("cserver read timeout %s", contxt.toString()));
 					contxt.isBroken = true;
 					break;
 				}
 			} catch (Throwable e) {
 				if (contxt.closing)
 					break;
-				log.println(String.format("cdest read exception %s", contxt.toString()));
-				e.printStackTrace(log);
+				log.println(String.format("cserver read exception %s (%s)", contxt.toString(), e));
 				contxt.isBroken = true;
 				break;
 			}
@@ -517,7 +516,7 @@ public class Smartproxy {
 			if (n == -1) {
 				if (contxt.closing)
 					break;
-				log.println(String.format("cdest read eof %s", contxt.toString()));
+				log.println(String.format("cserver read eof %s", contxt.toString()));
 				break;
 			}
 
