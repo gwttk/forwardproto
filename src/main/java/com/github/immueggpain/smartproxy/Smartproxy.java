@@ -1123,11 +1123,6 @@ public class Smartproxy {
 
 	}
 
-	private static class ConnectionContext {
-		private int shutdown_sum;
-		private String dest;
-	}
-
 	private static class NextNode {
 		public enum Type {
 			DIRECT, PROXY, BAN
