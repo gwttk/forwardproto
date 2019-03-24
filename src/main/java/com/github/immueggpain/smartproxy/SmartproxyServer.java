@@ -330,6 +330,11 @@ public class SmartproxyServer {
 			this.cdest_s = cdest_s;
 			this.sclient_s = sclient_s;
 		}
+
+		@Override
+		public String toString() {
+			return String.format("%s", dest_name);
+		}
 	}
 
 	@SuppressWarnings("unused")
