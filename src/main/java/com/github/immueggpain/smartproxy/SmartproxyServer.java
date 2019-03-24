@@ -230,11 +230,15 @@ public class SmartproxyServer {
 					if (sct.time_ms() - contxt.lastWriteToClient < CLIENT_SO_TIMEOUT)
 						continue;
 					else {
+						if (contxt.closed)
+							break;
 						System.out.println(String.format("sclient read timeout %s", contxt.toString()));
 						contxt.isBroken = true;
 						break;
 					}
 				} catch (Throwable e) {
+					if (contxt.closed)
+						break;
 					System.err.println(String.format("sclient read exception %s", contxt.toString()));
 					e.printStackTrace();
 					contxt.isBroken = true;
@@ -243,6 +247,8 @@ public class SmartproxyServer {
 
 				// normal EOF
 				if (n == -1) {
+					if (contxt.closed)
+						break;
 					System.out.println(String.format("sclient read eof %s", contxt.toString()));
 					break;
 				}
@@ -251,6 +257,8 @@ public class SmartproxyServer {
 				try {
 					cdest_os.write(buf, 0, n);
 				} catch (Throwable e) {
+					if (contxt.closed)
+						break;
 					System.err.println(String.format("cdest write exception %s", contxt.toString()));
 					e.printStackTrace();
 					contxt.isBroken = true;
@@ -259,14 +267,18 @@ public class SmartproxyServer {
 				contxt.lastWriteToDest = sct.time_ms();
 			}
 
-			// both directions EOF/broken, shutdown connections
-			contxt.closing = true;
-			if (contxt.isBroken) {
-				Util.abortiveCloseSocket(cdest_s);
-				Util.abortiveCloseSocket(sclient_s);
-			} else {
-				Util.orderlyCloseSocket(cdest_s);
-				Util.orderlyCloseSocket(sclient_s);
+			// shutdown connections
+			synchronized (contxt) {
+				if (!contxt.closed) {
+					if (contxt.isBroken) {
+						Util.abortiveCloseSocket(contxt.cdest_s);
+						Util.abortiveCloseSocket(contxt.sclient_s);
+					} else {
+						Util.orderlyCloseSocket(contxt.cdest_s);
+						Util.orderlyCloseSocket(contxt.sclient_s);
+					}
+					contxt.closed = true;
+				}
 			}
 
 			// make sure another thread is ended
@@ -298,15 +310,15 @@ public class SmartproxyServer {
 				if (sct.time_ms() - contxt.lastWriteToDest < DEST_SO_TIMEOUT)
 					continue;
 				else {
-					if (contxt.closing)
-						return;
+					if (contxt.closed)
+						break;
 					System.out.println(String.format("cdest read timeout %s", contxt.toString()));
 					contxt.isBroken = true;
 					break;
 				}
 			} catch (Throwable e) {
-				if (contxt.closing)
-					return;
+				if (contxt.closed)
+					break;
 				System.err.println(String.format("cdest read exception %s", contxt.toString()));
 				e.printStackTrace();
 				contxt.isBroken = true;
@@ -315,8 +327,8 @@ public class SmartproxyServer {
 
 			// normal EOF
 			if (n == -1) {
-				if (contxt.closing)
-					return;
+				if (contxt.closed)
+					break;
 				System.out.println(String.format("cdest read eof %s", contxt.toString()));
 				break;
 			}
@@ -325,8 +337,8 @@ public class SmartproxyServer {
 			try {
 				sclient_os.write(buf, 0, n);
 			} catch (Throwable e) {
-				if (contxt.closing)
-					return;
+				if (contxt.closed)
+					break;
 				System.err.println(String.format("sclient write exception %s", contxt.toString()));
 				e.printStackTrace();
 				contxt.isBroken = true;
@@ -335,19 +347,34 @@ public class SmartproxyServer {
 			contxt.lastWriteToClient = sct.time_ms();
 		}
 
-		// we don't need to close sockets becuz the other thread's read will timeout and
-		// do the close
+		// shutdown connections
+		synchronized (contxt) {
+			if (!contxt.closed) {
+				if (contxt.isBroken) {
+					Util.abortiveCloseSocket(contxt.cdest_s);
+					Util.abortiveCloseSocket(contxt.sclient_s);
+				} else {
+					Util.orderlyCloseSocket(contxt.cdest_s);
+					Util.orderlyCloseSocket(contxt.sclient_s);
+				}
+				contxt.closed = true;
+			}
+		}
 	}
 
 	private static class TunnelContext {
 		public volatile long lastWriteToClient = 0;
 		public volatile long lastWriteToDest = 0;
 		public final String dest_name;
+		public Socket cdest_s;
+		public Socket sclient_s;
 		public boolean isBroken = false;
-		public boolean closing = false;
+		public boolean closed = false;
 
 		public TunnelContext(String dest_name, Socket cdest_s, Socket sclient_s) {
 			this.dest_name = dest_name;
+			this.cdest_s = cdest_s;
+			this.sclient_s = sclient_s;
 		}
 
 		@Override
