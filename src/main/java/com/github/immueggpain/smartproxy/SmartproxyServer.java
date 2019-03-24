@@ -235,7 +235,7 @@ public class SmartproxyServer {
 						break;
 					}
 				} catch (Throwable e) {
-					System.err.println(String.format("exception %s", contxt.toString()));
+					System.err.println(String.format("sclient read exception %s", contxt.toString()));
 					e.printStackTrace();
 					contxt.isBroken = true;
 					break;
@@ -251,7 +251,7 @@ public class SmartproxyServer {
 				try {
 					cdest_os.write(buf, 0, n);
 				} catch (Throwable e) {
-					System.err.println(String.format("exception %s", contxt.toString()));
+					System.err.println(String.format("cdest write exception %s", contxt.toString()));
 					e.printStackTrace();
 					contxt.isBroken = true;
 					break;
@@ -285,45 +285,58 @@ public class SmartproxyServer {
 	}
 
 	private void handleConnection2(TunnelContext contxt, InputStream cdest_is, OutputStream sclient_os) {
-		try {
-			byte[] buf = new byte[BUF_SIZE];
-			while (true) {
-				// read some bytes
-				int n;
-				try {
-					n = cdest_is.read(buf);
-				} catch (SocketTimeoutException e) {
-					// timeout cuz read no data
-					// if we are writing, then continue
-					// if we are not writing, just RST close connection
-					if (sct.time_ms() - contxt.lastWriteToDest < DEST_SO_TIMEOUT)
-						continue;
-					else {
-						System.out.println(String.format("cdest read timeout %s", contxt.toString()));
-						contxt.isBroken = true;
-						break;
-					}
-				}
-
-				// normal EOF
-				if (n == -1) {
-					System.out.println(String.format("cdest read eof %s", contxt.toString()));
+		byte[] buf = new byte[BUF_SIZE];
+		while (true) {
+			// read some bytes
+			int n;
+			try {
+				n = cdest_is.read(buf);
+			} catch (SocketTimeoutException e) {
+				// timeout cuz read no data
+				// if we are writing, then continue
+				// if we are not writing, just RST close connection
+				if (sct.time_ms() - contxt.lastWriteToDest < DEST_SO_TIMEOUT)
+					continue;
+				else {
+					if (contxt.closing)
+						return;
+					System.out.println(String.format("cdest read timeout %s", contxt.toString()));
+					contxt.isBroken = true;
 					break;
 				}
-
-				// write some bytes
-				sclient_os.write(buf, 0, n);
-				contxt.lastWriteToClient = sct.time_ms();
+			} catch (Throwable e) {
+				if (contxt.closing)
+					return;
+				System.err.println(String.format("cdest read exception %s", contxt.toString()));
+				e.printStackTrace();
+				contxt.isBroken = true;
+				break;
 			}
-		} catch (Throwable e) {
-			// don't log exceptions caused by closing
-			if (contxt.closing)
-				return;
 
-			System.err.println("@" + contxt.toString());
-			System.err.println("@" + e);
-			contxt.isBroken = true;
+			// normal EOF
+			if (n == -1) {
+				if (contxt.closing)
+					return;
+				System.out.println(String.format("cdest read eof %s", contxt.toString()));
+				break;
+			}
+
+			// write some bytes
+			try {
+				sclient_os.write(buf, 0, n);
+			} catch (Throwable e) {
+				if (contxt.closing)
+					return;
+				System.err.println(String.format("sclient write exception %s", contxt.toString()));
+				e.printStackTrace();
+				contxt.isBroken = true;
+				break;
+			}
+			contxt.lastWriteToClient = sct.time_ms();
 		}
+
+		// we don't need to close sockets becuz the other thread's read will timeout and
+		// do the close
 	}
 
 	private static class TunnelContext {
