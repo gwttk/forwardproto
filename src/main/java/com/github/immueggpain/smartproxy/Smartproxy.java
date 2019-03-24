@@ -177,10 +177,6 @@ public class Smartproxy {
 			return;
 		}
 
-		Socket raw_to_nn = null;
-		InetSocketAddress dest_sockaddr = null;
-		ConnectionContext cc = new ConnectionContext();
-		OutputStream os_nn = null;
 		try {
 			raw.setSoTimeout(SOCKET_SO_TIMEOUT_CLIENT);
 			BufferedInputStream is = new BufferedInputStream(s_client.is);
@@ -192,91 +188,36 @@ public class Smartproxy {
 				return;
 			}
 
-			String client_protocol = null;
 			byte first_byte = (byte) byte1;
 			if (first_byte == 5) {
 				// socks5
-				client_protocol = "socks5";
-				socks5(first_byte, is, s_client.os, s_client, id);
-				// socks5() returns/throws means socket is closed
+				socks5(first_byte, is, s_client.os, s_client);
 				return;
 			} else if (first_byte == 4) {
 				// socks4
-				client_protocol = "socks4";
-				dest_sockaddr = socks4(first_byte, is, s_client.os);
+				socks4(first_byte, is, s_client.os, raw);
+				return;
 			} else if (first_byte == 0x43) {
 				// 0x43 'C' http connect
-				client_protocol = "connect";
 				http_connect(first_byte, is, s_client.os, raw);
 				return;
 			} else if (first_byte == 0x47 || first_byte == 0x50 || first_byte == 0x48) {
 				// 0x47 'G' http get
 				// 0x50 'P' http post/put
 				// 0x48 'H' http head
-				client_protocol = "http";
 				is.reset();
 				http_other(is, s_client.os, raw);
-				// cuz http proxy does not forward connection
 				return;
 			} else {
 				s_client.close();
 				throw new Exception("error unknown proxy protocol first_byte " + sctp.byte_to_string(first_byte));
 			}
-
-			SocketBundle sb_to_nn = create_connect_config_socket(dest_sockaddr, client_protocol);
-			if (sb_to_nn == null) {
-				// can't connect
-				s_client.close();
-				return;
-			}
-
-			// transfer data
-			cc.dest = dest_sockaddr.toString();
-			SecTcpSocket copy_of_s = s_client;
-			scmt.execAsync("recv_" + id + "_nextnode", () -> recv_nextnode(sb_to_nn, copy_of_s, cc));
-			os_nn = sb_to_nn.os;
-			IOUtils.copy(is, os_nn, 32 * 1024);
 		} catch (Exception e) {
-			int cc_shutdown_sum;
-			synchronized (cc) {
-				cc_shutdown_sum = cc.shutdown_sum;
-			}
-			if (cc_shutdown_sum > 0) {
-			} else if (e instanceof SocketTimeoutException) {
-			} else if (e instanceof SocketException && (e.getMessage().equals("Connection reset")
-					|| e.getMessage().equals("Software caused connection abort: socket write error")
-					|| e.getMessage().equals("Software caused connection abort: recv failed")
-					|| e.getMessage().equals("Connection reset by peer: socket write error"))) {
-			} else {
-				log.println("@" + dest_sockaddr + ", " + cc.shutdown_sum);
-				e.printStackTrace(log);
-			}
-		} finally {
-			if (os_nn != null)
-				try {
-					os_nn.flush();
-				} catch (IOException e) {
-				}
-			if (raw_to_nn != null)
-				try {
-					raw_to_nn.shutdownOutput();
-				} catch (IOException e) {
-				}
-			synchronized (cc) {
-				s_client.close();
-				if (raw_to_nn != null)
-					try {
-						raw_to_nn.close();
-					} catch (IOException e) {
-						e.printStackTrace(log);
-					}
-				cc.shutdown_sum += 1;
-			}
+			e.printStackTrace();
 		}
 	}
 
-	private void socks5(byte first_byte, InputStream is1, OutputStream os1, SecTcpSocket s_client, int id)
-			throws Exception {
+	private void socks5(byte first_byte, InputStream is1, OutputStream os1, SecTcpSocket s_client) throws Exception {
 		@SuppressWarnings("unused")
 		byte socks_version = first_byte;
 		// System.out.println("socks_version " + sctp.byte_to_string(socks_version));
@@ -377,7 +318,6 @@ public class Smartproxy {
 			s_client.close();
 			return;
 		}
-
 		// reply ok
 		buf = new byte[10];
 
@@ -403,6 +343,149 @@ public class Smartproxy {
 		// transfer data
 		handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket,
 				s_client.getRaw());
+	}
+
+	private void http_connect(byte first_byte, InputStream is, OutputStream os, Socket sclient_s) throws Exception {
+		byte[] headers_buf = new byte[1024 * 1024];
+		int pos = 0;
+		headers_buf[pos++] = first_byte;
+		while (true) {
+			int b = is.read();
+			if (b == -1) {
+				throw new Exception("error incomplete http headers");
+			}
+			headers_buf[pos++] = (byte) b;
+			if (pos >= 4 && headers_buf[pos - 4] == '\r' && headers_buf[pos - 3] == '\n' && headers_buf[pos - 2] == '\r'
+					&& headers_buf[pos - 1] == '\n') {
+				break;
+			}
+		}
+		String headers = sc.b2s(headers_buf, 0, pos);
+		String[] header_array = headers.split("\r\n");
+		Matcher matcher = httpconnect_regex.matcher(header_array[0]);
+		if (!matcher.find()) {
+			log.println(headers);
+			throw new Exception("error no host or not http connect");
+		}
+		String dest_host = matcher.group(1);
+		int port = Integer.parseInt(matcher.group(2));
+		matcher = ip_regex.matcher(dest_host);
+		InetSocketAddress dest_sockaddr;
+		if (matcher.matches()) {
+			dest_sockaddr = new InetSocketAddress(InetAddress.getByName(dest_host), port);
+		} else {
+			dest_sockaddr = InetSocketAddress.createUnresolved(dest_host, port);
+		}
+
+		// connect to nn
+		SocketBundle cserver_sb = create_connect_config_socket(dest_sockaddr, "connect");
+		if (cserver_sb == null) {
+			// reply http 500
+			os.write(httpconnect_500response);
+			os.flush();
+			Util.orderlyCloseSocket(sclient_s);
+			return;
+		}
+		// reply http 200 ok
+		os.write(httpconnect_okresponse);
+		os.flush();
+
+		// transfer data
+		handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket, sclient_s);
+	}
+
+	private void socks4(byte first_byte, InputStream is1, OutputStream os1, Socket sclient_s) throws Exception {
+		DataInputStream is = new DataInputStream(is1);
+
+		// recv command code
+		byte command_code = is.readByte();
+		if (command_code != 1)
+			log.println("error command_code " + sctp.byte_to_string(command_code));
+
+		// port
+		int dest_port = is.readUnsignedShort();
+
+		// ipv4
+		InetAddress dest_addr = null;
+		byte[] buf = new byte[4];
+		is.readFully(buf);
+		if (buf[0] == 0 && buf[1] == 0 && buf[2] == 0 && buf[3] != 0) {
+
+		} else {
+			dest_addr = InetAddress.getByAddress(buf);
+		}
+
+		buf = new byte[1024 * 8];
+		int pos = 0;
+		while (true) {
+			int b = is.read();
+			if (b == 0)
+				break;
+			else if (b == -1)
+				throw new Exception("error incomplete socks4 headers");
+			buf[pos++] = (byte) b;
+		}
+		String userid = sc.b2s(buf, 0, pos);
+		log.println("userid " + userid);
+
+		// domain
+		String dest_domain = null;
+		if (dest_addr == null) {
+			byte[] buf1 = new byte[1024 * 8];
+			int pos1 = 0;
+			while (true) {
+				int b = is.read();
+				if (b == -1) {
+					throw new Exception("error incomplete socks4 headers 2");
+				}
+				if (b == 0) {
+					break;
+				}
+				buf1[pos1++] = (byte) b;
+			}
+			dest_domain = sc.b2s(buf1, 0, pos1);
+		}
+
+		InetSocketAddress dest_sockaddr;
+		if (dest_addr != null)
+			dest_sockaddr = new InetSocketAddress(dest_addr, dest_port);
+		else
+			dest_sockaddr = InetSocketAddress.createUnresolved(dest_domain, dest_port);
+
+		log.println("socks4 dest_sockaddr " + dest_sockaddr);
+
+		// connect to nn
+		SocketBundle cserver_sb = create_connect_config_socket(dest_sockaddr, "socks4");
+		if (cserver_sb == null) {
+			buf = new byte[8];
+			// reply null byte
+			buf[0] = 0;
+
+			// reply status(fail)
+			buf[1] = 0x5b;
+
+			// 6 bytes non sense
+			buf[3] = 1;
+			os1.write(buf);
+			os1.flush();
+			Util.orderlyCloseSocket(sclient_s);
+			return;
+		}
+		buf = new byte[8];
+		// reply null byte
+		buf[0] = 0;
+
+		// reply status(ok)
+		buf[1] = 0x5a;
+
+		// 6 bytes non sense
+		buf[3] = 1;
+		os1.write(buf);
+		os1.flush();
+
+		// transfer data
+		handleConnection(cserver_sb.is, cserver_sb.os, is1, os1, dest_sockaddr.toString(), cserver_sb.socket,
+				sclient_s);
 	}
 
 	private void handleConnection(InputStream cserver_is, OutputStream cserver_os, InputStream sclient_is,
@@ -571,178 +654,6 @@ public class Smartproxy {
 		public String toString() {
 			return String.format("%s", dest_name);
 		}
-	}
-
-	private void recv_nextnode(SocketBundle sb_to_nn, SecTcpSocket s_client, ConnectionContext cc) {
-		try {
-			InputStream is_nn = sb_to_nn.is;
-			IOUtils.copy(is_nn, s_client.os, 32 * 1024);
-		} catch (Exception e) {
-			int cc_shutdown_sum;
-			synchronized (cc) {
-				cc_shutdown_sum = cc.shutdown_sum;
-			}
-			if (cc_shutdown_sum > 0) {
-			} else if (e instanceof SocketTimeoutException) {
-			} else if (e instanceof SocketException && (e.getMessage().equals("Connection reset")
-					|| e.getMessage().equals("Software caused connection abort: socket write error")
-					|| e.getMessage().equals("Software caused connection abort: recv failed")
-					|| e.getMessage().equals("Connection reset by peer: socket write error"))) {
-			} else {
-				log.println("@" + cc.dest + ", " + cc.shutdown_sum);
-				e.printStackTrace(log);
-			}
-		} finally {
-			try {
-				s_client.os.flush();
-			} catch (IOException e) {
-			}
-			try {
-				s_client.getRaw().shutdownOutput();
-			} catch (IOException e) {
-			}
-			synchronized (cc) {
-				s_client.close();
-				try {
-					sb_to_nn.socket.close();
-				} catch (IOException e) {
-					e.printStackTrace(log);
-				}
-				cc.shutdown_sum += 2;
-			}
-		}
-	}
-
-	private InetSocketAddress socks4(byte first_byte, InputStream is1, OutputStream os1) throws Exception {
-		@SuppressWarnings("unused")
-		byte socks_version = first_byte;
-		// System.out.println("socks_version " + sctp.byte_to_string(socks_version));
-		DataInputStream is = new DataInputStream(is1);
-
-		// recv command code
-		byte command_code = is.readByte();
-		if (command_code != 1)
-			log.println("error command_code " + sctp.byte_to_string(command_code));
-
-		// port
-		int dest_port = is.readUnsignedShort();
-
-		// ipv4
-		InetAddress dest_addr = null;
-		byte[] buf = new byte[4];
-		is.readFully(buf);
-		if (buf[0] == 0 && buf[1] == 0 && buf[2] == 0 && buf[3] != 0) {
-
-		} else {
-			dest_addr = InetAddress.getByAddress(buf);
-		}
-
-		buf = new byte[1024 * 8];
-		int pos = 0;
-		while (true) {
-			int b = is.read();
-			if (b == 0)
-				break;
-			else if (b == -1)
-				throw new Exception("error incomplete socks4 headers");
-			buf[pos++] = (byte) b;
-		}
-		String userid = sc.b2s(buf, 0, pos);
-		log.println("userid " + userid);
-
-		// domain
-		String dest_domain = null;
-		if (dest_addr == null) {
-			byte[] buf1 = new byte[1024 * 8];
-			int pos1 = 0;
-			while (true) {
-				int b = is.read();
-				if (b == -1) {
-					throw new Exception("error incomplete socks4 headers 2");
-				}
-				if (b == 0) {
-					break;
-				}
-				buf1[pos1++] = (byte) b;
-			}
-			dest_domain = sc.b2s(buf1, 0, pos1);
-		}
-
-		buf = new byte[8];
-		// reply null byte
-		buf[0] = 0;
-
-		// reply status
-		buf[1] = 90;
-
-		// 6 bytes non sense
-		buf[3] = 1;
-		os1.write(buf);
-		os1.flush();
-
-		InetSocketAddress dest_sockaddr;
-		if (dest_addr != null)
-			dest_sockaddr = new InetSocketAddress(dest_addr, dest_port);
-		else
-			dest_sockaddr = InetSocketAddress.createUnresolved(dest_domain, dest_port);
-
-		log.println("socks4 dest_sockaddr " + dest_sockaddr);
-
-		if (dest_sockaddr.isUnresolved())
-			return dest_sockaddr;
-		else
-			throw new Exception("warning socks4 with ip destination is not allowed");
-	}
-
-	private void http_connect(byte first_byte, InputStream is, OutputStream os, Socket sclient_s) throws Exception {
-		byte[] headers_buf = new byte[1024 * 1024];
-		int pos = 0;
-		headers_buf[pos++] = first_byte;
-		while (true) {
-			int b = is.read();
-			if (b == -1) {
-				throw new Exception("error incomplete http headers");
-			}
-			headers_buf[pos++] = (byte) b;
-			if (pos >= 4 && headers_buf[pos - 4] == '\r' && headers_buf[pos - 3] == '\n' && headers_buf[pos - 2] == '\r'
-					&& headers_buf[pos - 1] == '\n') {
-				break;
-			}
-		}
-		String headers = sc.b2s(headers_buf, 0, pos);
-		String[] header_array = headers.split("\r\n");
-		Matcher matcher = httpconnect_regex.matcher(header_array[0]);
-		if (!matcher.find()) {
-			log.println(headers);
-			throw new Exception("error no host or not http connect");
-		}
-		String dest_host = matcher.group(1);
-		int port = Integer.parseInt(matcher.group(2));
-		matcher = ip_regex.matcher(dest_host);
-		InetSocketAddress dest_sockaddr;
-		if (matcher.matches()) {
-			dest_sockaddr = new InetSocketAddress(InetAddress.getByName(dest_host), port);
-		} else {
-			dest_sockaddr = InetSocketAddress.createUnresolved(dest_host, port);
-		}
-
-		// connect to nn
-		SocketBundle cserver_sb = create_connect_config_socket(dest_sockaddr, "socks5");
-		if (cserver_sb == null) {
-			// reply http 500
-			os.write(httpconnect_500response);
-			os.flush();
-			Util.orderlyCloseSocket(sclient_s);
-			return;
-		}
-
-		// reply http 200 ok
-		os.write(httpconnect_okresponse);
-		os.flush();
-
-		// transfer data
-		handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket, sclient_s);
-
 	}
 
 	private void http_other(InputStream is, OutputStream os, Socket socket) {
