@@ -216,34 +216,48 @@ public class SmartproxyServer {
 			Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn2",
 					() -> handleConnection2(contxt, cdest_is, os));
 
-			// this try makes sure that thread is joined
-			try {
-				byte[] buf = new byte[BUF_SIZE];
-				while (true) {
-					int n;
-					try {
-						n = is.read(buf);
-					} catch (SocketTimeoutException e) {
-						// timeout cuz read no data
-						// if we are writing, then continue
-						// if we are not writing, just RST close connection
-						if (sct.time_ms() - contxt.lastWriteToClient < CLIENT_SO_TIMEOUT)
-							continue;
-						else {
-							// prepare RST close
-							// break transfering loop, close() is at finally block
-							cdest_s.setSoLinger(true, 0);
-							sclient_s.setSoLinger(true, 0);
-							break;
-						}
-					}
-					if (n == -1)
+			// client to dest loop
+			byte[] buf = new byte[BUF_SIZE];
+			while (true) {
+				// read some bytes
+				int n;
+				try {
+					n = is.read(buf);
+				} catch (SocketTimeoutException e) {
+					// timeout cuz read no data
+					// if we are writing, then continue
+					// if we are not writing, tunnel broken
+					if (sct.time_ms() - contxt.lastWriteToClient < CLIENT_SO_TIMEOUT)
+						continue;
+					else {
+						contxt.isBroken = true;
 						break;
-					cdest_os.write(buf, 0, n);
-					contxt.lastWriteToDest = sct.time_ms();
+					}
+				} catch (Throwable e) {
+					e.printStackTrace();
+					contxt.isBroken = true;
+					break;
 				}
-			} finally {
+
+				// normal EOF
+				if (n == -1)
+					break;
+
+				// write some bytes
+				try {
+					cdest_os.write(buf, 0, n);
+				} catch (Throwable e) {
+					e.printStackTrace();
+					contxt.isBroken = true;
+					break;
+				}
+				contxt.lastWriteToDest = sct.time_ms();
+			}
+
+			try {
 				handleConn2.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 
 			// both directions EOF/broken, shutdown connections
