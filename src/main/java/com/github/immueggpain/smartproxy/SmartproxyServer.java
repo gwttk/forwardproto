@@ -143,9 +143,15 @@ public class SmartproxyServer {
 			// authn this connection
 			{
 				byte[] pswd = new byte[64];
-				is.readFully(pswd);
-				if (!Arrays.equals(pswd, realpswd)) {
+				try {
+					is.readFully(pswd);
+				} catch (Exception e) {
 					System.out.println("someone is scanning you, do something!");
+					Util.abortiveCloseSocket(sclient_s);
+					return;
+				}
+				if (!Arrays.equals(pswd, realpswd)) {
+					System.out.println("someone is scanning you, do something!!");
 					Util.abortiveCloseSocket(sclient_s);
 					return;
 				}
@@ -162,8 +168,8 @@ public class SmartproxyServer {
 			} catch (UnknownHostException e) {
 				System.err.println("unknown host " + dest_hostname);
 				// send error code & orderly release connection
-				os.writeByte(1);
-				os.close();
+				os.writeByte(SVRERRCODE_HOST);
+				Util.orderlyCloseSocket(sclient_s);
 				return;
 			}
 
@@ -174,99 +180,75 @@ public class SmartproxyServer {
 			} catch (Exception e) {
 				e.printStackTrace();
 				// send error code & orderly release connection
-				os.writeByte(2);
-				os.close();
+				os.writeByte(SVRERRCODE_HOST);
+				Util.orderlyCloseSocket(sclient_s);
 				return;
 			}
 
 			// create cdest(client to destination) socket
 			Socket cdest_s = new Socket();
+
+			// connect cdest
 			try {
-				// connect cdest
-				try {
-					cdest_s.connect(dest_sockaddr, CONNECT_TIMEOUT);
-				} catch (SocketTimeoutException e) {
-					// send error code & orderly release connection
-					os.writeByte(3);
-					os.close();
-					return;
-				} catch (Exception e) {
-					e.printStackTrace();
-					// send error code & orderly release connection
-					os.writeByte(4);
-					os.close();
-					return;
-				}
-
-				cdest_s.setSoTimeout(DEST_SO_TIMEOUT);
-				InputStream cdest_is = cdest_s.getInputStream();
-				OutputStream cdest_os = cdest_s.getOutputStream();
-				TunnelContext contxt = new TunnelContext(dest_sockaddr.toString(), cdest_s, sclient_s);
-
-				// everything seems ok, will tunnel data
-				os.writeByte(0);
-
-				Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn2",
-						() -> handleConnection2(contxt, cdest_is, os));
-
-				// this try makes sure that thread is joined
-				try {
-					byte[] buf = new byte[BUF_SIZE];
-					while (true) {
-						int n;
-						try {
-							n = is.read(buf);
-						} catch (SocketTimeoutException e) {
-							// timeout cuz read no data
-							// if we are writing, then continue
-							// if we are not writing, just RST close connection
-							if (sct.time_ms() - contxt.lastWriteToClient < CLIENT_SO_TIMEOUT)
-								continue;
-							else {
-								// prepare RST close
-								// break transfering loop, close() is at finally block
-								cdest_s.setSoLinger(true, 0);
-								sclient_s.setSoLinger(true, 0);
-								break;
-							}
-						}
-						if (n == -1)
-							break;
-						cdest_os.write(buf, 0, n);
-						contxt.lastWriteToDest = sct.time_ms();
-					}
-				} finally {
-					handleConn2.join();
-				}
-			} catch (Exception e) {
-				// if there is exception, use RST close
-				try {
-					cdest_s.setSoLinger(true, 0);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				throw e;
-			} finally {
-				try {
-					cdest_s.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			// if there is exception, use RST close
-			try {
-				sclient_s.setSoLinger(true, 0);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		} finally {
-			try {
-				sclient_s.close();
+				cdest_s.connect(dest_sockaddr, CONNECT_TIMEOUT);
+			} catch (SocketTimeoutException e) {
+				// send error code & orderly release connection
+				os.writeByte(SVRERRCODE_HOST);
+				Util.orderlyCloseSocket(sclient_s);
+				Util.abortiveCloseSocket(cdest_s);
+				return;
 			} catch (Exception e) {
 				e.printStackTrace();
+				// send error code & orderly release connection
+				os.writeByte(SVRERRCODE_FAIL);
+				Util.orderlyCloseSocket(sclient_s);
+				Util.abortiveCloseSocket(cdest_s);
+				return;
 			}
+
+			cdest_s.setSoTimeout(DEST_SO_TIMEOUT);
+			InputStream cdest_is = cdest_s.getInputStream();
+			OutputStream cdest_os = cdest_s.getOutputStream();
+			TunnelContext contxt = new TunnelContext(dest_sockaddr.toString(), cdest_s, sclient_s);
+
+			// everything seems ok, will tunnel data
+			os.writeByte(SVRERRCODE_OK);
+
+			Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn2",
+					() -> handleConnection2(contxt, cdest_is, os));
+
+			// this try makes sure that thread is joined
+			try {
+				byte[] buf = new byte[BUF_SIZE];
+				while (true) {
+					int n;
+					try {
+						n = is.read(buf);
+					} catch (SocketTimeoutException e) {
+						// timeout cuz read no data
+						// if we are writing, then continue
+						// if we are not writing, just RST close connection
+						if (sct.time_ms() - contxt.lastWriteToClient < CLIENT_SO_TIMEOUT)
+							continue;
+						else {
+							// prepare RST close
+							// break transfering loop, close() is at finally block
+							cdest_s.setSoLinger(true, 0);
+							sclient_s.setSoLinger(true, 0);
+							break;
+						}
+					}
+					if (n == -1)
+						break;
+					cdest_os.write(buf, 0, n);
+					contxt.lastWriteToDest = sct.time_ms();
+				}
+			} finally {
+				handleConn2.join();
+			}
+		} catch (Throwable e) {
+			System.err.println("there shouldn't be any exception here");
+			e.printStackTrace();
 		}
 	}
 
