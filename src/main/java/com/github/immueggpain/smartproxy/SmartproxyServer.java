@@ -230,14 +230,14 @@ public class SmartproxyServer {
 					if (sct.time_ms() - contxt.lastWriteToClient < CLIENT_SO_TIMEOUT)
 						continue;
 					else {
-						if (contxt.closed)
+						if (contxt.closing)
 							break;
 						System.out.println(String.format("sclient read timeout %s", contxt.toString()));
 						contxt.isBroken = true;
 						break;
 					}
 				} catch (Throwable e) {
-					if (contxt.closed)
+					if (contxt.closing)
 						break;
 					System.err.println(String.format("sclient read exception %s", contxt.toString()));
 					e.printStackTrace();
@@ -247,7 +247,7 @@ public class SmartproxyServer {
 
 				// normal EOF
 				if (n == -1) {
-					if (contxt.closed)
+					if (contxt.closing)
 						break;
 					System.out.println(String.format("sclient read eof %s", contxt.toString()));
 					break;
@@ -257,7 +257,7 @@ public class SmartproxyServer {
 				try {
 					cdest_os.write(buf, 0, n);
 				} catch (Throwable e) {
-					if (contxt.closed)
+					if (contxt.closing)
 						break;
 					System.err.println(String.format("cdest write exception %s", contxt.toString()));
 					e.printStackTrace();
@@ -269,7 +269,8 @@ public class SmartproxyServer {
 
 			// shutdown connections
 			synchronized (contxt) {
-				if (!contxt.closed) {
+				if (!contxt.closing) {
+					contxt.closing = true;
 					if (contxt.isBroken) {
 						Util.abortiveCloseSocket(contxt.cdest_s);
 						Util.abortiveCloseSocket(contxt.sclient_s);
@@ -277,7 +278,6 @@ public class SmartproxyServer {
 						Util.orderlyCloseSocket(contxt.cdest_s);
 						Util.orderlyCloseSocket(contxt.sclient_s);
 					}
-					contxt.closed = true;
 				}
 			}
 
@@ -310,14 +310,14 @@ public class SmartproxyServer {
 				if (sct.time_ms() - contxt.lastWriteToDest < DEST_SO_TIMEOUT)
 					continue;
 				else {
-					if (contxt.closed)
+					if (contxt.closing)
 						break;
 					System.out.println(String.format("cdest read timeout %s", contxt.toString()));
 					contxt.isBroken = true;
 					break;
 				}
 			} catch (Throwable e) {
-				if (contxt.closed)
+				if (contxt.closing)
 					break;
 				System.err.println(String.format("cdest read exception %s", contxt.toString()));
 				e.printStackTrace();
@@ -327,7 +327,7 @@ public class SmartproxyServer {
 
 			// normal EOF
 			if (n == -1) {
-				if (contxt.closed)
+				if (contxt.closing)
 					break;
 				System.out.println(String.format("cdest read eof %s", contxt.toString()));
 				break;
@@ -337,7 +337,7 @@ public class SmartproxyServer {
 			try {
 				sclient_os.write(buf, 0, n);
 			} catch (Throwable e) {
-				if (contxt.closed)
+				if (contxt.closing)
 					break;
 				System.err.println(String.format("sclient write exception %s", contxt.toString()));
 				e.printStackTrace();
@@ -349,7 +349,8 @@ public class SmartproxyServer {
 
 		// shutdown connections
 		synchronized (contxt) {
-			if (!contxt.closed) {
+			if (!contxt.closing) {
+				contxt.closing = true;
 				if (contxt.isBroken) {
 					Util.abortiveCloseSocket(contxt.cdest_s);
 					Util.abortiveCloseSocket(contxt.sclient_s);
@@ -357,7 +358,6 @@ public class SmartproxyServer {
 					Util.orderlyCloseSocket(contxt.cdest_s);
 					Util.orderlyCloseSocket(contxt.sclient_s);
 				}
-				contxt.closed = true;
 			}
 		}
 	}
@@ -369,7 +369,7 @@ public class SmartproxyServer {
 		public Socket cdest_s;
 		public Socket sclient_s;
 		public boolean isBroken = false;
-		public boolean closed = false;
+		public boolean closing = false;
 
 		public TunnelContext(String dest_name, Socket cdest_s, Socket sclient_s) {
 			this.dest_name = dest_name;
