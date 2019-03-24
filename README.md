@@ -8,7 +8,7 @@ whether direct connect or through a smartproxy server.
 
 **smartproxy** also redispatches HTTP requests, so some old HTTP clients without keep-alive support will enjoy some performance boost.
 
-<img src="diagram.svg" width="75%">
+![diagram](diagram.svg)
 
 ## QuickStart
 * Make sure you have **[Java](https://jdk.java.net/11/) 8+** installed
