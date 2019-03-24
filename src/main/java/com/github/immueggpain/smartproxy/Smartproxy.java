@@ -409,9 +409,79 @@ public class Smartproxy {
 		Thread handleConn2 = scmt.execAsync("recv_" + id + "_nextnode",
 				() -> handleConnection2(contxt, cserver_is, os));
 
-		OutputStream os_nn = cserver_sb.os;
-		IOUtils.copy(is, os_nn, 32 * 1024);
-		s_client.close();
+		// client to server loop
+		buf = new byte[BUF_SIZE];
+		while (true) {
+			// read some bytes
+			int n;
+			try {
+				n = is.read(buf);
+			} catch (SocketTimeoutException e) {
+				// timeout cuz read no data
+				// if we are writing, then continue
+				// if we are not writing, tunnel broken
+				if (sct.time_ms() - contxt.lastWriteToClient < SP_SVR_SO_TIMEOUT)
+					continue;
+				else {
+					if (contxt.closing)
+						break;
+					log.println(String.format("sclient read timeout %s", contxt.toString()));
+					contxt.isBroken = true;
+					break;
+				}
+			} catch (Throwable e) {
+				if (contxt.closing)
+					break;
+				log.println(String.format("sclient read exception %s (%s)", contxt.toString(), e));
+				contxt.isBroken = true;
+				break;
+			}
+
+			// normal EOF
+			if (n == -1) {
+				if (contxt.closing)
+					break;
+				log.println(String.format("sclient read eof %s", contxt.toString()));
+				break;
+			}
+
+			// write some bytes
+			try {
+				cserver_os.write(buf, 0, n);
+			} catch (Throwable e) {
+				if (contxt.closing)
+					break;
+				log.println(String.format("cserver write exception %s", contxt.toString()));
+				e.printStackTrace(log);
+				contxt.isBroken = true;
+				break;
+			}
+			contxt.lastWriteToServer = sct.time_ms();
+		}
+
+		// shutdown connections
+		synchronized (contxt) {
+			if (!contxt.closing) {
+				contxt.closing = true;
+				if (contxt.isBroken) {
+					Util.abortiveCloseSocket(contxt.cserver_s);
+					Util.abortiveCloseSocket(contxt.sclient_s);
+				} else {
+					Util.orderlyCloseSocket(contxt.cserver_s);
+					Util.orderlyCloseSocket(contxt.sclient_s);
+				}
+			}
+		}
+
+		// make sure another thread is ended
+		try {
+			handleConn2.join(1000 * 10);
+		} catch (InterruptedException e) {
+			e.printStackTrace(log);
+		}
+		if (handleConn2.isAlive()) {
+			log.println(handleConn2.getName() + " still alive");
+		}
 	}
 
 	private void handleConnection2(TunnelContext contxt, InputStream cserver_is, OutputStream sclient_os) {
