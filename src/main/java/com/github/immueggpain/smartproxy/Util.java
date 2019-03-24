@@ -23,7 +23,9 @@
  *******************************************************************************/
 package com.github.immueggpain.smartproxy;
 
-public class HelperFunc {
+import java.io.Closeable;
+
+public class Util {
 
 	/** cull out some useless exception, silent ignore them */
 	public static <E extends Exception> void cullException(RunnableE func, Class<E> exceptionClz, String exceptionMsg)
@@ -41,6 +43,13 @@ public class HelperFunc {
 	@FunctionalInterface
 	public interface RunnableE {
 		public void run() throws Exception;
+	}
+
+	public static void closeQuietly(Closeable s) {
+		try {
+			s.close();
+		} catch (Throwable ignore) {
+		}
 	}
 
 }

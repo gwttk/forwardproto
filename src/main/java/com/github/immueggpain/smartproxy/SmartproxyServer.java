@@ -115,11 +115,8 @@ public class SmartproxyServer {
 					// config s here
 					sclient_s.setSoTimeout(CLIENT_SO_TIMEOUT);
 				} catch (Exception e) {
-					try {
-						sclient_s.close();
-					} catch (Exception ignore) {
-						// you know, s is already in error, we don't care if it makes more errors
-					}
+					// you know, socket is already in error, we don't care if it makes more errors
+					Util.closeQuietly(sclient_s);
 					throw e;
 				}
 
@@ -279,7 +276,7 @@ public class SmartproxyServer {
 						// there is a chance that setSoLinger will throw java.net.SocketException:
 						// Socket Closed. I guess it means the remote peer has closed the connection?
 						// cuz we are sure that we only close socket on this side after thread join
-						HelperFunc.cullException(() -> contxt.cdest_s.setSoLinger(true, 0), SocketException.class, "");
+						Util.cullException(() -> contxt.cdest_s.setSoLinger(true, 0), SocketException.class, "");
 						if (!contxt.sclient_s.isClosed())
 							contxt.sclient_s.setSoLinger(true, 0);
 						break;
