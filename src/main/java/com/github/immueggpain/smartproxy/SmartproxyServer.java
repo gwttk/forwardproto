@@ -230,23 +230,28 @@ public class SmartproxyServer {
 					if (sct.time_ms() - contxt.lastWriteToClient < CLIENT_SO_TIMEOUT)
 						continue;
 					else {
+						System.out.println(String.format("%s timeout during sclient read", contxt.toString()));
 						contxt.isBroken = true;
 						break;
 					}
 				} catch (Throwable e) {
+					System.err.println(String.format("%s exception", contxt.toString()));
 					e.printStackTrace();
 					contxt.isBroken = true;
 					break;
 				}
 
 				// normal EOF
-				if (n == -1)
+				if (n == -1) {
+					System.out.println(String.format("%s sclient read eof", contxt.toString()));
 					break;
+				}
 
 				// write some bytes
 				try {
 					cdest_os.write(buf, 0, n);
 				} catch (Throwable e) {
+					System.err.println(String.format("%s exception", contxt.toString()));
 					e.printStackTrace();
 					contxt.isBroken = true;
 					break;
