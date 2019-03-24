@@ -24,6 +24,7 @@
 package com.github.immueggpain.smartproxy;
 
 import java.io.Closeable;
+import java.net.Socket;
 
 public class Util {
 
@@ -49,6 +50,27 @@ public class Util {
 		try {
 			s.close();
 		} catch (Throwable ignore) {
+		}
+	}
+
+	/** just close s ASAP quietly. used when s is already broken */
+	public static void abortiveCloseSocket(Socket s) {
+		try {
+			s.setSoLinger(true, 0);
+		} catch (Throwable ignore) {
+		}
+		try {
+			s.close();
+		} catch (Throwable ignore) {
+		}
+	}
+
+	/** print if exception */
+	public static void orderlyCloseSocket(Socket s) {
+		try {
+			s.close();
+		} catch (Throwable e) {
+			e.printStackTrace();
 		}
 	}
 

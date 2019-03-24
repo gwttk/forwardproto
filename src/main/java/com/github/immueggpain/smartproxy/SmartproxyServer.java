@@ -62,6 +62,16 @@ import com.github.immueggpain.smartproxy.Launcher.ServerSettings;
 
 public class SmartproxyServer {
 
+	public static final int SVRERRCODE_OK = 0x00; // request granted
+	public static final int SVRERRCODE_FAIL = 0x01; // general failure
+	public static final int SVRERRCODE_NOTALLOW = 0x02; // connection not allowed by ruleset
+	public static final int SVRERRCODE_NETWORK = 0x03; // network unreachable
+	public static final int SVRERRCODE_HOST = 0x04; // host unreachable
+	public static final int SVRERRCODE_REFUSED = 0x05; // connection refused by destination host
+	public static final int SVRERRCODE_TTL = 0x06; // TTL expired
+	public static final int SVRERRCODE_COMMAND = 0x07; // command not supported / protocol error
+	public static final int SVRERRCODE_ADDR = 0x08; // address type not supported
+
 	private static final int CLIENT_SO_TIMEOUT = 1000 * 60;
 	private static final int DEST_SO_TIMEOUT = 1000 * 60;
 	private static final int CONNECT_TIMEOUT = 1000 * 10;
@@ -116,7 +126,7 @@ public class SmartproxyServer {
 					sclient_s.setSoTimeout(CLIENT_SO_TIMEOUT);
 				} catch (Exception e) {
 					// you know, socket is already in error, we don't care if it makes more errors
-					Util.closeQuietly(sclient_s);
+					Util.abortiveCloseSocket(sclient_s);
 					throw e;
 				}
 
@@ -127,15 +137,18 @@ public class SmartproxyServer {
 
 	private void handleConnection(Socket sclient_s) {
 		try {
-			// authn this connection
 			DataInputStream is = new DataInputStream(sclient_s.getInputStream());
 			DataOutputStream os = new DataOutputStream(sclient_s.getOutputStream());
-			byte[] pswd = new byte[64];
-			is.readFully(pswd);
-			if (!Arrays.equals(pswd, realpswd)) {
-				// abortive close socket, close() is at finally block
-				sclient_s.setSoLinger(true, 0);
-				System.out.println("someone is scanning you, do something!");
+
+			// authn this connection
+			{
+				byte[] pswd = new byte[64];
+				is.readFully(pswd);
+				if (!Arrays.equals(pswd, realpswd)) {
+					System.out.println("someone is scanning you, do something!");
+					Util.abortiveCloseSocket(sclient_s);
+					return;
+				}
 			}
 
 			String dest_hostname = is.readUTF();
