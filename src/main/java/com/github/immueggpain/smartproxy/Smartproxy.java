@@ -920,6 +920,8 @@ public class Smartproxy {
 			}
 			dest_sockaddr = new InetSocketAddress(dest_addr, dest_sockaddr.getPort());
 			Socket raw = direct_create_config_connect_socket(dest_sockaddr);
+			if (raw == null)
+				return null;
 			return new SocketBundle(raw, raw.getInputStream(), raw.getOutputStream());
 		} else if (nextNode.type == NextNode.Type.PROXY) {
 			// connect through sp server
