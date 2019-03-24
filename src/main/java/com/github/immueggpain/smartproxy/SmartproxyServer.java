@@ -31,7 +31,6 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -236,7 +235,7 @@ public class SmartproxyServer {
 						break;
 					}
 				} catch (Throwable e) {
-					System.err.println(String.format("%s exception", contxt.toString()));
+					System.err.println(String.format("exception %s", contxt.toString()));
 					e.printStackTrace();
 					contxt.isBroken = true;
 					break;
@@ -252,7 +251,7 @@ public class SmartproxyServer {
 				try {
 					cdest_os.write(buf, 0, n);
 				} catch (Throwable e) {
-					System.err.println(String.format("%s exception", contxt.toString()));
+					System.err.println(String.format("exception %s", contxt.toString()));
 					e.printStackTrace();
 					contxt.isBroken = true;
 					break;
@@ -289,6 +288,7 @@ public class SmartproxyServer {
 		try {
 			byte[] buf = new byte[BUF_SIZE];
 			while (true) {
+				// read some bytes
 				int n;
 				try {
 					n = cdest_is.read(buf);
@@ -299,19 +299,19 @@ public class SmartproxyServer {
 					if (sct.time_ms() - contxt.lastWriteToDest < DEST_SO_TIMEOUT)
 						continue;
 					else {
-						// prepare RST close
-						// break transfering loop, close() is at parent thread
-						// there is a chance that setSoLinger will throw java.net.SocketException:
-						// Socket Closed. I guess it means the remote peer has closed the connection?
-						// cuz we are sure that we only close socket on this side after thread join
-						Util.cullException(() -> contxt.cdest_s.setSoLinger(true, 0), SocketException.class, "");
-						if (!contxt.sclient_s.isClosed())
-							contxt.isBroken = true;
+						System.out.println(String.format("cdest read timeout %s", contxt.toString()));
+						contxt.isBroken = true;
 						break;
 					}
 				}
-				if (n == -1)
+
+				// normal EOF
+				if (n == -1) {
+					System.out.println(String.format("cdest read eof %s", contxt.toString()));
 					break;
+				}
+
+				// write some bytes
 				sclient_os.write(buf, 0, n);
 				contxt.lastWriteToClient = sct.time_ms();
 			}
@@ -320,7 +320,7 @@ public class SmartproxyServer {
 			if (contxt.closing)
 				return;
 
-			System.err.println("@" + contxt.dest_name);
+			System.err.println("@" + contxt.toString());
 			System.err.println("@" + e);
 			contxt.isBroken = true;
 		}
@@ -330,15 +330,11 @@ public class SmartproxyServer {
 		public volatile long lastWriteToClient = 0;
 		public volatile long lastWriteToDest = 0;
 		public final String dest_name;
-		public Socket cdest_s;
-		public Socket sclient_s;
 		public boolean isBroken = false;
 		public boolean closing = false;
 
 		public TunnelContext(String dest_name, Socket cdest_s, Socket sclient_s) {
 			this.dest_name = dest_name;
-			this.cdest_s = cdest_s;
-			this.sclient_s = sclient_s;
 		}
 
 		@Override
