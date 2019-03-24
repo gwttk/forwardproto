@@ -511,14 +511,14 @@ public class Smartproxy {
 				else {
 					if (contxt.closing)
 						break;
-					log.println(String.format("sclient read timeout %s", contxt.toString()));
+					log.println(String.format("%s sclient read timeout %s", sct.datetime(), contxt.toString()));
 					contxt.isBroken = true;
 					break;
 				}
 			} catch (Throwable e) {
 				if (contxt.closing)
 					break;
-				log.println(String.format("sclient read exception %s (%s)", contxt.toString(), e));
+				log.println(String.format("%s sclient read exception %s (%s)", sct.datetime(), contxt.toString(), e));
 				contxt.isBroken = true;
 				break;
 			}
@@ -527,7 +527,7 @@ public class Smartproxy {
 			if (n == -1) {
 				if (contxt.closing)
 					break;
-				log.println(String.format("sclient read eof %s", contxt.toString()));
+				log.println(String.format("%s sclient read eof %s", sct.datetime(), contxt.toString()));
 				break;
 			}
 
@@ -537,7 +537,7 @@ public class Smartproxy {
 			} catch (Throwable e) {
 				if (contxt.closing)
 					break;
-				log.println(String.format("cserver write exception %s", contxt.toString()));
+				log.println(String.format("%s cserver write exception %s", sct.datetime(), contxt.toString()));
 				e.printStackTrace(log);
 				contxt.isBroken = true;
 				break;
@@ -586,14 +586,14 @@ public class Smartproxy {
 				else {
 					if (contxt.closing)
 						break;
-					log.println(String.format("cserver read timeout %s", contxt.toString()));
+					log.println(String.format("%s cserver read timeout %s", sct.datetime(), contxt.toString()));
 					contxt.isBroken = true;
 					break;
 				}
 			} catch (Throwable e) {
 				if (contxt.closing)
 					break;
-				log.println(String.format("cserver read exception %s (%s)", contxt.toString(), e));
+				log.println(String.format("%s cserver read exception %s (%s)", sct.datetime(), contxt.toString(), e));
 				contxt.isBroken = true;
 				break;
 			}
@@ -602,7 +602,7 @@ public class Smartproxy {
 			if (n == -1) {
 				if (contxt.closing)
 					break;
-				log.println(String.format("cserver read eof %s", contxt.toString()));
+				log.println(String.format("%s cserver read eof %s", sct.datetime(), contxt.toString()));
 				break;
 			}
 
@@ -612,7 +612,7 @@ public class Smartproxy {
 			} catch (Throwable e) {
 				if (contxt.closing)
 					break;
-				log.println(String.format("sclient write exception %s", contxt.toString()));
+				log.println(String.format("%s sclient write exception %s", sct.datetime(), contxt.toString()));
 				e.printStackTrace(log);
 				contxt.isBroken = true;
 				break;
@@ -944,7 +944,7 @@ public class Smartproxy {
 			try {
 				cserver_s.connect(new InetSocketAddress(server_hostname, server_port), SP_SVR_CONNECT_TIMEOUT);
 			} catch (Throwable e) {
-				log.println("error when connect sp server " + e);
+				log.println(sct.datetime() + " error when connect sp server " + e);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
@@ -956,7 +956,7 @@ public class Smartproxy {
 			try {
 				os.write(password);
 			} catch (Exception e) {
-				log.println("error when send pswd " + e);
+				log.println(sct.datetime() + " error when send pswd " + e);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
@@ -966,7 +966,7 @@ public class Smartproxy {
 				os.writeUTF(dest_hostname);
 				os.writeShort(dest_port);
 			} catch (Exception e) {
-				log.println("error when send dest info " + e);
+				log.println(sct.datetime() + " error when send dest info " + e);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
@@ -976,12 +976,12 @@ public class Smartproxy {
 			try {
 				ecode = is.readByte();
 			} catch (Exception e) {
-				log.println("error when read svr err code " + e);
+				log.println(sct.datetime() + " error when read svr err code " + e);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
 			if (ecode != 0) {
-				log.println("server err code " + ecode);
+				log.println(sct.datetime() + " server err code " + ecode);
 				Util.orderlyCloseSocket(cserver_s);
 				return null;
 			}
