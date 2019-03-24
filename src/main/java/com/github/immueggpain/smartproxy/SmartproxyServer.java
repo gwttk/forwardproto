@@ -244,7 +244,7 @@ public class SmartproxyServer {
 
 				// normal EOF
 				if (n == -1) {
-					System.out.println(String.format("%s sclient read eof", contxt.toString()));
+					System.out.println(String.format("sclient read eof %s", contxt.toString()));
 					break;
 				}
 
