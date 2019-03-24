@@ -191,6 +191,7 @@ public class SmartproxyServer {
 			try {
 				cdest_s.connect(dest_sockaddr, CONNECT_TIMEOUT);
 			} catch (SocketTimeoutException e) {
+				System.out.println(String.format("%s timeout during connect dest", dest_sockaddr.toString()));
 				// send error code & orderly release connection
 				os.writeByte(SVRERRCODE_HOST);
 				Util.orderlyCloseSocket(sclient_s);
@@ -230,7 +231,7 @@ public class SmartproxyServer {
 					if (sct.time_ms() - contxt.lastWriteToClient < CLIENT_SO_TIMEOUT)
 						continue;
 					else {
-						System.out.println(String.format("%s timeout during sclient read", contxt.toString()));
+						System.out.println(String.format("sclient read timeout %s", contxt.toString()));
 						contxt.isBroken = true;
 						break;
 					}
@@ -259,19 +260,24 @@ public class SmartproxyServer {
 				contxt.lastWriteToDest = sct.time_ms();
 			}
 
-			try {
-				handleConn2.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
 			// both directions EOF/broken, shutdown connections
+			contxt.closing = true;
 			if (contxt.isBroken) {
 				Util.abortiveCloseSocket(cdest_s);
 				Util.abortiveCloseSocket(sclient_s);
 			} else {
 				Util.orderlyCloseSocket(cdest_s);
 				Util.orderlyCloseSocket(sclient_s);
+			}
+
+			// make sure another thread is ended
+			try {
+				handleConn2.join(1000 * 10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			if (handleConn2.isAlive()) {
+				System.err.println(handleConn2.getName() + " still alive");
 			}
 		} catch (Throwable e) {
 			System.err.println("there shouldn't be any exception here");
@@ -309,10 +315,13 @@ public class SmartproxyServer {
 				sclient_os.write(buf, 0, n);
 				contxt.lastWriteToClient = sct.time_ms();
 			}
-		} catch (Exception e) {
+		} catch (Throwable e) {
+			// don't log exceptions caused by closing
+			if (contxt.closing)
+				return;
+
 			System.err.println("@" + contxt.dest_name);
-			e.printStackTrace();
-			// if there is exception, use RST close
+			System.err.println("@" + e);
 			contxt.isBroken = true;
 		}
 	}
@@ -324,6 +333,7 @@ public class SmartproxyServer {
 		public Socket cdest_s;
 		public Socket sclient_s;
 		public boolean isBroken = false;
+		public boolean closing = false;
 
 		public TunnelContext(String dest_name, Socket cdest_s, Socket sclient_s) {
 			this.dest_name = dest_name;
