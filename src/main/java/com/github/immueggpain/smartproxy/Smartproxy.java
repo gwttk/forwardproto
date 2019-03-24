@@ -113,6 +113,7 @@ public class Smartproxy {
 	private static final int HTTP_POOL_TIMEOUT = 120 * 1000;
 	private static final Pattern httpconnect_regex = Pattern.compile("CONNECT (.+):([0-9]+) HTTP/1[.][01]");
 	private static final byte[] httpconnect_okresponse = sc.s2b("HTTP/1.1 200 OK\r\n\r\n");
+	private static final byte[] httpconnect_500response = sc.s2b("HTTP/1.1 500 Internal Server Error\r\n\r\n");
 	private static final Pattern ip_regex = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
 	private static final Pattern domain_regex = Pattern.compile("[a-z0-9-_]*(\\.[a-z0-9-_]+)*");
 
@@ -206,7 +207,8 @@ public class Smartproxy {
 			} else if (first_byte == 0x43) {
 				// 0x43 'C' http connect
 				client_protocol = "connect";
-				dest_sockaddr = http_connect(first_byte, is, s_client.os);
+				http_connect(first_byte, is, s_client.os, raw);
+				return;
 			} else if (first_byte == 0x47 || first_byte == 0x50 || first_byte == 0x48) {
 				// 0x47 'G' http get
 				// 0x50 'P' http post/put
@@ -221,7 +223,7 @@ public class Smartproxy {
 				throw new Exception("error unknown proxy protocol first_byte " + sctp.byte_to_string(first_byte));
 			}
 
-			SocketBundle sb_to_nn = create_connect_config_socket(dest_sockaddr, client_protocol, raw.getPort());
+			SocketBundle sb_to_nn = create_connect_config_socket(dest_sockaddr, client_protocol);
 			if (sb_to_nn == null) {
 				// can't connect
 				s_client.close();
@@ -349,7 +351,7 @@ public class Smartproxy {
 			dest_sockaddr = InetSocketAddress.createUnresolved(dest_domain, dest_port);
 
 		// now we connect next node
-		SocketBundle cserver_sb = create_connect_config_socket(dest_sockaddr, "socks5", s_client.getRaw().getPort());
+		SocketBundle cserver_sb = create_connect_config_socket(dest_sockaddr, "socks5");
 		if (cserver_sb == null) {
 			// can't connect
 			buf = new byte[10];
@@ -399,23 +401,24 @@ public class Smartproxy {
 		os.flush();
 
 		// transfer data
-		ConnectionContext cc = new ConnectionContext();
-		cc.dest = dest_sockaddr.toString();
+		handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket,
+				s_client.getRaw());
+	}
 
-		InputStream cserver_is = cserver_sb.is;
-		OutputStream cserver_os = cserver_sb.os;
-		TunnelContext contxt = new TunnelContext(dest_sockaddr.toString(), cserver_sb.socket, s_client.getRaw());
+	private void handleConnection(InputStream cserver_is, OutputStream cserver_os, InputStream sclient_is,
+			OutputStream sclient_os, String dest_name, Socket cserver_s, Socket sclient_s) {
+		TunnelContext contxt = new TunnelContext(dest_name, cserver_s, sclient_s);
 
-		Thread handleConn2 = scmt.execAsync("recv_" + id + "_nextnode",
-				() -> handleConnection2(contxt, cserver_is, os));
+		Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn2",
+				() -> handleConnection2(contxt, cserver_is, sclient_os));
 
 		// client to server loop
-		buf = new byte[BUF_SIZE];
+		byte[] buf = new byte[BUF_SIZE];
 		while (true) {
 			// read some bytes
 			int n;
 			try {
-				n = is.read(buf);
+				n = sclient_is.read(buf);
 			} catch (SocketTimeoutException e) {
 				// timeout cuz read no data
 				// if we are writing, then continue
@@ -558,9 +561,9 @@ public class Smartproxy {
 		public boolean isBroken = false;
 		public boolean closing = false;
 
-		public TunnelContext(String dest_name, Socket cdest_s, Socket sclient_s) {
+		public TunnelContext(String dest_name, Socket cserver_s, Socket sclient_s) {
 			this.dest_name = dest_name;
-			this.cserver_s = cdest_s;
+			this.cserver_s = cserver_s;
 			this.sclient_s = sclient_s;
 		}
 
@@ -691,12 +694,12 @@ public class Smartproxy {
 			throw new Exception("warning socks4 with ip destination is not allowed");
 	}
 
-	private InetSocketAddress http_connect(byte first_byte, InputStream is1, OutputStream os1) throws Exception {
+	private void http_connect(byte first_byte, InputStream is, OutputStream os, Socket sclient_s) throws Exception {
 		byte[] headers_buf = new byte[1024 * 1024];
 		int pos = 0;
 		headers_buf[pos++] = first_byte;
 		while (true) {
-			int b = is1.read();
+			int b = is.read();
 			if (b == -1) {
 				throw new Exception("error incomplete http headers");
 			}
@@ -709,25 +712,37 @@ public class Smartproxy {
 		String headers = sc.b2s(headers_buf, 0, pos);
 		String[] header_array = headers.split("\r\n");
 		Matcher matcher = httpconnect_regex.matcher(header_array[0]);
-		if (matcher.find()) {
-			String dest_host = matcher.group(1);
-			int port = Integer.parseInt(matcher.group(2));
-			matcher = ip_regex.matcher(dest_host);
-			InetSocketAddress dest_sockaddr;
-			if (matcher.matches()) {
-				dest_sockaddr = new InetSocketAddress(InetAddress.getByName(dest_host), port);
-			} else {
-				dest_sockaddr = InetSocketAddress.createUnresolved(dest_host, port);
-			}
-
-			// reply http 200 ok
-			os1.write(httpconnect_okresponse);
-			os1.flush();
-
-			return dest_sockaddr;
+		if (!matcher.find()) {
+			log.println(headers);
+			throw new Exception("error no host or not http connect");
 		}
-		log.println(headers);
-		throw new Exception("error no host or not http connect");
+		String dest_host = matcher.group(1);
+		int port = Integer.parseInt(matcher.group(2));
+		matcher = ip_regex.matcher(dest_host);
+		InetSocketAddress dest_sockaddr;
+		if (matcher.matches()) {
+			dest_sockaddr = new InetSocketAddress(InetAddress.getByName(dest_host), port);
+		} else {
+			dest_sockaddr = InetSocketAddress.createUnresolved(dest_host, port);
+		}
+
+		// connect to nn
+		SocketBundle cserver_sb = create_connect_config_socket(dest_sockaddr, "socks5");
+		if (cserver_sb == null) {
+			// reply http 500
+			os.write(httpconnect_500response);
+			os.flush();
+			Util.orderlyCloseSocket(sclient_s);
+			return;
+		}
+
+		// reply http 200 ok
+		os.write(httpconnect_okresponse);
+		os.flush();
+
+		// transfer data
+		handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket, sclient_s);
+
 	}
 
 	private void http_other(InputStream is, OutputStream os, Socket socket) {
@@ -920,8 +935,8 @@ public class Smartproxy {
 	 * return null means connection refused, or connect timed out, or can't resolve
 	 * hostname
 	 */
-	private SocketBundle create_connect_config_socket(InetSocketAddress dest_sockaddr, String client_protocol,
-			int client_remote_port) throws Exception {
+	private SocketBundle create_connect_config_socket(InetSocketAddress dest_sockaddr, String client_protocol)
+			throws Exception {
 		NextNode nextNode;
 		if (dest_sockaddr.isUnresolved()) {
 			String hostString = dest_sockaddr.getHostString();
@@ -1273,7 +1288,7 @@ public class Smartproxy {
 					return list.remove(list.size() - 1).conn;
 				}
 			}
-			SocketBundle new_socketb = create_connect_config_socket(dest_sockaddr, "http", client_remote_port);
+			SocketBundle new_socketb = create_connect_config_socket(dest_sockaddr, "http");
 			DefaultBHttpClientConnection conn = new DefaultBHttpClientConnection(HTTP_CONN_BUF_SIZE) {
 				protected InputStream getSocketInputStream(final Socket socket) throws IOException {
 					return new_socketb.is;
