@@ -104,6 +104,8 @@ public class Smartproxy {
 
 	private static final int SP_SVR_CONNECT_TIMEOUT = 10 * 1000;
 	private static final int SP_SVR_SO_TIMEOUT = 60 * 1000;
+	private static final int BUF_SIZE = 1024 * 16;
+
 	private static final int HTTP_CONN_BUF_SIZE = 32 * 1024;
 	private static final int SOCKET_CONNECT_TIMEOUT = 1000 * 15;
 	private static final int SOCKET_SO_TIMEOUT_CLIENT = 0;
@@ -271,46 +273,6 @@ public class Smartproxy {
 		}
 	}
 
-	private void recv_nextnode(SocketBundle sb_to_nn, SecTcpSocket s_client, ConnectionContext cc) {
-		try {
-			InputStream is_nn = sb_to_nn.is;
-			IOUtils.copy(is_nn, s_client.os, 32 * 1024);
-		} catch (Exception e) {
-			int cc_shutdown_sum;
-			synchronized (cc) {
-				cc_shutdown_sum = cc.shutdown_sum;
-			}
-			if (cc_shutdown_sum > 0) {
-			} else if (e instanceof SocketTimeoutException) {
-			} else if (e instanceof SocketException && (e.getMessage().equals("Connection reset")
-					|| e.getMessage().equals("Software caused connection abort: socket write error")
-					|| e.getMessage().equals("Software caused connection abort: recv failed")
-					|| e.getMessage().equals("Connection reset by peer: socket write error"))) {
-			} else {
-				log.println("@" + cc.dest + ", " + cc.shutdown_sum);
-				e.printStackTrace(log);
-			}
-		} finally {
-			try {
-				s_client.os.flush();
-			} catch (IOException e) {
-			}
-			try {
-				s_client.getRaw().shutdownOutput();
-			} catch (IOException e) {
-			}
-			synchronized (cc) {
-				s_client.close();
-				try {
-					sb_to_nn.socket.close();
-				} catch (IOException e) {
-					e.printStackTrace(log);
-				}
-				cc.shutdown_sum += 2;
-			}
-		}
-	}
-
 	private void socks5(byte first_byte, InputStream is1, OutputStream os1, SecTcpSocket s_client, int id)
 			throws Exception {
 		@SuppressWarnings("unused")
@@ -387,8 +349,8 @@ public class Smartproxy {
 			dest_sockaddr = InetSocketAddress.createUnresolved(dest_domain, dest_port);
 
 		// now we connect next node
-		SocketBundle sb_to_nn = create_connect_config_socket(dest_sockaddr, "socks5", s_client.getRaw().getPort());
-		if (sb_to_nn == null) {
+		SocketBundle cserver_sb = create_connect_config_socket(dest_sockaddr, "socks5", s_client.getRaw().getPort());
+		if (cserver_sb == null) {
 			// can't connect
 			buf = new byte[10];
 
@@ -439,11 +401,144 @@ public class Smartproxy {
 		// transfer data
 		ConnectionContext cc = new ConnectionContext();
 		cc.dest = dest_sockaddr.toString();
-		SecTcpSocket copy_of_s = s_client;
-		scmt.execAsync("recv_" + id + "_nextnode", () -> recv_nextnode(sb_to_nn, copy_of_s, cc));
-		OutputStream os_nn = sb_to_nn.os;
+
+		InputStream cserver_is = cserver_sb.is;
+		OutputStream cserver_os = cserver_sb.os;
+		TunnelContext contxt = new TunnelContext(dest_sockaddr.toString(), cserver_sb.socket, s_client.getRaw());
+
+		Thread handleConn2 = scmt.execAsync("recv_" + id + "_nextnode",
+				() -> handleConnection2(contxt, cserver_is, os));
+
+		OutputStream os_nn = cserver_sb.os;
 		IOUtils.copy(is, os_nn, 32 * 1024);
 		s_client.close();
+	}
+
+	private void handleConnection2(TunnelContext contxt, InputStream cserver_is, OutputStream sclient_os) {
+		byte[] buf = new byte[BUF_SIZE];
+		while (true) {
+			// read some bytes
+			int n;
+			try {
+				n = cserver_is.read(buf);
+			} catch (SocketTimeoutException e) {
+				// timeout cuz read no data
+				// if we are writing, then continue
+				// if we are not writing, just RST close connection
+				if (sct.time_ms() - contxt.lastWriteToServer < SP_SVR_SO_TIMEOUT)
+					continue;
+				else {
+					if (contxt.closing)
+						break;
+					System.out.println(String.format("cdest read timeout %s", contxt.toString()));
+					contxt.isBroken = true;
+					break;
+				}
+			} catch (Throwable e) {
+				if (contxt.closing)
+					break;
+				System.err.println(String.format("cdest read exception %s", contxt.toString()));
+				e.printStackTrace();
+				contxt.isBroken = true;
+				break;
+			}
+
+			// normal EOF
+			if (n == -1) {
+				if (contxt.closing)
+					break;
+				System.out.println(String.format("cdest read eof %s", contxt.toString()));
+				break;
+			}
+
+			// write some bytes
+			try {
+				sclient_os.write(buf, 0, n);
+			} catch (Throwable e) {
+				if (contxt.closing)
+					break;
+				System.err.println(String.format("sclient write exception %s", contxt.toString()));
+				e.printStackTrace();
+				contxt.isBroken = true;
+				break;
+			}
+			contxt.lastWriteToClient = sct.time_ms();
+		}
+
+		// shutdown connections
+		synchronized (contxt) {
+			if (!contxt.closing) {
+				contxt.closing = true;
+				if (contxt.isBroken) {
+					Util.abortiveCloseSocket(contxt.cserver_s);
+					Util.abortiveCloseSocket(contxt.sclient_s);
+				} else {
+					Util.orderlyCloseSocket(contxt.cserver_s);
+					Util.orderlyCloseSocket(contxt.sclient_s);
+				}
+			}
+		}
+	}
+
+	private static class TunnelContext {
+		public volatile long lastWriteToClient = 0;
+		public volatile long lastWriteToServer = 0;
+		public final String dest_name;
+		public Socket cserver_s;
+		public Socket sclient_s;
+		public boolean isBroken = false;
+		public boolean closing = false;
+
+		public TunnelContext(String dest_name, Socket cdest_s, Socket sclient_s) {
+			this.dest_name = dest_name;
+			this.cserver_s = cdest_s;
+			this.sclient_s = sclient_s;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%s", dest_name);
+		}
+	}
+
+	private void recv_nextnode(SocketBundle sb_to_nn, SecTcpSocket s_client, ConnectionContext cc) {
+		try {
+			InputStream is_nn = sb_to_nn.is;
+			IOUtils.copy(is_nn, s_client.os, 32 * 1024);
+		} catch (Exception e) {
+			int cc_shutdown_sum;
+			synchronized (cc) {
+				cc_shutdown_sum = cc.shutdown_sum;
+			}
+			if (cc_shutdown_sum > 0) {
+			} else if (e instanceof SocketTimeoutException) {
+			} else if (e instanceof SocketException && (e.getMessage().equals("Connection reset")
+					|| e.getMessage().equals("Software caused connection abort: socket write error")
+					|| e.getMessage().equals("Software caused connection abort: recv failed")
+					|| e.getMessage().equals("Connection reset by peer: socket write error"))) {
+			} else {
+				log.println("@" + cc.dest + ", " + cc.shutdown_sum);
+				e.printStackTrace(log);
+			}
+		} finally {
+			try {
+				s_client.os.flush();
+			} catch (IOException e) {
+			}
+			try {
+				s_client.getRaw().shutdownOutput();
+			} catch (IOException e) {
+			}
+			synchronized (cc) {
+				s_client.close();
+				try {
+					sb_to_nn.socket.close();
+				} catch (IOException e) {
+					e.printStackTrace(log);
+				}
+				cc.shutdown_sum += 2;
+			}
+		}
 	}
 
 	private InetSocketAddress socks4(byte first_byte, InputStream is1, OutputStream os1) throws Exception {
@@ -854,7 +949,7 @@ public class Smartproxy {
 			try {
 				cserver_s.connect(new InetSocketAddress(server_hostname, server_port), SP_SVR_CONNECT_TIMEOUT);
 			} catch (Throwable e) {
-				e.printStackTrace();
+				log.println("error when connect sp server " + e);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
@@ -902,7 +997,7 @@ public class Smartproxy {
 			return new SocketBundle(cserver_s, is, os);
 		} catch (Throwable e) {
 			log.println("there shouldn't be any exception here");
-			e.printStackTrace();
+			e.printStackTrace(log);
 			return null;
 		}
 	}
