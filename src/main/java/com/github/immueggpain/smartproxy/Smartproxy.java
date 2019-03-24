@@ -95,7 +95,7 @@ import com.github.immueggpain.common.sc;
 import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
 import com.github.immueggpain.common.sctp;
-import com.github.immueggpain.smartproxy.Launcher.Settings;
+import com.github.immueggpain.smartproxy.Launcher.ClientSettings;
 import com.sun.jna.Structure;
 import com.sun.jna.platform.win32.WinDef.DWORD;
 import com.sun.jna.ptr.IntByReference;
@@ -121,7 +121,7 @@ public class Smartproxy {
 	private SocketFactory ssf = SSLSocketFactory.getDefault();
 	private byte[] password = new byte[64];
 
-	private Settings settings;
+	private ClientSettings settings;
 	private Proxy next_proxy;
 	private NextNode nn_direct;
 	private NextNode nn_ban;
@@ -130,7 +130,7 @@ public class Smartproxy {
 	private NavigableMap<Long, IpRange> ip_to_nn;
 	private ConnPool socketPool;
 
-	public void run(Settings settings) throws Exception {
+	public void run(ClientSettings settings) throws Exception {
 		this.settings = settings;
 		// from now on, log output to '-l' option or 'smartproxy.log' by default
 		log = new PrintWriter(

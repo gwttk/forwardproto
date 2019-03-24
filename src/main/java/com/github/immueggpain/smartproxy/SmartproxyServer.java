@@ -62,7 +62,6 @@ import com.github.immueggpain.smartproxy.Launcher.ServerSettings;
 
 public class SmartproxyServer {
 
-	private static final int PORT = 9039;
 	private static final int CLIENT_SO_TIMEOUT = 1000 * 60;
 	private static final int DEST_SO_TIMEOUT = 1000 * 60;
 	private static final int CONNECT_TIMEOUT = 1000 * 10;
@@ -107,7 +106,7 @@ public class SmartproxyServer {
 			ss.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
 			ss.setPerformancePreferences(0, 0, 1);
 
-			ss.bind(new InetSocketAddress(PORT));
+			ss.bind(new InetSocketAddress(settings.server_port));
 
 			while (true) {
 				SSLSocket sclient_s = (SSLSocket) ss.accept();

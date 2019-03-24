@@ -32,9 +32,9 @@ import org.apache.commons.cli.ParseException;
 
 public class Launcher {
 
-	private static final String VERSTR = "0.6.1";
+	private static final String VERSTR = "0.7.0";
 
-	public static class Settings {
+	public static class ClientSettings {
 		public String local_listen_ip;
 		public int local_listen_port;
 		public String server_ip;
@@ -45,6 +45,7 @@ public class Launcher {
 
 	public static class ServerSettings {
 		public String password;
+		public int server_port;
 		public String cert;
 		public String private_key;
 	}
@@ -113,6 +114,7 @@ public class Launcher {
 			// run as server
 			ServerSettings settings = new ServerSettings();
 			settings.password = cmd.getOptionValue(password);
+			settings.server_port = Integer.parseInt(cmd.getOptionValue(server_port));
 			settings.cert = cmd.getOptionValue(cert, "fullchain.pem");
 			settings.private_key = cmd.getOptionValue(private_key, "privkey.pem");
 			try {
@@ -123,7 +125,7 @@ public class Launcher {
 			return;
 		} else {
 			// run as client
-			Settings settings = new Settings();
+			ClientSettings settings = new ClientSettings();
 			settings.local_listen_ip = cmd.getOptionValue(local_listen_ip, "127.0.0.1");
 			settings.local_listen_port = Integer.parseInt(cmd.getOptionValue(local_listen_port, "1083"));
 			settings.server_ip = cmd.getOptionValue(server_ip);
