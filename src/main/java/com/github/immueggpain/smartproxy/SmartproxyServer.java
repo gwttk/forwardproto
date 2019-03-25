@@ -182,6 +182,9 @@ public class SmartproxyServer {
 				}
 			}
 
+			// reply error code ok
+			os.writeByte(SVRERRCODE_OK);
+
 			String dest_hostname = is.readUTF();
 			int dest_port = is.readUnsignedShort();
 			System.out.println("client request connect " + dest_hostname + ":" + dest_port);
@@ -192,9 +195,7 @@ public class SmartproxyServer {
 				dest_addr = InetAddress.getByName(dest_hostname);
 			} catch (UnknownHostException e) {
 				System.err.println("unknown host " + dest_hostname);
-				// send error code & orderly release connection
-				os.writeByte(SVRERRCODE_HOST);
-				Util.orderlyCloseSocket(sclient_s);
+				Util.abortiveCloseSocket(sclient_s);
 				return;
 			}
 
@@ -204,9 +205,7 @@ public class SmartproxyServer {
 				dest_sockaddr = new InetSocketAddress(dest_addr, dest_port);
 			} catch (Exception e) {
 				e.printStackTrace();
-				// send error code & orderly release connection
-				os.writeByte(SVRERRCODE_HOST);
-				Util.orderlyCloseSocket(sclient_s);
+				Util.abortiveCloseSocket(sclient_s);
 				return;
 			}
 
@@ -218,16 +217,12 @@ public class SmartproxyServer {
 				cdest_s.connect(dest_sockaddr, CONNECT_TIMEOUT);
 			} catch (SocketTimeoutException e) {
 				System.out.println(String.format("%s timeout during connect dest", dest_sockaddr.toString()));
-				// send error code & orderly release connection
-				os.writeByte(SVRERRCODE_HOST);
-				Util.orderlyCloseSocket(sclient_s);
+				Util.abortiveCloseSocket(sclient_s);
 				Util.abortiveCloseSocket(cdest_s);
 				return;
 			} catch (Exception e) {
 				e.printStackTrace();
-				// send error code & orderly release connection
-				os.writeByte(SVRERRCODE_FAIL);
-				Util.orderlyCloseSocket(sclient_s);
+				Util.abortiveCloseSocket(sclient_s);
 				Util.abortiveCloseSocket(cdest_s);
 				return;
 			}
@@ -236,9 +231,6 @@ public class SmartproxyServer {
 			InputStream cdest_is = cdest_s.getInputStream();
 			OutputStream cdest_os = cdest_s.getOutputStream();
 			TunnelContext contxt = new TunnelContext(dest_sockaddr.toString(), cdest_s, sclient_s);
-
-			// everything seems ok, will tunnel data
-			os.writeByte(SVRERRCODE_OK);
 
 			// restore to normal timeout
 			sclient_s.setSoTimeout(CLIENT_SO_TIMEOUT);

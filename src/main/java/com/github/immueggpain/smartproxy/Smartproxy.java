@@ -1006,16 +1006,6 @@ public class Smartproxy {
 				return null;
 			}
 
-			// send dest info
-			try {
-				os.writeUTF(dest_hostname);
-				os.writeShort(dest_port);
-			} catch (Exception e) {
-				log.println(sct.datetime() + " error when send dest info " + e);
-				Util.abortiveCloseSocket(cserver_s);
-				return null;
-			}
-
 			// get server error code
 			byte ecode;
 			try {
@@ -1028,6 +1018,16 @@ public class Smartproxy {
 			if (ecode != 0) {
 				log.println(sct.datetime() + " server err code " + ecode);
 				Util.orderlyCloseSocket(cserver_s);
+				return null;
+			}
+
+			// send dest info
+			try {
+				os.writeUTF(dest_hostname);
+				os.writeShort(dest_port);
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when send dest info " + e);
+				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
 
@@ -1094,6 +1094,21 @@ public class Smartproxy {
 				return null;
 			}
 
+			// get server error code
+			byte ecode;
+			try {
+				ecode = is.readByte();
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when read svr err code " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+			if (ecode != 0) {
+				log.println(sct.datetime() + " server err code " + ecode);
+				Util.orderlyCloseSocket(cserver_s);
+				return null;
+			}
+
 			SocketBundle sb = new SocketBundle(cserver_s, is, os);
 			sb.expireTime = System.currentTimeMillis() + SP_SVR_REST_TIMEOUT - 1000;
 			return sb;
@@ -1117,21 +1132,6 @@ public class Smartproxy {
 			} catch (Exception e) {
 				log.println(sct.datetime() + " error when send dest info " + e);
 				Util.abortiveCloseSocket(cserver_s);
-				return null;
-			}
-
-			// get server error code
-			byte ecode;
-			try {
-				ecode = is.readByte();
-			} catch (Exception e) {
-				log.println(sct.datetime() + " error when read svr err code " + e);
-				Util.abortiveCloseSocket(cserver_s);
-				return null;
-			}
-			if (ecode != 0) {
-				log.println(sct.datetime() + " server err code " + ecode);
-				Util.orderlyCloseSocket(cserver_s);
 				return null;
 			}
 
