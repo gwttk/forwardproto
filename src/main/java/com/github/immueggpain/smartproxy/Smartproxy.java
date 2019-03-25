@@ -1161,6 +1161,7 @@ public class Smartproxy {
 				if (sb != null && sb.expireTime < System.currentTimeMillis()) {
 					if (halfTunnels.remove(sb)) {
 						Util.abortiveCloseSocket(sb.socket);
+						log.println("half tunnel expires");
 					}
 				}
 				try {
