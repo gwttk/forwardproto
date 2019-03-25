@@ -3,10 +3,13 @@
 
 **A naive implementation of tcp tunnel.**
 
-When using **smartproxy** as your system's default proxy, it can redirect traffic on user rules, 
-whether direct connect or through a smartproxy server.
+**smartproxy** is anti-dropout.
 
-**smartproxy** accepts HTTP, HTTPS, SOCKS4, SOCKS4a, SOCKS5 as incoming connections.
+**smartproxy** follows 1-RTT pattern.
+
+**smartproxy** can redirect traffic on user rules, whether direct connect or through a smartproxy server.
+
+**smartproxy** accepts HTTP, SOCKS4, SOCKS4a, SOCKS5 as incoming connections.
 
 **smartproxy** also redispatches HTTP requests, so some old HTTP clients without keep-alive support will enjoy some performance boost.
 
