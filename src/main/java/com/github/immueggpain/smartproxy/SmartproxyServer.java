@@ -130,11 +130,28 @@ public class SmartproxyServer {
 			DataInputStream is = new DataInputStream(sclient_s.getInputStream());
 			DataOutputStream os = new DataOutputStream(sclient_s.getOutputStream());
 
+			// use small timeout when connection starts
+			sclient_s.setSoTimeout(1000 * 15);
+
+			// random stuff, but fun string
+			{
+				try {
+					String string = is.readUTF();
+					System.out.println("client hello: " + string);
+				} catch (SocketTimeoutException e) {
+					System.out.println("timeout during hello, possible TLS handshake failed");
+					Util.abortiveCloseSocket(sclient_s);
+					return;
+				} catch (Exception e) {
+					System.out.println("error during hello, possible TLS handshake failed " + e);
+					Util.abortiveCloseSocket(sclient_s);
+					return;
+				}
+			}
+
 			// authn this connection
 			{
 				byte[] pswd = new byte[64];
-				// use small timeout when connection starts
-				sclient_s.setSoTimeout(1000 * 15);
 				try {
 					is.readFully(pswd);
 				} catch (SocketTimeoutException e) {

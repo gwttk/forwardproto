@@ -48,6 +48,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -60,6 +61,7 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
@@ -67,6 +69,7 @@ import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.ConnectionClosedException;
 import org.apache.http.Header;
 import org.apache.http.HeaderIterator;
@@ -105,6 +108,7 @@ public class Smartproxy {
 	private static final int SP_SVR_CONNECT_TIMEOUT = 10 * 1000;
 	private static final int SP_SVR_SO_TIMEOUT = 60 * 1000;
 	private static final int BUF_SIZE = 1024 * 16;
+	private static final SecureRandom rand = new SecureRandom();
 
 	private static final int HTTP_CONN_BUF_SIZE = 32 * 1024;
 	private static final int SOCKET_CONNECT_TIMEOUT = 1000 * 15;
@@ -122,7 +126,7 @@ public class Smartproxy {
 	private Set<String> encountered_request_headers = new HashSet<>();
 	private Set<String> encountered_response_headers = new HashSet<>();
 
-	private SSLSocketFactory ssf = (SSLSocketFactory) SSLSocketFactory.getDefault();
+	private SSLSocketFactory ssf;
 	private byte[] password = new byte[64];
 
 	private ClientSettings settings;
@@ -148,6 +152,11 @@ public class Smartproxy {
 		nn_proxy = new NextNode(NextNode.Type.PROXY, next_proxy);
 		load_domain_nn_table();
 		socketPool = new ConnPool(HTTP_POOL_TIMEOUT);
+
+		// set SSL
+		SSLContext context = SSLContext.getInstance("TLSv1.2");
+		context.init(null, null, null);
+		ssf = context.getSocketFactory();
 
 		try (ServerSocket ss = new ServerSocket(settings.local_listen_port, 50,
 				InetAddress.getByName(settings.local_listen_ip))) {
@@ -953,6 +962,17 @@ public class Smartproxy {
 
 			DataInputStream is = new DataInputStream(cserver_s.getInputStream());
 			DataOutputStream os = new DataOutputStream(cserver_s.getOutputStream());
+
+			// random stuff hello
+			try {
+				int len = rand.nextInt(100) + 100;
+				String hellostr = RandomStringUtils.randomAlphanumeric(len);
+				os.writeUTF(hellostr);
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when send hello " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
 
 			// authn
 			try {
