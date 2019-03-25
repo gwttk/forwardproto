@@ -1,5 +1,4 @@
 ## Introduction
-[Old README for v0.5.0](README-0.5.0.md) 
 
 **A naive implementation of tcp tunnel.**
 
@@ -47,3 +46,6 @@ And lastly, if all miss, it uses default rule, which is **proxy**.
 You need [**Maven**](https://maven.apache.org/) to build **smartproxy**.  
 Just run `maven install` and you will find the jar and zip generated in the `target` folder.  
 You can also import the project using [**Eclipse**](https://www.eclipse.org/).
+
+## etc
+[Old README for v0.5.0](README-0.5.0.md) 
