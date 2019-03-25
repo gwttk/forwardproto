@@ -4,7 +4,7 @@
 
 **smartproxy** is anti-dropout.
 
-**smartproxy** follows 1-RTT pattern.
+**smartproxy** follows 0-RTT pattern.
 
 **smartproxy** can redirect traffic on user rules, whether direct connect or through a smartproxy server.
 
