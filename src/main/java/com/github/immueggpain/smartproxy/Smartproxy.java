@@ -1121,7 +1121,7 @@ public class Smartproxy {
 
 	private static SocketBundle create_full_tunnel(SocketBundle sb, String dest_hostname, int dest_port) {
 		try {
-			DataInputStream is = new DataInputStream(sb.is);
+			// DataInputStream is = new DataInputStream(sb.is);
 			DataOutputStream os = new DataOutputStream(sb.os);
 			Socket cserver_s = sb.socket;
 
