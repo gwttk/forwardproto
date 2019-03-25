@@ -8,7 +8,7 @@
 
 **smartproxy** can redirect traffic on user rules, whether direct connect or through a smartproxy server.
 
-**smartproxy** accepts HTTP, SOCKS4, SOCKS4a, SOCKS5 as incoming connections. **But SOCKS5 is recommended.**
+**smartproxy** accepts HTTP, SOCKS4, SOCKS4a, SOCKS5 requests. **But SOCKS5 is recommended.**
 
 **smartproxy** also redispatches HTTP requests, so some old HTTP clients without keep-alive support will enjoy some performance boost.
 
