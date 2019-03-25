@@ -108,6 +108,7 @@ import com.sun.jna.win32.StdCallLibrary;
 public class Smartproxy {
 
 	private static final int SP_SVR_CONNECT_TIMEOUT = 10 * 1000;
+	private static final int SP_SVR_SMALL_TIMEOUT = 15 * 1000;
 	private static final int SP_SVR_SO_TIMEOUT = 60 * 1000;
 	private static final int SP_SVR_REST_TIMEOUT = 60 * 1000 * 5;
 	private static final int BUF_SIZE = 1024 * 16;
@@ -962,7 +963,7 @@ public class Smartproxy {
 			// config sslsocket
 			cserver_s.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
 			// use small timeout first
-			cserver_s.setSoTimeout(1000 * 15);
+			cserver_s.setSoTimeout(SP_SVR_SMALL_TIMEOUT);
 
 			// connect to sp server
 			try {
@@ -992,6 +993,15 @@ public class Smartproxy {
 				os.write(password);
 			} catch (Exception e) {
 				log.println(sct.datetime() + " error when send pswd " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+
+			// send rest timeout
+			try {
+				os.writeInt(SP_SVR_SMALL_TIMEOUT);
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when send timeout " + e);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
@@ -1071,6 +1081,15 @@ public class Smartproxy {
 				os.write(password);
 			} catch (Exception e) {
 				log.println(sct.datetime() + " error when send pswd " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+
+			// send rest timeout
+			try {
+				os.writeInt(SP_SVR_REST_TIMEOUT);
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when send timeout " + e);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
@@ -1170,11 +1189,6 @@ public class Smartproxy {
 					e.printStackTrace();
 				}
 			}
-		}
-
-		public SocketBundle takeTunnel(String dest_hostname, int dest_port) throws InterruptedException {
-			SocketBundle half_tunnel = halfTunnels.take();
-			return create_full_tunnel(half_tunnel, dest_hostname, dest_port);
 		}
 
 		public SocketBundle pollTunnel(String dest_hostname, int dest_port) throws InterruptedException {

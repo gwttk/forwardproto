@@ -171,7 +171,16 @@ public class SmartproxyServer {
 			}
 
 			// increase timeout to wait for pooling conn
-			sclient_s.setSoTimeout(1000 * 60 * 5);
+			{
+				try {
+					int timeout = is.readInt();
+					sclient_s.setSoTimeout(timeout);
+				} catch (Throwable e) {
+					System.out.println("error when reading timeout " + e);
+					Util.abortiveCloseSocket(sclient_s);
+					return;
+				}
+			}
 
 			String dest_hostname = is.readUTF();
 			int dest_port = is.readUnsignedShort();
