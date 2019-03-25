@@ -109,6 +109,7 @@ public class Smartproxy {
 
 	private static final int SP_SVR_CONNECT_TIMEOUT = 10 * 1000;
 	private static final int SP_SVR_SO_TIMEOUT = 60 * 1000;
+	private static final int SP_SVR_REST_TIMEOUT = 60 * 1000 * 5;
 	private static final int BUF_SIZE = 1024 * 16;
 	private static final SecureRandom rand = new SecureRandom();
 
@@ -1074,7 +1075,9 @@ public class Smartproxy {
 				return null;
 			}
 
-			return new SocketBundle(cserver_s, is, os);
+			SocketBundle sb = new SocketBundle(cserver_s, is, os);
+			sb.expireTime = System.currentTimeMillis() + SP_SVR_REST_TIMEOUT - 1000;
+			return sb;
 		} catch (Throwable e) {
 			log.println("there shouldn't be any exception here");
 			e.printStackTrace(log);
@@ -1136,6 +1139,7 @@ public class Smartproxy {
 			scmt.execAsync("tunnel-pool-connect1", this::connect);
 			scmt.execAsync("tunnel-pool-connect2", this::connect);
 			scmt.execAsync("tunnel-pool-connect3", this::connect);
+			scmt.execAsync("tunnel-pool-cleaner", this::cleaner);
 		}
 
 		private void connect() {
@@ -1148,6 +1152,22 @@ public class Smartproxy {
 					} catch (InterruptedException e) {
 						e.printStackTrace(log);
 					}
+			}
+		}
+
+		private void cleaner() {
+			while (true) {
+				SocketBundle sb = halfTunnels.peek();
+				if (sb != null && sb.expireTime < System.currentTimeMillis()) {
+					if (halfTunnels.remove(sb)) {
+						Util.abortiveCloseSocket(sb.socket);
+					}
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -1240,6 +1260,8 @@ public class Smartproxy {
 		public Socket socket;
 		public InputStream is;
 		public OutputStream os;
+		// optional
+		public long expireTime;
 
 		public SocketBundle(Socket socket, InputStream is, OutputStream os) {
 			this.socket = socket;
