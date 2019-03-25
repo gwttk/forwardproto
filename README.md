@@ -20,8 +20,7 @@ whether direct connect or through a smartproxy server.
 * Run `java -jar smartproxy-x.x.x.jar --help` to get help.
 * Run client `java -jar smartproxy-x.x.x.jar -m client -n <local_listening_port> -p <server_listening_port> -s <server_ip> -w <secret_password>`.
 * Run server `java -jar smartproxy-x.x.x.jar -m server -c <cert_file> -k <private_key_file> -p <server_listening_port> -w <secret_password>`.
-* Set your system proxy to 127.0.0.1:<local_listening_port>
-* Or start Chrome with --proxy-server="socks5://127.0.0.1:<local_listening_port>"
+* start Chrome with --proxy-server="socks5://127.0.0.1:<local_listening_port>"
 * Enjoy!
 
 ## user.rule
