@@ -58,6 +58,8 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -128,6 +130,7 @@ public class Smartproxy {
 
 	private SSLSocketFactory ssf;
 	private byte[] password = new byte[64];
+	private TunnelPool tunnelPool;
 
 	private ClientSettings settings;
 	private Proxy next_proxy;
@@ -157,6 +160,8 @@ public class Smartproxy {
 		SSLContext context = SSLContext.getInstance("TLSv1.2");
 		context.init(null, null, null);
 		ssf = context.getSocketFactory();
+
+		tunnelPool = new TunnelPool(settings.server_ip, settings.server_port);
 
 		try (ServerSocket ss = new ServerSocket(settings.local_listen_port, 50,
 				InetAddress.getByName(settings.local_listen_ip))) {
@@ -934,8 +939,15 @@ public class Smartproxy {
 			return new SocketBundle(raw, raw.getInputStream(), raw.getOutputStream());
 		} else if (nextNode.type == NextNode.Type.PROXY) {
 			// connect through sp server
-			return create_tunnel(settings.server_ip, settings.server_port, ssf, password, dest_sockaddr.getHostString(),
-					dest_sockaddr.getPort());
+			SocketBundle tunnel = tunnelPool.pollTunnel(dest_sockaddr.getHostString(), dest_sockaddr.getPort());
+			if (tunnel == null) {
+				log.println("use tunnel out pool");
+				return create_tunnel(settings.server_ip, settings.server_port, ssf, password,
+						dest_sockaddr.getHostString(), dest_sockaddr.getPort());
+			} else {
+				log.println("use tunnel from pool");
+				return tunnel;
+			}
 		} else
 			throw new RuntimeException("impossible");
 	}
@@ -965,7 +977,7 @@ public class Smartproxy {
 
 			// random stuff hello
 			try {
-				int len = rand.nextInt(100) + 100;
+				int len = rand.nextInt(500) + 90;
 				String hellostr = RandomStringUtils.randomAlphanumeric(len);
 				os.writeUTF(hellostr);
 			} catch (Exception e) {
@@ -1016,6 +1028,139 @@ public class Smartproxy {
 			log.println("there shouldn't be any exception here");
 			e.printStackTrace(log);
 			return null;
+		}
+	}
+
+	private static SocketBundle create_half_tunnel(String server_hostname, int server_port, SSLSocketFactory ssf,
+			byte[] password) {
+		try {
+			// create sslsocket
+			SSLSocket cserver_s = (SSLSocket) ssf.createSocket();
+
+			// config sslsocket
+			cserver_s.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
+			// use small timeout first
+			cserver_s.setSoTimeout(1000 * 15);
+
+			// connect to sp server
+			try {
+				cserver_s.connect(new InetSocketAddress(server_hostname, server_port), SP_SVR_CONNECT_TIMEOUT);
+			} catch (Throwable e) {
+				log.println(sct.datetime() + " error when connect sp server " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+
+			DataInputStream is = new DataInputStream(cserver_s.getInputStream());
+			DataOutputStream os = new DataOutputStream(cserver_s.getOutputStream());
+
+			// random stuff hello
+			try {
+				int len = rand.nextInt(500) + 90;
+				String hellostr = RandomStringUtils.randomAlphanumeric(len);
+				os.writeUTF(hellostr);
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when send hello " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+
+			// authn
+			try {
+				os.write(password);
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when send pswd " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+
+			return new SocketBundle(cserver_s, is, os);
+		} catch (Throwable e) {
+			log.println("there shouldn't be any exception here");
+			e.printStackTrace(log);
+			return null;
+		}
+	}
+
+	private static SocketBundle create_full_tunnel(SocketBundle sb, String dest_hostname, int dest_port) {
+		try {
+			DataInputStream is = new DataInputStream(sb.is);
+			DataOutputStream os = new DataOutputStream(sb.os);
+			Socket cserver_s = sb.socket;
+
+			// send dest info
+			try {
+				os.writeUTF(dest_hostname);
+				os.writeShort(dest_port);
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when send dest info " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+
+			// get server error code
+			byte ecode;
+			try {
+				ecode = is.readByte();
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when read svr err code " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+			if (ecode != 0) {
+				log.println(sct.datetime() + " server err code " + ecode);
+				Util.orderlyCloseSocket(cserver_s);
+				return null;
+			}
+
+			// restore to normal timeout
+			cserver_s.setSoTimeout(SP_SVR_SO_TIMEOUT);
+
+			return sb;
+		} catch (Throwable e) {
+			log.println("there shouldn't be any exception here");
+			e.printStackTrace(log);
+			return null;
+		}
+	}
+
+	private class TunnelPool {
+
+		private BlockingQueue<SocketBundle> halfTunnels = new ArrayBlockingQueue<>(30);
+		private String server_hostname;
+		private int server_port;
+
+		public TunnelPool(String server_hostname, int server_port) {
+			this.server_hostname = server_hostname;
+			this.server_port = server_port;
+			scmt.execAsync("tunnel-pool-connect1", this::connect);
+			scmt.execAsync("tunnel-pool-connect2", this::connect);
+			scmt.execAsync("tunnel-pool-connect3", this::connect);
+		}
+
+		private void connect() {
+			while (true) {
+				SocketBundle half_tunnel = create_half_tunnel(server_hostname, server_port, ssf, password);
+				if (half_tunnel != null)
+					try {
+						halfTunnels.put(half_tunnel);
+						log.println("new half tunnel to pool " + halfTunnels.size());
+					} catch (InterruptedException e) {
+						e.printStackTrace(log);
+					}
+			}
+		}
+
+		public SocketBundle takeTunnel(String dest_hostname, int dest_port) throws InterruptedException {
+			SocketBundle half_tunnel = halfTunnels.take();
+			return create_full_tunnel(half_tunnel, dest_hostname, dest_port);
+		}
+
+		public SocketBundle pollTunnel(String dest_hostname, int dest_port) throws InterruptedException {
+			SocketBundle half_tunnel = halfTunnels.poll();
+			if (half_tunnel == null)
+				return null;
+			return create_full_tunnel(half_tunnel, dest_hostname, dest_port);
 		}
 	}
 

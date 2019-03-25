@@ -170,8 +170,8 @@ public class SmartproxyServer {
 				}
 			}
 
-			// restore to normal timeout
-			sclient_s.setSoTimeout(CLIENT_SO_TIMEOUT);
+			// increase timeout to wait for pooling conn
+			sclient_s.setSoTimeout(1000 * 60 * 5);
 
 			String dest_hostname = is.readUTF();
 			int dest_port = is.readUnsignedShort();
@@ -230,6 +230,9 @@ public class SmartproxyServer {
 
 			// everything seems ok, will tunnel data
 			os.writeByte(SVRERRCODE_OK);
+
+			// restore to normal timeout
+			sclient_s.setSoTimeout(CLIENT_SO_TIMEOUT);
 
 			Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn2",
 					() -> handleConnection2(contxt, cdest_is, os));
