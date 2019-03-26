@@ -183,7 +183,15 @@ public class SmartproxyServer {
 			}
 
 			// reply error code ok
-			os.writeByte(SVRERRCODE_OK);
+			{
+				try {
+					os.writeByte(SVRERRCODE_OK);
+				} catch (Throwable e) {
+					System.out.println("exception during sending errcode " + e);
+					Util.abortiveCloseSocket(sclient_s);
+					return;
+				}
+			}
 
 			// may rest here
 			String dest_hostname;
@@ -196,7 +204,7 @@ public class SmartproxyServer {
 					System.out.println("timeout during reading dest info");
 					Util.abortiveCloseSocket(sclient_s);
 					return;
-				} catch (Exception e) {
+				} catch (Throwable e) {
 					System.out.println("exception during reading dest info " + e);
 					Util.abortiveCloseSocket(sclient_s);
 					return;
