@@ -308,6 +308,7 @@ yynykdlkeitnjn reject
 
 
 #auto rules
+.npmjs.org proxy
 .kakazy-yun.com proxy
 .cdn2-youku.com proxy
 .maccms.com direct
