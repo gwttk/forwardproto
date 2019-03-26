@@ -185,9 +185,24 @@ public class SmartproxyServer {
 			// reply error code ok
 			os.writeByte(SVRERRCODE_OK);
 
-			String dest_hostname = is.readUTF();
-			int dest_port = is.readUnsignedShort();
-			System.out.println("client request connect " + dest_hostname + ":" + dest_port);
+			// may rest here
+			String dest_hostname;
+			int dest_port;
+			{
+				try {
+					dest_hostname = is.readUTF();
+					dest_port = is.readUnsignedShort();
+				} catch (SocketTimeoutException e) {
+					System.out.println("timeout during reading dest info");
+					Util.abortiveCloseSocket(sclient_s);
+					return;
+				} catch (Exception e) {
+					System.out.println("exception during reading dest info " + e);
+					Util.abortiveCloseSocket(sclient_s);
+					return;
+				}
+				System.out.println("client request connect " + dest_hostname + ":" + dest_port);
+			}
 
 			// do dns
 			InetAddress dest_addr;
