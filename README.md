@@ -2,15 +2,12 @@
 
 **A naive implementation of tcp tunnel.**
 
-**smartproxy** is anti-dropout.
-
-**smartproxy** follows 0-RTT pattern.
-
-**smartproxy** can redirect traffic on user rules, whether direct connect or through a smartproxy server.
-
-**smartproxy** accepts HTTP, SOCKS4, SOCKS4a, SOCKS5 requests. **But SOCKS5 is recommended.**
-
-**smartproxy** also redispatches HTTP requests, so some old HTTP clients without keep-alive support will enjoy some performance boost.
+- smartproxy sends random data of random length at the beginning of each connection (but I see no effect in doing this)
+- is anti-dropout.
+- follows 0-RTT pattern.
+- can redirect traffic on user rules, whether direct connect or through a smartproxy server.
+- accepts HTTP, SOCKS4, SOCKS4a, SOCKS5 requests. **But SOCKS5 is recommended.**
+- also redispatches HTTP requests, so some old HTTP clients without keep-alive support will enjoy some performance boost.
 
 ![diagram](diagram.svg)
 
