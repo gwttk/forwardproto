@@ -2,7 +2,7 @@
 
 **A naive implementation of tcp tunnel.**
 
-- smartproxy sends random data of random length at the beginning of connection (but I see no effect in doing this)
+- smartproxy sends random data of random length at the beginning of each connection (but I see no effect in doing this)
 - is anti-dropout.
 - follows 0-RTT pattern.
 - can redirect traffic on user rules, whether direct connect or through a smartproxy server.
