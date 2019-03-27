@@ -1148,7 +1148,7 @@ public class Smartproxy {
 
 	private class TunnelPool {
 
-		private BlockingQueue<SocketBundle> halfTunnels = new ArrayBlockingQueue<>(30);
+		private BlockingQueue<SocketBundle> halfTunnels = new ArrayBlockingQueue<>(40);
 		private String server_hostname;
 		private int server_port;
 
@@ -1158,6 +1158,7 @@ public class Smartproxy {
 			scmt.execAsync("tunnel-pool-connect1", this::connect);
 			scmt.execAsync("tunnel-pool-connect2", this::connect);
 			scmt.execAsync("tunnel-pool-connect3", this::connect);
+			scmt.execAsync("tunnel-pool-connect4", this::connect);
 			scmt.execAsync("tunnel-pool-cleaner", this::cleaner);
 		}
 
