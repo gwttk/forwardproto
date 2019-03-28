@@ -108,7 +108,7 @@ import com.sun.jna.win32.StdCallLibrary;
 public class Smartproxy {
 
 	private static final int SP_SVR_CONNECT_TIMEOUT = 10 * 1000;
-	private static final int SP_SVR_SMALL_TIMEOUT = 15 * 1000;
+	private static final int SP_SVR_SMALL_TIMEOUT = 10 * 1000;
 	private static final int SP_SVR_SO_TIMEOUT = 60 * 1000;
 	private static final int SP_SVR_REST_TIMEOUT = 60 * 1000 * 5;
 	private static final int BUF_SIZE = 1024 * 16;
@@ -1051,7 +1051,7 @@ public class Smartproxy {
 			// config sslsocket
 			cserver_s.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
 			// use small timeout first
-			cserver_s.setSoTimeout(1000 * 15);
+			cserver_s.setSoTimeout(SP_SVR_SMALL_TIMEOUT);
 
 			// connect to sp server
 			try {
