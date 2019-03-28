@@ -943,11 +943,11 @@ public class Smartproxy {
 			// connect through sp server
 			SocketBundle tunnel = tunnelPool.pollTunnel(dest_sockaddr.getHostString(), dest_sockaddr.getPort());
 			if (tunnel == null) {
-				log.println("use tunnel out pool");
+				log.println(sct.datetime() + " use tunnel out pool");
 				return create_tunnel(settings.server_ip, settings.server_port, ssf, password,
 						dest_sockaddr.getHostString(), dest_sockaddr.getPort());
 			} else {
-				log.println("use tunnel from pool");
+				log.println(sct.datetime() + " use tunnel from pool");
 				return tunnel;
 			}
 		} else
@@ -1168,7 +1168,7 @@ public class Smartproxy {
 				if (half_tunnel != null)
 					try {
 						halfTunnels.put(half_tunnel);
-						log.println("new half tunnel to pool " + halfTunnels.size());
+						log.println(sct.datetime() + " new half tunnel to pool " + halfTunnels.size());
 					} catch (InterruptedException e) {
 						e.printStackTrace(log);
 					}
@@ -1181,7 +1181,7 @@ public class Smartproxy {
 				if (sb != null && sb.expireTime < System.currentTimeMillis()) {
 					if (halfTunnels.remove(sb)) {
 						Util.abortiveCloseSocket(sb.socket);
-						log.println("half tunnel expires");
+						log.println(sct.datetime() + " half tunnel expires");
 					}
 				}
 				try {
