@@ -1110,7 +1110,7 @@ public class Smartproxy {
 			}
 
 			SocketBundle sb = new SocketBundle(cserver_s, is, os);
-			sb.expireTime = System.currentTimeMillis() + SP_SVR_REST_TIMEOUT - 1000;
+			sb.expireTime = System.currentTimeMillis() + SP_SVR_REST_TIMEOUT - 5000;
 			return sb;
 		} catch (Throwable e) {
 			log.println("there shouldn't be any exception here");
