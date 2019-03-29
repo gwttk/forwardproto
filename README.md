@@ -22,6 +22,9 @@
 * start Chrome with --proxy-server="socks5://127.0.0.1:<local_listening_port>"
 * Enjoy!
 
+## How to get SSL cert
+see [certbot](https://certbot.eff.org/)
+
 ## user.rule
 You may also update your user.rule file for better experience. Just download it and replace the old one.  
 [The lastest user.rule can be downloaded here.](user.rule)  
