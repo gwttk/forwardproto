@@ -993,7 +993,6 @@ secure.api.sonyentertainmentnetwork.com proxy
 go.automatad.com proxy
 delivery.vidible.tv proxy
 static.chasecdn.com proxy
-s3.pfp.sina.net direct
 preview.redd.it proxy
 mwebgames.disqus.com proxy
 node-p1w-wi3she.sitescout.com proxy
@@ -2046,7 +2045,6 @@ www.snh48club.com direct
 links.services.disqus.com proxy
 www.search.philips.com proxy
 img.purch.com proxy
-cas.avalon.perfdrive.com proxy
 future-publishing.msgfocus.com proxy
 cdn.theindianspot.com proxy
 app.leadsrx.com proxy
@@ -2121,7 +2119,6 @@ people.canonical.com proxy
 p.yotpo.com proxy
 tracking.channelsight.com proxy
 a2531.casalemedia.com proxy
-cdn.perfdrive.com direct
 cdn.appdynamics.com proxy
 janrain-quilt-static.cn.janrain.com direct
 cm.eyereturn.com direct
@@ -2470,7 +2467,6 @@ ssum.casalemedia.com proxy
 mcs.eyereturn.com proxy
 c.bebi.com proxy
 t0.ssl.ak.dynamic.tiles.virtualearth.net proxy
-cas.avalon.perfdrive.com direct
 pl14662196.pvclouds.com proxy
 access.redhat.com proxy
 prod-ha-news.robotentertainment.com proxy
@@ -4306,7 +4302,6 @@ p.algovid.com proxy
 .anyu.org proxy
 .aobo.com.au proxy
 .aol.ca proxy
-.aol.com proxy
 .aolnews.com proxy
 .ap.org proxy
 .apetube.com proxy
@@ -4451,7 +4446,6 @@ p.algovid.com proxy
 .businessweek.com proxy
 .buugaa.com proxy
 .buzzurl.jp proxy
-.bwsj.hk proxy
 .byethost8.com proxy
 .c-est-simple.com proxy
 .c-spanvideo.org proxy
@@ -5207,7 +5201,6 @@ p.algovid.com proxy
 .itshidden.com proxy
 .itweet.net proxy
 .iu45.com proxy
-.izaobao.us proxy
 .izihost.org proxy
 .izles.net proxy
 .j.mp proxy
@@ -5220,7 +5213,6 @@ p.algovid.com proxy
 .jgoodies.com proxy
 .jiaoyou8.com proxy
 .jiehua.cz proxy
-.jiepang.com proxy
 .jieshibaobao.com proxy
 .jimoparty.com proxy
 .jinbushe.org proxy
@@ -5496,7 +5488,6 @@ p.algovid.com proxy
 .myopenid.com proxy
 .myparagliding.com proxy
 .mypopescu.com proxy
-.mysinablog.com proxy
 .myspace.com proxy
 .naacoalition.org proxy
 .nabble.com proxy
@@ -5915,7 +5906,6 @@ p.algovid.com proxy
 .shwchurch3.com proxy
 .simplecd.org proxy
 .simpleproductivityblog.com proxy
-.sina.com proxy
 .sina.com.hk proxy
 .sina.com.tw proxy
 .singtao.ca proxy
@@ -5983,7 +5973,6 @@ p.algovid.com proxy
 .soundofhope.org proxy
 .soup.io proxy
 .soupofmedia.com proxy
-.sourceforge.net proxy
 .southnews.com.tw proxy
 .sowers.org.hk proxy
 .sowiki.net proxy
@@ -6387,7 +6376,6 @@ p.algovid.com proxy
 .vpnpop.com proxy
 .vpnpronet.com proxy
 .vtunnel.com proxy
-.w3.org proxy
 .waffle1999.com proxy
 .wahas.com proxy
 .waigaobu.com proxy
@@ -6492,7 +6480,6 @@ p.algovid.com proxy
 .wqlhw.com proxy
 .wqyd.org proxy
 .wretch.cc proxy
-.wsj.com proxy
 .wtfpeople.com proxy
 .wuala.com proxy
 .wuerkaixi.com proxy
@@ -6593,8 +6580,6 @@ p.algovid.com proxy
 .yzzk.com proxy
 .zacebook.com proxy
 .zannel.com proxy
-.zaobao.com proxy
-.zaobao.com.sg proxy
 .zaozon.com proxy
 .zarias.com proxy
 .zattoo.com proxy
@@ -8375,7 +8360,6 @@ p.algovid.com proxy
 .aojiyouxue.com direct
 .aojiyuke.com direct
 .aojoo.com direct
-.aol.com direct
 .aoomoo.com direct
 .aoshu.com direct
 .aosoo.com direct
@@ -11787,7 +11771,6 @@ p.algovid.com proxy
 .jidongrc.com direct
 .jiemeng8.com direct
 .jiemo.net direct
-.jiepang.com direct
 .jiepei.com direct
 .jietusoft.com direct
 .jieyitong668.com direct
@@ -13981,9 +13964,6 @@ p.algovid.com proxy
 .silverlightchina.net direct
 .simwe.com direct
 .sina.com direct
-.sinaapp.com direct
-.sinaedge.com direct
-.sinahk.net direct
 .sinaimg.com direct
 .sinajs.com direct
 .singbon.com direct
@@ -14118,7 +14098,6 @@ p.algovid.com proxy
 .soupei360.com direct
 .soupu.com direct
 .souqian.com direct
-.sourceforge.net direct
 .southcn.com direct
 .southmoney.com direct
 .soutudi.com direct
@@ -14816,7 +14795,6 @@ p.algovid.com proxy
 .vvvdj.com direct
 .vx.com direct
 .vxinyou.com direct
-.w3.org direct
 .w7000.com direct
 .w707.com direct
 .wa8688.com direct
@@ -15053,7 +15031,6 @@ p.algovid.com proxy
 .wsche.com direct
 .wshang.com direct
 .wshangyun.com direct
-.wsj.com direct
 .wsloan.com direct
 .wsmhw.com direct
 .wsqsgo.com direct
@@ -15869,7 +15846,6 @@ p.algovid.com proxy
 .zangao.com direct
 .zangyaofang.com direct
 .zanzw.com direct
-.zaobao.com direct
 .zaoche168.com direct
 .zaojiao.com direct
 .zaoyang.org direct
