@@ -3,13 +3,15 @@ package com.github.immueggpain.smartproxytool;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -23,17 +25,11 @@ import com.github.immueggpain.common.scp;
 import com.github.immueggpain.common.scp.ProcessResult;
 
 /**
- * process the log to get all default rules. ping them to check if DIRECT is
- * better than PROXY
+ * process user.rule. find dups
  */
-class LogProcessor {
+class DedupUserrule {
 
-	private static final Pattern ip_regex = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
 	private static final Pattern ping_regex_win = Pattern.compile("time([=<])([0-9]+)ms");
-	private static final Pattern default_line = Pattern
-			.compile(".+ (?:socks5 |connect|http   ): PROXY  <- default <- (.+)");
-
-	private NavigableMap<Long, IpRange> ip_to_nn;
 
 	public static class IpRange {
 		public final long begin;
@@ -47,69 +43,17 @@ class LogProcessor {
 		}
 	}
 
-	// args: log file path
+	// args: new user.rule file path
 	public static void main(String[] args) {
 		try {
-			new LogProcessor().run(args[0]);
+			new DedupUserrule().run(args);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void run(String logFilePath) throws Exception {
-		load_domain_nn_table();
-		HashSet<String> rules = new HashSet<>();
-		HashSet<String> recordedDomains = new HashSet<>();
-		HashSet<String> unpingableDomains = new HashSet<>();
-		List<String> lines = Files.readAllLines(Paths.get(logFilePath), StandardCharsets.UTF_8);
-		for (String line : lines) {
-			Matcher m = default_line.matcher(line);
-			if (m.find()) {
-				String domainName = m.group(1);
-
-				// check if already encountered
-				if (recordedDomains.contains(domainName))
-					continue;
-				recordedDomains.add(domainName);
-
-				// nslookup
-				InetAddress addr;
-				try {
-					addr = InetAddress.getByName(domainName);
-				} catch (UnknownHostException e) {
-					continue;
-				}
-
-				float latency = -1;
-				String target = null;
-
-				float latency1 = ping_win(addr);
-				float latency2 = ping_win(addr);
-				if (latency1 < 0 || latency2 < 0) {
-					unpingableDomains.add(domainName);
-					target = queryIpRules(addr);
-					rules.add(domainName + " " + target);
-				} else {
-					latency = (latency1 + latency2) / 2;
-
-					if (latency <= 50) {
-						target = "direct";
-					} else if (latency > 160) {
-						target = "proxy";
-					} else {
-						target = queryIpRules(addr);
-					}
-					rules.add(domainName + " " + target);
-
-				}
-
-				System.out.println(domainName + " " + addr.getHostAddress() + " " + latency + "ms " + target);
-			}
-		}
-		System.out.println("==========rules:");
-		for (String rule : rules) {
-			System.out.println(rule);
-		}
+	private void run(String[] args) throws Exception {
+		run(args[0]);
 	}
 
 	public static float ping_win(InetAddress ip) throws IOException {
@@ -124,6 +68,7 @@ class LogProcessor {
 			return -1;
 	}
 
+	@SuppressWarnings("unused")
 	private String queryIpRules(InetAddress addr) {
 		long ip = ip2long(addr);
 		IpRange ipRange = ip_to_nn.floorEntry(ip).getValue();
@@ -150,39 +95,95 @@ class LogProcessor {
 		return ipLong;
 	}
 
-	private void load_domain_nn_table() throws Exception {
+	public class DomainInfo {
+		public String domain;
+		public int count_proxy;
+		public int count_direct;
+	}
+
+	private static final Pattern domain_regex = Pattern.compile("[a-z0-9-_]*(\\.[a-z0-9-_]+)*");
+	private static final Pattern ip_regex = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
+	private NavigableMap<Long, IpRange> ip_to_nn;
+
+	// domains
+	private HashMap<String, String> domains;
+
+	private void run(String outputFile) throws Exception {
+		domains = new HashMap<>();
+		ArrayList<String> outputLines = new ArrayList<>();
+
 		ip_to_nn = new TreeMap<>();
 		Path path = Paths.get("user.rule");
 		try (BOMInputStream is = new BOMInputStream(new FileInputStream(path.toFile()))) {
 			for (String line : IOUtils.readLines(is, sc.utf8)) {
+
 				line = line.trim();
+
+				// add line first, then delete it maybe
+				outputLines.add(line);
+
 				if (line.isEmpty())
 					continue;
 				if (line.startsWith("#"))
 					continue;
 				String[] segments = line.split(" ");
+
+				// handle a line of ip rule
 				if (ip_regex.matcher(segments[0]).matches()) {
 					// ip
 					if (segments.length != 3)
-						throw new Exception("nn_table bad line " + line);
+						throw new Exception("user.rule bad line " + line);
 					if (!ip_regex.matcher(segments[1]).matches())
-						throw new Exception("nn_table bad line " + line);
+						throw new Exception("user.rule bad line " + line);
 					String target;
 					if (segments[2].equals("direct"))
-						target = segments[2];
+						target = "direct";
 					else if (segments[2].equals("reject"))
-						target = segments[2];
+						target = "reject";
 					else if (segments[2].equals("proxy"))
-						target = segments[2];
+						target = "proxy";
 					else
-						throw new Exception("nn_table bad line " + line);
+						throw new Exception("user.rule bad line " + line);
 					long begin = ip2long(segments[0]);
 					long end = ip2long(segments[1]);
 					ip_to_nn.put(begin, new IpRange(begin, end, target));
 					continue;
 				}
+
+				// a line of domain rule
+				if (segments.length != 2)
+					throw new Exception("user.rule bad line: " + line);
+				if (!domain_regex.matcher(segments[0]).matches())
+					throw new Exception("user.rule bad line: " + line);
+
+				// parse target(proxy/direct)
+				String target;
+				if (segments[1].equals("direct"))
+					target = "direct";
+				else if (segments[1].equals("reject"))
+					target = "reject";
+				else if (segments[1].equals("proxy"))
+					target = "proxy";
+				else
+					throw new Exception("user.rule bad line " + line);
+
+				//
+				String fulldn = segments[0];
+				String oldtarget = domains.get(fulldn);
+				if (oldtarget == null)
+					domains.put(fulldn, target);
+				else if (oldtarget.equals(target)) {
+					// dup
+					outputLines.remove(outputLines.size() - 1);
+				} else {
+					// conflict
+					System.err.println("conflict! " + fulldn);
+				}
 			}
-		}
+		} // end of open file
+
+		// write output
+		Files.write(Paths.get(outputFile), outputLines);
 	}
 
 }
