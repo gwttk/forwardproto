@@ -183,6 +183,7 @@ class DedupUserrule {
 		} // end of open file
 
 		// write output
+		outputLines.set(0, "\ufeff" + outputLines.get(0));
 		Files.write(Paths.get(outputFile), outputLines);
 	}
 
