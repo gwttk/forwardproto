@@ -347,7 +347,6 @@
 .6iee.com proxy
 .badlogicgames.com proxy
 .zopim.com proxy
-.pro-market.net direct
 .opensrs.com proxy
 .rackspace.com proxy
 .getclicky.com proxy
@@ -516,7 +515,7 @@
 .ruder.io proxy
 .sciunto.org proxy
 .gitcdn.xyz proxy
-.intel.com direct
+.intel.com proxy
 .quora.com proxy
 .pantheonsite.io proxy
 .kaggleusercontent.com direct
@@ -716,7 +715,6 @@
 .nflxso.net proxy
 .gamesradar-gb.gamesradar.com proxy
 .assets.nflxext.com proxy
-.cdn-fluct.sh.adingo.jp direct
 .p.metrilo.com proxy
 .metrics.bmc.com proxy
 .picsum.photos proxy
@@ -1130,7 +1128,6 @@
 .psnine.com direct
 .krk.kargo.com proxy
 .share.nintendo.com proxy
-.bugs.chromium.org direct
 .ak-us.wal.co proxy
 .pypi.org proxy
 .hw-us-dyn.wal.co proxy
@@ -2156,7 +2153,6 @@
 .cdn.bizible.com proxy
 .displaytrack.fuel451.com direct
 .targaryen.unrulymedia.com proxy
-.ads.pro-market.net proxy
 .tortoisesvn.net proxy
 .netdna.bootstrapcdn.com proxy
 .api.stacksocial.com proxy
@@ -2888,7 +2884,6 @@
 .love.bobo.com direct
 .admin.brightcove.com proxy
 .g.x.cn.xtgreat.com direct
-.fei.pro-market.net proxy
 .molekule.com proxy
 .s1.wp.com proxy
 .cc.majorserving.com direct
@@ -12080,7 +12075,6 @@
 .mw1950.com direct
 .mx175.com direct
 .mxwz.com direct
-.my.cl.ly direct
 .my0511.com direct
 .my0538.com direct
 .my0792.com direct
