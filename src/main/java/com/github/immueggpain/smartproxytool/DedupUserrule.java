@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -98,6 +99,7 @@ class DedupUserrule {
 	}
 
 	private static final Pattern domain_regex = Pattern.compile("[a-z0-9-_]*(\\.[a-z0-9-_]+)*");
+	private static final Pattern domain_line_regex = Pattern.compile("[a-z0-9-_]*(\\.[a-z0-9-_]+)* [a-z]+");
 	private static final Pattern ip_regex = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
 	private NavigableMap<Long, IpRange> ip_to_nn;
 
@@ -184,6 +186,47 @@ class DedupUserrule {
 				}
 			}
 		} // end of open file
+
+		// remove redundant children
+		for (Iterator<String> iterator = outputLines.iterator(); iterator.hasNext();) {
+			String line = iterator.next();
+			if (!domain_line_regex.matcher(line).matches()) {
+				// not domain line
+			} else {
+				// domain line
+				String[] segments = line.split(" ");
+				String domain = segments[0];
+				String target = segments[1];
+
+				String parent = domain;
+
+				while (true) {
+					int indexOf = parent.indexOf('.', 1);
+					if (indexOf == -1)
+						break;
+					parent = parent.substring(indexOf);
+
+					String parentTarget = domains.get(parent);
+
+					if (parentTarget != null) {
+						// there's a parent
+						if (parentTarget.equals(target)) {
+							// this one is redundant
+							System.out.println("redunt");
+							System.out.println(String.format("parent: %s %s", parent, parentTarget));
+							System.out.println(String.format("child: %s %s", domain, target));
+							iterator.remove();
+							break;// only remove once
+						} else {
+							// conflict with parent
+							System.err.println("conflict");
+							System.err.println(String.format("parent: %s %s", parent, parentTarget));
+							System.err.println(String.format("child: %s %s", domain, target));
+						}
+					}
+				}
+			}
+		}
 
 		// write output
 		outputLines.set(0, "\ufeff" + outputLines.get(0));
