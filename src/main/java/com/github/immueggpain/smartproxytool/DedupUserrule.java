@@ -3,15 +3,11 @@ package com.github.immueggpain.smartproxytool;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -169,6 +165,13 @@ class DedupUserrule {
 
 				//
 				String fulldn = segments[0];
+
+				// add dot
+				if (!fulldn.startsWith(".")) {
+					fulldn = "." + fulldn;
+					outputLines.set(outputLines.size() - 1, fulldn + " " + target);
+				}
+
 				String oldtarget = domains.get(fulldn);
 				if (oldtarget == null)
 					domains.put(fulldn, target);
