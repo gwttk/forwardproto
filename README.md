@@ -1,4 +1,6 @@
-## Introduction
+[![Build Status](https://travis-ci.com/Immueggpain/smartproxy.svg?branch=master)](https://travis-ci.com/Immueggpain/smartproxy)
+
+## Introduction 
 
 **A naive implementation of tcp tunnel.**
 
