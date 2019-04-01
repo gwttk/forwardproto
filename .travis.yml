@@ -1,14 +1,14 @@
 language: java
 before_deploy:
-      - PROJ_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-      - ARTIFACTID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
-      # Set up git user name and tag this commit
-      - git config --local user.name "Immueggpain"
-      - git config --local user.email "Immueggpain@users.noreply.github.com"
-      - export TRAVIS_TAG=v$PROJ_VERSION
-      - git tag $TRAVIS_TAG
-    deploy:
-      provider: releases
-      api_key: "GITHUB OAUTH TOKEN"
-      file: "$ARTIFACTID-$PROJ_VERSION.zip"
-      skip_cleanup: true
+    - PROJ_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+    - ARTIFACTID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+    # Set up git user name and tag this commit
+    - git config --local user.name "Immueggpain"
+    - git config --local user.email "Immueggpain@users.noreply.github.com"
+    - export TRAVIS_TAG=v$PROJ_VERSION
+    - git tag $TRAVIS_TAG
+deploy:
+    provider: releases
+    api_key: "GITHUB OAUTH TOKEN"
+    file: "$ARTIFACTID-$PROJ_VERSION.zip"
+    skip_cleanup: true
