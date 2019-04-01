@@ -14,7 +14,7 @@
 [//]: # (<img src="diagram.svg" width="90%">)
 
 ## QuickStart
-* Make sure you have **[Java](https://jdk.java.net/11/) 8+** installed
+* Make sure you have **[Java](https://jdk.java.net/11/) 8+** installed. You also need a valid SSL cert on server.
 * [Download latest build](https://github.com/Immueggpain/smartproxy/releases). Unzip it
 * Run `java -jar smartproxy-x.x.x.jar --help` to get help.
 * Run client `java -jar smartproxy-x.x.x.jar -m client -n <local_listening_port> -p <server_listening_port> -s <server_ip> -w <secret_password>`.
