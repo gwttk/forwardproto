@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -219,11 +220,64 @@ class DedupUserrule {
 							break;// only remove once
 						} else {
 							// conflict with parent
-							System.err.println("conflict");
-							System.err.println(String.format("parent: %s %s", parent, parentTarget));
-							System.err.println(String.format("child: %s %s", domain, target));
+							System.err.println(String.format("conflict: parent: %s %s child: %s %s", parent,
+									parentTarget, domain, target));
+
 						}
 					}
+				}
+			}
+		}
+
+		// merge children with same target to sld
+		for (int i = 0; i < outputLines.size(); i++) {
+			String line = outputLines.get(i);
+			if (!domain_line_regex.matcher(line).matches()) {
+				// not domain line
+			} else {
+				// domain line
+				String[] segments = line.split(" ");
+				String domain = segments[0];
+				String target = segments[1];
+
+				String sld = getSLD(domain);
+
+				// if domain is already sld, skip
+				if (sld.equals(domain))
+					continue;
+
+				// if all other domain of same sld are same target, ascend me to sld
+				boolean consistent = true;
+				// if there's another sld with same target, delete me
+				boolean deleteMe = false;
+				for (String line2 : outputLines) {
+					if (!domain_line_regex.matcher(line2).matches()) {
+						// not domain line
+					} else {
+						// domain line
+						String[] segments2 = line2.split(" ");
+						String domain2 = segments2[0];
+						String target2 = segments2[1];
+
+						String sld2 = getSLD(domain2);
+						if (!sld2.equals(sld))
+							continue;
+						if (sld2.equals(domain2))
+							deleteMe = true;
+						if (!target2.equals(target))
+							consistent = false;
+					}
+				}
+
+				// now what to do with me
+				if (consistent) {
+					if (deleteMe) {
+						outputLines.remove(i);
+						i--;
+					} else
+						outputLines.set(i, sld + " " + target);
+				} else {
+					// do nothing
 				}
 			}
 		}
@@ -231,6 +285,14 @@ class DedupUserrule {
 		// write output
 		outputLines.set(0, "\ufeff" + outputLines.get(0));
 		Files.write(Paths.get(outputFile), outputLines);
+	}
+
+	private static String getSLD(String fullDomain) {
+		int firstDot = fullDomain.lastIndexOf('.', fullDomain.length() - 1);
+		int secondDot = fullDomain.lastIndexOf('.', firstDot - 1);
+		if (secondDot == -1)
+			return fullDomain;
+		return fullDomain.substring(secondDot);
 	}
 
 }
