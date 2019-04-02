@@ -296,18 +296,14 @@
 
 
 #auto rules
-.rc461n.jomodns.com direct
+.jomodns.com direct
 .gotify.net proxy
-.psi.tubemogul.com proxy
-.axure.us6.list-manage.com proxy
-.rg215n.jomodns.com direct
-.rl.go2yd.com direct
-.rd460n.jomodns.com direct
-.ry423n.jomodns.com direct
+.tubemogul.com proxy
+.list-manage.com proxy
+.go2yd.com direct
 .travis-ci.com proxy
-.www.abeautifulsite.net proxy
+.abeautifulsite.net proxy
 .static.oktopost.com proxy
-.rj233n.jomodns.com direct
 .api.xiaomingming.org direct
 .avatar.shuidihuzhu.com direct
 .okt.to proxy
@@ -316,7 +312,6 @@
 .steemitimages.com proxy
 .b.lnk0.com direct
 .goreportcard.com proxy
-.rj239n.jomodns.com direct
 .stackoverflow.blog proxy
 .store.storeimages.cdn-apple.com direct
 .cdn-images.mailchimp.com proxy
@@ -333,9 +328,7 @@
 .avatars.io proxy
 .mon.xtgreat.com direct
 .static.yidianzixun.com direct
-.s.go2yd.com direct
 .s2.shuidichou.com direct
-.web-track.go2yd.com direct
 .www.blackdir.com direct
 .mb.yidianzixun.com direct
 .synyx.de proxy
@@ -343,18 +336,15 @@
 .rubyinstaller.org proxy
 .steemit.com proxy
 .p.solocpm.com proxy
-.i1.go2yd.com direct
 .kiwivm.64clouds.com proxy
 .website-sdc.shuidichou.com direct
 .btn.createsend1.com proxy
 .www.shuidichou.com direct
 .ds.shuidihuzhu.com direct
-.rd436n.jomodns.com direct
 .oss.shuidichou.com direct
 .crt.shuidihuzhu.com direct
 .galmoe.com proxy
 .swiftype.com proxy
-.rh260n.jomodns.com direct
 .aes01.com direct
 .secure.gaug.es proxy
 .ubembed.com proxy
@@ -2228,7 +2218,6 @@
 .r.dlx.addthis.com proxy
 .images2.sw-cdn.net proxy
 .stats3.unrulymedia.com proxy
-.mc.us17.list-manage.com proxy
 .appnexus-partners.tremorhub.com proxy
 .drm.media.baidubce.com direct
 .p-cn.acxiom-online.com direct
@@ -2283,7 +2272,6 @@
 .www.qualcomm.com proxy
 .pc-nms-blobserve.nomanssky.com proxy
 .privacy.crwdcntrl.net proxy
-.ud.tubemogul.com proxy
 .cs.adingo.jp proxy
 .spiffymachine.com direct
 .cdn.staticneo.com proxy
@@ -2470,7 +2458,6 @@
 .pc-nms-discovery.nomanssky.com proxy
 .bandcamp.com proxy
 .cdn.firstimpression.io proxy
-.1e245a711a8c30dbfb8d9f92927c856cc09bf11b.www.galileo.jomodns.com direct
 .i8jupg.bn.files.1drv.com direct
 .j9j6l.top proxy
 .c.steelhousemedia.com proxy
@@ -3009,7 +2996,6 @@
 .cdnwidget.com proxy
 .tcheck.outbrainimg.com proxy
 .forbes.com proxy
-.si1.go2yd.com direct
 .parsely.com proxy
 .mon.majorserving.com direct
 .imagesvc.timeincapp.com proxy
@@ -3440,7 +3426,6 @@
 .html5.adsrvr.org proxy
 .geoservice.curse.com proxy
 .sync.bfmio.com proxy
-.rtd.tubemogul.com proxy
 .s.vertamedia.com proxy
 .static-na.payments-amazon.com proxy
 .sync.spotim.market proxy
@@ -3591,7 +3576,6 @@
 .s3cf.flashtalking.com proxy
 .sdk.streamrail.com proxy
 .imprlatbmp.taboola.com proxy
-.playtime.tubemogul.com proxy
 .dsp.adkernel.com proxy
 .zam-tagan.adlightning.com proxy
 .cdn.bizibly.com proxy
