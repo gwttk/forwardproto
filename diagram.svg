@@ -1,40 +1,40 @@
-<svg id="mermaid-1553666958106" width="100%" xmlns="http://www.w3.org/2000/svg" height="100%" style="max-width:850px;" viewBox="-50 -10 850 557"><style>
+<svg id="mermaid-1554303991820" width="100%" xmlns="http://www.w3.org/2000/svg" height="100%" style="max-width:850px;" viewBox="-50 -10 850 732"><style>
 
 
-#mermaid-1553666958106 .label {
+#mermaid-1554303991820 .label {
   font-family: 'trebuchet ms', verdana, arial;
   color: #333; }
 
-#mermaid-1553666958106 .node rect,
-#mermaid-1553666958106 .node circle,
-#mermaid-1553666958106 .node ellipse,
-#mermaid-1553666958106 .node polygon {
+#mermaid-1554303991820 .node rect,
+#mermaid-1554303991820 .node circle,
+#mermaid-1554303991820 .node ellipse,
+#mermaid-1554303991820 .node polygon {
   fill: #ECECFF;
   stroke: #9370DB;
   stroke-width: 1px; }
 
-#mermaid-1553666958106 .node.clickable {
+#mermaid-1554303991820 .node.clickable {
   cursor: pointer; }
 
-#mermaid-1553666958106 .arrowheadPath {
+#mermaid-1554303991820 .arrowheadPath {
   fill: #333333; }
 
-#mermaid-1553666958106 .edgePath .path {
+#mermaid-1554303991820 .edgePath .path {
   stroke: #333333;
   stroke-width: 1.5px; }
 
-#mermaid-1553666958106 .edgeLabel {
+#mermaid-1554303991820 .edgeLabel {
   background-color: #e8e8e8; }
 
-#mermaid-1553666958106 .cluster rect {
+#mermaid-1554303991820 .cluster rect {
   fill: #ffffde !important;
   stroke: #aaaa33 !important;
   stroke-width: 1px !important; }
 
-#mermaid-1553666958106 .cluster text {
+#mermaid-1554303991820 .cluster text {
   fill: #333; }
 
-#mermaid-1553666958106 div.mermaidTooltip {
+#mermaid-1554303991820 div.mermaidTooltip {
   position: absolute;
   text-align: center;
   max-width: 200px;
@@ -47,314 +47,314 @@
   pointer-events: none;
   z-index: 100; }
 
-#mermaid-1553666958106 .actor {
+#mermaid-1554303991820 .actor {
   stroke: #CCCCFF;
   fill: #ECECFF; }
 
-#mermaid-1553666958106 text.actor {
+#mermaid-1554303991820 text.actor {
   fill: black;
   stroke: none; }
 
-#mermaid-1553666958106 .actor-line {
+#mermaid-1554303991820 .actor-line {
   stroke: grey; }
 
-#mermaid-1553666958106 .messageLine0 {
+#mermaid-1554303991820 .messageLine0 {
   stroke-width: 1.5;
   stroke-dasharray: '2 2';
   stroke: #333; }
 
-#mermaid-1553666958106 .messageLine1 {
+#mermaid-1554303991820 .messageLine1 {
   stroke-width: 1.5;
   stroke-dasharray: '2 2';
   stroke: #333; }
 
-#mermaid-1553666958106 #arrowhead {
+#mermaid-1554303991820 #arrowhead {
   fill: #333; }
 
-#mermaid-1553666958106 #crosshead path {
+#mermaid-1554303991820 #crosshead path {
   fill: #333 !important;
   stroke: #333 !important; }
 
-#mermaid-1553666958106 .messageText {
+#mermaid-1554303991820 .messageText {
   fill: #333;
   stroke: none; }
 
-#mermaid-1553666958106 .labelBox {
+#mermaid-1554303991820 .labelBox {
   stroke: #CCCCFF;
   fill: #ECECFF; }
 
-#mermaid-1553666958106 .labelText {
+#mermaid-1554303991820 .labelText {
   fill: black;
   stroke: none; }
 
-#mermaid-1553666958106 .loopText {
+#mermaid-1554303991820 .loopText {
   fill: black;
   stroke: none; }
 
-#mermaid-1553666958106 .loopLine {
+#mermaid-1554303991820 .loopLine {
   stroke-width: 2;
   stroke-dasharray: '2 2';
   stroke: #CCCCFF; }
 
-#mermaid-1553666958106 .note {
+#mermaid-1554303991820 .note {
   stroke: #aaaa33;
   fill: #fff5ad; }
 
-#mermaid-1553666958106 .noteText {
+#mermaid-1554303991820 .noteText {
   fill: black;
   stroke: none;
   font-family: 'trebuchet ms', verdana, arial;
   font-size: 14px; }
 
-#mermaid-1553666958106 .activation0 {
+#mermaid-1554303991820 .activation0 {
   fill: #f4f4f4;
   stroke: #666; }
 
-#mermaid-1553666958106 .activation1 {
+#mermaid-1554303991820 .activation1 {
   fill: #f4f4f4;
   stroke: #666; }
 
-#mermaid-1553666958106 .activation2 {
+#mermaid-1554303991820 .activation2 {
   fill: #f4f4f4;
   stroke: #666; }
 
 
-#mermaid-1553666958106 .section {
+#mermaid-1554303991820 .section {
   stroke: none;
   opacity: 0.2; }
 
-#mermaid-1553666958106 .section0 {
+#mermaid-1554303991820 .section0 {
   fill: rgba(102, 102, 255, 0.49); }
 
-#mermaid-1553666958106 .section2 {
+#mermaid-1554303991820 .section2 {
   fill: #fff400; }
 
-#mermaid-1553666958106 .section1,
-#mermaid-1553666958106 .section3 {
+#mermaid-1554303991820 .section1,
+#mermaid-1554303991820 .section3 {
   fill: white;
   opacity: 0.2; }
 
-#mermaid-1553666958106 .sectionTitle0 {
+#mermaid-1554303991820 .sectionTitle0 {
   fill: #333; }
 
-#mermaid-1553666958106 .sectionTitle1 {
+#mermaid-1554303991820 .sectionTitle1 {
   fill: #333; }
 
-#mermaid-1553666958106 .sectionTitle2 {
+#mermaid-1554303991820 .sectionTitle2 {
   fill: #333; }
 
-#mermaid-1553666958106 .sectionTitle3 {
+#mermaid-1554303991820 .sectionTitle3 {
   fill: #333; }
 
-#mermaid-1553666958106 .sectionTitle {
+#mermaid-1554303991820 .sectionTitle {
   text-anchor: start;
   font-size: 11px;
   text-height: 14px; }
 
 
-#mermaid-1553666958106 .grid .tick {
+#mermaid-1554303991820 .grid .tick {
   stroke: lightgrey;
   opacity: 0.3;
   shape-rendering: crispEdges; }
 
-#mermaid-1553666958106 .grid path {
+#mermaid-1554303991820 .grid path {
   stroke-width: 0; }
 
 
-#mermaid-1553666958106 .today {
+#mermaid-1554303991820 .today {
   fill: none;
   stroke: red;
   stroke-width: 2px; }
 
 
 
-#mermaid-1553666958106 .task {
+#mermaid-1554303991820 .task {
   stroke-width: 2; }
 
-#mermaid-1553666958106 .taskText {
+#mermaid-1554303991820 .taskText {
   text-anchor: middle;
   font-size: 11px; }
 
-#mermaid-1553666958106 .taskTextOutsideRight {
+#mermaid-1554303991820 .taskTextOutsideRight {
   fill: black;
   text-anchor: start;
   font-size: 11px; }
 
-#mermaid-1553666958106 .taskTextOutsideLeft {
+#mermaid-1554303991820 .taskTextOutsideLeft {
   fill: black;
   text-anchor: end;
   font-size: 11px; }
 
 
-#mermaid-1553666958106 .taskText0,
-#mermaid-1553666958106 .taskText1,
-#mermaid-1553666958106 .taskText2,
-#mermaid-1553666958106 .taskText3 {
+#mermaid-1554303991820 .taskText0,
+#mermaid-1554303991820 .taskText1,
+#mermaid-1554303991820 .taskText2,
+#mermaid-1554303991820 .taskText3 {
   fill: white; }
 
-#mermaid-1553666958106 .task0,
-#mermaid-1553666958106 .task1,
-#mermaid-1553666958106 .task2,
-#mermaid-1553666958106 .task3 {
+#mermaid-1554303991820 .task0,
+#mermaid-1554303991820 .task1,
+#mermaid-1554303991820 .task2,
+#mermaid-1554303991820 .task3 {
   fill: #8a90dd;
   stroke: #534fbc; }
 
-#mermaid-1553666958106 .taskTextOutside0,
-#mermaid-1553666958106 .taskTextOutside2 {
+#mermaid-1554303991820 .taskTextOutside0,
+#mermaid-1554303991820 .taskTextOutside2 {
   fill: black; }
 
-#mermaid-1553666958106 .taskTextOutside1,
-#mermaid-1553666958106 .taskTextOutside3 {
+#mermaid-1554303991820 .taskTextOutside1,
+#mermaid-1554303991820 .taskTextOutside3 {
   fill: black; }
 
 
-#mermaid-1553666958106 .active0,
-#mermaid-1553666958106 .active1,
-#mermaid-1553666958106 .active2,
-#mermaid-1553666958106 .active3 {
+#mermaid-1554303991820 .active0,
+#mermaid-1554303991820 .active1,
+#mermaid-1554303991820 .active2,
+#mermaid-1554303991820 .active3 {
   fill: #bfc7ff;
   stroke: #534fbc; }
 
-#mermaid-1553666958106 .activeText0,
-#mermaid-1553666958106 .activeText1,
-#mermaid-1553666958106 .activeText2,
-#mermaid-1553666958106 .activeText3 {
+#mermaid-1554303991820 .activeText0,
+#mermaid-1554303991820 .activeText1,
+#mermaid-1554303991820 .activeText2,
+#mermaid-1554303991820 .activeText3 {
   fill: black !important; }
 
 
-#mermaid-1553666958106 .done0,
-#mermaid-1553666958106 .done1,
-#mermaid-1553666958106 .done2,
-#mermaid-1553666958106 .done3 {
+#mermaid-1554303991820 .done0,
+#mermaid-1554303991820 .done1,
+#mermaid-1554303991820 .done2,
+#mermaid-1554303991820 .done3 {
   stroke: grey;
   fill: lightgrey;
   stroke-width: 2; }
 
-#mermaid-1553666958106 .doneText0,
-#mermaid-1553666958106 .doneText1,
-#mermaid-1553666958106 .doneText2,
-#mermaid-1553666958106 .doneText3 {
+#mermaid-1554303991820 .doneText0,
+#mermaid-1554303991820 .doneText1,
+#mermaid-1554303991820 .doneText2,
+#mermaid-1554303991820 .doneText3 {
   fill: black !important; }
 
 
-#mermaid-1553666958106 .crit0,
-#mermaid-1553666958106 .crit1,
-#mermaid-1553666958106 .crit2,
-#mermaid-1553666958106 .crit3 {
+#mermaid-1554303991820 .crit0,
+#mermaid-1554303991820 .crit1,
+#mermaid-1554303991820 .crit2,
+#mermaid-1554303991820 .crit3 {
   stroke: #ff8888;
   fill: red;
   stroke-width: 2; }
 
-#mermaid-1553666958106 .activeCrit0,
-#mermaid-1553666958106 .activeCrit1,
-#mermaid-1553666958106 .activeCrit2,
-#mermaid-1553666958106 .activeCrit3 {
+#mermaid-1554303991820 .activeCrit0,
+#mermaid-1554303991820 .activeCrit1,
+#mermaid-1554303991820 .activeCrit2,
+#mermaid-1554303991820 .activeCrit3 {
   stroke: #ff8888;
   fill: #bfc7ff;
   stroke-width: 2; }
 
-#mermaid-1553666958106 .doneCrit0,
-#mermaid-1553666958106 .doneCrit1,
-#mermaid-1553666958106 .doneCrit2,
-#mermaid-1553666958106 .doneCrit3 {
+#mermaid-1554303991820 .doneCrit0,
+#mermaid-1554303991820 .doneCrit1,
+#mermaid-1554303991820 .doneCrit2,
+#mermaid-1554303991820 .doneCrit3 {
   stroke: #ff8888;
   fill: lightgrey;
   stroke-width: 2;
   cursor: pointer;
   shape-rendering: crispEdges; }
 
-#mermaid-1553666958106 .doneCritText0,
-#mermaid-1553666958106 .doneCritText1,
-#mermaid-1553666958106 .doneCritText2,
-#mermaid-1553666958106 .doneCritText3 {
+#mermaid-1554303991820 .doneCritText0,
+#mermaid-1554303991820 .doneCritText1,
+#mermaid-1554303991820 .doneCritText2,
+#mermaid-1554303991820 .doneCritText3 {
   fill: black !important; }
 
-#mermaid-1553666958106 .activeCritText0,
-#mermaid-1553666958106 .activeCritText1,
-#mermaid-1553666958106 .activeCritText2,
-#mermaid-1553666958106 .activeCritText3 {
+#mermaid-1554303991820 .activeCritText0,
+#mermaid-1554303991820 .activeCritText1,
+#mermaid-1554303991820 .activeCritText2,
+#mermaid-1554303991820 .activeCritText3 {
   fill: black !important; }
 
-#mermaid-1553666958106 .titleText {
+#mermaid-1554303991820 .titleText {
   text-anchor: middle;
   font-size: 18px;
   fill: black; }
 
-#mermaid-1553666958106 g.classGroup text {
+#mermaid-1554303991820 g.classGroup text {
   fill: #9370DB;
   stroke: none;
   font-family: 'trebuchet ms', verdana, arial;
   font-size: 10px; }
 
-#mermaid-1553666958106 g.classGroup rect {
+#mermaid-1554303991820 g.classGroup rect {
   fill: #ECECFF;
   stroke: #9370DB; }
 
-#mermaid-1553666958106 g.classGroup line {
+#mermaid-1554303991820 g.classGroup line {
   stroke: #9370DB;
   stroke-width: 1; }
 
-#mermaid-1553666958106 .classLabel .box {
+#mermaid-1554303991820 .classLabel .box {
   stroke: none;
   stroke-width: 0;
   fill: #ECECFF;
   opacity: 0.5; }
 
-#mermaid-1553666958106 .classLabel .label {
+#mermaid-1554303991820 .classLabel .label {
   fill: #9370DB;
   font-size: 10px; }
 
-#mermaid-1553666958106 .relation {
+#mermaid-1554303991820 .relation {
   stroke: #9370DB;
   stroke-width: 1;
   fill: none; }
 
-#mermaid-1553666958106 #compositionStart {
+#mermaid-1554303991820 #compositionStart {
   fill: #9370DB;
   stroke: #9370DB;
   stroke-width: 1; }
 
-#mermaid-1553666958106 #compositionEnd {
+#mermaid-1554303991820 #compositionEnd {
   fill: #9370DB;
   stroke: #9370DB;
   stroke-width: 1; }
 
-#mermaid-1553666958106 #aggregationStart {
+#mermaid-1554303991820 #aggregationStart {
   fill: #ECECFF;
   stroke: #9370DB;
   stroke-width: 1; }
 
-#mermaid-1553666958106 #aggregationEnd {
+#mermaid-1554303991820 #aggregationEnd {
   fill: #ECECFF;
   stroke: #9370DB;
   stroke-width: 1; }
 
-#mermaid-1553666958106 #dependencyStart {
+#mermaid-1554303991820 #dependencyStart {
   fill: #9370DB;
   stroke: #9370DB;
   stroke-width: 1; }
 
-#mermaid-1553666958106 #dependencyEnd {
+#mermaid-1554303991820 #dependencyEnd {
   fill: #9370DB;
   stroke: #9370DB;
   stroke-width: 1; }
 
-#mermaid-1553666958106 #extensionStart {
+#mermaid-1554303991820 #extensionStart {
   fill: #9370DB;
   stroke: #9370DB;
   stroke-width: 1; }
 
-#mermaid-1553666958106 #extensionEnd {
+#mermaid-1554303991820 #extensionEnd {
   fill: #9370DB;
   stroke: #9370DB;
   stroke-width: 1; }
 
-#mermaid-1553666958106 .commit-id,
-#mermaid-1553666958106 .commit-msg,
-#mermaid-1553666958106 .branch-label {
+#mermaid-1554303991820 .commit-id,
+#mermaid-1554303991820 .commit-msg,
+#mermaid-1554303991820 .branch-label {
   fill: lightgrey;
   color: lightgrey; }
-</style><style>#mermaid-1553666958106 {
+</style><style>#mermaid-1554303991820 {
     color: rgba(0, 0, 0, 0.65);
     font: ;
-  }</style><g></g><g><line id="actor4" x1="75" y1="5" x2="75" y2="546" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="0" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="75" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="75" dy="0">App</tspan></text></g><g><line id="actor5" x1="275" y1="5" x2="275" y2="546" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="200" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="275" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="275" dy="0">Client</tspan></text></g><g><line id="actor6" x1="475" y1="5" x2="475" y2="546" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="400" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="475" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="475" dy="0">Server</tspan></text></g><g><line id="actor7" x1="675" y1="5" x2="675" y2="546" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="600" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="675" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="675" dy="0">Destination</tspan></text></g><defs><marker id="arrowhead" refX="5" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M 0,0 V 4 L6,2 Z"></path></marker></defs><defs><marker id="crosshead" markerWidth="15" markerHeight="8" orient="auto" refX="16" refY="4"><path fill="black" stroke="#000000" stroke-width="1px" d="M 9,2 V 6 L16,4 Z" style="stroke-dasharray: 0, 0;"></path><path fill="none" stroke="#000000" stroke-width="1px" d="M 0,1 L 6,7 M 6,1 L 0,7" style="stroke-dasharray: 0, 0;"></path></marker></defs><g><text x="175" y="93" class="messageText" style="text-anchor: middle;">SOCKS5 request</text><line x1="75" y1="100" x2="275" y2="100" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="128" class="messageText" style="text-anchor: middle;">TLS handshake</text><line x1="275" y1="135" x2="475" y2="135" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="163" class="messageText" style="text-anchor: middle;"></text><line x1="275" y1="170" x2="475" y2="170" class="messageLine1" stroke-width="2" stroke="black" style="stroke-dasharray: 3, 3; fill: none;"></line></g><g><text x="375" y="198" class="messageText" style="text-anchor: middle;">TLS handshake done</text><line x1="475" y1="205" x2="275" y2="205" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="233" class="messageText" style="text-anchor: middle;">password</text><line x1="275" y1="240" x2="475" y2="240" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><rect x="400" y="250" fill="#EDF2AE" stroke="#666" width="150" height="36" rx="0" ry="0" class="note"></rect><text x="396" y="274" fill="black" class="noteText"><tspan x="416" fill="black">verify password</tspan></text></g><g><text x="375" y="314" class="messageText" style="text-anchor: middle;">destination addrress</text><line x1="275" y1="321" x2="475" y2="321" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="575" y="349" class="messageText" style="text-anchor: middle;">connect</text><line x1="475" y1="356" x2="675" y2="356" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="575" y="384" class="messageText" style="text-anchor: middle;">ack</text><line x1="675" y1="391" x2="475" y2="391" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="175" y="419" class="messageText" style="text-anchor: middle;">SOCKS5 reply</text><line x1="275" y1="426" x2="75" y2="426" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="454" class="messageText" style="text-anchor: middle;">data transfer</text><line x1="75" y1="461" x2="675" y2="461" class="messageLine1" stroke-width="2" stroke="black" style="stroke-dasharray: 3, 3; fill: none;"></line></g><g><rect x="0" y="481" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="75" y="513.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="75" dy="0">App</tspan></text></g><g><rect x="200" y="481" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="275" y="513.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="275" dy="0">Client</tspan></text></g><g><rect x="400" y="481" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="475" y="513.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="475" dy="0">Server</tspan></text></g><g><rect x="600" y="481" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="675" y="513.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="675" dy="0">Destination</tspan></text></g></svg>
+  }</style><g></g><g><line id="actor648" x1="75" y1="5" x2="75" y2="721" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="0" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="75" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="75" dy="0">App</tspan></text></g><g><line id="actor649" x1="275" y1="5" x2="275" y2="721" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="200" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="275" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="275" dy="0">Client</tspan></text></g><g><line id="actor650" x1="475" y1="5" x2="475" y2="721" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="400" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="475" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="475" dy="0">Server</tspan></text></g><g><line id="actor651" x1="675" y1="5" x2="675" y2="721" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="600" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="675" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="675" dy="0">Destination</tspan></text></g><defs><marker id="arrowhead" refX="5" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M 0,0 V 4 L6,2 Z"></path></marker></defs><defs><marker id="crosshead" markerWidth="15" markerHeight="8" orient="auto" refX="16" refY="4"><path fill="black" stroke="#000000" stroke-width="1px" d="M 9,2 V 6 L16,4 Z" style="stroke-dasharray: 0, 0;"></path><path fill="none" stroke="#000000" stroke-width="1px" d="M 0,1 L 6,7 M 6,1 L 0,7" style="stroke-dasharray: 0, 0;"></path></marker></defs><g><text x="175" y="93" class="messageText" style="text-anchor: middle;">SOCKS5 request</text><line x1="75" y1="100" x2="275" y2="100" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="128" class="messageText" style="text-anchor: middle;">TLS handshake</text><line x1="275" y1="135" x2="475" y2="135" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="163" class="messageText" style="text-anchor: middle;"></text><line x1="275" y1="170" x2="475" y2="170" class="messageLine1" stroke-width="2" stroke="black" style="stroke-dasharray: 3, 3; fill: none;"></line></g><g><text x="375" y="198" class="messageText" style="text-anchor: middle;">TLS handshake done</text><line x1="475" y1="205" x2="275" y2="205" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="233" class="messageText" style="text-anchor: middle;">length (2 byte)+random bytes</text><line x1="275" y1="240" x2="475" y2="240" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="268" class="messageText" style="text-anchor: middle;">64 byte password</text><line x1="275" y1="275" x2="475" y2="275" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><rect x="400" y="285" fill="#EDF2AE" stroke="#666" width="150" height="36" rx="0" ry="0" class="note"></rect><text x="396" y="309" fill="black" class="noteText"><tspan x="416" fill="black">verify password</tspan></text></g><g><text x="375" y="349" class="messageText" style="text-anchor: middle;">timeout value (int, 4 byte)</text><line x1="275" y1="356" x2="475" y2="356" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="384" class="messageText" style="text-anchor: middle;">error code (1 byte)</text><line x1="475" y1="391" x2="275" y2="391" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="419" class="messageText" style="text-anchor: middle;">address length (2 byte)</text><line x1="275" y1="426" x2="475" y2="426" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="454" class="messageText" style="text-anchor: middle;">destination addrress</text><line x1="275" y1="461" x2="475" y2="461" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="489" class="messageText" style="text-anchor: middle;">destination port (2 byte)</text><line x1="275" y1="496" x2="475" y2="496" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="575" y="524" class="messageText" style="text-anchor: middle;">connect</text><line x1="475" y1="531" x2="675" y2="531" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="575" y="559" class="messageText" style="text-anchor: middle;">ack</text><line x1="675" y1="566" x2="475" y2="566" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="175" y="594" class="messageText" style="text-anchor: middle;">SOCKS5 reply</text><line x1="275" y1="601" x2="75" y2="601" class="messageLine0" stroke-width="2" stroke="black" marker-end="url(#arrowhead)" style="fill: none;"></line></g><g><text x="375" y="629" class="messageText" style="text-anchor: middle;">data transfer</text><line x1="75" y1="636" x2="675" y2="636" class="messageLine1" stroke-width="2" stroke="black" style="stroke-dasharray: 3, 3; fill: none;"></line></g><g><rect x="0" y="656" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="75" y="688.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="75" dy="0">App</tspan></text></g><g><rect x="200" y="656" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="275" y="688.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="275" dy="0">Client</tspan></text></g><g><rect x="400" y="656" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="475" y="688.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="475" dy="0">Server</tspan></text></g><g><rect x="600" y="656" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="675" y="688.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-family: Open-Sans, sans-serif;"><tspan x="675" dy="0">Destination</tspan></text></g></svg>
