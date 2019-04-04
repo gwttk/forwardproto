@@ -207,7 +207,7 @@ public class Smartproxy {
 			byte first_byte = (byte) byte1;
 			if (first_byte == 5) {
 				// socks5
-				socks5(first_byte, is, s_client.os, s_client);
+				socks5(first_byte, is, s_client.os, s_client.getRaw());
 				return;
 			} else if (first_byte == 4) {
 				// socks4
@@ -227,88 +227,114 @@ public class Smartproxy {
 			} else {
 				s_client.close();
 				throw new Exception("error unknown proxy protocol first_byte " + sctp.byte_to_string(first_byte));
+				// possible 0x16 for SSL/TLS
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void socks5(byte first_byte, InputStream is1, OutputStream os1, SecTcpSocket s_client) throws Exception {
-		@SuppressWarnings("unused")
-		byte socks_version = first_byte;
-		// System.out.println("socks_version " + sctp.byte_to_string(socks_version));
-		DataInputStream is = new DataInputStream(is1);
-		int num_authe_methods = is.readUnsignedByte();
-		// System.out.println("num_authe_methods " + num_authe_methods);
-		ArrayList<Byte> client_methods = new ArrayList<>(num_authe_methods);
-		for (int i = 0; i < num_authe_methods; i++) {
-			byte authe_method = is.readByte();
-			// System.out.println("authe_method " + sctp.byte_to_string(authe_method));
-			client_methods.add(authe_method);
-		}
-		if (client_methods.indexOf((byte) 0) == -1) {
-			throw new Exception("error client does not support '0' auth method");
-		}
-
-		DataOutputStream os = new DataOutputStream(os1);
-		byte[] buf = new byte[2];
-		buf[0] = 5; // reply socks version
-		buf[1] = 0; // choose No authentication method
-		os.write(buf);
-		os.flush();
-
-		// recv socks version again
-		socks_version = is.readByte();
-		// System.out.println("socks_version_2 " + sctp.byte_to_string(socks_version));
-
-		// recv command code
-		byte command_code = is.readByte();
-		if (command_code != 1)
-			log.println("error command_code " + sctp.byte_to_string(command_code));
-
-		// reserved byte
-		is.readByte();
-
-		// address type
-		byte address_type = is.readByte();
-		// System.out.println("address_type " + sctp.byte_to_string(address_type));
-
-		InetAddress dest_addr = null;
-		String dest_domain = null;
-
-		if (address_type == 1) {
-			// ipv4
-			buf = new byte[4];
-			is.readFully(buf);
-			dest_addr = InetAddress.getByAddress(buf);
-		} else if (address_type == 3) {
-			// domain name
-			int domain_length = is.readUnsignedByte();
-			buf = new byte[domain_length];
-			is.readFully(buf);
-			dest_domain = sc.b2s(buf);
-		} else if (address_type == 4) {
-			// ipv6
-			buf = new byte[16];
-			is.readFully(buf);
-			dest_addr = InetAddress.getByAddress(buf);
-			throw new Exception("error ipv6 address");
-		} else {
-			// unknown address_type
-			throw new Exception("error unknown address type");
+	private void socks5(byte first_byte, InputStream is1, OutputStream os1, Socket sclient_s) {
+		DataInputStream is;
+		try {
+			is = new DataInputStream(is1);
+			int num_authe_methods = is.readUnsignedByte();
+			// System.out.println("num_authe_methods " + num_authe_methods);
+			ArrayList<Byte> client_methods = new ArrayList<>(num_authe_methods);
+			for (int i = 0; i < num_authe_methods; i++) {
+				byte authe_method = is.readByte();
+				// System.out.println("authe_method " + sctp.byte_to_string(authe_method));
+				client_methods.add(authe_method);
+			}
+			if (client_methods.indexOf((byte) 0) == -1) {
+				throw new Exception("error client does not support '0' auth method");
+			}
+		} catch (Exception e) {
+			log.println("error when read socks5 authn");
+			e.printStackTrace(log);
+			Util.abortiveCloseSocket(sclient_s);
+			return;
 		}
 
-		// port
-		int dest_port = is.readUnsignedShort();
+		DataOutputStream os;
+		byte[] buf;
+		try {
+			os = new DataOutputStream(os1);
+			buf = new byte[2];
+			buf[0] = 5; // reply socks version
+			buf[1] = 0; // choose No authentication method
+			os.write(buf);
+			os.flush();
+		} catch (Exception e) {
+			log.println("error when write socks5 authn");
+			e.printStackTrace(log);
+			Util.abortiveCloseSocket(sclient_s);
+			return;
+		}
 
 		InetSocketAddress dest_sockaddr;
-		if (dest_addr != null)
-			dest_sockaddr = new InetSocketAddress(dest_addr, dest_port);
-		else
-			dest_sockaddr = InetSocketAddress.createUnresolved(dest_domain, dest_port);
+		try {
+			// socks version
+			is.readByte();
+
+			// recv command code
+			byte command_code = is.readByte();
+			if (command_code != 1)
+				log.println("error command_code " + sctp.byte_to_string(command_code));
+
+			// reserved byte
+			is.readByte();
+
+			// address type
+			byte address_type = is.readByte();
+			// System.out.println("address_type " + sctp.byte_to_string(address_type));
+
+			InetAddress dest_addr = null;
+			String dest_domain = null;
+
+			if (address_type == 1) {
+				// ipv4
+				buf = new byte[4];
+				is.readFully(buf);
+				dest_addr = InetAddress.getByAddress(buf);
+			} else if (address_type == 3) {
+				// domain name
+				int domain_length = is.readUnsignedByte();
+				buf = new byte[domain_length];
+				is.readFully(buf);
+				dest_domain = sc.b2s(buf);
+			} else if (address_type == 4) {
+				// ipv6
+				buf = new byte[16];
+				is.readFully(buf);
+				dest_addr = InetAddress.getByAddress(buf);
+				throw new Exception("error ipv6 address");
+			} else {
+				// unknown address_type
+				throw new Exception("error unknown address type");
+			}
+
+			// port
+			int dest_port = is.readUnsignedShort();
+
+			if (dest_addr != null)
+				dest_sockaddr = new InetSocketAddress(dest_addr, dest_port);
+			else
+				dest_sockaddr = InetSocketAddress.createUnresolved(dest_domain, dest_port);
+		} catch (Exception e) {
+			log.println("error when read socks5 dest addr");
+			e.printStackTrace(log);
+			Util.abortiveCloseSocket(sclient_s);
+			return;
+		}
 
 		// now we connect next node
-		SocketBundle cserver_sb = create_connect_config_socket(dest_sockaddr, "socks5");
+		SocketBundle cserver_sb = null;
+		try {
+			cserver_sb = create_connect_config_socket(dest_sockaddr, "socks5");
+		} catch (Exception e) {
+			e.printStackTrace(log);
+		}
 		if (cserver_sb == null) {
 			// can't connect
 			buf = new byte[10];
@@ -329,9 +355,17 @@ public class Smartproxy {
 			// buf[4~7] is ip 0.0.0.0
 			// buf[8~9] is port 0
 
-			os.write(buf);
-			os.flush();
-			s_client.close();
+			try {
+				os.write(buf);
+				os.flush();
+			} catch (Exception e) {
+				log.println("error when write socks5 status");
+				e.printStackTrace(log);
+				Util.abortiveCloseSocket(sclient_s);
+				return;
+			}
+
+			Util.orderlyCloseSocket(sclient_s);
 			return;
 		}
 		// reply ok
@@ -353,12 +387,18 @@ public class Smartproxy {
 		// buf[4~7] is ip 0.0.0.0
 		// buf[8~9] is port 0
 
-		os.write(buf);
-		os.flush();
+		try {
+			os.write(buf);
+			os.flush();
+		} catch (Exception e) {
+			log.println("error when write socks5 status");
+			e.printStackTrace(log);
+			Util.abortiveCloseSocket(sclient_s);
+			return;
+		}
 
 		// transfer data
-		handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket,
-				s_client.getRaw());
+		handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket, sclient_s);
 	}
 
 	private void http_connect(byte first_byte, InputStream is, OutputStream os, Socket sclient_s) throws Exception {
