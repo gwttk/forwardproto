@@ -113,21 +113,15 @@
 
 
 #auto rules
-static.gitbook.com proxy
-githubsatellite.com proxy
-semantic-release.gitbook.io proxy
+.gitbook.com proxy
+.githubsatellite.com proxy
+.gitbook.io proxy
 .microbadger.com proxy
-badges.greenkeeper.io proxy
-secure.wufoo.com proxy
-www.wufoo.com proxy
-force12.wufoo.com proxy
-waffle.io proxy
-blobscdn.gitbook.com proxy
-sentimentalversioning.org proxy
-argonianmaid.win proxy
-api.waffle.io proxy
-.microbadger.com proxy
+.greenkeeper.io proxy
+.wufoo.com proxy
 .waffle.io proxy
+.sentimentalversioning.org proxy
+.argonianmaid.win proxy
 .300hu.com direct
 .tbcache.com direct
 .sonkwo.hk direct
@@ -906,7 +900,6 @@ api.waffle.io proxy
 .co.za proxy
 .qcloudimg.com direct
 .wikidot.com proxy
-.ww-web-push.np.communication.playstation.net proxy
 .justpremium.com proxy
 .1rx.io proxy
 .zippyshare.com proxy
@@ -1067,7 +1060,6 @@ api.waffle.io proxy
 .trophy01.np.community.playstation.net proxy
 .wololo.net proxy
 .birdiecdn.com proxy
-.alb002-web-push.np.communication.playstation.net proxy
 .kochava.com direct
 .naver.jp proxy
 .pinterest.com proxy
@@ -1161,7 +1153,6 @@ api.waffle.io proxy
 .tribalfusion.com proxy
 .krxd.net proxy
 .criteo.com proxy
-.35-161-33-245-push.np.communication.playstation.net proxy
 .static-resource.np.community.playstation.net proxy
 .www.bleepingcomputer.com proxy
 .kfd3sm2c.com direct
@@ -1314,7 +1305,6 @@ api.waffle.io proxy
 .stankyrich.com proxy
 .foursquare.com proxy
 .noelshack.com proxy
-.35-161-116-90-push.np.communication.playstation.net proxy
 .inmobi.com proxy
 .360haven.com proxy
 .bluecore.com proxy
@@ -1389,7 +1379,6 @@ api.waffle.io proxy
 .maxonclick.com direct
 .intergi.com proxy
 .bfmio.com proxy
-.35-160-191-212-push.np.communication.playstation.net proxy
 .line.me proxy
 .snapchat.com proxy
 .engageclick.com proxy
