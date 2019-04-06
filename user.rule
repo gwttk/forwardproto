@@ -104,7 +104,30 @@
 #acfun
 .aixifan.com direct
 
+.cspeewehrzhg reject
+.ksxdeklq reject
+.xttbgnwfpgu reject
+.wtipthfgz reject
+.zteulsmxcz reject
+.yynykdlkeitnjn reject
 
+
+#auto rules
+static.gitbook.com proxy
+githubsatellite.com proxy
+semantic-release.gitbook.io proxy
+.microbadger.com proxy
+badges.greenkeeper.io proxy
+secure.wufoo.com proxy
+www.wufoo.com proxy
+force12.wufoo.com proxy
+waffle.io proxy
+blobscdn.gitbook.com proxy
+sentimentalversioning.org proxy
+argonianmaid.win proxy
+api.waffle.io proxy
+.microbadger.com proxy
+.waffle.io proxy
 .300hu.com direct
 .tbcache.com direct
 .sonkwo.hk direct
@@ -159,8 +182,6 @@
 .8686c.com direct
 .douyutv.com direct
 .dz11.com direct
-
-
 .informer.com proxy
 .tumblr.com proxy
 .dmm.com proxy
@@ -285,17 +306,6 @@
 .hyperxgaming.com proxy
 .battle.net proxy
 .prezi.com proxy
-
-
-.cspeewehrzhg reject
-.ksxdeklq reject
-.xttbgnwfpgu reject
-.wtipthfgz reject
-.zteulsmxcz reject
-.yynykdlkeitnjn reject
-
-
-#auto rules
 .jomodns.com direct
 .gotify.net proxy
 .tubemogul.com proxy
@@ -1296,7 +1306,7 @@
 .bidr.io proxy
 .micpn.com proxy
 .a3cloud.net proxy
-.35-161-73-244-push.np.communication.playstation.net proxy
+.np.communication.playstation.net proxy
 .stoic-jackrabbit.com proxy
 .imgbox.com proxy
 .lucklayed.info proxy
