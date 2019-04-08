@@ -26,7 +26,7 @@
 * Enjoy!
 
 ## How to get SSL cert
-see [certbot](https://certbot.eff.org/)
+see [certbot](https://certbot.eff.org/) ([github](https://github.com/certbot/certbot))
 
 ## user.rule
 You may also update your user.rule file for better experience. Just download it and replace the old one.  
