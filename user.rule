@@ -113,6 +113,32 @@
 
 
 #auto rules
+domain04.zhangyue01.com direct
+newton-api.ele.me direct
+web-ubt.ele.me direct
+ah2.zhangyue.com direct
+cdn-api.appadhoc.com direct
+air.tb.ele.me direct
+cube.elemecdn.com direct
+freya.ele.me direct
+ah2.ireader.com direct
+perf.ele.me direct
+client-api.ele.me direct
+xapi.juicyads.com proxy
+crayfish.elemecdn.com direct
+domain03.zhangyue02.com direct
+ga.tsumino.com proxy
+app-monitor.ele.me direct
+shadow.elemecdn.com direct
+spot-01.trackingpro.pro proxy
+restapi.ele.me direct
+grand.ele.me direct
+tracker.appadhoc.com direct
+domain01.zhangyue01.com direct
+roomimg.stream.highwebmedia.com proxy
+mobile-pubt.ele.me direct
+h5.ele.me direct
+ucsec.ucweb.com direct
 .gitbook.com proxy
 .githubsatellite.com proxy
 .gitbook.io proxy
