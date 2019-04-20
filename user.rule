@@ -106,6 +106,35 @@
 
 
 #auto rules
+.eclerx.com proxy
+.jianshu.com direct
+.adboost.sk proxy
+.hiido.com direct
+.baeldung.com proxy
+.webvisor.org proxy
+.steadycdn.com proxy
+.jianshu.io direct
+.ibillboard.com proxy
+.pushpad.xyz proxy
+.coordinatedcub.com proxy
+.weibovideo.com proxy
+.pardot.com proxy
+.yystatic.com direct
+.rsms.me proxy
+.michaelfogleman.com proxy
+.ebaystatic.com proxy
+.steadyhq.com proxy
+.atlassian.com proxy
+.rightnowtech.com proxy
+.toplist.cz proxy
+.jsmentry.com proxy
+.godoc.org direct
+.wiseimp.com direct
+.alcmpn.com proxy
+.junit.org proxy
+.adfront.org proxy
+.ahcdn.com proxy
+.freeskreen.com proxy
 .cpu-world.com proxy
 .shinobi.jp proxy
 .geekbench.com proxy
