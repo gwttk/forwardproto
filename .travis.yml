@@ -7,13 +7,13 @@ before_deploy:
     #- git config --local user.email "Immueggpain@users.noreply.github.com"
     #- export TRAVIS_TAG=v$PROJ_VERSION
     #- git tag $TRAVIS_TAG
+    
+    # download githubrelease.py
+    - wget https://raw.githubusercontent.com/Immueggpain/citools/master/githubrelease.py
     - pwd
-# deploy:
-    # provider: releases
-    # api_key: $GITHUBRTOKEN
-    # file: 
-        # - "target/$ARTIFACTID-$PROJ_VERSION.zip"
-        # - "target/$ARTIFACTID-$PROJ_VERSION.jar"
-    # skip_cleanup: true
-    # on:
-        # tags: true
+deploy:
+    provider: script
+    script: python3 githubrelease.py "target/$ARTIFACTID-$PROJ_VERSION.zip" "target/$ARTIFACTID-$PROJ_VERSION.jar"
+    skip_cleanup: true
+    on:
+        tags: true
