@@ -8,6 +8,8 @@ before_deploy:
     #- export TRAVIS_TAG=v$PROJ_VERSION
     #- git tag $TRAVIS_TAG
     
+    # install PyGithub
+    - pip3 install PyGithub
     # download githubrelease.py
     - wget https://raw.githubusercontent.com/Immueggpain/citools/master/githubrelease.py
     - pwd
