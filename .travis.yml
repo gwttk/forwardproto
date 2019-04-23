@@ -8,12 +8,12 @@ before_deploy:
     #- export TRAVIS_TAG=v$PROJ_VERSION
     #- git tag $TRAVIS_TAG
     - pwd
-deploy:
-    provider: releases
-    api_key: $GITHUBRTOKEN
-    file: 
-        - "target/$ARTIFACTID-$PROJ_VERSION.zip"
-        - "target/$ARTIFACTID-$PROJ_VERSION.jar"
-    skip_cleanup: true
-    on:
-        tags: true
+# deploy:
+    # provider: releases
+    # api_key: $GITHUBRTOKEN
+    # file: 
+        # - "target/$ARTIFACTID-$PROJ_VERSION.zip"
+        # - "target/$ARTIFACTID-$PROJ_VERSION.jar"
+    # skip_cleanup: true
+    # on:
+        # tags: true
