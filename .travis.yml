@@ -2,14 +2,9 @@ language: java
 before_install:
     - sudo apt-get install -y python3-pip
 before_deploy:
+    # create some env vars
     - PROJ_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
     - ARTIFACTID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
-    # Set up git user name and tag this commit
-    #- git config --local user.name "Immueggpain"
-    #- git config --local user.email "Immueggpain@users.noreply.github.com"
-    #- export TRAVIS_TAG=v$PROJ_VERSION
-    #- git tag $TRAVIS_TAG
-    
     # install PyGithub
     - sudo pip3 install PyGithub
     # download githubrelease.py
