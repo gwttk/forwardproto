@@ -1,4 +1,6 @@
 language: java
+before_install:
+  - sudo apt-get install -y python3-pip
 before_deploy:
     - PROJ_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
     - ARTIFACTID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
