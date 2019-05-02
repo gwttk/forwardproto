@@ -106,6 +106,9 @@
 
 
 #auto rules
+.moimg.net direct
+.indienova.com direct
+.tapdb.net direct
 .eclerx.com proxy
 .jianshu.com direct
 .adboost.sk proxy

@@ -92,7 +92,7 @@ class LogProcessor {
 				} else {
 					latency = (latency1 + latency2) / 2;
 
-					if (latency <= 50) {
+					if (latency <= 80) {
 						target = "direct";
 					} else if (latency > 160) {
 						target = "proxy";
