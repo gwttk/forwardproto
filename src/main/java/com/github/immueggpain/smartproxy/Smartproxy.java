@@ -50,7 +50,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -100,10 +99,6 @@ import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
 import com.github.immueggpain.common.sctp;
 import com.github.immueggpain.smartproxy.Launcher.ClientSettings;
-import com.sun.jna.Structure;
-import com.sun.jna.platform.win32.WinDef.DWORD;
-import com.sun.jna.ptr.IntByReference;
-import com.sun.jna.win32.StdCallLibrary;
 
 public class Smartproxy {
 
@@ -1324,48 +1319,6 @@ public class Smartproxy {
 			this.is = is;
 			this.os = os;
 		}
-	}
-
-	public static interface Iphlpapi extends StdCallLibrary {
-		int GetExtendedTcpTable(MIB_TCPTABLE_OWNER_PID pTcpTable, IntByReference pdwSize, boolean bOrder, long ulAf,
-				int table, long reserved);
-
-		Iphlpapi INSTANCE = com.sun.jna.Native.loadLibrary("iphlpapi", Iphlpapi.class);
-	}
-
-	public static class MIB_TCPROW_OWNER_PID extends Structure {
-		public DWORD dwState;
-		public DWORD dwLocalAddr;
-		public DWORD dwLocalPort;
-		public DWORD dwRemoteAddr;
-		public DWORD dwRemotePort;
-		public DWORD dwOwningPid;
-
-		@Override
-		protected List<String> getFieldOrder() {
-			return Arrays.asList(new String[] { "dwState", "dwLocalAddr", "dwLocalPort", "dwRemoteAddr", "dwRemotePort",
-					"dwOwningPid" });
-		}
-
-	}
-
-	public static class MIB_TCPTABLE_OWNER_PID extends Structure {
-		public DWORD dwNumEntries;
-		public MIB_TCPROW_OWNER_PID[] table = new MIB_TCPROW_OWNER_PID[1];
-
-		public MIB_TCPTABLE_OWNER_PID() {
-		}
-
-		public MIB_TCPTABLE_OWNER_PID(int size) {
-			this.dwNumEntries = new DWORD(size);
-			this.table = (MIB_TCPROW_OWNER_PID[]) new MIB_TCPROW_OWNER_PID().toArray(size);
-		}
-
-		@Override
-		protected List<String> getFieldOrder() {
-			return Arrays.asList(new String[] { "dwNumEntries", "table" });
-		}
-
 	}
 
 	private static class NextNode {
