@@ -6,106 +6,14 @@
 # "proxy" means forward to backend proxy
 # "reject" means drop connection
 
-#tc
-.wegame.com direct
-.smtcdns.com direct
-
-#ali
-.alipcsec.com direct
-.liangxinyao.com direct
-.aliapp.org direct
-.alijk.com direct
-.autonavi.com direct
-
-#blz
-.cn.news.blizzard.com direct
-.cache-cn.battle.net direct
-.pmt-origin-cn.battle.net direct
-.serving-sys.com proxy
-.blizzard.com proxy
-
-#jd
-.jdpay.com direct
-.jcloud.com direct
-.jdcloud.com direct
-.jd.com direct
-.yiyaojd.com direct
-.baitiao.com direct
-.jdwl.com direct
-.toplife.com direct
-.jcloudcache.com direct
-.jd.hk direct
-
-#panda.tv
-.pdim.gs direct
-.ourdvsss.com direct
-.videojj.com direct
-.sobot.com direct
-.smtcdns.net direct
-.haplat.net direct
-.xycdn.com direct
-
-#ipip.net
-.ipip.net direct
-.rtbasia.com direct
-
-#163
-.163yun.com direct
-
-#microsoft
-.msedge.net proxy
-.live.net proxy
-.windowsupdate.com proxy
-.s-microsoft.com proxy
-.gfx.ms proxy
-.office365.com proxy
-.azureedge.net proxy
-.azurefd.net direct
-.xboxlive.com proxy
-.windows.com proxy
-
-#google
-.gvt1.com proxy
-.gvt3.com proxy
-.ipv6test.net proxy
-.googleadservices.com proxy
-
-#steam
-.steam-chat.com proxy
-.steampowered.com proxy
-.bscstorage.net direct
-
-#bilibili
-.biliapi.com direct
-.biligame.net direct
-
-#redit
-.redditmedia.com proxy
-.reddit.com proxy
-
-#baidu
-.baiducontent.com direct
-.bcebos.com direct
-.baidupcs.com direct
-
-#amazon
-.images-cn.ssl-images-amazon.com direct
-.images-cn-4.ssl-images-amazon.com direct
-.unagi-cn.amazon.com direct
-.fls-cn.amazon.com direct
-.amazon.com proxy
-.media-amazon.com proxy
-.amazon-adsystem.com proxy
-.amazonaws-china.com direct
-
-#youku
-.cibntv.net direct
-
-#acfun
-.aixifan.com direct
-
-
 #auto rules
+.sciences-po.fr proxy
+.hololive.tv proxy
+.strikinglycdn.com proxy
+.msauth.net direct
+.ghacks.net proxy
+.strikinglycdn.com proxy
+.sysinternals.com proxy
 .moimg.net direct
 .indienova.com direct
 .tapdb.net direct
@@ -4790,6 +4698,90 @@
 .zuola.com proxy
 .zvereff.com proxy
 .zyzc9.com proxy
+
+
+#tc
+.wegame.com direct
+.smtcdns.com direct
+#ali
+.alipcsec.com direct
+.liangxinyao.com direct
+.aliapp.org direct
+.alijk.com direct
+.autonavi.com direct
+#blz
+.cn.news.blizzard.com direct
+.cache-cn.battle.net direct
+.pmt-origin-cn.battle.net direct
+.serving-sys.com proxy
+.blizzard.com proxy
+#jd
+.jdpay.com direct
+.jcloud.com direct
+.jdcloud.com direct
+.jd.com direct
+.yiyaojd.com direct
+.baitiao.com direct
+.jdwl.com direct
+.toplife.com direct
+.jcloudcache.com direct
+.jd.hk direct
+#panda.tv
+.pdim.gs direct
+.ourdvsss.com direct
+.videojj.com direct
+.sobot.com direct
+.smtcdns.net direct
+.haplat.net direct
+.xycdn.com direct
+#ipip.net
+.ipip.net direct
+.rtbasia.com direct
+#163
+.163yun.com direct
+#microsoft
+.msedge.net proxy
+.live.net proxy
+.windowsupdate.com proxy
+.s-microsoft.com proxy
+.gfx.ms proxy
+.office365.com proxy
+.azureedge.net proxy
+.azurefd.net direct
+.xboxlive.com proxy
+.windows.com proxy
+#google
+.gvt1.com proxy
+.gvt3.com proxy
+.ipv6test.net proxy
+.googleadservices.com proxy
+#steam
+.steam-chat.com proxy
+.steampowered.com proxy
+.bscstorage.net direct
+#bilibili
+.biliapi.com direct
+.biligame.net direct
+#redit
+.redditmedia.com proxy
+.reddit.com proxy
+#baidu
+.baiducontent.com direct
+.bcebos.com direct
+.baidupcs.com direct
+#amazon
+.images-cn.ssl-images-amazon.com direct
+.images-cn-4.ssl-images-amazon.com direct
+.unagi-cn.amazon.com direct
+.fls-cn.amazon.com direct
+.amazon.com proxy
+.media-amazon.com proxy
+.amazon-adsystem.com proxy
+.amazonaws-china.com direct
+#youku
+.cibntv.net direct
+#acfun
+.aixifan.com direct
 
 
 # direct: direct connect
