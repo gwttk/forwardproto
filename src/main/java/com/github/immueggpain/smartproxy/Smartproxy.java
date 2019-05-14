@@ -396,53 +396,62 @@ public class Smartproxy {
 		handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket, sclient_s);
 	}
 
-	private void http_connect(byte first_byte, InputStream is, OutputStream os, Socket sclient_s) throws Exception {
-		byte[] headers_buf = new byte[1024 * 1024];
-		int pos = 0;
-		headers_buf[pos++] = first_byte;
-		while (true) {
-			int b = is.read();
-			if (b == -1) {
-				throw new Exception("error incomplete http headers");
-			}
-			headers_buf[pos++] = (byte) b;
-			if (pos >= 4 && headers_buf[pos - 4] == '\r' && headers_buf[pos - 3] == '\n' && headers_buf[pos - 2] == '\r'
-					&& headers_buf[pos - 1] == '\n') {
-				break;
-			}
-		}
-		String headers = sc.b2s(headers_buf, 0, pos);
-		String[] header_array = headers.split("\r\n");
-		Matcher matcher = httpconnect_regex.matcher(header_array[0]);
-		if (!matcher.find()) {
-			log.println(headers);
-			throw new Exception("error no host or not http connect");
-		}
-		String dest_host = matcher.group(1);
-		int port = Integer.parseInt(matcher.group(2));
-		matcher = ip_regex.matcher(dest_host);
+	private void http_connect(byte first_byte, InputStream is, OutputStream os, Socket sclient_s) {
 		InetSocketAddress dest_sockaddr;
-		if (matcher.matches()) {
-			dest_sockaddr = new InetSocketAddress(InetAddress.getByName(dest_host), port);
-		} else {
-			dest_sockaddr = InetSocketAddress.createUnresolved(dest_host, port);
-		}
-
 		// connect to nn
-		SocketBundle cserver_sb = create_connect_config_socket(dest_sockaddr, "connect");
-		if (cserver_sb == null) {
-			// reply http 500
-			os.write(httpconnect_500response);
-			os.flush();
-			Util.orderlyCloseSocket(sclient_s);
-			return;
-		}
-		// reply http 200 ok
-		os.write(httpconnect_okresponse);
-		os.flush();
+		SocketBundle cserver_sb = null;
+		try {
+			byte[] headers_buf = new byte[1024 * 1024];
+			int pos = 0;
+			headers_buf[pos++] = first_byte;
+			while (true) {
+				int b = is.read();
+				if (b == -1) {
+					throw new Exception("error incomplete http headers");
+				}
+				headers_buf[pos++] = (byte) b;
+				if (pos >= 4 && headers_buf[pos - 4] == '\r' && headers_buf[pos - 3] == '\n'
+						&& headers_buf[pos - 2] == '\r' && headers_buf[pos - 1] == '\n') {
+					break;
+				}
+			}
+			String headers = sc.b2s(headers_buf, 0, pos);
+			String[] header_array = headers.split("\r\n");
+			Matcher matcher = httpconnect_regex.matcher(header_array[0]);
+			if (!matcher.find()) {
+				log.println(headers);
+				throw new Exception("error no host or not http connect");
+			}
+			String dest_host = matcher.group(1);
+			int port = Integer.parseInt(matcher.group(2));
+			matcher = ip_regex.matcher(dest_host);
+			if (matcher.matches()) {
+				dest_sockaddr = new InetSocketAddress(InetAddress.getByName(dest_host), port);
+			} else {
+				dest_sockaddr = InetSocketAddress.createUnresolved(dest_host, port);
+			}
 
-		// transfer data
-		handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket, sclient_s);
+			cserver_sb = create_connect_config_socket(dest_sockaddr, "connect");
+			if (cserver_sb == null) {
+				// reply http 500
+				os.write(httpconnect_500response);
+				os.flush();
+				Util.orderlyCloseSocket(sclient_s);
+				return;
+			}
+			// reply http 200 ok
+			os.write(httpconnect_okresponse);
+			os.flush();
+
+			// transfer data
+			handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket,
+					sclient_s);
+		} catch (Exception e) {
+			e.printStackTrace(log);
+			Util.abortiveCloseSocket(sclient_s);
+			if (cserver_sb != null)
+				Util.abortiveCloseSocket(cserver_sb.socket);
+		}
 	}
 
 	private void socks4(byte first_byte, InputStream is1, OutputStream os1, Socket sclient_s) throws Exception {
@@ -539,6 +548,7 @@ public class Smartproxy {
 				sclient_s);
 	}
 
+	// blockingly mutual transfer 2 sockets, make sure closing before return
 	private void handleConnection(InputStream cserver_is, OutputStream cserver_os, InputStream sclient_is,
 			OutputStream sclient_os, String dest_name, Socket cserver_s, Socket sclient_s) {
 		TunnelContext contxt = new TunnelContext(dest_name, cserver_s, sclient_s);
