@@ -2,11 +2,11 @@
 
 ## Introduction 
 
-**A TCP redirection tool**
+**A naive forwarding protocol. This is a proof of concept (PoC).**
 
 - follows 0-RTT pattern.
-- can redirect traffic on user rules.
-- accepts HTTP, SOCKS4, SOCKS4a, SOCKS5 requests. **But SOCKS5 is recommended.**
+- forward on rules.
+- handles http connect and socks requests.
 - also redispatches HTTP requests, so some old HTTP clients without keep-alive support will enjoy some performance boost.
 
 ![diagram](diagram.svg)
