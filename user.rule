@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.openwrt.org proxy
+.ntp.org proxy
+.telegram.org proxy
+.scboy.com direct
 .sciences-po.fr proxy
 .hololive.tv proxy
 .strikinglycdn.com proxy
