@@ -20,7 +20,7 @@ import org.apache.commons.io.input.BOMInputStream;
 import com.github.immueggpain.common.sc;
 
 /**
- * process user.rule. find dups
+ * process log, ping test unknown domains, add new rules to user.rule
  */
 class DedupUserrule {
 
@@ -37,7 +37,6 @@ class DedupUserrule {
 		}
 	}
 
-	// args: new user.rule file path
 	public static void main(String[] args) {
 		try {
 			String outputUserRuleFile = args[0];
@@ -215,8 +214,9 @@ class DedupUserrule {
 							break;// only remove once
 						} else {
 							// conflict with parent
-							System.err.println(String.format("conflict: parent: %s %s child: %s %s", parent,
-									parentTarget, domain, target));
+							if (!isException(domain, target))
+								System.err.println(String.format("conflict: parent: %s %s child: %s %s", parent,
+										parentTarget, domain, target));
 
 						}
 					}
@@ -280,6 +280,24 @@ class DedupUserrule {
 		// write output
 		outputLines.set(0, "\ufeff" + outputLines.get(0));
 		Files.write(Paths.get(outputFile), outputLines);
+	}
+
+	private static HashMap<String, String> excepRules = new HashMap<String, String>();
+
+	static {
+		excepRules.put(".bloomberg.cn", "proxy");
+		excepRules.put(".sonkwo.hk", "direct");
+		excepRules.put(".cms-origin-cn.battle.net", "direct");
+		excepRules.put(".pw.gigazine.net", "direct");
+	}
+
+	/** some domains are exceptions as they differ from parent domains. */
+	private static boolean isException(String domain, String target) {
+		String target_ = excepRules.get(domain);
+		if (target.equals(target_))
+			return true;
+		else
+			return false;
 	}
 
 	private static String getSLD(String fullDomain) {
