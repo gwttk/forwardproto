@@ -7,6 +7,13 @@
 # "reject" means drop connection
 
 #auto rules
+.max-c.com direct
+.kvmla.com proxy
+.wtfast.com proxy
+.liquipedia.net proxy
+.aseprite.org proxy
+.really-simple-ssl.com proxy
+.minecraft.net proxy
 .starcraft2.com proxy
 .render-us.worldofwarcraft.com proxy
 .scribdassets.com proxy
