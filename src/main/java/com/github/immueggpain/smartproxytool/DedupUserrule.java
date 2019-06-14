@@ -3,7 +3,6 @@ package com.github.immueggpain.smartproxytool;
 import java.io.FileInputStream;
 import java.net.InetAddress;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,9 +48,10 @@ class DedupUserrule {
 
 			// step 2: read old user.rule into list of lines
 			// merge old list with new list
-			Path path = Paths.get("user.rule");
-			BOMInputStream is = new BOMInputStream(new FileInputStream(path.toFile()));
-			List<String> oldRules = IOUtils.readLines(is, sc.utf8);
+			List<String> oldRules;
+			try (BOMInputStream is = new BOMInputStream(new FileInputStream(Paths.get("user.rule").toFile()))) {
+				oldRules = IOUtils.readLines(is, sc.utf8);
+			}
 			// notice the oldRules contain comments & empty lines.
 			// also I want to insert new rules after the '#auto rules' line.
 			ArrayList<String> merged = new ArrayList<String>(oldRules.size() + newRules.size());
@@ -183,6 +183,7 @@ class DedupUserrule {
 		}
 
 		// remove redundant children
+		int conflictCount = 0;
 		for (Iterator<String> iterator = outputLines.iterator(); iterator.hasNext();) {
 			String line = iterator.next();
 			if (!domain_line_regex.matcher(line).matches()) {
@@ -214,10 +215,11 @@ class DedupUserrule {
 							break;// only remove once
 						} else {
 							// conflict with parent
-							if (!isException(domain, target))
-								System.err.println(String.format("conflict: parent: %s %s child: %s %s", parent,
-										parentTarget, domain, target));
-
+							if (!isException(domain, target)) {
+								System.err.println(String.format("%d conflict: parent: %s %s child: %s %s",
+										conflictCount + 1, parent, parentTarget, domain, target));
+								conflictCount++;
+							}
 						}
 					}
 				}
@@ -289,6 +291,8 @@ class DedupUserrule {
 		excepRules.put(".sonkwo.hk", "direct");
 		excepRules.put(".cms-origin-cn.battle.net", "direct");
 		excepRules.put(".pw.gigazine.net", "direct");
+		excepRules.put(".cn.news.blizzard.com", "direct");
+		excepRules.put(".cache-cn.battle.net", "direct");
 	}
 
 	/** some domains are exceptions as they differ from parent domains. */
