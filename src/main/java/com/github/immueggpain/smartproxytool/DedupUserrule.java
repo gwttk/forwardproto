@@ -16,7 +16,6 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 
@@ -62,7 +61,7 @@ class DedupUserrule {
 			// notice the oldRules contain comments & empty lines.
 			// also I want to insert new rules after the '#auto rules' line.
 			ArrayList<String> merged = new ArrayList<String>(oldRules.size() + newRules.size());
-			int insertIndx = oldRules.indexOf("#auto rules");
+			int insertIndx = oldRules.indexOf("#auto rules") + 1;
 			merged.addAll(oldRules.subList(0, insertIndx));
 			merged.addAll(newRules);
 			merged.addAll(oldRules.subList(insertIndx, oldRules.size()));
