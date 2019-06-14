@@ -7,6 +7,22 @@
 # "reject" means drop connection
 
 #auto rules
+.starcraft2.com proxy
+.render-us.worldofwarcraft.com proxy
+.scribdassets.com proxy
+.6sense.com proxy
+.shellcheck.net proxy
+.spawningtool.com proxy
+.bluesoleil.com proxy
+.sc2replaystats.com proxy
+.ksyungslb.com direct
+.embedi.org proxy
+.xiatou.com direct
+.diffchecker.com proxy
+.nvidia.eu proxy
+.paypal-communication.com proxy
+.shouldiremoveit.com proxy
+.dc502wrt.org proxy
 .openwrt.org proxy
 .ntp.org proxy
 .telegram.org proxy
