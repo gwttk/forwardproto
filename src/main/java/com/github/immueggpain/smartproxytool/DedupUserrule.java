@@ -9,11 +9,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NavigableMap;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 
@@ -44,7 +47,29 @@ class DedupUserrule {
 	public static void main(String[] args) {
 		try {
 			String outputUserRuleFile = args[0];
-			new DedupUserrule().run(outputUserRuleFile);
+			String logFile = args[1];
+
+			// step 1: find all default domains in logfile.
+			// ping test them, or lookup ip table if ping failed.
+			// output new rules based on ping tests.
+			Set<String> newRules = new LogProcessor().run(logFile);
+
+			// step 2: read old user.rule into list of lines
+			// merge old list with new list
+			Path path = Paths.get("user.rule");
+			BOMInputStream is = new BOMInputStream(new FileInputStream(path.toFile()));
+			List<String> oldRules = IOUtils.readLines(is, sc.utf8);
+			// notice the oldRules contain comments & empty lines.
+			// also I want to insert new rules after the '#auto rules' line.
+			ArrayList<String> merged = new ArrayList<String>(oldRules.size() + newRules.size());
+			int insertIndx = oldRules.indexOf("#auto rules");
+			merged.addAll(oldRules.subList(0, insertIndx));
+			merged.addAll(newRules);
+			merged.addAll(oldRules.subList(insertIndx, oldRules.size()));
+
+			// step 3: find duplicates such as aaa.bbb.cc & ddd.bbb.cc
+			// merge them into .bbb.cc
+			new DedupUserrule().run(merged, outputUserRuleFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -103,86 +128,83 @@ class DedupUserrule {
 	// domains
 	private HashMap<String, String> domains;
 
-	private void run(String outputFile) throws Exception {
+	private void run(List<String> inputUserRules, String outputFile) throws Exception {
 		domains = new HashMap<>();
 		ArrayList<String> outputLines = new ArrayList<>();
 
 		ip_to_nn = new TreeMap<>();
-		Path path = Paths.get("user.rule");
-		try (BOMInputStream is = new BOMInputStream(new FileInputStream(path.toFile()))) {
-			for (String line : IOUtils.readLines(is, sc.utf8)) {
+		for (String line : inputUserRules) {
 
-				line = line.trim();
+			line = line.trim();
 
-				// add line first, then delete it maybe
-				outputLines.add(line);
+			// add line first, then delete it maybe
+			outputLines.add(line);
 
-				if (line.isEmpty())
-					continue;
-				if (line.startsWith("#"))
-					continue;
-				String[] segments = line.split(" ");
+			if (line.isEmpty())
+				continue;
+			if (line.startsWith("#"))
+				continue;
+			String[] segments = line.split(" ");
 
-				// handle a line of ip rule
-				if (ip_regex.matcher(segments[0]).matches()) {
-					// ip
-					if (segments.length != 3)
-						throw new Exception("user.rule bad line " + line);
-					if (!ip_regex.matcher(segments[1]).matches())
-						throw new Exception("user.rule bad line " + line);
-					String target;
-					if (segments[2].equals("direct"))
-						target = "direct";
-					else if (segments[2].equals("reject"))
-						target = "reject";
-					else if (segments[2].equals("proxy"))
-						target = "proxy";
-					else
-						throw new Exception("user.rule bad line " + line);
-					long begin = ip2long(segments[0]);
-					long end = ip2long(segments[1]);
-					ip_to_nn.put(begin, new IpRange(begin, end, target));
-					continue;
-				}
-
-				// a line of domain rule
-				if (segments.length != 2)
-					throw new Exception("user.rule bad line: " + line);
-				if (!domain_regex.matcher(segments[0]).matches())
-					throw new Exception("user.rule bad line: " + line);
-
-				// parse target(proxy/direct)
+			// handle a line of ip rule
+			if (ip_regex.matcher(segments[0]).matches()) {
+				// ip
+				if (segments.length != 3)
+					throw new Exception("user.rule bad line " + line);
+				if (!ip_regex.matcher(segments[1]).matches())
+					throw new Exception("user.rule bad line " + line);
 				String target;
-				if (segments[1].equals("direct"))
+				if (segments[2].equals("direct"))
 					target = "direct";
-				else if (segments[1].equals("reject"))
+				else if (segments[2].equals("reject"))
 					target = "reject";
-				else if (segments[1].equals("proxy"))
+				else if (segments[2].equals("proxy"))
 					target = "proxy";
 				else
 					throw new Exception("user.rule bad line " + line);
-
-				//
-				String fulldn = segments[0];
-
-				// add dot
-				if (!fulldn.startsWith(".")) {
-					fulldn = "." + fulldn;
-					outputLines.set(outputLines.size() - 1, fulldn + " " + target);
-				}
-
-				String oldtarget = domains.get(fulldn);
-				if (oldtarget == null)
-					domains.put(fulldn, target);
-				else if (oldtarget.equals(target)) {
-					// dup
-					outputLines.remove(outputLines.size() - 1);
-				} else {
-					// conflict
-					System.err.println("conflict! " + fulldn);
-				}
+				long begin = ip2long(segments[0]);
+				long end = ip2long(segments[1]);
+				ip_to_nn.put(begin, new IpRange(begin, end, target));
+				continue;
 			}
-		} // end of open file
+
+			// a line of domain rule
+			if (segments.length != 2)
+				throw new Exception("user.rule bad line: " + line);
+			if (!domain_regex.matcher(segments[0]).matches())
+				throw new Exception("user.rule bad line: " + line);
+
+			// parse target(proxy/direct)
+			String target;
+			if (segments[1].equals("direct"))
+				target = "direct";
+			else if (segments[1].equals("reject"))
+				target = "reject";
+			else if (segments[1].equals("proxy"))
+				target = "proxy";
+			else
+				throw new Exception("user.rule bad line " + line);
+
+			//
+			String fulldn = segments[0];
+
+			// add dot
+			if (!fulldn.startsWith(".")) {
+				fulldn = "." + fulldn;
+				outputLines.set(outputLines.size() - 1, fulldn + " " + target);
+			}
+
+			String oldtarget = domains.get(fulldn);
+			if (oldtarget == null)
+				domains.put(fulldn, target);
+			else if (oldtarget.equals(target)) {
+				// dup
+				outputLines.remove(outputLines.size() - 1);
+			} else {
+				// conflict
+				System.err.println("conflict! " + fulldn);
+			}
+		}
 
 		// remove redundant children
 		for (Iterator<String> iterator = outputLines.iterator(); iterator.hasNext();) {
