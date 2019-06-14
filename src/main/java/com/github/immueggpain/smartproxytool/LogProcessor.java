@@ -113,6 +113,7 @@ class LogProcessor {
 		for (String rule : rules) {
 			System.out.println(rule);
 		}
+		System.out.println("==========output rules end");
 		return rules;
 	}
 
