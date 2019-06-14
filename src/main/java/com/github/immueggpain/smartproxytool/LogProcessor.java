@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NavigableMap;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,13 +51,14 @@ class LogProcessor {
 	// args: log file path
 	public static void main(String[] args) {
 		try {
-			new LogProcessor().run(args[0]);
+			String logFilePath = args[0];
+			new LogProcessor().run(logFilePath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void run(String logFilePath) throws Exception {
+	public Set<String> run(String logFilePath) throws Exception {
 		load_domain_nn_table();
 		HashSet<String> rules = new HashSet<>();
 		HashSet<String> recordedDomains = new HashSet<>();
@@ -103,13 +105,15 @@ class LogProcessor {
 
 				}
 
-				System.out.println(domainName + " " + addr.getHostAddress() + " " + latency + "ms " + target);
+				System.out.println(
+						"ping test: " + domainName + " " + addr.getHostAddress() + " " + latency + "ms " + target);
 			}
 		}
-		System.out.println("==========rules:");
+		System.out.println("==========output rules:");
 		for (String rule : rules) {
 			System.out.println(rule);
 		}
+		return rules;
 	}
 
 	public static float ping_win(InetAddress ip) throws IOException {
