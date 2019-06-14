@@ -43,14 +43,11 @@ class DedupUserrule {
 	// args: new user.rule file path
 	public static void main(String[] args) {
 		try {
-			new DedupUserrule().run(args);
+			String outputUserRuleFile = args[0];
+			new DedupUserrule().run(outputUserRuleFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void run(String[] args) throws Exception {
-		run(args[0]);
 	}
 
 	public static float ping_win(InetAddress ip) throws IOException {
