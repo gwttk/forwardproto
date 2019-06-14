@@ -36,7 +36,8 @@ class LogProcessor {
 
 	private NavigableMap<Long, IpRange> ip_to_nn;
 
-	public static class IpRange {
+	private static class IpRange {
+		@SuppressWarnings("unused")
 		public final long begin;
 		public final long end;
 		public final String target;
@@ -117,7 +118,7 @@ class LogProcessor {
 		return rules;
 	}
 
-	public static float ping_win(InetAddress ip) throws IOException {
+	private static float ping_win(InetAddress ip) throws IOException {
 		ProcessResult r = scp.collectResult(Runtime.getRuntime().exec("ping -n 1 " + ip.getHostAddress()));
 		Matcher m = ping_regex_win.matcher(r.stdout);
 		if (m.find()) {

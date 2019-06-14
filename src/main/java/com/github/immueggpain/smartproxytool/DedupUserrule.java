@@ -1,7 +1,6 @@
 package com.github.immueggpain.smartproxytool;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,24 +12,20 @@ import java.util.List;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 
 import com.github.immueggpain.common.sc;
-import com.github.immueggpain.common.scp;
-import com.github.immueggpain.common.scp.ProcessResult;
 
 /**
  * process user.rule. find dups
  */
 class DedupUserrule {
 
-	private static final Pattern ping_regex_win = Pattern.compile("time([=<])([0-9]+)ms");
-
-	public static class IpRange {
+	private static class IpRange {
+		@SuppressWarnings("unused")
 		public final long begin;
 		public final long end;
 		public final String target;
@@ -74,18 +69,6 @@ class DedupUserrule {
 		}
 	}
 
-	public static float ping_win(InetAddress ip) throws IOException {
-		ProcessResult r = scp.collectResult(Runtime.getRuntime().exec("ping -n 1 " + ip.getHostAddress()));
-		Matcher m = ping_regex_win.matcher(r.stdout);
-		if (m.find()) {
-			if (m.group(1).equals("<"))
-				return Float.parseFloat(m.group(2)) - 0.5F;
-			else
-				return Float.parseFloat(m.group(2));
-		} else
-			return -1;
-	}
-
 	@SuppressWarnings("unused")
 	private String queryIpRules(InetAddress addr) {
 		long ip = ip2long(addr);
@@ -111,12 +94,6 @@ class DedupUserrule {
 		for (int i = 0; i < 4; i++)
 			ipLong += Integer.parseInt(parts[i]) << (24 - (8 * i));
 		return ipLong;
-	}
-
-	public class DomainInfo {
-		public String domain;
-		public int count_proxy;
-		public int count_direct;
 	}
 
 	private static final Pattern domain_regex = Pattern.compile("[a-z0-9-_]*(\\.[a-z0-9-_]+)*");
@@ -201,7 +178,8 @@ class DedupUserrule {
 				outputLines.remove(outputLines.size() - 1);
 			} else {
 				// conflict
-				System.err.println("conflict! " + fulldn);
+				System.err.println("conflict!!! " + fulldn);
+				// this is an important error: same domain, different targets
 			}
 		}
 
