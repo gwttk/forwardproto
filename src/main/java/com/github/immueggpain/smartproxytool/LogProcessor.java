@@ -106,8 +106,8 @@ class LogProcessor {
 
 				}
 
-				System.out.println(String.format("ping test: %50s %s", domainName + " " + addr.getHostAddress(),
-						latency + "ms " + target));
+				System.out.println(String.format("ping test: %-50s %7.2fms %s",
+						domainName + " " + addr.getHostAddress(), latency, target));
 			}
 		}
 		System.out.println("==========output rules:");
