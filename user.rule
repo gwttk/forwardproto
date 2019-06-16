@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.geoip-db.com proxy
+.gamingverdict.com proxy
 .wayin.com proxy
 .googleapps.com proxy
 .login.salesforce.com direct
