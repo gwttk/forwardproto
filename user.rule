@@ -7,12 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.wayin.com proxy
+.googleapps.com proxy
+.login.salesforce.com direct
+.overwolf.com proxy
 .converseapps.com proxy
 .coull.com proxy
 .deepconverse.com proxy
 .evergage.com proxy
 .salesforce.com proxy
-.overwolf.com proxy
 .254a.com proxy
 .hp.com proxy
 .unbounce.com proxy
@@ -32,7 +35,6 @@
 .images-fe.ssl-images-amazon.com proxy
 .mantisadnetwork.com proxy
 .scanalert.com proxy
-.hp.com proxy
 .wikifixes.com proxy
 .incluster.com proxy
 .jisho.org proxy
