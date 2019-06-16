@@ -7,6 +7,18 @@
 # "reject" means drop connection
 
 #auto rules
+.converseapps.com proxy
+.coull.com proxy
+.deepconverse.com proxy
+.evergage.com proxy
+.salesforce.com proxy
+.overwolf.com proxy
+.254a.com proxy
+.hp.com proxy
+.unbounce.com proxy
+.coveo.com proxy
+.logitechg.com proxy
+.logi.com proxy
 .cedexis-test.com proxy
 .jonathannicol.com proxy
 .1e100cdn.net direct
@@ -2386,7 +2398,7 @@
 .speedguide.net proxy
 .cfzu.net proxy
 .ipredictive.com proxy
-.cdn.jsdelivr.net direct
+.jsdelivr.net direct
 .amp.rd.linksynergy.com proxy
 .udrig.com direct
 .revenuemantra.com proxy
@@ -3232,7 +3244,6 @@
 .globalmuseumoncommunism.org proxy
 .globalrescue.net proxy
 .globalvoicesonline.org proxy
-.gmbd.cn proxy
 .gmhz.org proxy
 .godfootsteps.org proxy
 .golang.org proxy
@@ -3502,7 +3513,6 @@
 .keepandshare.com proxy
 .kendincos.net proxy
 .kenengba.com proxy
-.keso.cn proxy
 .kickstarter.com proxy
 .killwall.com proxy
 .kingdomsalvation.org proxy
