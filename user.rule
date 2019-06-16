@@ -7,6 +7,23 @@
 # "reject" means drop connection
 
 #auto rules
+.auslogics.com proxy
+.solvusoft.com proxy
+.closeupcheck.com proxy
+.tweakbit.com proxy
+.lduhtrp.net proxy
+.lospec.com proxy
+.esm1.net proxy
+.owox.com direct
+.tqlkg.com proxy
+.opmnstr.com proxy
+.images-fe.ssl-images-amazon.com proxy
+.mantisadnetwork.com proxy
+.scanalert.com proxy
+.hp.com proxy
+.wikifixes.com proxy
+.incluster.com proxy
+.jisho.org proxy
 .cedexis-test.com proxy
 .jonathannicol.com proxy
 .1e100cdn.net direct
@@ -2386,7 +2403,7 @@
 .speedguide.net proxy
 .cfzu.net proxy
 .ipredictive.com proxy
-.cdn.jsdelivr.net direct
+.jsdelivr.net direct
 .amp.rd.linksynergy.com proxy
 .udrig.com direct
 .revenuemantra.com proxy
