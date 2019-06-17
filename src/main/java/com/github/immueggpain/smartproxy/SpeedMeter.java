@@ -31,10 +31,10 @@ public class SpeedMeter {
 
 				long now = System.currentTimeMillis();
 				long duration = now - lastReportTime;
-				double speedRecv = (double) atomRecv.getAndSet(0) / ((double) duration / 1000);
-				double speedSend = (double) atomSend.getAndSet(0) / ((double) duration / 1000);
+				double speedRecv = (double) atomRecv.getAndSet(0) / ((double) duration / 1000) / 1024;
+				double speedSend = (double) atomSend.getAndSet(0) / ((double) duration / 1000) / 1024;
 				lastReportTime = now;
-				System.out.println(String.format("download: %.2f, upload: %.2f", speedRecv, speedSend));
+				System.out.println(String.format("download: %.2f KB/s, upload: %.2f KB/s", speedRecv, speedSend));
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();
