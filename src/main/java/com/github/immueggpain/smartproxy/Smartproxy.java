@@ -137,12 +137,14 @@ public class Smartproxy {
 	private Map<String, NextNode> domain_to_nn;
 	private NavigableMap<Long, IpRange> ip_to_nn;
 	private ConnPool socketPool;
+	private SpeedMeter speedMeter;
 
 	public void run(ClientSettings settings) throws Exception {
 		this.settings = settings;
 		// from now on, log output to '-l' option or 'smartproxy.log' by default
 		log = new PrintWriter(
 				new BufferedWriter(new OutputStreamWriter(new FileOutputStream(settings.logfile), sc.utf8)), true);
+		speedMeter = new SpeedMeter(1000 * 2);
 
 		byte[] bytes = settings.password.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, this.password, 0, bytes.length);
@@ -604,6 +606,7 @@ public class Smartproxy {
 				break;
 			}
 			contxt.lastWriteToServer = sct.time_ms();
+			speedMeter.countSend(n);
 		}
 
 		// shutdown connections
@@ -666,6 +669,8 @@ public class Smartproxy {
 				log.println(String.format("%s cserver read eof %s", sct.datetime(), contxt.toString()));
 				break;
 			}
+
+			speedMeter.countRecv(n);
 
 			// write some bytes
 			try {
