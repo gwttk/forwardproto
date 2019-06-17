@@ -294,6 +294,7 @@ class DedupUserrule {
 		excepRules.put(".cn.news.blizzard.com", "direct");
 		excepRules.put(".cache-cn.battle.net", "direct");
 		excepRules.put(".cdn.q1mediahydraplatform.com", "proxy");
+		excepRules.put(".daxa.cn", "proxy");
 	}
 
 	/** some domains are exceptions as they differ from parent domains. */
