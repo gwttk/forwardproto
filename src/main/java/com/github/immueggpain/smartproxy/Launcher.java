@@ -9,7 +9,7 @@ import org.apache.commons.cli.ParseException;
 
 public class Launcher {
 
-	private static final String VERSTR = "1.1.5";
+	private static final String VERSTR = "1.1.7";
 
 	public static class ClientSettings {
 		public String local_listen_ip;
@@ -81,7 +81,7 @@ public class Launcher {
 		// first let's check if it's help
 		if (cmd.hasOption(help)) {
 			String header = "";
-			String footer = "\nPlease report issues at https://github.com/Immueggpain/smartproxy/issues";
+			String footer = "\nPlease report issues at https://github.com/Immueggpain/forwardproto/issues";
 
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp("java -jar smartproxy-" + VERSTR + ".jar", header, options, footer, true);

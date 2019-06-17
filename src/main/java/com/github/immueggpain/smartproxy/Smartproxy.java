@@ -144,7 +144,7 @@ public class Smartproxy {
 		// from now on, log output to '-l' option or 'smartproxy.log' by default
 		log = new PrintWriter(
 				new BufferedWriter(new OutputStreamWriter(new FileOutputStream(settings.logfile), sc.utf8)), true);
-		speedMeter = new SpeedMeter(1000 * 2);
+		speedMeter = new SpeedMeter(1000 * 4);
 
 		byte[] bytes = settings.password.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, this.password, 0, bytes.length);
