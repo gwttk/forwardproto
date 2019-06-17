@@ -4,8 +4,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class SpeedMeter {
 
-	private AtomicLong atomRecv;
-	private AtomicLong atomSend;
+	private AtomicLong atomRecv = new AtomicLong();
+	private AtomicLong atomSend = new AtomicLong();
 	private int reportInterval;
 	private long lastReportTime;
 
