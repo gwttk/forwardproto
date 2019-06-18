@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.netgear.com proxy
 .geoip-db.com proxy
 .gamingverdict.com proxy
 .wayin.com proxy
@@ -3664,7 +3665,6 @@
 .megurineluka.com proxy
 .meirixiaochao.com proxy
 .melon-peach.com proxy
-.memedia.cn proxy
 .mesotw.com proxy
 .metacafe.com proxy
 .meteorshowersonline.com proxy
