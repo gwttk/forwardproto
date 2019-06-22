@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.concurrent.Future;
 
 import org.apache.http.ConnectionReuseStrategy;
@@ -12,6 +14,7 @@ import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
+import org.apache.http.RequestLine;
 import org.apache.http.config.MessageConstraints;
 import org.apache.http.impl.DefaultBHttpClientConnection;
 import org.apache.http.impl.DefaultBHttpServerConnection;
@@ -49,7 +52,7 @@ public class Http2socks {
 	private final HttpRequestHandlerMapper singleHandlerMapper = new HttpRequestHandlerMapper() {
 		@Override
 		public HttpRequestHandler lookup(HttpRequest request) {
-			return Http2socks.this::handle;
+			return Http2socks.this::handleHttpReq;
 		}
 	};
 
@@ -100,7 +103,7 @@ public class Http2socks {
 		} while (connFromApp.isOpen());
 	}
 
-	public void handle(HttpRequest request, HttpResponse response, HttpContext context)
+	public void handleHttpReq(HttpRequest requestFromApp, HttpResponse responseToApp, HttpContext contextFromApp)
 			throws HttpException, IOException {
 		DefaultBHttpClientConnection connToDest = new DefaultBHttpClientConnection(bufferSize, fragmentSizeHint, null,
 				null, MessageConstraints.DEFAULT, StrictContentLengthStrategy.INSTANCE,
@@ -115,7 +118,22 @@ public class Http2socks {
 		pool.setDefaultMaxPerRoute(2);
 		pool.setMaxTotal(2);
 
-		HttpHost destination = new HttpHost("www.apache.com", 80);
+		RequestLine requestLine = requestFromApp.getRequestLine();
+		String uri_str = requestLine.getUri();
+		// fix because stupid tencent TIM include {} in urls
+		uri_str = uri_str.replace("{", "%7B");
+		uri_str = uri_str.replace("}", "%7D");
+		URI uri;
+		try {
+			uri = new URI(uri_str);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return;
+		}
+		int port = uri.getPort() == -1 ? 80 : uri.getPort();
+		String host = uri.getHost();
+
+		HttpHost destination = new HttpHost(host, port);
 
 		ConnectionReuseStrategy connStrategy = DefaultConnectionReuseStrategy.INSTANCE;
 		try {
@@ -125,20 +143,20 @@ public class Http2socks {
 			BasicPoolEntry entry = future.get();
 			try {
 				HttpClientConnection conn = entry.getConnection();
-				HttpCoreContext coreContext = HttpCoreContext.create();
-				coreContext.setTargetHost(destination);
+				HttpCoreContext contextToDest = HttpCoreContext.create();
+				contextToDest.setTargetHost(destination);
 
 				BasicHttpRequest request1 = new BasicHttpRequest("GET", "/");
 				System.out.println(">> Request URI: " + request1.getRequestLine().getUri());
 
-				httpexecutor.preProcess(request1, httpproc, coreContext);
-				HttpResponse response1 = httpexecutor.execute(request1, conn, coreContext);
-				httpexecutor.postProcess(response1, httpproc, coreContext);
+				httpexecutor.preProcess(request1, httpproc, contextToDest);
+				HttpResponse response1 = httpexecutor.execute(request1, conn, contextToDest);
+				httpexecutor.postProcess(response1, httpproc, contextToDest);
 
 				System.out.println("<< Response: " + response1.getStatusLine());
 				System.out.println(EntityUtils.toString(response1.getEntity()));
 
-				reusable = connStrategy.keepAlive(response1, coreContext);
+				reusable = connStrategy.keepAlive(response1, contextToDest);
 			} finally {
 				if (reusable) {
 					System.out.println("Connection kept alive...");
