@@ -71,6 +71,11 @@ public class Http2socks {
 		this.log = log;
 		this.socketFactoryToSocks = new SocketFactory() {
 			@Override
+			public Socket createSocket() throws IOException {
+				return new Socket(socksProxy);
+			}
+
+			@Override
 			public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort)
 					throws IOException {
 				Socket socket = new Socket(socksProxy);
@@ -138,11 +143,11 @@ public class Http2socks {
 				service.handleRequest(connFromApp, context);
 			} catch (IOException | HttpException e) {
 				log.println("error connection from app broken, shutdown");
+				e.printStackTrace(log);
 				try {
 					connFromApp.shutdown(); // this will also close socket
 				} catch (IOException ignore) {
 				}
-				e.printStackTrace(log);
 			}
 		} while (connFromApp.isOpen());
 	}
@@ -166,6 +171,7 @@ public class Http2socks {
 		try {
 			uri = new URI(uri_str);
 		} catch (URISyntaxException e) {
+			log.println("error parse URI from app broken, return http 400");
 			e.printStackTrace(log);
 			responseToApp.setStatusCode(HttpStatus.SC_BAD_REQUEST);
 			return;
@@ -185,6 +191,8 @@ public class Http2socks {
 		try {
 			entry = future.get();
 		} catch (InterruptedException | ExecutionException e) {
+			log.println(String.format("error can't get conn of %s from http client conn pool, return http 502",
+					destination));
 			e.printStackTrace(log);
 			responseToApp.setStatusCode(HttpStatus.SC_BAD_GATEWAY);
 			return;
