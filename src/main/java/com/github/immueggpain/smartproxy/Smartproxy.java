@@ -997,7 +997,8 @@ public class Smartproxy {
 				if (half_tunnel != null)
 					try {
 						halfTunnels.put(half_tunnel);
-						log.println(sct.datetime() + " new half tunnel to pool " + halfTunnels.size());
+						// log.println(sct.datetime() + " new half tunnel to pool " +
+						// halfTunnels.size());
 					} catch (InterruptedException e) {
 						e.printStackTrace(log);
 					}
@@ -1010,7 +1011,7 @@ public class Smartproxy {
 				if (sb != null && sb.expireTime < System.currentTimeMillis()) {
 					if (halfTunnels.remove(sb)) {
 						Util.abortiveCloseSocket(sb.socket);
-						log.println(sct.datetime() + " half tunnel expires");
+						// log.println(sct.datetime() + " half tunnel expires");
 					}
 				}
 				try {
