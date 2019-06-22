@@ -160,6 +160,7 @@ public class Http2socks {
 		pool.setMaxTotal(50);
 
 		RequestLine requestLine = requestFromApp.getRequestLine();
+		log.println("http2socks " + requestLine);
 		String uri_str = requestLine.getUri();
 		URI uri;
 		try {
