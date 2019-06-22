@@ -218,6 +218,10 @@ public class Http2socks {
 			return;
 		}
 
+		// used to release entry after responseToApp finishes
+		contextFromAppPerConn.setAttribute("pool.entry", entry);
+		contextFromAppPerConn.setAttribute("pool.reusable", reusable);
+
 		HttpClientConnection conn = entry.getConnection();
 		HttpCoreContext contextToDestPerMsg = HttpCoreContext.create();
 		contextToDestPerMsg.setTargetHost(destination);
@@ -247,15 +251,12 @@ public class Http2socks {
 		}
 
 		reusable = connStrategy.keepAlive(responseFromDest, contextToDestPerMsg);
+		contextFromAppPerConn.setAttribute("pool.reusable", reusable);
 
 		StatusLine statusLine = responseFromDest.getStatusLine();
 		responseToApp.setStatusLine(requestFromApp.getProtocolVersion(), statusLine.getStatusCode(),
 				statusLine.getReasonPhrase());
 		responseToApp.setHeaders(responseFromDest.getAllHeaders());
 		responseToApp.setEntity(responseFromDest.getEntity());
-
-		// must release entry after responseToApp finishes
-		contextFromAppPerConn.setAttribute("pool.entry", entry);
-		contextFromAppPerConn.setAttribute("pool.reusable", reusable);
 	}
 }
