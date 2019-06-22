@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.dota2.com proxy
+.hearthpwn.com proxy
+.realvu.net proxy
+.ppbizon.com direct
 .netgear.com proxy
 .geoip-db.com proxy
 .gamingverdict.com proxy
