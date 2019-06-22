@@ -130,7 +130,10 @@ public class Http2socks {
 			throw new RuntimeException("this should be impossible", e);
 		}
 
-		HttpProcessor httpprocForApp = HttpProcessorBuilder.create().add(new ResponseContent())
+		// ResponseContent needs to overwrite Content-Length and Transfer-Encoding,
+		// cuz response from dest may not be ok with app,
+		// e.g. different http version, different keep-alive etc.
+		HttpProcessor httpprocForApp = HttpProcessorBuilder.create().add(new ResponseContent(true))
 				.add(new ResponseConnControl()).build();
 
 		HttpContext context = HttpCoreContext.create();
@@ -227,7 +230,7 @@ public class Http2socks {
 			responseToApp.setEntity(responseFromDest.getEntity());
 		} finally {
 			if (reusable) {
-				log.println("Connection kept alive...");
+				// log.println("Connection kept alive...");
 			}
 			pool.release(entry, reusable);
 		}
