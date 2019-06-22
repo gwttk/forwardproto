@@ -115,58 +115,38 @@ public class Http2socks {
 		pool.setDefaultMaxPerRoute(2);
 		pool.setMaxTotal(2);
 
-		HttpHost[] targets = { new HttpHost("www.google.com", 80), new HttpHost("www.yahoo.com", 80),
-				new HttpHost("www.apache.com", 80) };
+		HttpHost destination = new HttpHost("www.apache.com", 80);
 
-		class WorkerThread extends Thread {
+		ConnectionReuseStrategy connStrategy = DefaultConnectionReuseStrategy.INSTANCE;
+		try {
+			Future<BasicPoolEntry> future = pool.lease(destination, null);
 
-			private final HttpHost target;
+			boolean reusable = false;
+			BasicPoolEntry entry = future.get();
+			try {
+				HttpClientConnection conn = entry.getConnection();
+				HttpCoreContext coreContext = HttpCoreContext.create();
+				coreContext.setTargetHost(destination);
 
-			WorkerThread(final HttpHost target) {
-				super();
-				this.target = target;
-			}
+				BasicHttpRequest request1 = new BasicHttpRequest("GET", "/");
+				System.out.println(">> Request URI: " + request1.getRequestLine().getUri());
 
-			@Override
-			public void run() {
-				ConnectionReuseStrategy connStrategy = DefaultConnectionReuseStrategy.INSTANCE;
-				try {
-					Future<BasicPoolEntry> future = pool.lease(this.target, null);
+				httpexecutor.preProcess(request1, httpproc, coreContext);
+				HttpResponse response1 = httpexecutor.execute(request1, conn, coreContext);
+				httpexecutor.postProcess(response1, httpproc, coreContext);
 
-					boolean reusable = false;
-					BasicPoolEntry entry = future.get();
-					try {
-						HttpClientConnection conn = entry.getConnection();
-						HttpCoreContext coreContext = HttpCoreContext.create();
-						coreContext.setTargetHost(this.target);
+				System.out.println("<< Response: " + response1.getStatusLine());
+				System.out.println(EntityUtils.toString(response1.getEntity()));
 
-						BasicHttpRequest request = new BasicHttpRequest("GET", "/");
-						System.out.println(">> Request URI: " + request.getRequestLine().getUri());
-
-						httpexecutor.preProcess(request, httpproc, coreContext);
-						HttpResponse response = httpexecutor.execute(request, conn, coreContext);
-						httpexecutor.postProcess(response, httpproc, coreContext);
-
-						System.out.println("<< Response: " + response.getStatusLine());
-						System.out.println(EntityUtils.toString(response.getEntity()));
-
-						reusable = connStrategy.keepAlive(response, coreContext);
-					} catch (IOException ex) {
-						throw ex;
-					} catch (HttpException ex) {
-						throw ex;
-					} finally {
-						if (reusable) {
-							System.out.println("Connection kept alive...");
-						}
-						pool.release(entry, reusable);
-					}
-				} catch (Exception ex) {
-					System.out.println("Request to " + this.target + " failed: " + ex.getMessage());
+				reusable = connStrategy.keepAlive(response1, coreContext);
+			} finally {
+				if (reusable) {
+					System.out.println("Connection kept alive...");
 				}
+				pool.release(entry, reusable);
 			}
-
+		} catch (Exception ex) {
+			System.out.println("Request to " + destination + " failed: " + ex.getMessage());
 		}
-		;
 	}
 }
