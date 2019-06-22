@@ -152,6 +152,7 @@ public class Http2socks {
 						connFromApp.close(); // this will also close socket
 					} catch (IOException ignore) {
 					}
+					continue; // jump to while condition
 				}
 
 				log.println("error connection from app broken, shutdown");
