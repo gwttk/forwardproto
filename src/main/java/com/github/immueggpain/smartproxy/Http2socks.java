@@ -54,8 +54,8 @@ import org.apache.http.protocol.ResponseContent;
 
 public class Http2socks {
 
-	private static final int bufferSize = 0;
-	private static final int fragmentSizeHint = 0;
+	private static final int bufferSize = 32 * 1024;
+	private static final int fragmentSizeHint = 32 * 1024;
 
 	private final HttpRequestHandlerMapper singleHandlerMapper = new HttpRequestHandlerMapper() {
 		@Override
@@ -144,7 +144,7 @@ public class Http2socks {
 		} while (connFromApp.isOpen());
 	}
 
-	public void handleHttpReq(HttpRequest requestFromApp, HttpResponse responseToApp, HttpContext contextFromApp)
+	private void handleHttpReq(HttpRequest requestFromApp, HttpResponse responseToApp, HttpContext contextFromApp)
 			throws HttpException, IOException {
 		final HttpProcessor httpproc = HttpProcessorBuilder.create().add(new RequestContent())
 				.add(new RequestConnControl()).add(new RequestExpectContinue(true)).build();

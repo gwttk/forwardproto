@@ -43,7 +43,6 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.net.URI;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -51,11 +50,8 @@ import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -66,34 +62,9 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
-import org.apache.commons.collections4.MapIterator;
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.http.ConnectionClosedException;
-import org.apache.http.Header;
-import org.apache.http.HeaderIterator;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpEntityEnclosingRequest;
-import org.apache.http.HttpHeaders;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.HttpVersion;
-import org.apache.http.ParseException;
-import org.apache.http.ProtocolVersion;
-import org.apache.http.RequestLine;
-import org.apache.http.TokenIterator;
-import org.apache.http.impl.DefaultBHttpClientConnection;
-import org.apache.http.impl.DefaultBHttpServerConnection;
-import org.apache.http.message.BasicHttpEntityEnclosingRequest;
-import org.apache.http.message.BasicHttpRequest;
-import org.apache.http.message.BasicHttpResponse;
-import org.apache.http.message.BasicTokenIterator;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-
 import com.github.immueggpain.common.sc;
 import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
@@ -109,11 +80,9 @@ public class Smartproxy {
 	private static final int BUF_SIZE = 1024 * 16;
 	private static final SecureRandom rand = new SecureRandom();
 
-	private static final int HTTP_CONN_BUF_SIZE = 32 * 1024;
 	private static final int SOCKET_CONNECT_TIMEOUT = 1000 * 15;
 	private static final int SOCKET_SO_TIMEOUT_CLIENT = 0;
 	private static final int SOCKET_SO_TIMEOUT_NEXTNODE = 0;
-	private static final int HTTP_POOL_TIMEOUT = 120 * 1000;
 	private static final Pattern httpconnect_regex = Pattern.compile("CONNECT (.+):([0-9]+) HTTP/1[.][01]");
 	private static final byte[] httpconnect_okresponse = sc.s2b("HTTP/1.1 200 OK\r\n\r\n");
 	private static final byte[] httpconnect_500response = sc.s2b("HTTP/1.1 500 Internal Server Error\r\n\r\n");
@@ -121,9 +90,6 @@ public class Smartproxy {
 	private static final Pattern domain_regex = Pattern.compile("[a-z0-9-_]*(\\.[a-z0-9-_]+)*");
 
 	private static PrintWriter log;
-
-	private Set<String> encountered_request_headers = new HashSet<>();
-	private Set<String> encountered_response_headers = new HashSet<>();
 
 	private SSLSocketFactory ssf;
 	private byte[] password = new byte[64];
@@ -136,8 +102,8 @@ public class Smartproxy {
 	private NextNode nn_proxy;
 	private Map<String, NextNode> domain_to_nn;
 	private NavigableMap<Long, IpRange> ip_to_nn;
-	private ConnPool socketPool;
 	private SpeedMeter speedMeter;
+	private Http2socks http2socks;
 
 	public void run(ClientSettings settings) throws Exception {
 		this.settings = settings;
@@ -153,7 +119,9 @@ public class Smartproxy {
 		nn_ban = new NextNode(NextNode.Type.BAN, null);
 		nn_proxy = new NextNode(NextNode.Type.PROXY, next_proxy);
 		load_domain_nn_table();
-		socketPool = new ConnPool(HTTP_POOL_TIMEOUT);
+
+		http2socks = new Http2socks(new Proxy(Proxy.Type.SOCKS,
+				new InetSocketAddress(settings.local_listen_ip, settings.local_listen_port)));
 
 		// set SSL
 		SSLContext context = SSLContext.getInstance("TLSv1.2");
@@ -716,189 +684,7 @@ public class Smartproxy {
 	}
 
 	private void http_other(InputStream is, OutputStream os, Socket socket) {
-		// setup client httpconn
-		try (DefaultBHttpServerConnection http_conn = new DefaultBHttpServerConnection(HTTP_CONN_BUF_SIZE) {
-			@Override
-			protected InputStream getSocketInputStream(Socket socket) throws IOException {
-				return is;
-			}
-
-			@Override
-			protected OutputStream getSocketOutputStream(Socket socket) throws IOException {
-				return os;
-			}
-		}) {
-			http_conn.bind(socket);
-			Thread.currentThread().setName("http_" + socket.getPort());
-
-			while (true) {
-				// parse request+entity of client
-				HttpRequest request = null;
-				try {
-					request = http_conn.receiveRequestHeader();
-				} catch (ConnectionClosedException e) {
-					// client just closed the socket
-					return;
-				} catch (SocketException e) {
-					if (e.getMessage().equals("Connection reset"))
-						return;
-					else
-						throw e;
-				}
-				HttpEntity entity = null;
-				if (request instanceof HttpEntityEnclosingRequest) {
-					HttpEntityEnclosingRequest request_withbody = (HttpEntityEnclosingRequest) request;
-					http_conn.receiveRequestEntity(request_withbody);
-					entity = request_withbody.getEntity();
-				}
-
-				RequestLine requestLine = request.getRequestLine();
-				String uri_str = requestLine.getUri();
-				// fix because stupid tencent TIM include {} in urls
-				uri_str = uri_str.replace("{", "%7B");
-				uri_str = uri_str.replace("}", "%7D");
-				URI uri = new URI(uri_str);
-				int port = uri.getPort() == -1 ? 80 : uri.getPort();
-				String host = uri.getHost();
-
-				// respond 400 for bad request
-				if (host.equals("canonicalizer.ucsuri.tcs")) {
-					log.println("error canonicalizer.ucsuri.tcs");
-					if (entity != null)
-						EntityUtils.consume(entity);
-
-					BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, HttpStatus.SC_BAD_REQUEST,
-							"Bad Request");
-					http_conn.sendResponseHeader(response);
-					http_conn.sendResponseEntity(response);
-					http_conn.flush();
-					if (keepAlive(request, response))
-						continue;
-					else {
-						return;
-					}
-				}
-
-				// connect nextnode
-				InetSocketAddress dest_sockaddr = InetSocketAddress.createUnresolved(host, port);
-				DefaultBHttpClientConnection http_conn_nn = socketPool.get(dest_sockaddr, socket.getPort());
-				try {
-					// make status line for nextnode
-					BasicHttpRequest request_nn = null;
-					String newuri = uri.getRawPath();
-					if (uri.getRawQuery() != null)
-						newuri += "?" + uri.getRawQuery();
-					if (entity == null)
-						request_nn = new BasicHttpRequest(request.getRequestLine().getMethod(), newuri,
-								HttpVersion.HTTP_1_1);
-					else
-						request_nn = new BasicHttpEntityEnclosingRequest(request.getRequestLine().getMethod(), newuri,
-								HttpVersion.HTTP_1_1);
-
-					if (request.getFirstHeader("Keep-Alive") != null)
-						log.println(request.getFirstHeader("Keep-Alive"));
-					// make headers for nextnode
-					request_nn.setHeaders(request.getAllHeaders());
-					request_nn.removeHeaders("Host");
-					request_nn.removeHeaders("Connection");
-					request_nn.removeHeaders("Proxy-Connection");
-					request_nn.removeHeaders("Keep-Alive");
-					request_nn.removeHeaders("Proxy-Authenticate");
-					request_nn.removeHeaders("TE");
-					request_nn.removeHeaders("Trailers");
-					request_nn.removeHeaders("Upgrade");
-					for (Header header : request_nn.getAllHeaders()) {
-						if (encountered_request_headers.add(header.getName())) {
-							// log.println("request headers add " + header.getName() + ": " +
-							// header.getValue());
-							// System.out.println("request headers " + encountered_request_headers);
-						}
-					}
-					request_nn.addHeader("Host", uri.getRawAuthority());
-					request_nn.addHeader("Connection", "keep-alive");
-
-					// make entity for nextnode
-					if (entity != null) {
-						HttpEntityEnclosingRequest request_withbody = (HttpEntityEnclosingRequest) request_nn;
-						request_withbody.setEntity(entity);
-					}
-
-					// send request1+entity to nextnode
-					http_conn_nn.sendRequestHeader(request_nn);
-					if (request_nn instanceof HttpEntityEnclosingRequest)
-						http_conn_nn.sendRequestEntity((HttpEntityEnclosingRequest) request_nn);
-					http_conn_nn.flush();
-					// make sure request from client is consumed
-					EntityUtils.consume(entity);
-
-					HttpResponse response_nn = http_conn_nn.receiveResponseHeader();
-					http_conn_nn.receiveResponseEntity(response_nn);
-
-					// make response status line
-					BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1,
-							response_nn.getStatusLine().getStatusCode(), response_nn.getStatusLine().getReasonPhrase());
-
-					// make response headers
-					response.setHeaders(response_nn.getAllHeaders());
-					response.removeHeaders("Connection");
-					response.removeHeaders("Proxy-Connection");
-					response.removeHeaders("Keep-Alive");
-					response.removeHeaders("TE");
-					response.removeHeaders("Trailers");
-					response.removeHeaders("Upgrade");
-					for (Header header : response.getAllHeaders()) {
-						if (encountered_response_headers.add(header.getName())) {
-							// log.println("response headers add " + header.getName() + ": " +
-							// header.getValue());
-							// System.out.println("response headers " + encountered_response_headers);
-						}
-					}
-					boolean keepAlive = keepAlive(request, response);
-					if (keepAlive)
-						response.addHeader("Connection", "keep-alive");
-					else
-						response.addHeader("Connection", "close");
-
-					// make response1 entity
-					response.setEntity(response_nn.getEntity());
-					http_conn.sendResponseHeader(response);
-					if (canResponseHaveBody(request_nn, response_nn))
-						http_conn.sendResponseEntity(response);
-					http_conn.flush();
-
-					boolean keepAlive_nn = keepAlive(request_nn, response_nn);
-					if (keepAlive_nn) {
-						socketPool.giveback(dest_sockaddr, http_conn_nn);
-					} else {
-						log.println("nc");
-						try {
-							http_conn_nn.close();
-						} catch (IOException e1) {
-							e1.printStackTrace(log);
-						}
-					}
-
-					if (keepAlive) {
-					} else {
-						log.println("c");
-						// return to close http_conn
-						return;
-					}
-				} catch (Exception e) {
-					log.println(requestLine);
-					e.printStackTrace(log);
-					try {
-						http_conn_nn.close();
-					} catch (IOException e1) {
-						e1.printStackTrace(log);
-					}
-					// return to close http_conn
-					return;
-				}
-			} // end of while, continue next http request
-		} catch (Exception e) {
-			e.printStackTrace(log);
-		}
+		http2socks.handleConnection(is, os, socket);
 	}
 
 	/**
@@ -1359,80 +1145,6 @@ public class Smartproxy {
 		}
 	}
 
-	private class ConnPool {
-
-		private ArrayListValuedHashMap<InetSocketAddress, UnusedConn> unused = new ArrayListValuedHashMap<>();
-		private int timeout_ms;
-
-		public ConnPool(int timeout_ms) {
-			this.timeout_ms = timeout_ms;
-			scmt.execAsync("pool_monitor", this::job_pool_monitor);
-		}
-
-		private void job_pool_monitor() {
-			while (true) {
-				scmt.sleep(1000 * 30);
-				synchronized (unused) {
-					MapIterator<InetSocketAddress, UnusedConn> iterator = unused.mapIterator();
-					while (iterator.hasNext()) {
-						iterator.next();
-						UnusedConn value = iterator.getValue();
-						if (sct.time_ms() - value.lastUsedTime > timeout_ms) {
-							log.println(sct.datetime() + " socketPool " + iterator.getKey() + " expired");
-							iterator.remove();
-							try {
-								value.conn.close();
-							} catch (IOException e) {
-								e.printStackTrace(log);
-							}
-						}
-					}
-				}
-			}
-		}
-
-		public DefaultBHttpClientConnection get(InetSocketAddress dest_sockaddr, int client_remote_port)
-				throws Exception {
-			synchronized (unused) {
-				List<UnusedConn> list = unused.get(dest_sockaddr);
-				if (!list.isEmpty()) {
-					log.println(sct.datetime() + " socketPool " + dest_sockaddr + " reused");
-					return list.remove(list.size() - 1).conn;
-				}
-			}
-			SocketBundle new_socketb = create_connect_config_socket(dest_sockaddr, "http");
-			DefaultBHttpClientConnection conn = new DefaultBHttpClientConnection(HTTP_CONN_BUF_SIZE) {
-				protected InputStream getSocketInputStream(final Socket socket) throws IOException {
-					return new_socketb.is;
-				}
-
-				protected OutputStream getSocketOutputStream(final Socket socket) throws IOException {
-					return new_socketb.os;
-				}
-			};
-			conn.bind(new_socketb.socket);
-			log.println(sct.datetime() + " socketPool " + dest_sockaddr + " created");
-			return conn;
-		}
-
-		public void giveback(InetSocketAddress dest_sockaddr, DefaultBHttpClientConnection conn) {
-			synchronized (unused) {
-				unused.put(dest_sockaddr, new UnusedConn(conn, sct.time_ms()));
-				log.println(sct.datetime() + " socketPool " + dest_sockaddr + " givenback");
-			}
-		}
-	}
-
-	private static class UnusedConn {
-		public DefaultBHttpClientConnection conn;
-		public long lastUsedTime;
-
-		public UnusedConn(DefaultBHttpClientConnection conn, long lastUsedTime) {
-			this.conn = conn;
-			this.lastUsedTime = lastUsedTime;
-		}
-	}
-
 	private static long ip2long(String ip) {
 		String[] parts = ip.split("\\.");
 		long ipLong = 0;
@@ -1457,118 +1169,6 @@ public class Smartproxy {
 	private static void setSocketOptions(Socket s) throws SocketException {
 		s.setTcpNoDelay(true);
 		s.setSoTimeout(SOCKET_SO_TIMEOUT_NEXTNODE);
-	}
-
-	private static boolean keepAlive(final HttpRequest request, final HttpResponse response) {
-		if (request != null) {
-			try {
-				final TokenIterator ti = new BasicTokenIterator(request.headerIterator(HttpHeaders.CONNECTION));
-				while (ti.hasNext()) {
-					final String token = ti.nextToken();
-					if (HTTP.CONN_CLOSE.equalsIgnoreCase(token)) {
-						return false;
-					}
-				}
-			} catch (final ParseException px) {
-				// invalid connection header. do not re-use
-				return false;
-			}
-		}
-
-		// Check for a self-terminating entity. If the end of the entity will
-		// be indicated by closing the connection, there is no keep-alive.
-		final ProtocolVersion ver = response.getStatusLine().getProtocolVersion();
-		final Header teh = response.getFirstHeader(HTTP.TRANSFER_ENCODING);
-		if (teh != null) {
-			if (!HTTP.CHUNK_CODING.equalsIgnoreCase(teh.getValue())) {
-				return false;
-			}
-		} else {
-			if (canResponseHaveBody(request, response)) {
-				final Header[] clhs = response.getHeaders(HTTP.CONTENT_LEN);
-				// Do not reuse if not properly content-length delimited
-				if (clhs.length == 1) {
-					final Header clh = clhs[0];
-					try {
-						final int contentLen = Integer.parseInt(clh.getValue());
-						if (contentLen < 0) {
-							return false;
-						}
-					} catch (final NumberFormatException ex) {
-						return false;
-					}
-				} else {
-					return false;
-				}
-			}
-		}
-
-		// Check for the "Connection" header. If that is absent, check for
-		// the "Proxy-Connection" header. The latter is an unspecified and
-		// broken but unfortunately common extension of HTTP.
-		HeaderIterator headerIterator = response.headerIterator(HTTP.CONN_DIRECTIVE);
-		if (!headerIterator.hasNext()) {
-			headerIterator = response.headerIterator("Proxy-Connection");
-		}
-
-		// Experimental usage of the "Connection" header in HTTP/1.0 is
-		// documented in RFC 2068, section 19.7.1. A token "keep-alive" is
-		// used to indicate that the connection should be persistent.
-		// Note that the final specification of HTTP/1.1 in RFC 2616 does not
-		// include this information. Neither is the "Connection" header
-		// mentioned in RFC 1945, which informally describes HTTP/1.0.
-		//
-		// RFC 2616 specifies "close" as the only connection token with a
-		// specific meaning: it disables persistent connections.
-		//
-		// The "Proxy-Connection" header is not formally specified anywhere,
-		// but is commonly used to carry one token, "close" or "keep-alive".
-		// The "Connection" header, on the other hand, is defined as a
-		// sequence of tokens, where each token is a header name, and the
-		// token "close" has the above-mentioned additional meaning.
-		//
-		// To get through this mess, we treat the "Proxy-Connection" header
-		// in exactly the same way as the "Connection" header, but only if
-		// the latter is missing. We scan the sequence of tokens for both
-		// "close" and "keep-alive". As "close" is specified by RFC 2068,
-		// it takes precedence and indicates a non-persistent connection.
-		// If there is no "close" but a "keep-alive", we take the hint.
-
-		if (headerIterator.hasNext()) {
-			try {
-				final TokenIterator ti = new BasicTokenIterator(headerIterator);
-				boolean keepalive = false;
-				while (ti.hasNext()) {
-					final String token = ti.nextToken();
-					if (HTTP.CONN_CLOSE.equalsIgnoreCase(token)) {
-						return false;
-					} else if (HTTP.CONN_KEEP_ALIVE.equalsIgnoreCase(token)) {
-						// continue the loop, there may be a "close" afterwards
-						keepalive = true;
-					}
-				}
-				if (keepalive) {
-					return true;
-					// neither "close" nor "keep-alive", use default policy
-				}
-
-			} catch (final ParseException px) {
-				// invalid connection header. do not re-use
-				return false;
-			}
-		}
-
-		// default since HTTP/1.1 is persistent, before it was non-persistent
-		return !ver.lessEquals(HttpVersion.HTTP_1_0);
-	}
-
-	private static boolean canResponseHaveBody(final HttpRequest request, final HttpResponse response) {
-		if (request != null && request.getRequestLine().getMethod().equalsIgnoreCase("HEAD")) {
-			return false;
-		}
-		final int status = response.getStatusLine().getStatusCode();
-		return status >= HttpStatus.SC_OK && status != HttpStatus.SC_NO_CONTENT && status != HttpStatus.SC_NOT_MODIFIED
-				&& status != HttpStatus.SC_RESET_CONTENT;
 	}
 
 }
