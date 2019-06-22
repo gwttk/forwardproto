@@ -66,6 +66,7 @@ public class Http2socks {
 	};
 	private SocketFactory socketFactoryToSocks;
 	private ModifiedConnFactory connFactory;
+	private BasicConnPool pool;
 
 	public Http2socks(Proxy socksProxy, PrintWriter log) {
 		this.log = log;
@@ -110,6 +111,10 @@ public class Http2socks {
 		// modify BasicConnFactory cuz it resolves hostname, we don't want that
 		connFactory = new ModifiedConnFactory(socketFactoryToSocks, null, 0, SocketConfig.DEFAULT,
 				ConnectionConfig.DEFAULT);
+
+		pool = new BasicConnPool(connFactory);
+		pool.setDefaultMaxPerRoute(5);
+		pool.setMaxTotal(50);
 	}
 
 	public void handleConnection(InputStream is, OutputStream os, Socket socket) {
@@ -139,14 +144,14 @@ public class Http2socks {
 		HttpProcessor httpprocForApp = HttpProcessorBuilder.create().add(new ResponseContent(true))
 				.add(new ResponseConnControl()).build();
 
-		HttpContext context = HttpCoreContext.create();
+		HttpContext contextFromAppPerConn = HttpCoreContext.create();
 
 		HttpService service = new HttpService(httpprocForApp, DefaultConnectionReuseStrategy.INSTANCE,
 				DefaultHttpResponseFactory.INSTANCE, singleHandlerMapper, null);
 
 		do {
 			try {
-				service.handleRequest(connFromApp, context);
+				service.handleRequest(connFromApp, contextFromAppPerConn);
 			} catch (IOException | HttpException e) {
 				if (e instanceof ConnectionClosedException && e.getMessage().equals("Client closed connection")) {
 					// this is normal, client is just closing conn without sending next request.
@@ -154,29 +159,30 @@ public class Http2socks {
 						connFromApp.close(); // this will also close socket
 					} catch (IOException ignore) {
 					}
-					continue; // jump to while condition
+				} else {
+					log.println("error connection from app broken, shutdown");
+					e.printStackTrace(log);
+					try {
+						connFromApp.shutdown(); // this will also close socket
+					} catch (IOException ignore) {
+					}
 				}
-
-				log.println("error connection from app broken, shutdown");
-				e.printStackTrace(log);
-				try {
-					connFromApp.shutdown(); // this will also close socket
-				} catch (IOException ignore) {
-				}
+			} finally {
+				// release conn to dest after conn from app has finished reading
+				BasicPoolEntry entry = (BasicPoolEntry) contextFromAppPerConn.getAttribute("pool.entry");
+				Boolean reusable = (Boolean) contextFromAppPerConn.getAttribute("pool.reusable");
+				if (entry != null && reusable != null)
+					pool.release(entry, reusable);
 			}
 		} while (connFromApp.isOpen());
 	}
 
-	private void handleHttpReq(HttpRequest requestFromApp, HttpResponse responseToApp, HttpContext contextFromApp)
-			throws HttpException, IOException {
+	private void handleHttpReq(HttpRequest requestFromApp, HttpResponse responseToApp,
+			HttpContext contextFromAppPerConn) throws HttpException, IOException {
 		final HttpProcessor httpprocForDest = HttpProcessorBuilder.create().add(new RequestContent())
 				.add(new RequestConnControl()).add(new RequestExpectContinue(true)).build();
 
 		final HttpRequestExecutor httpexecutor = new HttpRequestExecutor();
-
-		final BasicConnPool pool = new BasicConnPool(connFactory);
-		pool.setDefaultMaxPerRoute(5);
-		pool.setMaxTotal(50);
 
 		RequestLine requestLine = requestFromApp.getRequestLine();
 		log.println("http2socks " + requestLine);
@@ -211,39 +217,45 @@ public class Http2socks {
 			responseToApp.setStatusCode(HttpStatus.SC_BAD_GATEWAY);
 			return;
 		}
-		try {
-			HttpClientConnection conn = entry.getConnection();
-			HttpCoreContext contextToDest = HttpCoreContext.create();
-			contextToDest.setTargetHost(destination);
 
-			// create requestToDest based on requestFromApp
-			BasicHttpRequest requestToDest;
-			if (requestFromApp instanceof HttpEntityEnclosingRequest) {
-				BasicHttpEntityEnclosingRequest requestToDest_ = new BasicHttpEntityEnclosingRequest(
-						requestLine.getMethod(), newuri, HttpVersion.HTTP_1_1);
-				requestToDest_.setEntity(((HttpEntityEnclosingRequest) requestFromApp).getEntity());
-				requestToDest = requestToDest_;
-			} else {
-				requestToDest = new BasicHttpRequest(requestLine.getMethod(), newuri, HttpVersion.HTTP_1_1);
-			}
-			requestToDest.setHeaders(requestFromApp.getAllHeaders());
+		HttpClientConnection conn = entry.getConnection();
+		HttpCoreContext contextToDestPerMsg = HttpCoreContext.create();
+		contextToDestPerMsg.setTargetHost(destination);
 
-			httpexecutor.preProcess(requestToDest, httpprocForDest, contextToDest);
-			HttpResponse responseFromDest = httpexecutor.execute(requestToDest, conn, contextToDest);
-			httpexecutor.postProcess(responseFromDest, httpprocForDest, contextToDest);
-
-			reusable = connStrategy.keepAlive(responseFromDest, contextToDest);
-
-			StatusLine statusLine = responseFromDest.getStatusLine();
-			responseToApp.setStatusLine(requestFromApp.getProtocolVersion(), statusLine.getStatusCode(),
-					statusLine.getReasonPhrase());
-			responseToApp.setHeaders(responseFromDest.getAllHeaders());
-			responseToApp.setEntity(responseFromDest.getEntity());
-		} finally {
-			if (reusable) {
-				// log.println("Connection kept alive...");
-			}
-			pool.release(entry, reusable);
+		// create requestToDest based on requestFromApp
+		BasicHttpRequest requestToDest;
+		if (requestFromApp instanceof HttpEntityEnclosingRequest) {
+			BasicHttpEntityEnclosingRequest requestToDest_ = new BasicHttpEntityEnclosingRequest(
+					requestLine.getMethod(), newuri, HttpVersion.HTTP_1_1);
+			requestToDest_.setEntity(((HttpEntityEnclosingRequest) requestFromApp).getEntity());
+			requestToDest = requestToDest_;
+		} else {
+			requestToDest = new BasicHttpRequest(requestLine.getMethod(), newuri, HttpVersion.HTTP_1_1);
 		}
+		requestToDest.setHeaders(requestFromApp.getAllHeaders());
+
+		HttpResponse responseFromDest;
+		try {
+			httpexecutor.preProcess(requestToDest, httpprocForDest, contextToDestPerMsg);
+			responseFromDest = httpexecutor.execute(requestToDest, conn, contextToDestPerMsg);
+			httpexecutor.postProcess(responseFromDest, httpprocForDest, contextToDestPerMsg);
+		} catch (Exception e) {
+			log.println(String.format("error when execute request to dest, return http 502"));
+			e.printStackTrace(log);
+			responseToApp.setStatusCode(HttpStatus.SC_BAD_GATEWAY);
+			return;
+		}
+
+		reusable = connStrategy.keepAlive(responseFromDest, contextToDestPerMsg);
+
+		StatusLine statusLine = responseFromDest.getStatusLine();
+		responseToApp.setStatusLine(requestFromApp.getProtocolVersion(), statusLine.getStatusCode(),
+				statusLine.getReasonPhrase());
+		responseToApp.setHeaders(responseFromDest.getAllHeaders());
+		responseToApp.setEntity(responseFromDest.getEntity());
+
+		// must release entry after responseToApp finishes
+		contextFromAppPerConn.setAttribute("pool.entry", entry);
+		contextFromAppPerConn.setAttribute("pool.reusable", reusable);
 	}
 }
