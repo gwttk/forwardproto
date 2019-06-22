@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.apache.http.ConnectionReuseStrategy;
@@ -15,6 +16,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.RequestLine;
+import org.apache.http.StatusLine;
 import org.apache.http.config.MessageConstraints;
 import org.apache.http.impl.DefaultBHttpClientConnection;
 import org.apache.http.impl.DefaultBHttpServerConnection;
@@ -136,35 +138,36 @@ public class Http2socks {
 		HttpHost destination = new HttpHost(host, port);
 
 		ConnectionReuseStrategy connStrategy = DefaultConnectionReuseStrategy.INSTANCE;
+		Future<BasicPoolEntry> future = pool.lease(destination, null);
+		boolean reusable = false;
+		BasicPoolEntry entry;
 		try {
-			Future<BasicPoolEntry> future = pool.lease(destination, null);
+			entry = future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+			return;
+		}
+		try {
+			HttpClientConnection conn = entry.getConnection();
+			HttpCoreContext contextToDest = HttpCoreContext.create();
+			contextToDest.setTargetHost(destination);
 
-			boolean reusable = false;
-			BasicPoolEntry entry = future.get();
-			try {
-				HttpClientConnection conn = entry.getConnection();
-				HttpCoreContext contextToDest = HttpCoreContext.create();
-				contextToDest.setTargetHost(destination);
+			httpexecutor.preProcess(requestFromApp, httpproc, contextToDest);
+			HttpResponse responseFromDest = httpexecutor.execute(requestFromApp, conn, contextToDest);
+			httpexecutor.postProcess(responseFromDest, httpproc, contextToDest);
 
-				BasicHttpRequest request1 = new BasicHttpRequest("GET", "/");
-				System.out.println(">> Request URI: " + request1.getRequestLine().getUri());
+			reusable = connStrategy.keepAlive(responseFromDest, contextToDest);
 
-				httpexecutor.preProcess(request1, httpproc, contextToDest);
-				HttpResponse response1 = httpexecutor.execute(request1, conn, contextToDest);
-				httpexecutor.postProcess(response1, httpproc, contextToDest);
-
-				System.out.println("<< Response: " + response1.getStatusLine());
-				System.out.println(EntityUtils.toString(response1.getEntity()));
-
-				reusable = connStrategy.keepAlive(response1, contextToDest);
-			} finally {
-				if (reusable) {
-					System.out.println("Connection kept alive...");
-				}
-				pool.release(entry, reusable);
+			StatusLine statusLine = responseFromDest.getStatusLine();
+			responseToApp.setStatusLine(requestFromApp.getProtocolVersion(), statusLine.getStatusCode(),
+					statusLine.getReasonPhrase());
+			responseToApp.setHeaders(responseFromDest.getAllHeaders());
+			responseToApp.setEntity(responseFromDest.getEntity());
+		} finally {
+			if (reusable) {
+				System.out.println("Connection kept alive...");
 			}
-		} catch (Exception ex) {
-			System.out.println("Request to " + destination + " failed: " + ex.getMessage());
+			pool.release(entry, reusable);
 		}
 	}
 }
