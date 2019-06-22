@@ -23,7 +23,6 @@
  *******************************************************************************/
 package com.github.immueggpain.smartproxy;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -34,6 +33,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.PushbackInputStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -170,61 +170,54 @@ public class Smartproxy {
 				setSocketOptions(s);
 				// use source port as id
 				int id = s.getPort();
-				scmt.execAsync("recv_" + id + "_client", () -> recv_client(s, id));
+				scmt.execAsync("recv_" + id + "_client", () -> recv_client(s));
 			}
 		}
 	}
 
-	private void recv_client(Socket raw, int id) {
-		// wrap socket. if failed, just close socket and quit.
-		SecTcpSocket s_client = null;
+	private void recv_client(Socket s) {
 		try {
-			s_client = new SecTcpSocket(raw);
-		} catch (IOException e) {
-			e.printStackTrace(log);
-			try {
-				raw.close();
-			} catch (IOException e1) {
-				e1.printStackTrace(log);
-			}
-			return;
-		}
+			PushbackInputStream is = new PushbackInputStream(s.getInputStream(), 1);
+			OutputStream os = s.getOutputStream();
+			s.setSoTimeout(SOCKET_SO_TIMEOUT_CLIENT);
 
-		try {
-			raw.setSoTimeout(SOCKET_SO_TIMEOUT_CLIENT);
-			BufferedInputStream is = new BufferedInputStream(s_client.is);
-			is.mark(1);
+			// read first byte cuz we need to know which protocol the app is using
 			int byte1 = is.read();
 			if (byte1 == -1) {
-				// client closes without sending any data
-				s_client.close();
+				log.println("error app closed connection without sending any data");
+				Util.abortiveCloseSocket(s);
 				return;
 			}
 
 			byte first_byte = (byte) byte1;
 			if (first_byte == 5) {
 				// socks5
-				socks5(first_byte, is, s_client.os, s_client.getRaw());
+				socks5(first_byte, is, os, s);
 				return;
 			} else if (first_byte == 4) {
 				// socks4
-				socks4(first_byte, is, s_client.os, raw);
+				socks4(first_byte, is, os, s);
 				return;
 			} else if (first_byte == 0x43) {
 				// 0x43 'C' http connect
-				http_connect(first_byte, is, s_client.os, raw);
+				http_connect(first_byte, is, os, s);
 				return;
 			} else if (first_byte == 0x47 || first_byte == 0x50 || first_byte == 0x48) {
 				// 0x47 'G' http get
 				// 0x50 'P' http post/put
 				// 0x48 'H' http head
-				is.reset();
-				http_other(is, s_client.os, raw);
+				is.unread(first_byte);
+				http_other(is, os, s);
+				return;
+			} else if (first_byte == 0x16) {
+				// possible 0x16 for SSL/TLS
+				log.println("error app is talking SSL/TLS, first byte: " + sctp.byte_to_string(first_byte));
+				Util.abortiveCloseSocket(s);
 				return;
 			} else {
-				s_client.close();
-				throw new Exception("error unknown proxy protocol first_byte " + sctp.byte_to_string(first_byte));
-				// possible 0x16 for SSL/TLS
+				log.println("error app is using unknown protocol, first byte: " + sctp.byte_to_string(first_byte));
+				Util.abortiveCloseSocket(s);
+				return;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
