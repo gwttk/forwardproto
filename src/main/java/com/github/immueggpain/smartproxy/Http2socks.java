@@ -15,6 +15,7 @@ import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.RequestLine;
 import org.apache.http.StatusLine;
 import org.apache.http.config.MessageConstraints;
@@ -122,14 +123,12 @@ public class Http2socks {
 
 		RequestLine requestLine = requestFromApp.getRequestLine();
 		String uri_str = requestLine.getUri();
-		// fix because stupid tencent TIM include {} in urls
-		uri_str = uri_str.replace("{", "%7B");
-		uri_str = uri_str.replace("}", "%7D");
 		URI uri;
 		try {
 			uri = new URI(uri_str);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
+			responseToApp.setStatusCode(HttpStatus.SC_BAD_REQUEST);
 			return;
 		}
 		int port = uri.getPort() == -1 ? 80 : uri.getPort();
@@ -145,6 +144,7 @@ public class Http2socks {
 			entry = future.get();
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
+			responseToApp.setStatusCode(HttpStatus.SC_BAD_GATEWAY);
 			return;
 		}
 		try {
