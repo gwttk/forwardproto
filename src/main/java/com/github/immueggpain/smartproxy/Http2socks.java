@@ -179,7 +179,10 @@ public class Http2socks {
 
 	private void handleHttpReq(HttpRequest requestFromApp, HttpResponse responseToApp,
 			HttpContext contextFromAppPerConn) throws HttpException, IOException {
-		final HttpProcessor httpprocForDest = HttpProcessorBuilder.create().add(new RequestContent())
+		// RequestContent needs to overwrite Content-Length and Transfer-Encoding,
+		// cuz request from app may not be ok with dest,
+		// e.g. different http version, different keep-alive etc.
+		final HttpProcessor httpprocForDest = HttpProcessorBuilder.create().add(new RequestContent(true))
 				.add(new RequestConnControl()).add(new RequestExpectContinue(true)).build();
 
 		final HttpRequestExecutor httpexecutor = new HttpRequestExecutor();
