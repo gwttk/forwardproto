@@ -11,15 +11,16 @@ import java.util.concurrent.Future;
 
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.HttpClientConnection;
+import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.HttpVersion;
 import org.apache.http.RequestLine;
 import org.apache.http.StatusLine;
 import org.apache.http.config.MessageConstraints;
-import org.apache.http.impl.DefaultBHttpClientConnection;
 import org.apache.http.impl.DefaultBHttpServerConnection;
 import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.DefaultHttpResponseFactory;
@@ -27,6 +28,7 @@ import org.apache.http.impl.entity.StrictContentLengthStrategy;
 import org.apache.http.impl.pool.BasicConnFactory;
 import org.apache.http.impl.pool.BasicConnPool;
 import org.apache.http.impl.pool.BasicPoolEntry;
+import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.http.message.BasicHttpRequest;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpCoreContext;
@@ -39,13 +41,8 @@ import org.apache.http.protocol.HttpService;
 import org.apache.http.protocol.RequestConnControl;
 import org.apache.http.protocol.RequestContent;
 import org.apache.http.protocol.RequestExpectContinue;
-import org.apache.http.protocol.RequestTargetHost;
-import org.apache.http.protocol.RequestUserAgent;
 import org.apache.http.protocol.ResponseConnControl;
 import org.apache.http.protocol.ResponseContent;
-import org.apache.http.protocol.ResponseDate;
-import org.apache.http.protocol.ResponseServer;
-import org.apache.http.util.EntityUtils;
 
 public class Http2socks {
 
@@ -83,8 +80,7 @@ public class Http2socks {
 			throw new RuntimeException("this should be impossible", e);
 		}
 
-		HttpProcessor httpproc = HttpProcessorBuilder.create().add(new ResponseDate())
-				.add(new ResponseServer("MyServer-HTTP/1.1")).add(new ResponseContent()).add(new ResponseConnControl())
+		HttpProcessor httpproc = HttpProcessorBuilder.create().add(new ResponseContent()).add(new ResponseConnControl())
 				.build();
 
 		HttpContext context = HttpCoreContext.create();
@@ -108,18 +104,14 @@ public class Http2socks {
 
 	public void handleHttpReq(HttpRequest requestFromApp, HttpResponse responseToApp, HttpContext contextFromApp)
 			throws HttpException, IOException {
-		DefaultBHttpClientConnection connToDest = new DefaultBHttpClientConnection(bufferSize, fragmentSizeHint, null,
-				null, MessageConstraints.DEFAULT, StrictContentLengthStrategy.INSTANCE,
-				StrictContentLengthStrategy.INSTANCE, null, null);
 		final HttpProcessor httpproc = HttpProcessorBuilder.create().add(new RequestContent())
-				.add(new RequestTargetHost()).add(new RequestConnControl()).add(new RequestUserAgent("Test/1.1"))
-				.add(new RequestExpectContinue(true)).build();
+				.add(new RequestConnControl()).add(new RequestExpectContinue(true)).build();
 
 		final HttpRequestExecutor httpexecutor = new HttpRequestExecutor();
 
 		final BasicConnPool pool = new BasicConnPool(new BasicConnFactory());
-		pool.setDefaultMaxPerRoute(2);
-		pool.setMaxTotal(2);
+		pool.setDefaultMaxPerRoute(5);
+		pool.setMaxTotal(50);
 
 		RequestLine requestLine = requestFromApp.getRequestLine();
 		String uri_str = requestLine.getUri();
@@ -133,6 +125,9 @@ public class Http2socks {
 		}
 		int port = uri.getPort() == -1 ? 80 : uri.getPort();
 		String host = uri.getHost();
+		String newuri = uri.getRawPath();
+		if (uri.getRawQuery() != null)
+			newuri += "?" + uri.getRawQuery();
 
 		HttpHost destination = new HttpHost(host, port);
 
@@ -152,8 +147,20 @@ public class Http2socks {
 			HttpCoreContext contextToDest = HttpCoreContext.create();
 			contextToDest.setTargetHost(destination);
 
-			httpexecutor.preProcess(requestFromApp, httpproc, contextToDest);
-			HttpResponse responseFromDest = httpexecutor.execute(requestFromApp, conn, contextToDest);
+			// create requestToDest based on requestFromApp
+			BasicHttpRequest requestToDest;
+			if (requestFromApp instanceof HttpEntityEnclosingRequest) {
+				BasicHttpEntityEnclosingRequest requestToDest_ = new BasicHttpEntityEnclosingRequest(
+						requestLine.getMethod(), newuri, HttpVersion.HTTP_1_1);
+				requestToDest_.setEntity(((HttpEntityEnclosingRequest) requestFromApp).getEntity());
+				requestToDest = requestToDest_;
+			} else {
+				requestToDest = new BasicHttpRequest(requestLine.getMethod(), newuri, HttpVersion.HTTP_1_1);
+			}
+			requestToDest.setHeaders(requestFromApp.getAllHeaders());
+
+			httpexecutor.preProcess(requestToDest, httpproc, contextToDest);
+			HttpResponse responseFromDest = httpexecutor.execute(requestToDest, conn, contextToDest);
 			httpexecutor.postProcess(responseFromDest, httpproc, contextToDest);
 
 			reusable = connStrategy.keepAlive(responseFromDest, contextToDest);
