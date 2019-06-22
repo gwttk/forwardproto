@@ -776,7 +776,9 @@ public class Smartproxy {
 				return create_tunnel(settings.server_ip, settings.server_port, ssf, password,
 						dest_sockaddr.getHostString(), dest_sockaddr.getPort());
 			} else {
-				log.println(sct.datetime() + " use tunnel from pool");
+				// use tunnel from pool is just normal
+				// no need to log it
+				// log.println(sct.datetime() + " use tunnel from pool");
 				return tunnel;
 			}
 		} else
