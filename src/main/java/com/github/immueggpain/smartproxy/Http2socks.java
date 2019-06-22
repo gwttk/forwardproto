@@ -125,12 +125,12 @@ public class Http2socks {
 			throw new RuntimeException("this should be impossible", e);
 		}
 
-		HttpProcessor httpproc = HttpProcessorBuilder.create().add(new ResponseContent()).add(new ResponseConnControl())
-				.build();
+		HttpProcessor httpprocForApp = HttpProcessorBuilder.create().add(new ResponseContent())
+				.add(new ResponseConnControl()).build();
 
 		HttpContext context = HttpCoreContext.create();
 
-		HttpService service = new HttpService(httpproc, DefaultConnectionReuseStrategy.INSTANCE,
+		HttpService service = new HttpService(httpprocForApp, DefaultConnectionReuseStrategy.INSTANCE,
 				DefaultHttpResponseFactory.INSTANCE, singleHandlerMapper, null);
 
 		do {
@@ -149,7 +149,7 @@ public class Http2socks {
 
 	private void handleHttpReq(HttpRequest requestFromApp, HttpResponse responseToApp, HttpContext contextFromApp)
 			throws HttpException, IOException {
-		final HttpProcessor httpproc = HttpProcessorBuilder.create().add(new RequestContent())
+		final HttpProcessor httpprocForDest = HttpProcessorBuilder.create().add(new RequestContent())
 				.add(new RequestConnControl()).add(new RequestExpectContinue(true)).build();
 
 		final HttpRequestExecutor httpexecutor = new HttpRequestExecutor();
@@ -205,9 +205,9 @@ public class Http2socks {
 			}
 			requestToDest.setHeaders(requestFromApp.getAllHeaders());
 
-			httpexecutor.preProcess(requestToDest, httpproc, contextToDest);
+			httpexecutor.preProcess(requestToDest, httpprocForDest, contextToDest);
 			HttpResponse responseFromDest = httpexecutor.execute(requestToDest, conn, contextToDest);
-			httpexecutor.postProcess(responseFromDest, httpproc, contextToDest);
+			httpexecutor.postProcess(responseFromDest, httpprocForDest, contextToDest);
 
 			reusable = connStrategy.keepAlive(responseFromDest, contextToDest);
 
