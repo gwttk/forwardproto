@@ -16,6 +16,7 @@ import java.util.concurrent.Future;
 
 import javax.net.SocketFactory;
 
+import org.apache.http.ConnectionClosedException;
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.HttpClientConnection;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -145,6 +146,14 @@ public class Http2socks {
 			try {
 				service.handleRequest(connFromApp, context);
 			} catch (IOException | HttpException e) {
+				if (e instanceof ConnectionClosedException && e.getMessage().equals("Client closed connection")) {
+					// this is normal, client is just closing conn without sending next request.
+					try {
+						connFromApp.close(); // this will also close socket
+					} catch (IOException ignore) {
+					}
+				}
+
 				log.println("error connection from app broken, shutdown");
 				e.printStackTrace(log);
 				try {
