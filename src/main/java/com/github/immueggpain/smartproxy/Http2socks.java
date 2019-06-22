@@ -3,11 +3,17 @@ package com.github.immueggpain.smartproxy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+
+import javax.net.SocketFactory;
 
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.HttpClientConnection;
@@ -20,7 +26,9 @@ import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.RequestLine;
 import org.apache.http.StatusLine;
+import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.MessageConstraints;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.impl.DefaultBHttpServerConnection;
 import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.DefaultHttpResponseFactory;
@@ -55,8 +63,42 @@ public class Http2socks {
 			return Http2socks.this::handleHttpReq;
 		}
 	};
+	private SocketFactory socketFactoryToSocks;
 
-	public Http2socks() {
+	public Http2socks(Proxy socksProxy) {
+		this.socketFactoryToSocks = new SocketFactory() {
+			@Override
+			public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort)
+					throws IOException {
+				Socket socket = new Socket(socksProxy);
+				socket.bind(new InetSocketAddress(localAddress, localPort));
+				socket.connect(new InetSocketAddress(address, port));
+				return socket;
+			}
+
+			@Override
+			public Socket createSocket(String host, int port, InetAddress localHost, int localPort)
+					throws IOException, UnknownHostException {
+				Socket socket = new Socket(socksProxy);
+				socket.bind(new InetSocketAddress(localHost, localPort));
+				socket.connect(InetSocketAddress.createUnresolved(host, port));
+				return socket;
+			}
+
+			@Override
+			public Socket createSocket(InetAddress host, int port) throws IOException {
+				Socket socket = new Socket(socksProxy);
+				socket.connect(new InetSocketAddress(host, port));
+				return socket;
+			}
+
+			@Override
+			public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
+				Socket socket = new Socket(socksProxy);
+				socket.connect(InetSocketAddress.createUnresolved(host, port));
+				return socket;
+			}
+		};
 	}
 
 	public void handleConnection(InputStream is, OutputStream os, Socket socket) {
@@ -109,7 +151,8 @@ public class Http2socks {
 
 		final HttpRequestExecutor httpexecutor = new HttpRequestExecutor();
 
-		final BasicConnPool pool = new BasicConnPool(new BasicConnFactory());
+		final BasicConnPool pool = new BasicConnPool(
+				new BasicConnFactory(socketFactoryToSocks, null, 0, SocketConfig.DEFAULT, ConnectionConfig.DEFAULT));
 		pool.setDefaultMaxPerRoute(5);
 		pool.setMaxTotal(50);
 
