@@ -15,7 +15,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import javax.net.SocketFactory;
-
 import org.apache.http.ConnectionClosedException;
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.HttpClientConnection;
@@ -35,7 +34,6 @@ import org.apache.http.impl.DefaultBHttpServerConnection;
 import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.impl.entity.StrictContentLengthStrategy;
-import org.apache.http.impl.pool.BasicConnFactory;
 import org.apache.http.impl.pool.BasicConnPool;
 import org.apache.http.impl.pool.BasicPoolEntry;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
@@ -67,6 +65,7 @@ public class Http2socks {
 		}
 	};
 	private SocketFactory socketFactoryToSocks;
+	private ModifiedConnFactory connFactory;
 
 	public Http2socks(Proxy socksProxy, PrintWriter log) {
 		this.log = log;
@@ -108,6 +107,9 @@ public class Http2socks {
 				return socket;
 			}
 		};
+		// modify BasicConnFactory cuz it resolves hostname, we don't want that
+		connFactory = new ModifiedConnFactory(socketFactoryToSocks, null, 0, SocketConfig.DEFAULT,
+				ConnectionConfig.DEFAULT);
 	}
 
 	public void handleConnection(InputStream is, OutputStream os, Socket socket) {
@@ -172,8 +174,7 @@ public class Http2socks {
 
 		final HttpRequestExecutor httpexecutor = new HttpRequestExecutor();
 
-		final BasicConnPool pool = new BasicConnPool(
-				new BasicConnFactory(socketFactoryToSocks, null, 0, SocketConfig.DEFAULT, ConnectionConfig.DEFAULT));
+		final BasicConnPool pool = new BasicConnPool(connFactory);
 		pool.setDefaultMaxPerRoute(5);
 		pool.setMaxTotal(50);
 
