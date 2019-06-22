@@ -168,16 +168,5 @@ public class Http2socks {
 
 		}
 		;
-
-		WorkerThread[] workers = new WorkerThread[targets.length];
-		for (int i = 0; i < workers.length; i++) {
-			workers[i] = new WorkerThread(targets[i]);
-		}
-		for (int i = 0; i < workers.length; i++) {
-			workers[i].start();
-		}
-		for (int i = 0; i < workers.length; i++) {
-			workers[i].join();
-		}
 	}
 }
