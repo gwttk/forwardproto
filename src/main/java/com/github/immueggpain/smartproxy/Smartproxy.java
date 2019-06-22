@@ -121,7 +121,7 @@ public class Smartproxy {
 		load_domain_nn_table();
 
 		http2socks = new Http2socks(new Proxy(Proxy.Type.SOCKS,
-				new InetSocketAddress(settings.local_listen_ip, settings.local_listen_port)));
+				new InetSocketAddress(settings.local_listen_ip, settings.local_listen_port)), log);
 
 		// set SSL
 		SSLContext context = SSLContext.getInstance("TLSv1.2");

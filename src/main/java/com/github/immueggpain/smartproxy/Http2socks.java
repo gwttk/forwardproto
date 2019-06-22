@@ -3,6 +3,7 @@ package com.github.immueggpain.smartproxy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -57,6 +58,7 @@ public class Http2socks {
 	private static final int bufferSize = 32 * 1024;
 	private static final int fragmentSizeHint = 32 * 1024;
 
+	private PrintWriter log;
 	private final HttpRequestHandlerMapper singleHandlerMapper = new HttpRequestHandlerMapper() {
 		@Override
 		public HttpRequestHandler lookup(HttpRequest request) {
@@ -65,7 +67,8 @@ public class Http2socks {
 	};
 	private SocketFactory socketFactoryToSocks;
 
-	public Http2socks(Proxy socksProxy) {
+	public Http2socks(Proxy socksProxy, PrintWriter log) {
+		this.log = log;
 		this.socketFactoryToSocks = new SocketFactory() {
 			@Override
 			public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort)
@@ -134,12 +137,12 @@ public class Http2socks {
 			try {
 				service.handleRequest(connFromApp, context);
 			} catch (IOException | HttpException e) {
-				System.err.println("error connection from app broken, shutdown");
+				log.println("error connection from app broken, shutdown");
 				try {
 					connFromApp.shutdown(); // this will also close socket
 				} catch (IOException ignore) {
 				}
-				e.printStackTrace();
+				e.printStackTrace(log);
 			}
 		} while (connFromApp.isOpen());
 	}
@@ -162,7 +165,7 @@ public class Http2socks {
 		try {
 			uri = new URI(uri_str);
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			e.printStackTrace(log);
 			responseToApp.setStatusCode(HttpStatus.SC_BAD_REQUEST);
 			return;
 		}
@@ -181,7 +184,7 @@ public class Http2socks {
 		try {
 			entry = future.get();
 		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
+			e.printStackTrace(log);
 			responseToApp.setStatusCode(HttpStatus.SC_BAD_GATEWAY);
 			return;
 		}
@@ -215,7 +218,7 @@ public class Http2socks {
 			responseToApp.setEntity(responseFromDest.getEntity());
 		} finally {
 			if (reusable) {
-				System.out.println("Connection kept alive...");
+				log.println("Connection kept alive...");
 			}
 			pool.release(entry, reusable);
 		}
