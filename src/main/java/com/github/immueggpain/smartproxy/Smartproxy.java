@@ -72,6 +72,17 @@ import com.github.immueggpain.common.sctp;
 import com.github.immueggpain.smartproxy.Launcher.ClientSettings;
 
 public class Smartproxy {
+	
+	
+	// timeouts
+	private static final int toCltReadFromApp = 10 * 1000;
+	private static final int toCltReadFromSvr = 10 * 1000;
+	private static final int toCltConnectToSvr = 10 * 1000;
+	private static final int toCltReadFromDirect = 10 * 1000;
+	private static final int toCltConnectToDirect = 10 * 1000;
+	private static final int toSvrReadFromClt = 10 * 1000;
+	private static final int toSvrReadFromDest = 10 * 1000;
+	private static final int toSvrConnectToDest = 10 * 1000;
 
 	private static final int SP_SVR_CONNECT_TIMEOUT = 10 * 1000;
 	private static final int SP_SVR_SMALL_TIMEOUT = 10 * 1000;
