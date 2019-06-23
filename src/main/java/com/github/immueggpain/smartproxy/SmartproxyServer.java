@@ -61,6 +61,11 @@ import com.github.immueggpain.smartproxy.Launcher.ServerSettings;
 
 public class SmartproxyServer {
 
+	// timeouts
+	private static final int toSvrReadFromClt = 30 * 1000 + 5 * 1000;
+	private static final int toSvrReadFromDest = 10 * 1000;
+	private static final int toSvrConnectToDest = 10 * 1000;
+
 	public static final int SVRERRCODE_OK = 0x00; // request granted
 	public static final int SVRERRCODE_FAIL = 0x01; // general failure
 	public static final int SVRERRCODE_NOTALLOW = 0x02; // connection not allowed by ruleset
@@ -71,9 +76,6 @@ public class SmartproxyServer {
 	public static final int SVRERRCODE_COMMAND = 0x07; // command not supported / protocol error
 	public static final int SVRERRCODE_ADDR = 0x08; // address type not supported
 
-	private static final int CLIENT_SO_TIMEOUT = 1000 * 60;
-	private static final int DEST_SO_TIMEOUT = 1000 * 60;
-	private static final int CONNECT_TIMEOUT = 1000 * 10;
 	private static final int BUF_SIZE = 1024 * 16;
 
 	private byte[] realpswd = new byte[64];
@@ -237,7 +239,7 @@ public class SmartproxyServer {
 
 			// connect cdest
 			try {
-				cdest_s.connect(dest_sockaddr, CONNECT_TIMEOUT);
+				cdest_s.connect(dest_sockaddr, toSvrConnectToDest);
 			} catch (SocketTimeoutException e) {
 				System.out.println(String.format("%s timeout during connect dest", dest_sockaddr.toString()));
 				Util.abortiveCloseSocket(sclient_s);
@@ -250,13 +252,13 @@ public class SmartproxyServer {
 				return;
 			}
 
-			cdest_s.setSoTimeout(DEST_SO_TIMEOUT);
+			cdest_s.setSoTimeout(toSvrReadFromDest);
 			InputStream cdest_is = cdest_s.getInputStream();
 			OutputStream cdest_os = cdest_s.getOutputStream();
 			TunnelContext contxt = new TunnelContext(dest_sockaddr.toString(), cdest_s, sclient_s);
 
 			// restore to normal timeout
-			sclient_s.setSoTimeout(CLIENT_SO_TIMEOUT);
+			sclient_s.setSoTimeout(toSvrReadFromClt);
 
 			Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn2",
 					() -> handleConnection2(contxt, cdest_is, os));
@@ -272,7 +274,7 @@ public class SmartproxyServer {
 					// timeout cuz read no data
 					// if we are writing, then continue
 					// if we are not writing, tunnel broken
-					if (sct.time_ms() - contxt.lastWriteToClient < CLIENT_SO_TIMEOUT)
+					if (sct.time_ms() - contxt.lastWriteToClient < toSvrReadFromClt)
 						continue;
 					else {
 						if (contxt.closing)
@@ -351,7 +353,7 @@ public class SmartproxyServer {
 				// timeout cuz read no data
 				// if we are writing, then continue
 				// if we are not writing, just RST close connection
-				if (sct.time_ms() - contxt.lastWriteToDest < DEST_SO_TIMEOUT)
+				if (sct.time_ms() - contxt.lastWriteToDest < toSvrReadFromDest)
 					continue;
 				else {
 					if (contxt.closing)

@@ -41,7 +41,6 @@ import java.net.Proxy;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -80,11 +79,8 @@ public class Smartproxy {
 	private static final int toCltConnectToSvr = 10 * 1000;
 	private static final int toCltReadFromDirect = 10 * 1000;
 	private static final int toCltConnectToDirect = 10 * 1000;
-	private static final int toSvrReadFromClt = 30 * 1000 + 5 * 1000;
 	private static final int toSvrReadFromCltSmall = 30 * 1000 + 5 * 1000;
 	private static final int toSvrReadFromCltRest = 30 * 1000 + 5 * 1000;
-	private static final int toSvrReadFromDest = 10 * 1000;
-	private static final int toSvrConnectToDest = 10 * 1000;
 
 	private static final int BUF_SIZE = 1024 * 16;
 	private static final SecureRandom rand = new SecureRandom();
