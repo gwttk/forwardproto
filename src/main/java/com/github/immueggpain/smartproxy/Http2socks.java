@@ -113,8 +113,8 @@ public class Http2socks {
 				ConnectionConfig.DEFAULT);
 
 		pool = new BasicConnPool(connFactory);
-		pool.setDefaultMaxPerRoute(5);
-		pool.setMaxTotal(50);
+		pool.setDefaultMaxPerRoute(6);
+		pool.setMaxTotal(60);
 	}
 
 	public void handleConnection(InputStream is, OutputStream os, Socket socket) {
@@ -248,6 +248,7 @@ public class Http2socks {
 			httpexecutor.postProcess(responseFromDest, httpprocForDest, contextToDestPerMsg);
 		} catch (Exception e) {
 			log.println(String.format("error when execute request to dest, return http 502"));
+			log.println("error request is: " + requestToDest.toString());
 			e.printStackTrace(log);
 			responseToApp.setStatusCode(HttpStatus.SC_BAD_GATEWAY);
 			return;
