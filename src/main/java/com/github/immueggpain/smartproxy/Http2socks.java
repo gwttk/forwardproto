@@ -17,6 +17,7 @@ import java.util.concurrent.Future;
 import javax.net.SocketFactory;
 import org.apache.http.ConnectionClosedException;
 import org.apache.http.ConnectionReuseStrategy;
+import org.apache.http.Header;
 import org.apache.http.HttpClientConnection;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpException;
@@ -38,6 +39,7 @@ import org.apache.http.impl.pool.BasicConnPool;
 import org.apache.http.impl.pool.BasicPoolEntry;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.http.message.BasicHttpRequest;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpCoreContext;
 import org.apache.http.protocol.HttpProcessor;
@@ -201,6 +203,7 @@ public class Http2socks {
 		}
 		int port = uri.getPort() == -1 ? 80 : uri.getPort();
 		String host = uri.getHost();
+		String rawAuthority = uri.getRawAuthority();
 		String newuri = uri.getRawPath();
 		if (uri.getRawQuery() != null)
 			newuri += "?" + uri.getRawQuery();
@@ -240,6 +243,7 @@ public class Http2socks {
 			requestToDest = new BasicHttpRequest(requestLine.getMethod(), newuri, HttpVersion.HTTP_1_1);
 		}
 		requestToDest.setHeaders(requestFromApp.getAllHeaders());
+		requestToDest.setHeader(HTTP.TARGET_HOST, rawAuthority);
 
 		HttpResponse responseFromDest;
 		try {
@@ -248,7 +252,9 @@ public class Http2socks {
 			httpexecutor.postProcess(responseFromDest, httpprocForDest, contextToDestPerMsg);
 		} catch (Exception e) {
 			log.println(String.format("error when execute request to dest, return http 502"));
-			log.println("error request is: " + requestToDest.toString());
+			log.println("error request host: " + destination);
+			printHttpRequest(log, requestFromApp, "request from app");
+			printHttpRequest(log, requestToDest, "request to dest");
 			e.printStackTrace(log);
 			responseToApp.setStatusCode(HttpStatus.SC_BAD_GATEWAY);
 			return;
@@ -262,5 +268,13 @@ public class Http2socks {
 				statusLine.getReasonPhrase());
 		responseToApp.setHeaders(responseFromDest.getAllHeaders());
 		responseToApp.setEntity(responseFromDest.getEntity());
+	}
+
+	private static void printHttpRequest(PrintWriter log, HttpRequest request, String prefix) {
+		log.println("error " + prefix + " line is: " + request.getRequestLine());
+		log.println("error " + prefix + " request headers: ");
+		for (Header header : request.getAllHeaders()) {
+			log.println("        " + header);
+		}
 	}
 }
