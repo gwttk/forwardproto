@@ -76,22 +76,19 @@ public class Smartproxy {
 	// timeouts
 	private static final int toCltReadFromApp = 10 * 1000;
 	private static final int toCltReadFromSvr = 10 * 1000;
+	private static final int toCltReadFromSvrSmall = 10 * 1000;
 	private static final int toCltConnectToSvr = 10 * 1000;
 	private static final int toCltReadFromDirect = 10 * 1000;
 	private static final int toCltConnectToDirect = 10 * 1000;
 	private static final int toSvrReadFromClt = 30 * 1000 + 5 * 1000;
+	private static final int toSvrReadFromCltSmall = 30 * 1000 + 5 * 1000;
+	private static final int toSvrReadFromCltRest = 30 * 1000 + 5 * 1000;
 	private static final int toSvrReadFromDest = 10 * 1000;
 	private static final int toSvrConnectToDest = 10 * 1000;
 
-	private static final int SP_SVR_SMALL_TIMEOUT = 10 * 1000;
-	private static final int SP_SVR_SO_TIMEOUT = 60 * 1000;
-	private static final int SP_SVR_REST_TIMEOUT = 60 * 1000 * 5;
 	private static final int BUF_SIZE = 1024 * 16;
 	private static final SecureRandom rand = new SecureRandom();
 
-	private static final int SOCKET_CONNECT_TIMEOUT = 1000 * 15;
-	private static final int SOCKET_SO_TIMEOUT_CLIENT = 0;
-	private static final int SOCKET_SO_TIMEOUT_NEXTNODE = 0;
 	private static final Pattern httpconnect_regex = Pattern.compile("CONNECT (.+):([0-9]+) HTTP/1[.][01]");
 	private static final byte[] httpconnect_okresponse = sc.s2b("HTTP/1.1 200 OK\r\n\r\n");
 	private static final byte[] httpconnect_500response = sc.s2b("HTTP/1.1 500 Internal Server Error\r\n\r\n");
@@ -144,7 +141,6 @@ public class Smartproxy {
 			log.println("listened on port " + settings.local_listen_port);
 			while (true) {
 				Socket s = ss.accept();
-				setSocketOptions(s);
 				// use source port as id
 				int id = s.getPort();
 				scmt.execAsync("recv_" + id + "_client", () -> recv_client(s));
@@ -154,9 +150,11 @@ public class Smartproxy {
 
 	private void recv_client(Socket s) {
 		try {
+			s.setTcpNoDelay(true);
+			s.setSoTimeout(toCltReadFromApp);
+
 			PushbackInputStream is = new PushbackInputStream(s.getInputStream(), 1);
 			OutputStream os = s.getOutputStream();
-			s.setSoTimeout(SOCKET_SO_TIMEOUT_CLIENT);
 
 			// read first byte cuz we need to know which protocol the app is using
 			int byte1 = is.read();
@@ -539,7 +537,7 @@ public class Smartproxy {
 				// timeout cuz read no data
 				// if we are writing, then continue
 				// if we are not writing, tunnel broken
-				if (sct.time_ms() - contxt.lastWriteToClient < SP_SVR_SO_TIMEOUT)
+				if (sct.time_ms() - contxt.lastWriteToClient < toCltReadFromApp)
 					continue;
 				else {
 					if (contxt.closing)
@@ -615,7 +613,7 @@ public class Smartproxy {
 				// timeout cuz read no data
 				// if we are writing, then continue
 				// if we are not writing, just RST close connection
-				if (sct.time_ms() - contxt.lastWriteToServer < SP_SVR_SO_TIMEOUT)
+				if (sct.time_ms() - contxt.lastWriteToServer < toCltReadFromSvr)
 					continue;
 				else {
 					if (contxt.closing)
@@ -803,7 +801,7 @@ public class Smartproxy {
 			// config sslsocket
 			cserver_s.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
 			// use small timeout first
-			cserver_s.setSoTimeout(SP_SVR_SMALL_TIMEOUT);
+			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
 
 			// connect to sp server
 			try {
@@ -839,7 +837,7 @@ public class Smartproxy {
 
 			// send rest timeout
 			try {
-				os.writeInt(SP_SVR_SMALL_TIMEOUT);
+				os.writeInt(toSvrReadFromCltSmall);
 			} catch (Exception e) {
 				log.println(sct.datetime() + " error when send timeout " + e);
 				Util.abortiveCloseSocket(cserver_s);
@@ -872,7 +870,7 @@ public class Smartproxy {
 			}
 
 			// restore to normal timeout
-			cserver_s.setSoTimeout(SP_SVR_SO_TIMEOUT);
+			cserver_s.setSoTimeout(toCltReadFromSvr);
 
 			return new SocketBundle(cserver_s, is, os);
 		} catch (Throwable e) {
@@ -891,7 +889,7 @@ public class Smartproxy {
 			// config sslsocket
 			cserver_s.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
 			// use small timeout first
-			cserver_s.setSoTimeout(SP_SVR_SMALL_TIMEOUT);
+			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
 
 			// connect to sp server
 			try {
@@ -927,7 +925,7 @@ public class Smartproxy {
 
 			// send rest timeout
 			try {
-				os.writeInt(SP_SVR_REST_TIMEOUT);
+				os.writeInt(toSvrReadFromCltRest);
 			} catch (Exception e) {
 				log.println(sct.datetime() + " error when send timeout " + e);
 				Util.abortiveCloseSocket(cserver_s);
@@ -950,7 +948,7 @@ public class Smartproxy {
 			}
 
 			SocketBundle sb = new SocketBundle(cserver_s, is, os);
-			sb.expireTime = System.currentTimeMillis() + SP_SVR_REST_TIMEOUT - 5000;
+			sb.expireTime = System.currentTimeMillis() + toSvrReadFromCltRest - 5000;
 			return sb;
 		} catch (Throwable e) {
 			log.println("there shouldn't be any exception here");
@@ -976,7 +974,7 @@ public class Smartproxy {
 			}
 
 			// restore to normal timeout
-			cserver_s.setSoTimeout(SP_SVR_SO_TIMEOUT);
+			cserver_s.setSoTimeout(toCltReadFromSvr);
 
 			return sb;
 		} catch (Throwable e) {
@@ -1044,9 +1042,10 @@ public class Smartproxy {
 	/** return null means connection refused, or connect timed out */
 	private Socket direct_create_config_connect_socket(SocketAddress dest_sockaddr) throws IOException {
 		Socket s = new Socket(Proxy.NO_PROXY);
-		setSocketOptions(s);
+		s.setTcpNoDelay(true);
+		s.setSoTimeout(toCltReadFromDirect);
 		try {
-			s.connect(dest_sockaddr, SOCKET_CONNECT_TIMEOUT);
+			s.connect(dest_sockaddr, toCltConnectToDirect);
 		} catch (ConnectException e) {
 			if (e.getMessage().equals("Connection refused: connect")
 					|| e.getMessage().equals("Connection timed out: connect"))
@@ -1176,11 +1175,6 @@ public class Smartproxy {
 	private static String long2ip(long l) {
 		String ip = (l >> 24 & 0xff) + "." + (l >> 16 & 0xff) + "." + (l >> 8 & 0xff) + "." + (l & 0xff);
 		return ip;
-	}
-
-	private static void setSocketOptions(Socket s) throws SocketException {
-		s.setTcpNoDelay(true);
-		s.setSoTimeout(SOCKET_SO_TIMEOUT_NEXTNODE);
 	}
 
 }
