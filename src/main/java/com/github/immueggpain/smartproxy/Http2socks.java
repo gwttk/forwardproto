@@ -13,6 +13,7 @@ import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.SocketFactory;
 import org.apache.http.ConnectionClosedException;
@@ -57,9 +58,8 @@ import org.apache.http.protocol.ResponseContent;
 public class Http2socks {
 
 	// timeouts
-	private static final int toH2sReadFromApp = 10 * 1000;
 	private static final int toH2sReadFromSocks = 10 * 1000;
-	private static final int toH2sConnectToSocks = 10 * 1000;
+	private static final int toH2sConnectThruSocks = 10 * 1000;
 	private static final int toHttpWithApp = 10 * 1000;
 	private static final int toHttpWithDest = 10 * 1000;
 
@@ -117,13 +117,15 @@ public class Http2socks {
 				return socket;
 			}
 		};
+		SocketConfig socketConfig = SocketConfig.custom().setTcpNoDelay(true).setSoTimeout(toH2sReadFromSocks).build();
 		// modify BasicConnFactory cuz it resolves hostname, we don't want that
-		connFactory = new ModifiedConnFactory(socketFactoryToSocks, null, 0, SocketConfig.DEFAULT,
+		connFactory = new ModifiedConnFactory(socketFactoryToSocks, null, toH2sConnectThruSocks, socketConfig,
 				ConnectionConfig.DEFAULT);
 
 		pool = new BasicConnPool(connFactory);
 		pool.setDefaultMaxPerRoute(6);
 		pool.setMaxTotal(60);
+		new Thread(this::connPoolCleaner, "h2s-connPoolCleaner").start();
 	}
 
 	public void handleConnection(InputStream is, OutputStream os, Socket socket) {
@@ -180,8 +182,10 @@ public class Http2socks {
 				// release conn to dest after conn from app has finished reading
 				BasicPoolEntry entry = (BasicPoolEntry) contextFromAppPerConn.getAttribute("pool.entry");
 				Boolean reusable = (Boolean) contextFromAppPerConn.getAttribute("pool.reusable");
-				if (entry != null && reusable != null)
+				if (entry != null && reusable != null) {
+					entry.updateExpiry(toHttpWithDest, TimeUnit.MILLISECONDS);
 					pool.release(entry, reusable);
+				}
 			}
 		} while (connFromApp.isOpen());
 	}
@@ -275,6 +279,18 @@ public class Http2socks {
 				statusLine.getReasonPhrase());
 		responseToApp.setHeaders(responseFromDest.getAllHeaders());
 		responseToApp.setEntity(responseFromDest.getEntity());
+	}
+
+	private void connPoolCleaner() {
+		while (true) {
+			try {
+				Thread.sleep(10 * 1000);
+			} catch (InterruptedException e) {
+				log.println("error conn pool cleaner thread interrupted");
+				e.printStackTrace(log);
+			}
+			pool.closeExpired();
+		}
 	}
 
 	private static void printHttpRequest(PrintWriter log, HttpRequest request, String prefix) {
