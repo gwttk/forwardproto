@@ -72,19 +72,17 @@ import com.github.immueggpain.common.sctp;
 import com.github.immueggpain.smartproxy.Launcher.ClientSettings;
 
 public class Smartproxy {
-	
-	
+
 	// timeouts
 	private static final int toCltReadFromApp = 10 * 1000;
 	private static final int toCltReadFromSvr = 10 * 1000;
 	private static final int toCltConnectToSvr = 10 * 1000;
 	private static final int toCltReadFromDirect = 10 * 1000;
 	private static final int toCltConnectToDirect = 10 * 1000;
-	private static final int toSvrReadFromClt = 10 * 1000;
+	private static final int toSvrReadFromClt = 30 * 1000 + 5 * 1000;
 	private static final int toSvrReadFromDest = 10 * 1000;
 	private static final int toSvrConnectToDest = 10 * 1000;
 
-	private static final int SP_SVR_CONNECT_TIMEOUT = 10 * 1000;
 	private static final int SP_SVR_SMALL_TIMEOUT = 10 * 1000;
 	private static final int SP_SVR_SO_TIMEOUT = 60 * 1000;
 	private static final int SP_SVR_REST_TIMEOUT = 60 * 1000 * 5;
@@ -809,7 +807,7 @@ public class Smartproxy {
 
 			// connect to sp server
 			try {
-				cserver_s.connect(new InetSocketAddress(server_hostname, server_port), SP_SVR_CONNECT_TIMEOUT);
+				cserver_s.connect(new InetSocketAddress(server_hostname, server_port), toCltConnectToSvr);
 			} catch (Throwable e) {
 				log.println(sct.datetime() + " error when connect sp server " + e);
 				Util.abortiveCloseSocket(cserver_s);
@@ -897,7 +895,7 @@ public class Smartproxy {
 
 			// connect to sp server
 			try {
-				cserver_s.connect(new InetSocketAddress(server_hostname, server_port), SP_SVR_CONNECT_TIMEOUT);
+				cserver_s.connect(new InetSocketAddress(server_hostname, server_port), toCltConnectToSvr);
 			} catch (Throwable e) {
 				log.println(sct.datetime() + " error when connect sp server " + e);
 				Util.abortiveCloseSocket(cserver_s);
