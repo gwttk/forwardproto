@@ -58,10 +58,9 @@ import org.apache.http.protocol.ResponseContent;
 public class Http2socks {
 
 	// timeouts
-	private static final int toH2sReadFromSocks = 10 * 1000;
-	private static final int toH2sConnectThruSocks = 10 * 1000;
-	private static final int toHttpWithApp = 10 * 1000;
-	private static final int toHttpWithDest = 10 * 1000;
+	public static final int toHttpWithDest = 60 * 1000;
+	private static final int toH2sReadFromSocks = toHttpWithDest + 10 * 1000;
+	private static final int toH2sConnectThruSocks = 20 * 1000;
 
 	private static final int bufferSize = 32 * 1024;
 	private static final int fragmentSizeHint = 32 * 1024;
