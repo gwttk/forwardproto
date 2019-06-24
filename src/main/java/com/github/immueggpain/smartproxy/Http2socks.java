@@ -157,7 +157,7 @@ public class Http2socks {
 		// cuz response from dest may not be ok with app,
 		// e.g. different http version, different keep-alive etc.
 		HttpProcessor httpprocForApp = HttpProcessorBuilder.create().add(new ResponseContent(true))
-				.add(new ResponseConnControl()).build();
+				.add(new ResponseConnControl()).add(new HttpProxyConnectionFix()).build();
 
 		HttpContext contextFromAppPerConn = HttpCoreContext.create();
 
