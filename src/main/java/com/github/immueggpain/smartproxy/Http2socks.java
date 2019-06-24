@@ -59,7 +59,7 @@ public class Http2socks {
 
 	// timeouts
 	public static final int toHttpWithDest = 60 * 1000;
-	private static final int toH2sReadFromSocks = toHttpWithDest + 10 * 1000;
+	public static final int toH2sReadFromSocks = toHttpWithDest + 10 * 1000;
 	private static final int toH2sConnectThruSocks = 20 * 1000;
 
 	private static final int bufferSize = 32 * 1024;

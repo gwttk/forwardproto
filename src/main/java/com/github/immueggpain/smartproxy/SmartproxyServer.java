@@ -62,7 +62,7 @@ import com.github.immueggpain.smartproxy.Launcher.ServerSettings;
 public class SmartproxyServer {
 
 	// timeouts
-	public static final int toSvrReadFromClt = Http2socks.toHttpWithDest+10 * 1000;
+	public static final int toSvrReadFromClt = Http2socks.toHttpWithDest + 10 * 1000;
 	private static final int toSvrReadFromDest = Smartproxy.toCltReadFromSvr + 10 * 1000;
 	private static final int toSvrConnectToDest = 10 * 1000;
 
