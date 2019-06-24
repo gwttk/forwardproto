@@ -73,14 +73,14 @@ import com.github.immueggpain.smartproxy.Launcher.ClientSettings;
 public class Smartproxy {
 
 	// timeouts
-	public static final int toCltReadFromApp = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
-	public static final int toCltReadFromSvr = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
+	private static final int toCltReadFromApp = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
+	public static final int toCltReadFromSvr = Http2socks.toHttpWithDest + 10 * 1000;
 	private static final int toCltReadFromSvrSmall = 10 * 1000;
 	private static final int toCltConnectToSvr = 10 * 1000;
-	private static final int toCltReadFromDirect = 10 * 1000;
+	private static final int toCltReadFromDirect = toCltReadFromSvr;
 	private static final int toCltConnectToDirect = 10 * 1000;
-	private static final int toSvrReadFromCltSmall = 30 * 1000 + 5 * 1000;
-	private static final int toSvrReadFromCltRest = 30 * 1000 + 5 * 1000;
+	private static final int toSvrReadFromCltSmall = toCltReadFromSvrSmall;
+	private static final int toSvrReadFromCltRest = 5 * 60 * 1000;
 
 	private static final int BUF_SIZE = 1024 * 16;
 	private static final SecureRandom rand = new SecureRandom();
