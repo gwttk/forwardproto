@@ -8,7 +8,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
-import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
@@ -173,10 +173,10 @@ public class Http2socks {
 						connFromApp.close(); // this will also close socket
 					} catch (IOException ignore) {
 					}
-				} else if (e instanceof SocketException && e.getMessage().equals("Connection reset")) {
-					// this is normal, client is just closing conn without sending next request.
+				} else if (e instanceof SocketTimeoutException && e.getMessage().equals("Read timed out")) {
+					// socket timed out, close conn from app
 					try {
-						connFromApp.shutdown(); // this will also close socket
+						connFromApp.close(); // this will also close socket
 					} catch (IOException ignore) {
 					}
 				} else {
