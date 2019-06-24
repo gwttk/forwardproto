@@ -285,6 +285,8 @@ public class Http2socks {
 		}
 		requestToDest.setHeaders(requestFromApp.getAllHeaders());
 		requestToDest.setHeader(HTTP.TARGET_HOST, rawAuthority);
+		requestToDest.removeHeaders("Connection");
+		requestToDest.removeHeaders("Proxy-Connection");
 
 		HttpResponse responseFromDest;
 		try {
