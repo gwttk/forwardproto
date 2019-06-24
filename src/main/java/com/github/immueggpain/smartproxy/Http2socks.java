@@ -332,7 +332,7 @@ public class Http2socks {
 	}
 
 	private static boolean excpWhenParsHead(Throwable e) {
-		StackTraceElement ste = e.getStackTrace()[10];
+		StackTraceElement ste = e.getStackTrace()[13];
 		if (ste.getFileName().equals("DefaultBHttpServerConnection.java") && ste.getLineNumber() == 129) {
 			return true;
 		} else
