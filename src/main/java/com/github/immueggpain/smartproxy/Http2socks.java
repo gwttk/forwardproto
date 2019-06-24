@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -179,6 +180,13 @@ public class Http2socks {
 						connFromApp.close(); // this will also close socket
 					} catch (IOException ignore) {
 					}
+				} else if (e instanceof SocketException && e.getMessage().equals("Connection reset")
+						&& excpWhenParsHead(e)) {
+					// this is normal, client is just closing conn without sending next request.
+					try {
+						connFromApp.shutdown(); // this will also close socket
+					} catch (IOException ignore) {
+					}
 				} else {
 					log.println("error connection from app broken, shutdown");
 					e.printStackTrace(log);
@@ -308,5 +316,13 @@ public class Http2socks {
 		for (Header header : request.getAllHeaders()) {
 			log.println("        " + header);
 		}
+	}
+
+	private static boolean excpWhenParsHead(Throwable e) {
+		StackTraceElement ste = e.getStackTrace()[10];
+		if (ste.getFileName().equals("DefaultBHttpServerConnection.java") && ste.getLineNumber() == 129) {
+			return true;
+		} else
+			return false;
 	}
 }
