@@ -73,8 +73,8 @@ import com.github.immueggpain.smartproxy.Launcher.ClientSettings;
 public class Smartproxy {
 
 	// timeouts
-	private static final int toCltReadFromApp = 10 * 1000;
-	public static final int toCltReadFromSvr = 10 * 1000;
+	public static final int toCltReadFromApp = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
+	public static final int toCltReadFromSvr = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
 	private static final int toCltReadFromSvrSmall = 10 * 1000;
 	private static final int toCltConnectToSvr = 10 * 1000;
 	private static final int toCltReadFromDirect = 10 * 1000;
