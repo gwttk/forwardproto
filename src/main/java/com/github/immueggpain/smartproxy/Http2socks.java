@@ -170,6 +170,7 @@ public class Http2socks {
 
 				if (e instanceof ConnectionClosedException && e.getMessage().equals("Client closed connection")) {
 					// this is normal, client is just closing conn without sending next request.
+					// this is when remote tcp peer properly closed conn.
 					try {
 						connFromApp.close(); // this will also close socket
 					} catch (IOException ignore) {
@@ -183,6 +184,15 @@ public class Http2socks {
 				} else if (e instanceof SocketException && e.getMessage().equals("Connection reset")
 						&& excpWhenParsHead(e)) {
 					// this is normal, client is just closing conn without sending next request.
+					try {
+						connFromApp.shutdown(); // this will also close socket
+					} catch (IOException ignore) {
+					}
+				} else if (e instanceof SocketException
+						&& e.getMessage().equals("Software caused connection abort: recv failed")
+						&& excpWhenParsHead(e)) {
+					// this is normal, client is just closing conn without sending next request.
+					// this is when remote tcp peer abortively closed conn.
 					try {
 						connFromApp.shutdown(); // this will also close socket
 					} catch (IOException ignore) {
