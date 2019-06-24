@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
@@ -163,10 +164,19 @@ public class Http2socks {
 			try {
 				service.handleRequest(connFromApp, contextFromAppPerConn);
 			} catch (IOException | HttpException e) {
+				// since we don't throw anything in handleHttpReq(),
+				// exceptions here can only be related to conn from app!
+
 				if (e instanceof ConnectionClosedException && e.getMessage().equals("Client closed connection")) {
 					// this is normal, client is just closing conn without sending next request.
 					try {
 						connFromApp.close(); // this will also close socket
+					} catch (IOException ignore) {
+					}
+				} else if (e instanceof SocketException && e.getMessage().equals("Connection reset")) {
+					// this is normal, client is just closing conn without sending next request.
+					try {
+						connFromApp.shutdown(); // this will also close socket
 					} catch (IOException ignore) {
 					}
 				} else {
