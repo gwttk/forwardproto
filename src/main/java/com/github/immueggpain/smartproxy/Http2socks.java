@@ -57,10 +57,13 @@ import org.apache.http.protocol.RequestExpectContinue;
 import org.apache.http.protocol.ResponseConnControl;
 import org.apache.http.protocol.ResponseContent;
 
+import com.github.immueggpain.common.sct;
+
 public class Http2socks {
 
 	// timeouts
 	public static final int toHttpWithDest = 60 * 1000;
+	public static final int toHttpWithDest2 = 30 * 1000;
 	public static final int toH2sReadFromSocks = toHttpWithDest + 10 * 1000;
 	private static final int toH2sConnectThruSocks = 20 * 1000;
 
@@ -210,7 +213,7 @@ public class Http2socks {
 				BasicPoolEntry entry = (BasicPoolEntry) contextFromAppPerConn.getAttribute("pool.entry");
 				Boolean reusable = (Boolean) contextFromAppPerConn.getAttribute("pool.reusable");
 				if (entry != null && reusable != null) {
-					entry.updateExpiry(toHttpWithDest, TimeUnit.MILLISECONDS);
+					entry.updateExpiry(toHttpWithDest2, TimeUnit.MILLISECONDS);
 					pool.release(entry, reusable);
 				}
 			}
@@ -228,7 +231,7 @@ public class Http2socks {
 		final HttpRequestExecutor httpexecutor = new HttpRequestExecutor();
 
 		RequestLine requestLine = requestFromApp.getRequestLine();
-		log.println("http2socks " + requestLine);
+		log.println(sct.datetime() + " http2socks " + requestLine);
 		String uri_str = requestLine.getUri();
 		URI uri;
 		try {
