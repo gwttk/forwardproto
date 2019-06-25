@@ -156,7 +156,7 @@ public class Http2socks {
 		// ResponseContent needs to overwrite Content-Length and Transfer-Encoding,
 		// cuz response from dest may not be ok with app,
 		// e.g. different http version, different keep-alive etc.
-		HttpProcessor httpprocForApp = HttpProcessorBuilder.create().add(new ResponseContent(true))
+		HttpProcessor httpprocForApp = HttpProcessorBuilder.create().add(new ResponseContentFix(true))
 				.add(new ResponseConnControl()).add(new HttpProxyConnectionFix()).build();
 
 		HttpContext contextFromAppPerConn = HttpCoreContext.create();
