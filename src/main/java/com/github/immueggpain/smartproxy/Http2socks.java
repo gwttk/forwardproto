@@ -22,6 +22,7 @@ import org.apache.http.ConnectionClosedException;
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.Header;
 import org.apache.http.HttpClientConnection;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
@@ -53,7 +54,6 @@ import org.apache.http.protocol.HttpRequestHandlerMapper;
 import org.apache.http.protocol.HttpService;
 import org.apache.http.protocol.RequestConnControl;
 import org.apache.http.protocol.RequestContent;
-import org.apache.http.protocol.RequestExpectContinue;
 import org.apache.http.protocol.ResponseConnControl;
 import org.apache.http.protocol.ResponseContent;
 
@@ -215,6 +215,7 @@ public class Http2socks {
 				if (entry != null && reusable != null) {
 					entry.updateExpiry(toHttpWithDest2, TimeUnit.MILLISECONDS);
 					pool.release(entry, reusable);
+					log.println("pool release: " + entry + ", reuse: " + reusable);
 				}
 			}
 		} while (connFromApp.isOpen());
@@ -317,10 +318,10 @@ public class Http2socks {
 		responseToApp.removeHeaders("Keep-Alive");
 
 		// debug log
-		logHttpRequest(log, requestFromApp, "request from app");
-		logHttpRequest(log, requestToDest, "request to dest");
-		logHttpResponse(log, responseFromDest, "response from dest");
-		logHttpResponse(log, responseToApp, "response to app");
+		// logHttpRequest(log, requestFromApp, "request from app");
+		// logHttpRequest(log, requestToDest, "request to dest");
+		// logHttpResponse(log, responseFromDest, "response from dest");
+		// logHttpResponse(log, responseToApp, "response to app");
 	}
 
 	private void connPoolCleaner() {
@@ -357,14 +358,17 @@ public class Http2socks {
 		for (Header header : response.getAllHeaders()) {
 			log.println("        " + header);
 		}
-		log.println("info " + prefix + " entity length: " + response.getEntity().getContentLength());
+		HttpEntity entity = response.getEntity();
+		if (entity == null)
+			log.println("info " + prefix + " entity length: " + entity);
+		else
+			log.println("info " + prefix + " entity length: " + entity.getContentLength());
 	}
 
 	private static boolean excpWhenParsHead(Throwable e) {
-		StackTraceElement ste1 = e.getStackTrace()[10];
-		StackTraceElement ste2 = e.getStackTrace()[13];
-		if ((ste1.getFileName().equals("DefaultBHttpServerConnection.java") && ste1.getLineNumber() == 129)
-				|| (ste2.getFileName().equals("DefaultBHttpServerConnection.java") && ste2.getLineNumber() == 129)) {
+		StackTraceElement[] stes = e.getStackTrace();
+		StackTraceElement ste = stes[stes.length - 7];
+		if (ste.getFileName().equals("DefaultBHttpServerConnection.java") && ste.getLineNumber() == 129) {
 			return true;
 		} else {
 			return false;
