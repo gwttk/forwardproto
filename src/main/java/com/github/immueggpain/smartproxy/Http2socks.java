@@ -287,6 +287,7 @@ public class Http2socks {
 		requestToDest.setHeader(HTTP.TARGET_HOST, rawAuthority);
 		requestToDest.removeHeaders("Connection");
 		requestToDest.removeHeaders("Proxy-Connection");
+		requestToDest.removeHeaders("Keep-Alive");
 
 		HttpResponse responseFromDest;
 		try {
@@ -313,6 +314,7 @@ public class Http2socks {
 		responseToApp.setEntity(responseFromDest.getEntity());
 		responseToApp.removeHeaders("Connection");
 		responseToApp.removeHeaders("Proxy-Connection");
+		responseToApp.removeHeaders("Keep-Alive");
 
 		// debug log
 		logHttpRequest(log, requestFromApp, "request from app");
