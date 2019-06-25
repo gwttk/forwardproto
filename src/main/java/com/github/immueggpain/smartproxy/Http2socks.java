@@ -311,6 +311,14 @@ public class Http2socks {
 				statusLine.getReasonPhrase());
 		responseToApp.setHeaders(responseFromDest.getAllHeaders());
 		responseToApp.setEntity(responseFromDest.getEntity());
+		responseToApp.removeHeaders("Connection");
+		responseToApp.removeHeaders("Proxy-Connection");
+
+		// debug log
+		logHttpRequest(log, requestFromApp, "request from app");
+		logHttpRequest(log, requestToDest, "request to dest");
+		logHttpResponse(log, responseFromDest, "response from dest");
+		logHttpResponse(log, responseToApp, "response to app");
 	}
 
 	private void connPoolCleaner() {
@@ -329,6 +337,22 @@ public class Http2socks {
 		log.println("error " + prefix + " line is: " + request.getRequestLine());
 		log.println("error " + prefix + " request headers: ");
 		for (Header header : request.getAllHeaders()) {
+			log.println("        " + header);
+		}
+	}
+
+	private static void logHttpRequest(PrintWriter log, HttpRequest request, String prefix) {
+		log.println("info " + prefix + " line is: " + request.getRequestLine());
+		log.println("info " + prefix + " request headers: ");
+		for (Header header : request.getAllHeaders()) {
+			log.println("        " + header);
+		}
+	}
+
+	private static void logHttpResponse(PrintWriter log, HttpResponse response, String prefix) {
+		log.println("info " + prefix + " line is: " + response.getStatusLine());
+		log.println("info " + prefix + " request headers: ");
+		for (Header header : response.getAllHeaders()) {
 			log.println("        " + header);
 		}
 	}
