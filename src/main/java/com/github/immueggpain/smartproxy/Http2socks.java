@@ -213,7 +213,8 @@ public class Http2socks {
 				if (entry != null && reusable != null) {
 					entry.updateExpiry(toHttpWithDest2, TimeUnit.MILLISECONDS);
 					pool.release(entry, reusable);
-					log.println("pool release: " + entry + ", reuse: " + reusable);
+					if (!reusable)
+						log.println("pool release: " + entry + ", reuse: " + reusable);
 				}
 			}
 		} while (connFromApp.isOpen());
