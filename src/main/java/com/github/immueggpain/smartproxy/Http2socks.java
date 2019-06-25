@@ -226,7 +226,7 @@ public class Http2socks {
 		// cuz request from app may not be ok with dest,
 		// e.g. different http version, different keep-alive etc.
 		final HttpProcessor httpprocForDest = HttpProcessorBuilder.create().add(new RequestContent(true))
-				.add(new RequestConnControl()).add(new RequestExpectContinue(true)).build();
+				.add(new RequestConnControl()).build();
 
 		final HttpRequestExecutor httpexecutor = new HttpRequestExecutor();
 
