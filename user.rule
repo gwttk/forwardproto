@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.cn.patch.battle.net direct
+.cache-cms-ext-cn.battle.net direct
 .dota2.com proxy
 .hearthpwn.com proxy
 .realvu.net proxy
