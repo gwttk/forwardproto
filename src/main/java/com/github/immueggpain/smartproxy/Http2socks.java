@@ -337,7 +337,7 @@ public class Http2socks {
 
 	private static void printHttpRequest(PrintWriter log, HttpRequest request, String prefix) {
 		log.println("error " + prefix + " line is: " + request.getRequestLine());
-		log.println("error " + prefix + " request headers: ");
+		log.println("error " + prefix + " headers: ");
 		for (Header header : request.getAllHeaders()) {
 			log.println("        " + header);
 		}
@@ -345,7 +345,7 @@ public class Http2socks {
 
 	private static void logHttpRequest(PrintWriter log, HttpRequest request, String prefix) {
 		log.println("info " + prefix + " line is: " + request.getRequestLine());
-		log.println("info " + prefix + " request headers: ");
+		log.println("info " + prefix + " headers: ");
 		for (Header header : request.getAllHeaders()) {
 			log.println("        " + header);
 		}
@@ -353,10 +353,11 @@ public class Http2socks {
 
 	private static void logHttpResponse(PrintWriter log, HttpResponse response, String prefix) {
 		log.println("info " + prefix + " line is: " + response.getStatusLine());
-		log.println("info " + prefix + " request headers: ");
+		log.println("info " + prefix + " headers: ");
 		for (Header header : response.getAllHeaders()) {
 			log.println("        " + header);
 		}
+		log.println("info " + prefix + " entity length: " + response.getEntity().getContentLength());
 	}
 
 	private static boolean excpWhenParsHead(Throwable e) {
