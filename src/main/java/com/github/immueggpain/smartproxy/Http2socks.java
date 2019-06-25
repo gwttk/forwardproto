@@ -55,8 +55,6 @@ import org.apache.http.protocol.HttpService;
 import org.apache.http.protocol.RequestConnControl;
 import org.apache.http.protocol.RequestContent;
 import org.apache.http.protocol.ResponseConnControl;
-import org.apache.http.protocol.ResponseContent;
-
 import com.github.immueggpain.common.sct;
 
 public class Http2socks {
@@ -344,6 +342,7 @@ public class Http2socks {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static void logHttpRequest(PrintWriter log, HttpRequest request, String prefix) {
 		log.println("info " + prefix + " line is: " + request.getRequestLine());
 		log.println("info " + prefix + " headers: ");
@@ -352,6 +351,7 @@ public class Http2socks {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static void logHttpResponse(PrintWriter log, HttpResponse response, String prefix) {
 		log.println("info " + prefix + " line is: " + response.getStatusLine());
 		log.println("info " + prefix + " headers: ");
