@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.tj-un.com direct
+.cncarecc.com direct
+.staticec.com direct
+.videmob.com proxy
+.cndw.com direct
+.futurenet.com proxy
 .researchintel.com proxy
 .jetpackdigital.com proxy
 .tawk.to proxy
