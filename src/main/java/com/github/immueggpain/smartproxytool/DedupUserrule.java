@@ -296,6 +296,20 @@ class DedupUserrule {
 		excepRules.put(".cdn.q1mediahydraplatform.com", "proxy");
 		excepRules.put(".daxa.cn", "proxy");
 		excepRules.put(".kissbbao.cn", "proxy");
+		excepRules.put(".cn.patch.battle.net", "direct");
+		excepRules.put(".cache-cms-ext-cn.battle.net", "direct");
+		excepRules.put(".qixianglu.cn", "proxy");
+		excepRules.put(".sjum.cn", "proxy");
+		excepRules.put(".syx86.cn", "proxy");
+		excepRules.put(".sjum.cn", "proxy");
+		excepRules.put(".pmt-origin-cn.battle.net", "direct");
+		excepRules.put(".jd.hk", "direct");
+		excepRules.put(".unagi-cn.amazon.com", "direct");
+		excepRules.put(".fls-cn.amazon.com", "direct");
+		excepRules.put(".ctrip.co.kr", "direct");
+		excepRules.put(".taiwandao.tw", "direct");
+		excepRules.put(".unagi-cn.amazon.com", "direct");
+		excepRules.put(".unagi-cn.amazon.com", "direct");
 	}
 
 	/** some domains are exceptions as they differ from parent domains. */
