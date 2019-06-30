@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.mi-img.com direct
+.extremenetworks.com proxy
+.xiaomiyoupin.com direct
+.in.ml314.com proxy
 .tj-un.com direct
 .cncarecc.com direct
 .staticec.com direct
