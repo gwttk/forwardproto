@@ -224,6 +224,13 @@ public class SmartproxyServer {
 				return;
 			}
 
+			// reject if it's loopback address
+			if (dest_addr.isLoopbackAddress()) {
+				System.err.println("client sent a loopback address, abortively close conn");
+				Util.abortiveCloseSocket(sclient_s);
+				return;
+			}
+
 			// validate dest_addr & dest_port
 			InetSocketAddress dest_sockaddr;
 			try {
