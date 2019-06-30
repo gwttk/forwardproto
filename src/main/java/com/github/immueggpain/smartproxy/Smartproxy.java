@@ -696,8 +696,10 @@ public class Smartproxy {
 	 */
 	private SocketBundle create_connect_config_socket(InetSocketAddress dest_sockaddr, String client_protocol)
 			throws Exception {
-		// reject if it's loopback address
-		if (dest_sockaddr.getAddress().isLoopbackAddress()) {
+		// reject if it's loopback address.
+		// getAddress() is null if it's unresolved,
+		// we have to rely on server to reject then.
+		if (dest_sockaddr.getAddress() != null && dest_sockaddr.getAddress().isLoopbackAddress()) {
 			log.println(client_protocol + " got a loopback address");
 			return null;
 		}
