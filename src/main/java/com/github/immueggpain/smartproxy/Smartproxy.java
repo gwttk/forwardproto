@@ -692,10 +692,16 @@ public class Smartproxy {
 
 	/**
 	 * return null means connection refused, or connect timed out, or can't resolve
-	 * hostname
+	 * hostname, or it's loopback
 	 */
 	private SocketBundle create_connect_config_socket(InetSocketAddress dest_sockaddr, String client_protocol)
 			throws Exception {
+		// reject if it's loopback address
+		if (dest_sockaddr.getAddress().isLoopbackAddress()) {
+			log.println(client_protocol + " got a loopback address");
+			return null;
+		}
+
 		NextNode nextNode;
 		if (dest_sockaddr.isUnresolved()) {
 			String hostString = dest_sockaddr.getHostString();
