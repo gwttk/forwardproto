@@ -40,7 +40,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -693,12 +692,16 @@ public class Smartproxy {
 	/**
 	 * return null means connection refused, or connect timed out, or can't resolve
 	 * hostname, or it's loopback
+	 * 
+	 * @param client_protocol
 	 */
 	private SocketBundle create_connect_config_socket(InetSocketAddress dest_sockaddr, String client_protocol)
 			throws Exception {
 		// reject if it's loopback address.
-		// getAddress() is null if it's unresolved,
-		// we have to rely on server to reject then.
+		// this will only check ip addr(resolved).
+		// for unresolved addr, check after resolved.
+		// if it's direct, check at direct_create_config_connect_socket().
+		// if it's proxy, check at server.
 		if (dest_sockaddr.getAddress() != null && dest_sockaddr.getAddress().isLoopbackAddress()) {
 			log.println(client_protocol + " got a loopback address");
 			return null;
@@ -775,7 +778,7 @@ public class Smartproxy {
 				return null;
 			}
 			dest_sockaddr = new InetSocketAddress(dest_addr, dest_sockaddr.getPort());
-			Socket raw = direct_create_config_connect_socket(dest_sockaddr);
+			Socket raw = direct_create_config_connect_socket(dest_sockaddr, client_protocol);
 			if (raw == null)
 				return null;
 			return new SocketBundle(raw, raw.getInputStream(), raw.getOutputStream());
@@ -1043,8 +1046,17 @@ public class Smartproxy {
 		}
 	}
 
-	/** return null means connection refused, or connect timed out */
-	private Socket direct_create_config_connect_socket(SocketAddress dest_sockaddr) throws IOException {
+	/**
+	 * return null means connection refused, or connect timed out, or is loopback
+	 */
+	private Socket direct_create_config_connect_socket(InetSocketAddress dest_sockaddr, String protocolFromApp)
+			throws IOException {
+		// reject if it's loopback address.
+		if (dest_sockaddr.getAddress().isLoopbackAddress()) {
+			log.println(protocolFromApp + " got a loopback address");
+			return null;
+		}
+
 		Socket s = new Socket(Proxy.NO_PROXY);
 		s.setTcpNoDelay(true);
 		s.setSoTimeout(toCltReadFromDirect);
