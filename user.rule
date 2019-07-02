@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+.csus.edu proxy
+.ac.jp proxy
+.tofugu.com proxy
 .extremetech.com proxy
 .gowatchit.com proxy
 .cr-nielsen.com direct
