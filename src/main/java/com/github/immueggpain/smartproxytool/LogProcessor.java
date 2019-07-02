@@ -105,9 +105,12 @@ class LogProcessor {
 					rules.add(domainName + " " + target);
 
 				}
-
-				System.out.println(String.format("ping test: %-50s %7.2fms %s",
-						domainName + " " + addr.getHostAddress(), latency, target));
+				if (addr.isLoopbackAddress())
+					System.err.println(String.format("ping test: %-50s %7.2fms %s",
+							domainName + " " + addr.getHostAddress(), latency, target));
+				else
+					System.out.println(String.format("ping test: %-50s %7.2fms %s",
+							domainName + " " + addr.getHostAddress(), latency, target));
 			}
 		}
 		System.out.println("==========output rules:");
