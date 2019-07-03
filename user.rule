@@ -7,6 +7,34 @@
 # "reject" means drop connection
 
 #auto rules
+.madwifi-project.org proxy
+.cdn.b0e8.com proxy
+.a.b0e8.com direct
+.sc2online.com proxy
+.uberflip.com proxy
+.fossmint.com proxy
+.view-awesome-table.com proxy
+.madkudu.com proxy
+.rankedftw.com proxy
+.jscape.com proxy
+.qmail.com direct
+.gosugamers.net proxy
+.midomi.com proxy
+.xiankan.com direct
+.funnypicsbox.com direct
+.weserv.nl proxy
+.8868.com direct
+.aligulac.com proxy
+.texasinstruments.com proxy
+.www.tij.co.jp proxy
+.raspberrypi.org proxy
+.ti.com direct
+.techdifferences.com proxy
+.tecmint.com proxy
+.esportsearnings.com proxy
+.upapi.net proxy
+.awesome-table.com proxy
+.cdntwrk.com proxy
 .csus.edu proxy
 .ac.jp proxy
 .tofugu.com proxy
