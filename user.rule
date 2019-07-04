@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.wt-cn01.net direct
+.xn--26qv4d21el3uuka19yp2m9yo.xn--vuq861b direct
+.xn--eqrt2g.xn--vuq861b direct
+.leetcode.com proxy
+.leetcode-cn.com direct
 .madwifi-project.org proxy
 .cdn.b0e8.com proxy
 .a.b0e8.com direct
