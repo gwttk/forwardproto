@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.ssp86.com direct
+.keepkop.com proxy
+.benq.com proxy
+.powerad.ai proxy
+.rtings.com proxy
+.biliapi.net direct
+.prosettings.net proxy
+.clipchamp.com proxy
 .linode.com proxy
 .objectmix.com proxy
 .ubuntuforums.org proxy
