@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+.webn.mobi proxy
+.blz-contentstack.com proxy
+.mikecrm.com direct
 .ssp86.com direct
 .keepkop.com proxy
 .benq.com proxy
