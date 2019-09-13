@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.511.la direct
+.meiju.net direct
+.qfxmj.com direct
+.thinkymobi.com direct
+.yefu365.com direct
 .webn.mobi proxy
 .blz-contentstack.com proxy
 .mikecrm.com direct
