@@ -7,6 +7,25 @@
 # "reject" means drop connection
 
 #auto rules
+.topsrvimp.com proxy
+.cabelas.com proxy
+.rta247.com proxy
+.classicwow.live proxy
+.diamondminebubble.com proxy
+.admedo.com proxy
+.gammaplatform.com proxy
+.resetdigital.co proxy
+.adlingo.com direct
+.twinstar.cz proxy
+.stackpathcdn.com proxy
+.dmpxs.com proxy
+.dish.com proxy
+.quissygaming.com proxy
+.render-classic-us.worldofwarcraft.com proxy
+.slader.com proxy
+.scene7.com proxy
+.zam.com proxy
+.admanmedia.com proxy
 .511.la direct
 .meiju.net direct
 .qfxmj.com direct
