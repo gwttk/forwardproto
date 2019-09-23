@@ -7,6 +7,31 @@
 # "reject" means drop connection
 
 #auto rules
+.ownedcore.com proxy
+.gyazo.com proxy
+.vanillamage.com proxy
+.imageshack.com proxy
+.mdspinc.com proxy
+.resonate.com proxy
+.junnya.com direct
+.barrens.chat proxy
+.stat-rock.com proxy
+.sendtonews.com proxy
+.dcstorm.com proxy
+.ngrok.io proxy
+.extremereach.io proxy
+.audible.com proxy
+.skynet.be proxy
+.smadex.com proxy
+.sedoparking.com proxy
+.pv.surveywall-api.survata.com proxy
+.academiaarsarcana.de proxy
+.bfmsa.com proxy
+.render-eu.worldofwarcraft.com proxy
+.wowprogramming.com proxy
+.odict.net proxy
+.runadtag.com proxy
+.digitaleast.mobi direct
 .topsrvimp.com proxy
 .cabelas.com proxy
 .rta247.com proxy
