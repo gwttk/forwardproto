@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.workers.dev proxy
+.terminus.services proxy
 .ownedcore.com proxy
 .gyazo.com proxy
 .vanillamage.com proxy
