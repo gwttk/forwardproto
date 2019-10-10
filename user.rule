@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.epochconverter.com proxy
 .9mediaonline.com proxy
 .varena.com direct
 .workers.dev proxy
