@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.hztags.net direct
+.guazi.com direct
 .iedkp.com direct
 .epochconverter.com proxy
 .9mediaonline.com proxy
