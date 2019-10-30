@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.calvinklein.us proxy
+.adtags.mobi proxy
+.bilivideo.com direct
+.3h3.com direct
+.smilec.cc direct
+.cpu-upgrade.com proxy
 .hztags.net direct
 .guazi.com direct
 .iedkp.com direct
