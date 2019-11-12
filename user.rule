@@ -7,6 +7,31 @@
 # "reject" means drop connection
 
 #auto rules
+.brid.tv proxy
+.hearthstonejson.com proxy
+.linkwithin.com proxy
+.futuremark.com proxy
+.apxlv.com proxy
+.aralego.net proxy
+.my-tracking.info proxy
+.adhaven.com direct
+.securedvisit.com proxy
+.perf-serving.com proxy
+.reasonish.com proxy
+.w1sercher.biz proxy
+.hsreplay.net proxy
+.hearthsim.net proxy
+.digestivepyrotechnics.com direct
+.hubspotemail.net proxy
+.tagsrvcs.com proxy
+.lentainform.com proxy
+.3dmark.com proxy
+.gamestoday.info proxy
+.ul.com direct
+.mixmarket.biz proxy
+.macromill.com proxy
+.playhearthstone.com proxy
+.mrtnsvr.com proxy
 .ruyig.com direct
 .rtbiq.com proxy
 .chakd.com direct
