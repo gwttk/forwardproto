@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.maxjia.com direct
 .brid.tv proxy
 .hearthstonejson.com proxy
 .linkwithin.com proxy
