@@ -7,6 +7,13 @@
 # "reject" means drop connection
 
 #auto rules
+.minecraftxz.com direct
+.kuaizhan.com direct
+.lianjixia.com proxy
+.aiduoka.com direct
+.catb.org proxy
+.micronaut.io proxy
+.osgi.org proxy
 .maxjia.com direct
 .brid.tv proxy
 .hearthstonejson.com proxy
