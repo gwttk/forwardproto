@@ -53,6 +53,7 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,10 +73,9 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 @Command(description = "Run client", name = "client", mixinStandardHelpOptions = true, version = Launcher.VERSTR)
-public class Smartproxy {
+public class Smartproxy implements Callable<Void> {
 
-	@Option(names = { "-i", "--local_listen_ip" }, required = true,
-			description = "local listening ip. default is ${DEFAULT-VALUE}")
+	@Option(names = { "-i", "--local_listen_ip" }, description = "local listening ip. default is ${DEFAULT-VALUE}")
 	public String local_listen_ip = "127.0.0.1";
 
 	@Option(names = { "-n", "--local_listen_port" }, required = true, description = "local listening port")
@@ -91,7 +91,7 @@ public class Smartproxy {
 			description = "password must be same between server and client, recommend 64 bytes")
 	public String passwordString;
 
-	@Option(names = { "-l", "--log" }, required = true, description = "log file path. default is ${DEFAULT-VALUE}")
+	@Option(names = { "-l", "--log" }, description = "log file path. default is ${DEFAULT-VALUE}")
 	public String logfile = "smartproxy.log";
 
 	// timeouts
@@ -128,7 +128,7 @@ public class Smartproxy {
 	private SpeedMeter speedMeter;
 	private Http2socks http2socks;
 
-	public void run() throws Exception {
+	public Void call() throws Exception {
 		// from now on, log output to '-l' option or 'smartproxy.log' by default
 		log = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logfile), sc.utf8)), true);
 		speedMeter = new SpeedMeter(1000 * 4);

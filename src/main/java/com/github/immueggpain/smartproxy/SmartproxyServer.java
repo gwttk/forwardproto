@@ -45,6 +45,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.concurrent.Callable;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
@@ -62,7 +63,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 @Command(description = "Run server", name = "server", mixinStandardHelpOptions = true, version = Launcher.VERSTR)
-public class SmartproxyServer {
+public class SmartproxyServer implements Callable<Void> {
 
 	@Option(names = { "-w", "--password" }, required = true,
 			description = "password must be same between server and client, recommend 64 bytes")
@@ -71,12 +72,10 @@ public class SmartproxyServer {
 	@Option(names = { "-p", "--server_port" }, required = true, description = "server listening port")
 	public int server_port;
 
-	@Option(names = { "-c", "--cert" }, required = true,
-			description = "SSL cert chain file path. default is ${DEFAULT-VALUE}")
+	@Option(names = { "-c", "--cert" }, description = "SSL cert chain file path. default is ${DEFAULT-VALUE}")
 	public String cert = "fullchain.pem";
 
-	@Option(names = { "-k", "--private_key" }, required = true,
-			description = "SSL private key file path. default is ${DEFAULT-VALUE}")
+	@Option(names = { "-k", "--private_key" }, description = "SSL private key file path. default is ${DEFAULT-VALUE}")
 	public String private_key = "privkey.pem";
 
 	// timeouts
@@ -98,7 +97,7 @@ public class SmartproxyServer {
 
 	private byte[] realpswd = new byte[64];
 
-	public void run() throws Exception {
+	public Void call() throws Exception {
 		byte[] bytes = password.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, realpswd, 0, bytes.length);
 
