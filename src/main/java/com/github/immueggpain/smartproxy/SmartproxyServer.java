@@ -57,9 +57,27 @@ import org.apache.commons.io.IOUtils;
 
 import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
-import com.github.immueggpain.smartproxy.Launcher.ServerSettings;
 
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+
+@Command(description = "Run server", name = "server", mixinStandardHelpOptions = true, version = Launcher.VERSTR)
 public class SmartproxyServer {
+
+	@Option(names = { "-w", "--password" }, required = true,
+			description = "password must be same between server and client, recommend 64 bytes")
+	public String password;
+
+	@Option(names = { "-p", "--server_port" }, required = true, description = "server listening port")
+	public int server_port;
+
+	@Option(names = { "-c", "--cert" }, required = true,
+			description = "SSL cert chain file path. default is ${DEFAULT-VALUE}")
+	public String cert = "fullchain.pem";
+
+	@Option(names = { "-k", "--private_key" }, required = true,
+			description = "SSL private key file path. default is ${DEFAULT-VALUE}")
+	public String private_key = "privkey.pem";
 
 	// timeouts
 	public static final int toSvrReadFromClt = Http2socks.toHttpWithDest + 10 * 1000;
@@ -80,13 +98,13 @@ public class SmartproxyServer {
 
 	private byte[] realpswd = new byte[64];
 
-	public void run(ServerSettings settings) throws Exception {
-		byte[] bytes = settings.password.getBytes(StandardCharsets.UTF_8);
+	public void run() throws Exception {
+		byte[] bytes = password.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, realpswd, 0, bytes.length);
 
 		// init SSL
-		InputStream certFile = Files.newInputStream(Paths.get(settings.cert));
-		InputStream privateKeyFile = Files.newInputStream(Paths.get(settings.private_key));
+		InputStream certFile = Files.newInputStream(Paths.get(cert));
+		InputStream privateKeyFile = Files.newInputStream(Paths.get(private_key));
 
 		CertificateFactory cf = CertificateFactory.getInstance("X.509");
 		Collection<? extends Certificate> certificates = cf.generateCertificates(certFile);
@@ -118,7 +136,7 @@ public class SmartproxyServer {
 			ss.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
 			ss.setPerformancePreferences(0, 0, 1);
 
-			ss.bind(new InetSocketAddress(settings.server_port));
+			ss.bind(new InetSocketAddress(server_port));
 
 			while (true) {
 				SSLSocket sclient_s = (SSLSocket) ss.accept();

@@ -67,9 +67,32 @@ import com.github.immueggpain.common.sc;
 import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
 import com.github.immueggpain.common.sctp;
-import com.github.immueggpain.smartproxy.Launcher.ClientSettings;
 
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+
+@Command(description = "Run client", name = "client", mixinStandardHelpOptions = true, version = Launcher.VERSTR)
 public class Smartproxy {
+
+	@Option(names = { "-i", "--local_listen_ip" }, required = true,
+			description = "local listening ip. default is ${DEFAULT-VALUE}")
+	public String local_listen_ip = "127.0.0.1";
+
+	@Option(names = { "-n", "--local_listen_port" }, required = true, description = "local listening port")
+	public int local_listen_port;
+
+	@Option(names = { "-s", "--server_ip" }, required = true, description = "server ip")
+	public String server_ip;
+
+	@Option(names = { "-p", "--server_port" }, required = true, description = "server port")
+	public int server_port;
+
+	@Option(names = { "-w", "--password" }, required = true,
+			description = "password must be same between server and client, recommend 64 bytes")
+	public String passwordString;
+
+	@Option(names = { "-l", "--log" }, required = true, description = "log file path. default is ${DEFAULT-VALUE}")
+	public String logfile = "smartproxy.log";
 
 	// timeouts
 	private static final int toCltReadFromApp = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
@@ -96,7 +119,6 @@ public class Smartproxy {
 	private byte[] password = new byte[64];
 	private TunnelPool tunnelPool;
 
-	private ClientSettings settings;
 	private Proxy next_proxy;
 	private NextNode nn_direct;
 	private NextNode nn_ban;
@@ -106,14 +128,12 @@ public class Smartproxy {
 	private SpeedMeter speedMeter;
 	private Http2socks http2socks;
 
-	public void run(ClientSettings settings) throws Exception {
-		this.settings = settings;
+	public void run() throws Exception {
 		// from now on, log output to '-l' option or 'smartproxy.log' by default
-		log = new PrintWriter(
-				new BufferedWriter(new OutputStreamWriter(new FileOutputStream(settings.logfile), sc.utf8)), true);
+		log = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logfile), sc.utf8)), true);
 		speedMeter = new SpeedMeter(1000 * 4);
 
-		byte[] bytes = settings.password.getBytes(StandardCharsets.UTF_8);
+		byte[] bytes = passwordString.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, this.password, 0, bytes.length);
 
 		nn_direct = new NextNode(NextNode.Type.DIRECT, Proxy.NO_PROXY);
@@ -121,19 +141,18 @@ public class Smartproxy {
 		nn_proxy = new NextNode(NextNode.Type.PROXY, next_proxy);
 		load_domain_nn_table();
 
-		http2socks = new Http2socks(new Proxy(Proxy.Type.SOCKS,
-				new InetSocketAddress(settings.local_listen_ip, settings.local_listen_port)), log);
+		http2socks = new Http2socks(
+				new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(local_listen_ip, local_listen_port)), log);
 
 		// set SSL
 		SSLContext context = SSLContext.getInstance("TLSv1.2");
 		context.init(null, null, null);
 		ssf = context.getSocketFactory();
 
-		tunnelPool = new TunnelPool(settings.server_ip, settings.server_port);
+		tunnelPool = new TunnelPool(server_ip, server_port);
 
-		try (ServerSocket ss = new ServerSocket(settings.local_listen_port, 50,
-				InetAddress.getByName(settings.local_listen_ip))) {
-			log.println("listened on port " + settings.local_listen_port);
+		try (ServerSocket ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip))) {
+			log.println("listened on port " + local_listen_port);
 			while (true) {
 				Socket s = ss.accept();
 				// use source port as id
@@ -787,8 +806,8 @@ public class Smartproxy {
 			SocketBundle tunnel = tunnelPool.pollTunnel(dest_sockaddr.getHostString(), dest_sockaddr.getPort());
 			if (tunnel == null) {
 				log.println(sct.datetime() + " use tunnel out pool");
-				return create_tunnel(settings.server_ip, settings.server_port, ssf, password,
-						dest_sockaddr.getHostString(), dest_sockaddr.getPort());
+				return create_tunnel(server_ip, server_port, ssf, password, dest_sockaddr.getHostString(),
+						dest_sockaddr.getPort());
 			} else {
 				// use tunnel from pool is just normal
 				// no need to log it
