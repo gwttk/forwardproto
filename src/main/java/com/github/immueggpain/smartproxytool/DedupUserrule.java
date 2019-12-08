@@ -11,17 +11,30 @@ import java.util.List;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 
 import com.github.immueggpain.common.sc;
+import com.github.immueggpain.smartproxy.Launcher;
+
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
 /**
  * process log, ping test unknown domains, add new rules to user.rule
  */
-class DedupUserrule {
+@Command(description = "Process unknown domains in log file, then update user.rule with new rules.", name = "uprule",
+		mixinStandardHelpOptions = true, version = Launcher.VERSTR)
+public class DedupUserrule implements Callable<Void> {
+
+	@Option(names = { "-u", "--userrule" }, required = true, description = "user.rule file path")
+	String outputUserRuleFile;
+
+	@Option(names = { "-l", "--log" }, required = true, description = "log file path")
+	String logFile;
 
 	private static class IpRange {
 		@SuppressWarnings("unused")
@@ -36,36 +49,30 @@ class DedupUserrule {
 		}
 	}
 
-	public static void main(String[] args) {
-		try {
-			String outputUserRuleFile = args[0];
-			String logFile = args[1];
+	public Void call() throws Exception {
+		// step 1: find all default domains in logfile.
+		// ping test them, or lookup ip table if ping failed.
+		// output new rules based on ping tests.
+		Set<String> newRules = new LogProcessor().run(logFile);
 
-			// step 1: find all default domains in logfile.
-			// ping test them, or lookup ip table if ping failed.
-			// output new rules based on ping tests.
-			Set<String> newRules = new LogProcessor().run(logFile);
-
-			// step 2: read old user.rule into list of lines
-			// merge old list with new list
-			List<String> oldRules;
-			try (BOMInputStream is = new BOMInputStream(new FileInputStream(Paths.get("user.rule").toFile()))) {
-				oldRules = IOUtils.readLines(is, sc.utf8);
-			}
-			// notice the oldRules contain comments & empty lines.
-			// also I want to insert new rules after the '#auto rules' line.
-			ArrayList<String> merged = new ArrayList<String>(oldRules.size() + newRules.size());
-			int insertIndx = oldRules.indexOf("#auto rules") + 1;
-			merged.addAll(oldRules.subList(0, insertIndx));
-			merged.addAll(newRules);
-			merged.addAll(oldRules.subList(insertIndx, oldRules.size()));
-
-			// step 3: find duplicates such as aaa.bbb.cc & ddd.bbb.cc
-			// merge them into .bbb.cc
-			new DedupUserrule().run(merged, outputUserRuleFile);
-		} catch (Exception e) {
-			e.printStackTrace();
+		// step 2: read old user.rule into list of lines
+		// merge old list with new list
+		List<String> oldRules;
+		try (BOMInputStream is = new BOMInputStream(new FileInputStream(Paths.get("user.rule").toFile()))) {
+			oldRules = IOUtils.readLines(is, sc.utf8);
 		}
+		// notice the oldRules contain comments & empty lines.
+		// also I want to insert new rules after the '#auto rules' line.
+		ArrayList<String> merged = new ArrayList<String>(oldRules.size() + newRules.size());
+		int insertIndx = oldRules.indexOf("#auto rules") + 1;
+		merged.addAll(oldRules.subList(0, insertIndx));
+		merged.addAll(newRules);
+		merged.addAll(oldRules.subList(insertIndx, oldRules.size()));
+
+		// step 3: find duplicates such as aaa.bbb.cc & ddd.bbb.cc
+		// merge them into .bbb.cc
+		new DedupUserrule().run(merged, outputUserRuleFile);
+		return null;
 	}
 
 	@SuppressWarnings("unused")
