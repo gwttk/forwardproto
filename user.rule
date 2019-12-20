@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.cdn2.unrealengine.com proxy
+.launchdarkly.com proxy
+.cdninstagram.com proxy
+.cdn1.unrealengine.com proxy
+.www.unrealengine.com direct
+.steam.tv proxy
 .muut.com proxy
 .www.spot.im proxy
 .dotaoutpost.com proxy
