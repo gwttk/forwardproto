@@ -7,6 +7,24 @@
 # "reject" means drop connection
 
 #auto rules
+.sina.net direct
+.boldchat.com proxy
+.cox.com proxy
+.foreseeresults.com direct
+.realpython.com proxy
+.realpython.net proxy
+.mpeasylink.com proxy
+.cox.net direct
+.creativesumo.com proxy
+.scenepass.com proxy
+.crifan.com proxy
+.litix.io proxy
+.n1272adserv.xyz proxy
+.coxbusiness.com direct
+.croftgeneration.com proxy
+.traffichaus.com proxy
+.impression.link proxy
+.nsimg.net proxy
 .l5.dca0.com proxy
 .luaj.org proxy
 .l0.dca0.com proxy
