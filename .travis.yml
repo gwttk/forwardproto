@@ -1,6 +1,6 @@
 language: java
 before_install:
-    - pyenv shell 3.7.1
+    - pyenv shell 3.7
     - pip3 install --upgrade pip
 before_deploy:
     # create some env vars
