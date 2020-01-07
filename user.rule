@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.wbdacdn.com direct
+.baozou.com direct
+.snssdk.com direct
+.byteimg.com direct
+.shouyunvip.com direct
+.dtstatic.com direct
+.shapeshed.com proxy
+.365yg.com direct
 .seedtag.com proxy
 .vdo.ai proxy
 .adobe.io proxy
