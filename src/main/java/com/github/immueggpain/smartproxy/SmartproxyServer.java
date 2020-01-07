@@ -141,6 +141,7 @@ public class SmartproxyServer implements Callable<Void> {
 			while (true) {
 				SSLSocket sclient_s = (SSLSocket) ss.accept();
 				sclient_s.setTcpNoDelay(true);
+				sclient_s.setSendBufferSize(Launcher.SO_BUF_SIZE);
 				scmt.execAsync("multi-thread-handle-conn", () -> handleConnection(sclient_s));
 			}
 		}

@@ -14,6 +14,7 @@ import picocli.CommandLine.HelpCommand;
 public class Launcher implements Callable<Void> {
 
 	public static final String VERSTR = "2.0.2";
+	public static final int SO_BUF_SIZE = 1024 * 1024 * 4;
 
 	public static void main(String[] args) {
 		int exitCode = new CommandLine(new Launcher()).setCaseInsensitiveEnumValuesAllowed(true).execute(args);
