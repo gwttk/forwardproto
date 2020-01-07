@@ -161,8 +161,10 @@ public class Smartproxy implements Callable<Void> {
 
 		try (ServerSocket ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip))) {
 			log.println("listened on port " + local_listen_port);
+			ss.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
 			while (true) {
 				Socket s = ss.accept();
+				s.setSendBufferSize(Launcher.SO_BUF_SIZE);
 				// use source port as id
 				int id = s.getPort();
 				scmt.execAsync("recv_" + id + "_client", () -> recv_client(s));
@@ -850,6 +852,7 @@ public class Smartproxy implements Callable<Void> {
 			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
 			cserver_s.setTcpNoDelay(true);
 			cserver_s.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
+			cserver_s.setSendBufferSize(Launcher.SO_BUF_SIZE);
 
 			// connect to sp server
 			try {
@@ -940,6 +943,7 @@ public class Smartproxy implements Callable<Void> {
 			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
 			cserver_s.setTcpNoDelay(true);
 			cserver_s.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
+			cserver_s.setSendBufferSize(Launcher.SO_BUF_SIZE);
 
 			// connect to sp server
 			try {
@@ -1103,6 +1107,9 @@ public class Smartproxy implements Callable<Void> {
 		Socket s = new Socket(Proxy.NO_PROXY);
 		s.setTcpNoDelay(true);
 		s.setSoTimeout(toCltReadFromDirect);
+		s.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
+		s.setSendBufferSize(Launcher.SO_BUF_SIZE);
+
 		try {
 			s.connect(dest_sockaddr, toCltConnectToDirect);
 		} catch (ConnectException e) {
