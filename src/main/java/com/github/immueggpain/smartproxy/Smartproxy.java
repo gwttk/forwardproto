@@ -843,6 +843,7 @@ public class Smartproxy implements Callable<Void> {
 			cserver_s.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
 			// use small timeout first
 			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
+			cserver_s.setTcpNoDelay(true);
 
 			// connect to sp server
 			try {
@@ -931,6 +932,7 @@ public class Smartproxy implements Callable<Void> {
 			cserver_s.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
 			// use small timeout first
 			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
+			cserver_s.setTcpNoDelay(true);
 
 			// connect to sp server
 			try {
