@@ -40,6 +40,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -593,6 +594,16 @@ public class Smartproxy implements Callable<Void> {
 			}
 			contxt.lastWriteToServer = sct.time_ms();
 			speedMeter.countSend(n);
+
+			// debug show socket buf size
+			try {
+				String local = contxt.cserver_s.getLocalSocketAddress().toString();
+				int rbufsz = contxt.cserver_s.getReceiveBufferSize();
+				int sbufsz = contxt.cserver_s.getSendBufferSize();
+				System.out.println(String.format("%s, rbufsz: %d, sbufsz: %d", local, rbufsz, sbufsz));
+			} catch (SocketException e) {
+				e.printStackTrace();
+			}
 		}
 
 		// shutdown connections

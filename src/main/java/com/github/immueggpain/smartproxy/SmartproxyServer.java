@@ -31,6 +31,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -139,6 +140,7 @@ public class SmartproxyServer implements Callable<Void> {
 
 			while (true) {
 				SSLSocket sclient_s = (SSLSocket) ss.accept();
+				sclient_s.setTcpNoDelay(true);
 				scmt.execAsync("multi-thread-handle-conn", () -> handleConnection(sclient_s));
 			}
 		}
@@ -156,7 +158,7 @@ public class SmartproxyServer implements Callable<Void> {
 			{
 				try {
 					String string = is.readUTF();
-					System.out.println("client hello: " + string);
+					System.out.println("client hello: " + string.length());
 				} catch (SocketTimeoutException e) {
 					System.out.println("timeout during hello, possible TLS handshake failed");
 					Util.abortiveCloseSocket(sclient_s);
@@ -260,6 +262,7 @@ public class SmartproxyServer implements Callable<Void> {
 
 			// create cdest(client to destination) socket
 			Socket cdest_s = new Socket();
+			cdest_s.setTcpNoDelay(true);
 
 			// connect cdest
 			try {
@@ -335,6 +338,19 @@ public class SmartproxyServer implements Callable<Void> {
 					break;
 				}
 				contxt.lastWriteToDest = sct.time_ms();
+
+				// debug show socket buf size
+				try {
+					String dest = contxt.sclient_s.getRemoteSocketAddress().toString();
+					int rbufsz = contxt.sclient_s.getReceiveBufferSize();
+					int sbufsz = contxt.sclient_s.getSendBufferSize();
+					int drbufsz = contxt.cdest_s.getReceiveBufferSize();
+					int dsbufsz = contxt.cdest_s.getSendBufferSize();
+					System.out.println(String.format("%s, rbufsz: %d, sbufsz: %d, drbufsz: %d, dsbufsz: %d", dest,
+							rbufsz, sbufsz, drbufsz, dsbufsz));
+				} catch (SocketException e) {
+					e.printStackTrace();
+				}
 			}
 
 			// shutdown connections
