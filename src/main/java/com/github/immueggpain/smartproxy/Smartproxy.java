@@ -43,11 +43,13 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -94,6 +96,9 @@ public class Smartproxy implements Callable<Void> {
 	@Option(names = { "-l", "--log" }, description = "log file path. default is ${DEFAULT-VALUE}")
 	public String logfile = "smartproxy.log";
 
+	@Option(names = { "-r", "--local-rule" }, description = "local user.rule.")
+	public Path local_rule;
+
 	// timeouts
 	private static final int toCltReadFromApp = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
 	public static final int toCltReadFromSvr = Http2socks.toH2sReadFromSocks + 10 * 1000;
@@ -104,7 +109,7 @@ public class Smartproxy implements Callable<Void> {
 	private static final int toSvrReadFromCltSmall = toCltReadFromSvrSmall;
 	private static final int toSvrReadFromCltRest = 5 * 60 * 1000;
 
-	private static final int BUF_SIZE = 1024 * 16;
+	private static final int BUF_SIZE = 1024 * 512;
 	private static final SecureRandom rand = new SecureRandom();
 
 	private static final Pattern httpconnect_regex = Pattern.compile("CONNECT (.+):([0-9]+) HTTP/1[.][01]");
@@ -1100,51 +1105,63 @@ public class Smartproxy implements Callable<Void> {
 		domain_to_nn = new HashMap<>();
 		ip_to_nn = new TreeMap<>();
 		Path path = Paths.get("user.rule");
+
+		ArrayList<String> lines = new ArrayList<>();
 		try (BOMInputStream is = new BOMInputStream(new FileInputStream(path.toFile()))) {
-			for (String line : IOUtils.readLines(is, sc.utf8)) {
-				line = line.trim();
-				if (line.isEmpty())
-					continue;
-				if (line.startsWith("#"))
-					continue;
-				String[] segments = line.split(" ");
-				if (ip_regex.matcher(segments[0]).matches()) {
-					// ip
-					if (segments.length != 3)
-						throw new Exception("nn_table bad line " + line);
-					if (!ip_regex.matcher(segments[1]).matches())
-						throw new Exception("nn_table bad line " + line);
-					NextNode target;
-					if (segments[2].equals("direct"))
-						target = nn_direct;
-					else if (segments[2].equals("reject"))
-						target = nn_ban;
-					else if (segments[2].equals("proxy"))
-						target = nn_proxy;
-					else
-						throw new Exception("nn_table bad line " + line);
-					long begin = ip2long(segments[0]);
-					long end = ip2long(segments[1]);
-					ip_to_nn.put(begin, new IpRange(begin, end, target));
-					continue;
-				}
-				// domain
-				if (segments.length != 2)
-					throw new Exception("nn_table bad line: " + line);
-				if (!domain_regex.matcher(segments[0]).matches())
-					throw new Exception("nn_table bad line: " + line);
+			List<String> lines1 = IOUtils.readLines(is, sc.utf8);
+			lines.addAll(lines1);
+		}
+		if (Files.exists(local_rule)) {
+			try (BOMInputStream is = new BOMInputStream(new FileInputStream(local_rule.toFile()))) {
+				List<String> lines2 = IOUtils.readLines(is, sc.utf8);
+				lines.addAll(lines2);
+			}
+		}
+
+		for (String line : lines) {
+			line = line.trim();
+			if (line.isEmpty())
+				continue;
+			if (line.startsWith("#"))
+				continue;
+			String[] segments = line.split(" ");
+			if (ip_regex.matcher(segments[0]).matches()) {
+				// ip
+				if (segments.length != 3)
+					throw new Exception("nn_table bad line " + line);
+				if (!ip_regex.matcher(segments[1]).matches())
+					throw new Exception("nn_table bad line " + line);
 				NextNode target;
-				if (segments[1].equals("direct"))
+				if (segments[2].equals("direct"))
 					target = nn_direct;
-				else if (segments[1].equals("reject"))
+				else if (segments[2].equals("reject"))
 					target = nn_ban;
-				else if (segments[1].equals("proxy"))
+				else if (segments[2].equals("proxy"))
 					target = nn_proxy;
 				else
 					throw new Exception("nn_table bad line " + line);
-				domain_to_nn.put(segments[0], target);
+				long begin = ip2long(segments[0]);
+				long end = ip2long(segments[1]);
+				ip_to_nn.put(begin, new IpRange(begin, end, target));
+				continue;
 			}
+			// domain
+			if (segments.length != 2)
+				throw new Exception("nn_table bad line: " + line);
+			if (!domain_regex.matcher(segments[0]).matches())
+				throw new Exception("nn_table bad line: " + line);
+			NextNode target;
+			if (segments[1].equals("direct"))
+				target = nn_direct;
+			else if (segments[1].equals("reject"))
+				target = nn_ban;
+			else if (segments[1].equals("proxy"))
+				target = nn_proxy;
+			else
+				throw new Exception("nn_table bad line " + line);
+			domain_to_nn.put(segments[0], target);
 		}
+
 	}
 
 	private static class SocketBundle {

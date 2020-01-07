@@ -93,7 +93,7 @@ public class SmartproxyServer implements Callable<Void> {
 	public static final int SVRERRCODE_COMMAND = 0x07; // command not supported / protocol error
 	public static final int SVRERRCODE_ADDR = 0x08; // address type not supported
 
-	private static final int BUF_SIZE = 1024 * 16;
+	private static final int BUF_SIZE = 1024 * 512;
 
 	private byte[] realpswd = new byte[64];
 
