@@ -43,7 +43,6 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
@@ -1111,7 +1110,7 @@ public class Smartproxy implements Callable<Void> {
 			List<String> lines1 = IOUtils.readLines(is, sc.utf8);
 			lines.addAll(lines1);
 		}
-		if (Files.exists(local_rule)) {
+		if (local_rule != null) {
 			try (BOMInputStream is = new BOMInputStream(new FileInputStream(local_rule.toFile()))) {
 				List<String> lines2 = IOUtils.readLines(is, sc.utf8);
 				lines.addAll(lines2);
