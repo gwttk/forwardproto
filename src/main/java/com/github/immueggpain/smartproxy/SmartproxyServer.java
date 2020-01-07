@@ -79,6 +79,9 @@ public class SmartproxyServer implements Callable<Void> {
 	@Option(names = { "-k", "--private_key" }, description = "SSL private key file path. default is ${DEFAULT-VALUE}")
 	public String private_key = "privkey.pem";
 
+	@Option(names = { "--debug" }, description = "enable debug code")
+	public boolean debug = false;
+
 	// timeouts
 	public static final int toSvrReadFromClt = Http2socks.toHttpWithDest + 10 * 1000;
 	private static final int toSvrReadFromDest = Smartproxy.toCltReadFromSvr + 10 * 1000;
@@ -141,7 +144,7 @@ public class SmartproxyServer implements Callable<Void> {
 			while (true) {
 				SSLSocket sclient_s = (SSLSocket) ss.accept();
 				sclient_s.setTcpNoDelay(true);
-				sclient_s.setSendBufferSize(Launcher.SO_BUF_SIZE);
+				// sclient_s.setSendBufferSize(Launcher.SO_BUF_SIZE);
 				scmt.execAsync("multi-thread-handle-conn", () -> handleConnection(sclient_s));
 			}
 		}
@@ -339,19 +342,6 @@ public class SmartproxyServer implements Callable<Void> {
 					break;
 				}
 				contxt.lastWriteToDest = sct.time_ms();
-
-				// debug show socket buf size
-				try {
-					String dest = contxt.sclient_s.getRemoteSocketAddress().toString();
-					int rbufsz = contxt.sclient_s.getReceiveBufferSize();
-					int sbufsz = contxt.sclient_s.getSendBufferSize();
-					int drbufsz = contxt.cdest_s.getReceiveBufferSize();
-					int dsbufsz = contxt.cdest_s.getSendBufferSize();
-					System.out.println(String.format("%s, rbufsz: %d, sbufsz: %d, drbufsz: %d, dsbufsz: %d", dest,
-							rbufsz, sbufsz, drbufsz, dsbufsz));
-				} catch (SocketException e) {
-					e.printStackTrace();
-				}
 			}
 
 			// shutdown connections
@@ -431,6 +421,21 @@ public class SmartproxyServer implements Callable<Void> {
 				break;
 			}
 			contxt.lastWriteToClient = sct.time_ms();
+
+			// debug show socket buf size
+			if (debug) {
+				try {
+					String dest = contxt.sclient_s.getRemoteSocketAddress().toString();
+					int rbufsz = contxt.sclient_s.getReceiveBufferSize();
+					int sbufsz = contxt.sclient_s.getSendBufferSize();
+					int drbufsz = contxt.cdest_s.getReceiveBufferSize();
+					int dsbufsz = contxt.cdest_s.getSendBufferSize();
+					System.out.println(String.format("%s, rbufsz: %d, sbufsz: %d, drbufsz: %d, dsbufsz: %d", dest,
+							rbufsz, sbufsz, drbufsz, dsbufsz));
+				} catch (SocketException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		// shutdown connections

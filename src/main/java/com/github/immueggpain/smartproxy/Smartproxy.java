@@ -99,6 +99,9 @@ public class Smartproxy implements Callable<Void> {
 	@Option(names = { "-r", "--local-rule" }, description = "local user.rule.")
 	public Path local_rule;
 
+	@Option(names = { "--debug" }, description = "enable debug code")
+	public boolean debug = false;
+
 	// timeouts
 	private static final int toCltReadFromApp = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
 	public static final int toCltReadFromSvr = Http2socks.toH2sReadFromSocks + 10 * 1000;
@@ -594,16 +597,6 @@ public class Smartproxy implements Callable<Void> {
 			}
 			contxt.lastWriteToServer = sct.time_ms();
 			speedMeter.countSend(n);
-
-			// debug show socket buf size
-			try {
-				String local = contxt.cserver_s.getLocalSocketAddress().toString();
-				int rbufsz = contxt.cserver_s.getReceiveBufferSize();
-				int sbufsz = contxt.cserver_s.getSendBufferSize();
-				System.out.println(String.format("%s, rbufsz: %d, sbufsz: %d", local, rbufsz, sbufsz));
-			} catch (SocketException e) {
-				e.printStackTrace();
-			}
 		}
 
 		// shutdown connections
@@ -681,6 +674,18 @@ public class Smartproxy implements Callable<Void> {
 				break;
 			}
 			contxt.lastWriteToClient = sct.time_ms();
+
+			// debug show socket buf size
+			if (debug) {
+				try {
+					String local = contxt.cserver_s.getLocalSocketAddress().toString();
+					int rbufsz = contxt.cserver_s.getReceiveBufferSize();
+					int sbufsz = contxt.cserver_s.getSendBufferSize();
+					System.out.println(String.format("%s, rbufsz: %d, sbufsz: %d", local, rbufsz, sbufsz));
+				} catch (SocketException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		// shutdown connections
@@ -844,6 +849,7 @@ public class Smartproxy implements Callable<Void> {
 			// use small timeout first
 			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
 			cserver_s.setTcpNoDelay(true);
+			cserver_s.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
 
 			// connect to sp server
 			try {
@@ -933,6 +939,7 @@ public class Smartproxy implements Callable<Void> {
 			// use small timeout first
 			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
 			cserver_s.setTcpNoDelay(true);
+			cserver_s.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
 
 			// connect to sp server
 			try {
