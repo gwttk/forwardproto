@@ -82,6 +82,12 @@ public class SmartproxyServer implements Callable<Void> {
 	@Option(names = { "--debug" }, description = "enable debug code")
 	public boolean debug = false;
 
+	@Option(names = { "--sndbuf" }, description = "socket send buf size. default is ${DEFAULT-VALUE}.")
+	public int sndbuf_size = 0;
+
+	@Option(names = { "--rcvbuf" }, description = "socket recv buf size. default is ${DEFAULT-VALUE}.")
+	public int rcvbuf_size = 0;
+
 	// timeouts
 	public static final int toSvrReadFromClt = Http2socks.toHttpWithDest + 10 * 1000;
 	private static final int toSvrReadFromDest = Smartproxy.toCltReadFromSvr + 10 * 1000;

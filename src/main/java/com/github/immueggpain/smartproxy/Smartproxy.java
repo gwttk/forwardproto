@@ -102,6 +102,12 @@ public class Smartproxy implements Callable<Void> {
 	@Option(names = { "--debug" }, description = "enable debug code")
 	public boolean debug = false;
 
+	@Option(names = { "--sndbuf" }, description = "socket send buf size. default is ${DEFAULT-VALUE}.")
+	public int sndbuf_size = 0;
+
+	@Option(names = { "--rcvbuf" }, description = "socket recv buf size. default is ${DEFAULT-VALUE}.")
+	public int rcvbuf_size = 1900000;
+
 	// timeouts
 	private static final int toCltReadFromApp = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
 	public static final int toCltReadFromSvr = Http2socks.toH2sReadFromSocks + 10 * 1000;
@@ -161,10 +167,12 @@ public class Smartproxy implements Callable<Void> {
 
 		try (ServerSocket ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip))) {
 			log.println("listened on port " + local_listen_port);
-			ss.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
+			// for local socket, use auto buf size
+			// ss.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
 			while (true) {
 				Socket s = ss.accept();
-				s.setSendBufferSize(Launcher.SO_BUF_SIZE);
+				// for local socket, use auto buf size
+				// s.setSendBufferSize(Launcher.SO_BUF_SIZE);
 				// use source port as id
 				int id = s.getPort();
 				scmt.execAsync("recv_" + id + "_client", () -> recv_client(s));
@@ -840,8 +848,8 @@ public class Smartproxy implements Callable<Void> {
 			throw new RuntimeException("impossible");
 	}
 
-	private static SocketBundle create_tunnel(String server_hostname, int server_port, SSLSocketFactory ssf,
-			byte[] password, String dest_hostname, int dest_port) {
+	private SocketBundle create_tunnel(String server_hostname, int server_port, SSLSocketFactory ssf, byte[] password,
+			String dest_hostname, int dest_port) {
 		try {
 			// create sslsocket
 			SSLSocket cserver_s = (SSLSocket) ssf.createSocket();
@@ -851,8 +859,10 @@ public class Smartproxy implements Callable<Void> {
 			// use small timeout first
 			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
 			cserver_s.setTcpNoDelay(true);
-			cserver_s.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
-			cserver_s.setSendBufferSize(Launcher.SO_BUF_SIZE);
+			if (rcvbuf_size > 0)
+				cserver_s.setReceiveBufferSize(rcvbuf_size);
+			if (sndbuf_size > 0)
+				cserver_s.setSendBufferSize(sndbuf_size);
 
 			// connect to sp server
 			try {
@@ -931,7 +941,7 @@ public class Smartproxy implements Callable<Void> {
 		}
 	}
 
-	private static SocketBundle create_half_tunnel(String server_hostname, int server_port, SSLSocketFactory ssf,
+	private SocketBundle create_half_tunnel(String server_hostname, int server_port, SSLSocketFactory ssf,
 			byte[] password) {
 		try {
 			// create sslsocket
@@ -942,8 +952,10 @@ public class Smartproxy implements Callable<Void> {
 			// use small timeout first
 			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
 			cserver_s.setTcpNoDelay(true);
-			cserver_s.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
-			cserver_s.setSendBufferSize(Launcher.SO_BUF_SIZE);
+			if (rcvbuf_size > 0)
+				cserver_s.setReceiveBufferSize(rcvbuf_size);
+			if (sndbuf_size > 0)
+				cserver_s.setSendBufferSize(sndbuf_size);
 
 			// connect to sp server
 			try {
@@ -1107,8 +1119,9 @@ public class Smartproxy implements Callable<Void> {
 		Socket s = new Socket(Proxy.NO_PROXY);
 		s.setTcpNoDelay(true);
 		s.setSoTimeout(toCltReadFromDirect);
-		s.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
-		s.setSendBufferSize(Launcher.SO_BUF_SIZE);
+		// use auto buf size for direct connect
+		// s.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
+		// s.setSendBufferSize(Launcher.SO_BUF_SIZE);
 
 		try {
 			s.connect(dest_sockaddr, toCltConnectToDirect);
