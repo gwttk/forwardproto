@@ -144,13 +144,16 @@ public class SmartproxyServer implements Callable<Void> {
 			ss.setEnabledProtocols(new String[] { "TLSv1.2" });
 			ss.setEnabledCipherSuites(new String[] { "TLS_RSA_WITH_AES_128_GCM_SHA256" });
 			ss.setPerformancePreferences(0, 0, 1);
+			if (rcvbuf_size > 0)
+				ss.setReceiveBufferSize(rcvbuf_size);
 
 			ss.bind(new InetSocketAddress(server_port));
 
 			while (true) {
 				SSLSocket sclient_s = (SSLSocket) ss.accept();
 				sclient_s.setTcpNoDelay(true);
-				// sclient_s.setSendBufferSize(Launcher.SO_BUF_SIZE);
+				if (sndbuf_size > 0)
+					sclient_s.setSendBufferSize(sndbuf_size);
 				scmt.execAsync("multi-thread-handle-conn", () -> handleConnection(sclient_s));
 			}
 		}
@@ -273,6 +276,9 @@ public class SmartproxyServer implements Callable<Void> {
 			// create cdest(client to destination) socket
 			Socket cdest_s = new Socket();
 			cdest_s.setTcpNoDelay(true);
+			// server to dest use auto buf size
+			// cdest_s.setSendBufferSize(0);
+			// cdest_s.setReceiveBufferSize(0);
 
 			// connect cdest
 			try {
