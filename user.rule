@@ -7,6 +7,21 @@
 # "reject" means drop connection
 
 #auto rules
+.comodoca4.com proxy
+.c3bd9034b5610ab1ddc3dd29f35bf5cd.nrb.footprintdns.com direct
+.kuaishou.com direct
+.mvps.net proxy
+.azchcdnk.com direct
+.king.com proxy
+.usertrust.com proxy
+.zachtronics.com proxy
+.comodoca.com proxy
+.yuanben.io direct
+.cdn.arkoselabs.com proxy
+.weibocdn.com direct
+.outlook.office.com proxy
+.onedrive.com proxy
+.blizzard-api.arkoselabs.com direct
 .areyouahuman.com proxy
 .spigotmc.org proxy
 .api.www.s81c.com proxy
