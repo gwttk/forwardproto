@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.moiazureorigin.clo.footprintdns.com direct
 .comodoca4.com proxy
 .c3bd9034b5610ab1ddc3dd29f35bf5cd.nrb.footprintdns.com direct
 .kuaishou.com direct
