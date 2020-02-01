@@ -336,8 +336,8 @@ public class Http2socks {
 	}
 
 	private static void printHttpRequest(PrintWriter log, HttpRequest request, String prefix) {
-		log.println("error " + prefix + " line is: " + request.getRequestLine());
-		log.println("error " + prefix + " headers: ");
+		log.println("error <" + prefix + "> line is: " + request.getRequestLine());
+		log.println("error <" + prefix + "> headers: ");
 		for (Header header : request.getAllHeaders()) {
 			log.println("        " + header);
 		}
