@@ -108,6 +108,10 @@ public class Smartproxy implements Callable<Void> {
 	@Option(names = { "--rcvbuf" }, description = "socket recv buf size. default is ${DEFAULT-VALUE}.")
 	public int rcvbuf_size = 1900000;
 
+	@Option(names = { "--halfopen-maxtime" },
+			description = "how many seconds half-open tunnel can rest for. default is ${DEFAULT-VALUE}.")
+	public int hopen_maxtime = 300;
+
 	// timeouts
 	private static final int toCltReadFromApp = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
 	public static final int toCltReadFromSvr = Http2socks.toH2sReadFromSocks + 10 * 1000;
@@ -116,7 +120,8 @@ public class Smartproxy implements Callable<Void> {
 	private static final int toCltReadFromDirect = toCltReadFromSvr;
 	private static final int toCltConnectToDirect = 10 * 1000;
 	private static final int toSvrReadFromCltSmall = toCltReadFromSvrSmall;
-	private static final int toSvrReadFromCltRest = 5 * 60 * 1000;
+	/** how long half-open tunnel can rest for */
+	private int toSvrReadFromCltRest = hopen_maxtime * 1000;
 
 	private static final int BUF_SIZE = 1024 * 512;
 	private static final SecureRandom rand = new SecureRandom();
@@ -1014,7 +1019,7 @@ public class Smartproxy implements Callable<Void> {
 			}
 
 			SocketBundle sb = new SocketBundle(cserver_s, is, os);
-			sb.expireTime = System.currentTimeMillis() + toSvrReadFromCltRest - 5000;
+			sb.expireTime = System.currentTimeMillis() + toSvrReadFromCltRest - 10000;
 			return sb;
 		} catch (Throwable e) {
 			log.println("there shouldn't be any exception here");
