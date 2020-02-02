@@ -112,6 +112,14 @@ public class Smartproxy implements Callable<Void> {
 			description = "how many seconds half-open tunnel can rest for. default is ${DEFAULT-VALUE}.")
 	public int hopen_maxtime = 300;
 
+	@Option(names = { "--halfopen-max" },
+			description = "how many half-open tunnels can be used. default is ${DEFAULT-VALUE}.")
+	public int hopen_max = 40;
+
+	@Option(names = { "--halfopen-threads" },
+			description = "how many threads is used to create half-open tunnels. default is ${DEFAULT-VALUE}.")
+	public int hopen_threads = 4;
+
 	// timeouts
 	private static final int toCltReadFromApp = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
 	public static final int toCltReadFromSvr = Http2socks.toH2sReadFromSocks + 10 * 1000;
@@ -1057,17 +1065,16 @@ public class Smartproxy implements Callable<Void> {
 
 	private class TunnelPool {
 
-		private BlockingQueue<SocketBundle> halfTunnels = new ArrayBlockingQueue<>(40);
+		private BlockingQueue<SocketBundle> halfTunnels = new ArrayBlockingQueue<>(hopen_max);
 		private String server_hostname;
 		private int server_port;
 
 		public TunnelPool(String server_hostname, int server_port) {
 			this.server_hostname = server_hostname;
 			this.server_port = server_port;
-			scmt.execAsync("tunnel-pool-connect1", this::connect);
-			scmt.execAsync("tunnel-pool-connect2", this::connect);
-			scmt.execAsync("tunnel-pool-connect3", this::connect);
-			scmt.execAsync("tunnel-pool-connect4", this::connect);
+			for (int i = 0; i < hopen_threads; i++) {
+				scmt.execAsync("tunnel-pool-connect", this::connect);
+			}
 			scmt.execAsync("tunnel-pool-cleaner", this::cleaner);
 		}
 
