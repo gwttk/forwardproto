@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.joyoung.com direct
+.hkpxy0.netease.im proxy
+.jiuhaochufang.com direct
+.lbs.netease.im direct
 .areyouahuman.com proxy
 .spigotmc.org proxy
 .api.www.s81c.com proxy
