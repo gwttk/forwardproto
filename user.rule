@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.57b65d8928f0431b864ac0dfacaa8c55.uscom-central-1.oraclecloud.com proxy
+.wscdns.com direct
+.yfdts.net direct
+.java.com direct
+.yfscdn.net direct
+.www.java.com proxy
 .joyoung.com direct
 .hkpxy0.netease.im proxy
 .jiuhaochufang.com direct
