@@ -7,6 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.echo.cx proxy
+.fw-ad.jp proxy
+.worldofwarcraft.com proxy
+.moresatisfied.com proxy
+.advinteo.com proxy
+.xlgmedia.com proxy
+.zygorguides.com proxy
+.macro-wow.com proxy
+.smilewanted.com proxy
 .25ku.com direct
 .yfcalc.com direct
 .cr.frontend.weborama.fr proxy
@@ -266,7 +275,6 @@
 .universal.iperceptions.com proxy
 .hxnews.com direct
 .onetag.io proxy
-.render-classic-eu.worldofwarcraft.com proxy
 .rtb123.com proxy
 .webmd.com proxy
 .columbia.edu proxy
@@ -506,7 +514,6 @@
 .pv.surveywall-api.survata.com proxy
 .academiaarsarcana.de proxy
 .bfmsa.com proxy
-.render-eu.worldofwarcraft.com proxy
 .wowprogramming.com proxy
 .odict.net proxy
 .runadtag.com proxy
@@ -525,7 +532,6 @@
 .dmpxs.com proxy
 .dish.com proxy
 .quissygaming.com proxy
-.render-classic-us.worldofwarcraft.com proxy
 .slader.com proxy
 .scene7.com proxy
 .zam.com proxy
@@ -918,7 +924,6 @@
 .really-simple-ssl.com proxy
 .minecraft.net proxy
 .starcraft2.com proxy
-.render-us.worldofwarcraft.com proxy
 .scribdassets.com proxy
 .6sense.com proxy
 .shellcheck.net proxy
@@ -3290,7 +3295,6 @@
 .dvtps.com proxy
 .redditstatic.com proxy
 .aweber.com proxy
-.render-api-us.worldofwarcraft.com proxy
 .vdna-assets.com proxy
 .id5-sync.com proxy
 .adadvisor.net proxy
@@ -3320,7 +3324,6 @@
 .qualaroo.com proxy
 .semasio.net proxy
 .widespace.com proxy
-.render-api-eu.worldofwarcraft.com proxy
 .ynxs.io proxy
 .adswizz.com proxy
 .bizibly.com proxy
