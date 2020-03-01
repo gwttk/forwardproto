@@ -7,6 +7,19 @@
 # "reject" means drop connection
 
 #auto rules
+.java2s.com proxy
+.wasqq.com direct
+.leepoint.net proxy
+.bytebucket.org proxy
+.ctrl-alt-dev.nl proxy
+.kascend.com direct
+.clrz.nl proxy
+.alexgorbatchev.com proxy
+.zdyrs.com direct
+.java-gaming.org proxy
+.projectwonderful.com proxy
+.bitbucket.org proxy
+.magaimg.net proxy
 .echo.cx proxy
 .fw-ad.jp proxy
 .worldofwarcraft.com proxy
