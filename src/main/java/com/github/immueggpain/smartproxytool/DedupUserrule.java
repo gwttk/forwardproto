@@ -316,7 +316,7 @@ public class DedupUserrule implements Callable<Void> {
 		excepRules.put(".ctrip.co.kr", "direct");
 		excepRules.put(".taiwandao.tw", "direct");
 		excepRules.put(".unagi-cn.amazon.com", "direct");
-		excepRules.put(".unagi-cn.amazon.com", "direct");
+		excepRules.put(".render-api-cn.worldofwarcraft.com", "direct");
 	}
 
 	/** some domains are exceptions as they differ from parent domains. */
