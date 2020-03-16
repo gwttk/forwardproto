@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.1trust.app proxy
+.thegamehaus.com proxy
 .ad4game.com proxy
 .sukeban.moe proxy
 .adxcel.com proxy
