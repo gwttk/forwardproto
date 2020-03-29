@@ -7,6 +7,30 @@
 # "reject" means drop connection
 
 #auto rules
+.wowclassiccountdown.com proxy
+.d3resource.com proxy
+.shivtr.com proxy
+.dexerto.com proxy
+.resized.co proxy
+.brandungmedia.com proxy
+.iconeasy.com proxy
+.stateofdecay.com proxy
+.icy-veins.com proxy
+.apjonlinecdn.com proxy
+.dagaqi.com direct
+.imgcdc.com direct
+.kayanor.de proxy
+.solareclipse.net proxy
+.diablofans.com proxy
+.83823.net direct
+.vanillagaming.org proxy
+.216e02855c010060e10ac1ef566afb2a.clo.footprintdns.com direct
+.452ce47ea7185346a0253dfcb5cf1a55.clo.footprintdns.com direct
+.gta6release.com proxy
+.d3planner.com proxy
+.displayspecifications.com proxy
+.aatishb.com proxy
+.factorio.com proxy
 .reyun.com direct
 .townnews.com proxy
 .reporternewspapers.net proxy
