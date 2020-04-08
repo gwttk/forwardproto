@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.legacy-wow.com proxy
+.asterilivestream.com proxy
 .wowinterface.com proxy
 .postman.com proxy
 .calculator.com proxy
