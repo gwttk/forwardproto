@@ -7,6 +7,37 @@
 # "reject" means drop connection
 
 #auto rules
+.60addons.com direct
+.onesite.com proxy
+.moddb.com proxy
+.access.totalwar.com direct
+.elysium-project.org proxy
+.wotlkdb.com proxy
+.totalwar.org proxy
+.launcher-v3-content.totalwar.com proxy
+.launcher-v3.totalwar.com direct
+.sgaas.net proxy
+.dashboard.totalwar.com direct
+.cait-cloud.net proxy
+.163.lu direct
+.v-cdn.net proxy
+.content.totalwar.com proxy
+.52poke.wiki proxy
+.www.totalwar.com direct
+.zeddic.com proxy
+.vanillawowdb.com proxy
+.52poke.com proxy
+.cheatengine.org proxy
+.academy.totalwar.com direct
+.twcenter.net proxy
+.com.tr proxy
+.launcher-analytics.totalwar.com direct
+.creative-assembly.com proxy
+.wh2enc.totalwar.com proxy
+.pydoc.net proxy
+.warcrafttavern.com proxy
+.forums.totalwar.com proxy
+.allakhazam.com proxy
 .legacy-wow.com proxy
 .asterilivestream.com proxy
 .wowinterface.com proxy
