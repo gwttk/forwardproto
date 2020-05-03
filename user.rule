@@ -7,6 +7,26 @@
 # "reject" means drop connection
 
 #auto rules
+.weikeimg.com direct
+.pinyuncloud.com direct
+.podbean.com proxy
+.digitallydownloaded.net proxy
+.epwk.com direct
+.6455097b6568da4e75020449478419c3.clo.footprintdns.com direct
+.azurefd.us proxy
+.e0e571051e28a3bcb0b8221d213959c3.clo.footprintdns.com direct
+.dianwannan.com direct
+.qunhei.com direct
+.trafficjunky.com proxy
+.f63397fe5d3317e5569cd01cfee8a35c.clo.footprintdns.com proxy
+.bingapis.com direct
+.quilljs.com proxy
+.twwstats.com proxy
+.yourjavascript.com proxy
+.dictation.io proxy
+.wmfusercontent.org proxy
+.ifreesite.com proxy
+.openinstall.io direct
 .60addons.com direct
 .onesite.com proxy
 .moddb.com proxy
