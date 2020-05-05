@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.nirvana.bar proxy
+.geotrust.com proxy
+.bjadjty.com direct
+.shadiao.app direct
+.gwern.net proxy
+.thiswaifudoesnotexist.net proxy
+.asmjit.com proxy
+.epic-games-api.arkoselabs.com direct
 .weikeimg.com direct
 .pinyuncloud.com direct
 .podbean.com proxy
