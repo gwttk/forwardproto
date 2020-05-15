@@ -37,14 +37,11 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.concurrent.Callable;
 
@@ -54,8 +51,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
-
-import org.apache.commons.io.IOUtils;
 
 import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
@@ -113,17 +108,12 @@ public class SmartproxyServer implements Callable<Void> {
 
 		// init SSL
 		InputStream certFile = Files.newInputStream(Paths.get(cert));
-		InputStream privateKeyFile = Files.newInputStream(Paths.get(private_key));
+		byte[] keyDataBytes = Files.readAllBytes(Paths.get(private_key));
 
 		CertificateFactory cf = CertificateFactory.getInstance("X.509");
 		Collection<? extends Certificate> certificates = cf.generateCertificates(certFile);
 
-		String privateKeyPEM = IOUtils.toString(privateKeyFile, StandardCharsets.UTF_8);
-		String privateKeyBase64 = privateKeyPEM.replace("-----BEGIN PRIVATE KEY-----", "")
-				.replace("-----END PRIVATE KEY-----", "").replaceAll("\\s+", "");
-		byte[] privateKeyPKCS8 = Base64.getDecoder().decode(privateKeyBase64);
-		KeyFactory kf = KeyFactory.getInstance("RSA");
-		PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(privateKeyPKCS8));
+		PrivateKey privateKey = PKIUtils.loadDecryptionKey(keyDataBytes);
 
 		KeyStore ks = KeyStore.getInstance("JKS");
 		ks.load(null);
