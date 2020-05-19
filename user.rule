@@ -7,6 +7,21 @@
 # "reject" means drop connection
 
 #auto rules
+.pankajmishra.com proxy
+.azureedge.us proxy
+.leigod.com direct
+.nn.com direct
+.huimai123.com direct
+.dxinzf.com direct
+.tedcdn.com proxy
+.58gameup.com direct
+.ethicalads.io proxy
+.jiezhansifang.com direct
+.im-cc.com direct
+.5866.com direct
+.ted.com proxy
+.yunaq.com direct
+.58ba028e11fcf62aa4ac37321a2cbe2f.nrb.footprintdns.com proxy
 .pscp.tv proxy
 .673187a4-ws.va.huya.com proxy
 .secomtrust.net proxy
