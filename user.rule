@@ -7,6 +7,27 @@
 # "reject" means drop connection
 
 #auto rules
+.pscp.tv proxy
+.673187a4-ws.va.huya.com proxy
+.secomtrust.net proxy
+.673187ac-ws.va.huya.com proxy
+.34dc9473-ws.va.huya.com proxy
+.v-api-player-ssl.huya.com direct
+.v-stats-play.huya.com direct
+.i.huya.com direct
+.128d57d1-ws.va.huya.com proxy
+.txdirect.flv.huya.com direct
+.673187a5-ws.va.huya.com proxy
+.344c63de-ws.va.huya.com proxy
+.chgate.huya.com direct
+.huya-w20.huya.com direct
+.commento.io proxy
+.673187a7-ws.va.huya.com proxy
+.web.huya.com direct
+.fw.huya.com direct
+.0de4e411-ws.va.huya.com proxy
+.cmsstatic.huya.com direct
+.jendrikillner.com proxy
 .nirvana.bar proxy
 .geotrust.com proxy
 .bjadjty.com direct
@@ -277,7 +298,6 @@
 .shareaholic.com proxy
 .jappstore.com direct
 .wo-smart.com direct
-.l.web.huya.com direct
 .chinanetcenter.com direct
 .live.huya.com direct
 .flow.ci direct
