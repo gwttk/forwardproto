@@ -7,6 +7,17 @@
 # "reject" means drop connection
 
 #auto rules
+.8020japanese.com proxy
+.v-stats-cdn.huya.com direct
+.cxt.huya.com direct
+.responsivevoice.org proxy
+.qlivecloud.com direct
+.huya-w21.huya.com direct
+.romajidesu.com proxy
+.128a4d17-ws.va.huya.com proxy
+.huya-w6.huya.com direct
+.673187a3-ws.va.huya.com proxy
+.huya-w10.huya.com direct
 .pankajmishra.com proxy
 .azureedge.us proxy
 .leigod.com direct
