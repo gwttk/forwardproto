@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.media-exp1.licdn.com direct
+.qualys.com proxy
+.bandwagonhost.com proxy
+.polldaddy.com proxy
+.niuyue6.top proxy
+.nyue5.top proxy
+.rljrb.com direct
+.yntung.com direct
 .8020japanese.com proxy
 .huya.com direct
 .responsivevoice.org proxy
