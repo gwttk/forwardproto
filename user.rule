@@ -7,6 +7,24 @@
 # "reject" means drop connection
 
 #auto rules
+.shopifycdn.com proxy
+.sndcdn.com proxy
+.weglot.com proxy
+.judge.me proxy
+.taplb.com proxy
+.nfcube.com proxy
+.c7755b2b27235348839f9340d88d66e8.nrb.footprintdns.com proxy
+.nexon.net proxy
+.hyper-resolution.org proxy
+.routeapp.io proxy
+.r18.com proxy
+.aaaecommerce.com proxy
+.boldapps.net proxy
+.800894efd62137fc58de2fa76e2aa9af.clo.footprintdns.com direct
+.hulkapps.com proxy
+.metathreads.com proxy
+.powr.io proxy
+.bc0a443eeb7881483295eaba02188725.clo.footprintdns.com proxy
 .jxzflm.com direct
 .woskj2.com direct
 .yakuhd.com direct
