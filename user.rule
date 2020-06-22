@@ -7,6 +7,30 @@
 # "reject" means drop connection
 
 #auto rules
+.d20srd.org proxy
+.ionicframework.com proxy
+.discourse-cdn.com proxy
+.irs03.com direct
+.paizo.com proxy
+.izaodao.com direct
+.meiqia.com direct
+.crbug.com proxy
+.sanity.io direct
+.estrongs.com direct
+.f-droid.org proxy
+.glitch.com proxy
+.0fbd620eb5161fb8406b8bdbbec7a3ba.clo.footprintdns.com proxy
+.googleoptimize.com direct
+.glitch.me proxy
+.web.dev proxy
+.webtype.com proxy
+.msn.com proxy
+.1sapp.com direct
+.u33.cc proxy
+.meiqiausercontent.com direct
+.mozit.cloud proxy
+.aiclk.com direct
+.ad10ad9d3d8a613089a98395b951a0c4.clo.footprintdns.com proxy
 .geilicdn.com direct
 .imgflip.com proxy
 .commonmark.org proxy
