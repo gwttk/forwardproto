@@ -1,4 +1,4 @@
-﻿# A line which starts with "#" is comment
+# A line which starts with "#" is comment
 # "a.com" means "a.com" only, ".a.com" means "a.com" and all sub domains of "a.com"
 # we can also use ip range like "192.168.0.0 192.168.255.255"
 #
