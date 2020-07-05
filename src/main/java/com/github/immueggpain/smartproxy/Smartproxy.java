@@ -158,6 +158,8 @@ public class Smartproxy implements Callable<Void> {
 	public Void call() throws Exception {
 		// from now on, log output to '-l' option or 'smartproxy.log' by default
 		log = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logfile), sc.utf8)), true);
+		log.println(String.format("running on %s %s at %s.", System.getProperty("java.vendor"),
+				System.getProperty("java.runtime.version"), System.getProperty("java.home")));
 		speedMeter = new SpeedMeter(1000 * 4);
 
 		byte[] bytes = passwordString.getBytes(StandardCharsets.UTF_8);
