@@ -1,7 +1,9 @@
 language: java
+os: linux
+dist: xenial
 before_install:
     - pyenv versions
-    - pyenv shell 3.7
+    - pyenv shell 3.7.1
     - pip3 install --upgrade pip
 before_deploy:
     # create some env vars
