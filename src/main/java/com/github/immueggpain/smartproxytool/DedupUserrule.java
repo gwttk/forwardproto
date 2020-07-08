@@ -170,11 +170,11 @@ public class DedupUserrule implements Callable<Void> {
 			//
 			String fulldn = segments[0];
 
-			// add dot
-			if (!fulldn.startsWith(".")) {
-				fulldn = "." + fulldn;
-				outputLines.set(outputLines.size() - 1, fulldn + " " + target);
-			}
+			// don't add dot
+//			if (!fulldn.startsWith(".")) {
+//				fulldn = "." + fulldn;
+//				outputLines.set(outputLines.size() - 1, fulldn + " " + target);
+//			}
 
 			String oldtarget = domains.get(fulldn);
 			if (oldtarget == null)
@@ -233,7 +233,7 @@ public class DedupUserrule implements Callable<Void> {
 			}
 		}
 
-		// merge children with same target to sld
+		System.out.println("====merge children with same target to sld(second level domain)");
 		for (int i = 0; i < outputLines.size(); i++) {
 			String line = outputLines.get(i);
 			if (!domain_line_regex.matcher(line).matches()) {
@@ -286,7 +286,7 @@ public class DedupUserrule implements Callable<Void> {
 			}
 		}
 
-		// write output
+		// write output with utf8 BOM
 		outputLines.set(0, "\ufeff" + outputLines.get(0));
 		Files.write(Paths.get(outputFile), outputLines);
 	}
