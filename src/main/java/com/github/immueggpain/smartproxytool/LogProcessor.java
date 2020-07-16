@@ -91,7 +91,7 @@ class LogProcessor {
 				if (latency1 < 0 || latency2 < 0) {
 					unpingableDomains.add(domainName);
 					target = queryIpRules(addr);
-					rules.add(domainName + " " + target);
+					rules.add("." + domainName + " " + target);
 				} else {
 					latency = (latency1 + latency2) / 2;
 
@@ -102,7 +102,7 @@ class LogProcessor {
 					} else {
 						target = queryIpRules(addr);
 					}
-					rules.add(domainName + " " + target);
+					rules.add("." + domainName + " " + target);
 
 				}
 				if (addr.isLoopbackAddress())
