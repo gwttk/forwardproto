@@ -110,7 +110,7 @@ public class Smartproxy implements Callable<Void> {
 
 	@Option(names = { "--halfopen-maxtime" },
 			description = "how many seconds half-open tunnel can rest for. default is ${DEFAULT-VALUE}.")
-	public int hopen_maxtime = 300;
+	public int hopen_maxtime = 240;
 
 	@Option(names = { "--halfopen-max" },
 			description = "how many half-open tunnels can be used. default is ${DEFAULT-VALUE}.")
@@ -126,7 +126,7 @@ public class Smartproxy implements Callable<Void> {
 	private static final int toCltReadFromSvrSmall = 10 * 1000;
 	private static final int toCltConnectToSvr = 10 * 1000;
 	private static final int toCltReadFromDirect = toCltReadFromSvr;
-	private static final int toCltConnectToDirect = 10 * 1000;
+	private static final int toCltConnectToDirect = 5 * 1000;
 	private static final int toSvrReadFromCltSmall = toCltReadFromSvrSmall;
 	/** how long half-open tunnel can rest for */
 	private int toSvrReadFromCltRest = hopen_maxtime * 1000;
