@@ -61,10 +61,14 @@ public class Http2socks {
 
 	// timeouts
 	public static final int toHttpWithDest = 60 * 1000;
+	/** http2socks outgoing BHttpClientConnection timeout between 2 http req/rsp */
 	public static final int toHttpWithDest2 = 30 * 1000;
+	/** http2socks outgoing socket read timeout */
 	public static final int toH2sReadFromSocks = toHttpWithDest + 10 * 1000;
+	/** http2socks outgoing socket connect timeout */
 	private static final int toH2sConnectThruSocks = 20 * 1000;
 
+	// these 2 for: outgoing BHttpClientConnection & incoming BHttpServerConnection
 	private static final int bufferSize = 32 * 1024;
 	private static final int fragmentSizeHint = 32 * 1024;
 
@@ -122,11 +126,11 @@ public class Http2socks {
 		SocketConfig socketConfig = SocketConfig.custom().setTcpNoDelay(true).setSoTimeout(toH2sReadFromSocks).build();
 		// modify BasicConnFactory cuz it resolves hostname, we don't want that
 		connFactory = new ModifiedConnFactory(socketFactoryToSocks, null, toH2sConnectThruSocks, socketConfig,
-				ConnectionConfig.DEFAULT);
+				ConnectionConfig.custom().setBufferSize(bufferSize).setFragmentSizeHint(fragmentSizeHint).build());
 
 		pool = new BasicConnPool(connFactory);
 		pool.setDefaultMaxPerRoute(6);
-		pool.setMaxTotal(60);
+		pool.setMaxTotal(6 * 20);
 		new Thread(this::connPoolCleaner, "h2s-connPoolCleaner").start();
 	}
 
@@ -209,12 +213,15 @@ public class Http2socks {
 			} finally {
 				// release conn to dest after conn from app has finished reading
 				BasicPoolEntry entry = (BasicPoolEntry) contextFromAppPerConn.getAttribute("pool.entry");
-				Boolean reusable = (Boolean) contextFromAppPerConn.getAttribute("pool.reusable");
-				if (entry != null && reusable != null) {
+				if (entry != null) {
+					// entry for outgoing http conn, update it
+					boolean reusable = (Boolean) contextFromAppPerConn.getAttribute("pool.reusable");
 					entry.updateExpiry(toHttpWithDest2, TimeUnit.MILLISECONDS);
 					pool.release(entry, reusable);
 					if (!reusable)
 						log.println("pool release: " + entry + ", reuse: " + reusable);
+				} else {
+					log.println("no pool entry");
 				}
 			}
 		} while (connFromApp.isOpen());
@@ -304,9 +311,6 @@ public class Http2socks {
 			return;
 		}
 
-		reusable = connStrategy.keepAlive(responseFromDest, contextToDestPerMsg);
-		contextFromAppPerConn.setAttribute("pool.reusable", reusable);
-
 		StatusLine statusLine = responseFromDest.getStatusLine();
 		responseToApp.setStatusLine(requestFromApp.getProtocolVersion(), statusLine.getStatusCode(),
 				statusLine.getReasonPhrase());
@@ -315,6 +319,9 @@ public class Http2socks {
 		responseToApp.removeHeaders("Connection");
 		responseToApp.removeHeaders("Proxy-Connection");
 		responseToApp.removeHeaders("Keep-Alive");
+
+		reusable = connStrategy.keepAlive(responseFromDest, contextToDestPerMsg);
+		contextFromAppPerConn.setAttribute("pool.reusable", reusable);
 
 		// debug log
 		// logHttpRequest(log, requestFromApp, "request from app");
