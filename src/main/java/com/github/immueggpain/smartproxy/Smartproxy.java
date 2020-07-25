@@ -121,12 +121,19 @@ public class Smartproxy implements Callable<Void> {
 	public int hopen_threads = 4;
 
 	// timeouts
+	/** client incoming socket read/write timeout */
 	private static final int toCltReadFromApp = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
+	/** client to server socket after rest read/write timeout */
 	public static final int toCltReadFromSvr = Http2socks.toH2sReadFromSocks + 10 * 1000;
+	/** client to server socket before rest read timeout */
 	private static final int toCltReadFromSvrSmall = 10 * 1000;
-	private static final int toCltConnectToSvr = 10 * 1000;
-	private static final int toCltReadFromDirect = toCltReadFromSvr;
+	/** client to server socket connect timeout */
+	private static final int toCltConnectToSvr = 7 * 1000;
+	/** client to direct dest socket read/write timeout */
+	private static final int toCltReadFromDirect = 59 * 1000;
+	/** client to direct dest socket connect timeout */
 	private static final int toCltConnectToDirect = 5 * 1000;
+	/** client to server socket rest time when out-of-pool */
 	private static final int toSvrReadFromCltSmall = toCltReadFromSvrSmall;
 	/** how long half-open tunnel can rest for */
 	private int toSvrReadFromCltRest = hopen_maxtime * 1000;
