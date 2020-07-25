@@ -214,7 +214,7 @@ public class Http2socks {
 				// release conn to dest after conn from app has finished reading
 				BasicPoolEntry entry = (BasicPoolEntry) contextFromAppPerConn.getAttribute("pool.entry");
 				if (entry != null) {
-					// entry for outgoing http conn, update it
+					// entry for outgoing http conn, reusable for outgoing http conn
 					boolean reusable = (Boolean) contextFromAppPerConn.getAttribute("pool.reusable");
 					entry.updateExpiry(toHttpWithDest2, TimeUnit.MILLISECONDS);
 					pool.release(entry, reusable);
