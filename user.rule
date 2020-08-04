@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.zhuaji.org direct
 .1ycdn.com direct
 .juxiangyou.com direct
 .lngtd.com proxy
