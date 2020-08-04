@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.1ycdn.com direct
 .juxiangyou.com direct
 .lngtd.com proxy
 .humanoids.be proxy
@@ -16,12 +17,10 @@
 .obsproject.com proxy
 .ywapk.com direct
 .jumpchart.com proxy
-.obsproject.com proxy
 .streaminglearningcenter.com proxy
 .nikjmiles.com proxy
 .extraessay.com proxy
 .csctrustedsecure.com proxy
-.jumpchart.com proxy
 .encoding.com proxy
 .paulbourke.net proxy
 .nvda.ws direct
@@ -30,14 +29,12 @@
 .la-mesta.com proxy
 .heavenstrikerivals.com proxy
 .square-enix.com proxy
-.lngtd.com proxy
 .wikiquote.org proxy
 .ulikecam.com direct
 .wowace.com proxy
 .funcaptcha.com proxy
 .cloudhub.io proxy
 .bcevod.com direct
-.nikjmiles.com proxy
 .gum.co proxy
 .wpengine.com proxy
 .insided.com proxy
@@ -62,7 +59,6 @@
 .tower.im direct
 .agilecraft.com proxy
 .paradoxplaza.com proxy
-.tower.im direct
 .360.com direct
 .sourcetreeapp.com proxy
 .contentstack.io proxy
