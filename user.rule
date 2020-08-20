@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.tingge123.com proxy
+.bosszhipin.com direct
+.ustclug.org proxy
+.zhipin.com direct
+.heishenhua.com direct
+.yomuzu.com direct
 .zhuaji.org direct
 .1ycdn.com direct
 .juxiangyou.com direct
