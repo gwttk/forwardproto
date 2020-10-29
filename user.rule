@@ -7,6 +7,29 @@
 # "reject" means drop connection
 
 #auto rules
+.thinkpad.com direct
+.ngabbs.com direct
+.admamax.com direct
+.taoxinf.com direct
+.flux-cdn.com proxy
+.pkoplink.com direct
+.joybuy.com direct
+.pullywood.com direct
+.jingxi.com direct
+.confirmit.com proxy
+.xwdsp.com direct
+.yousheng.shop direct
+.esportinfo.gg proxy
+.alibabausercontent.com direct
+.youdemai.com direct
+.yandex.com proxy
+.skindb.co proxy
+.kkgal.com proxy
+.yastatic.net proxy
+.tabbybots.com direct
+.pinfangw.com direct
+.dfxwdc.com direct
+.coding.net direct
 .tingge123.com proxy
 .bosszhipin.com direct
 .ustclug.org proxy
