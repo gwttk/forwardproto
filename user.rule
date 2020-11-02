@@ -7,6 +7,16 @@
 # "reject" means drop connection
 
 #auto rules
+.16846.top direct
+.img.game8.jp proxy
+.kulemi.com direct
+.4399i.net direct
+.qqan.com direct
+.lvr8.com direct
+.genshin.gg proxy
+.rerollcdn.com proxy
+.game8.co proxy
+.assets.game8.jp direct
 .imgspice.com proxy
 .mhentai.net proxy
 .icontact.com proxy
