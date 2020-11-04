@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.youxihezi.net direct
+.lf127.net direct
+.cloudimg.io proxy
+.sp-prod.net proxy
+.dayu.com direct
 .16846.top direct
 .img.game8.jp proxy
 .kulemi.com direct
