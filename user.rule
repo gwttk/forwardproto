@@ -7,6 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.frysb.com direct
+.xiaohulu.com direct
+.rqjrb.com direct
+.siteshields.com proxy
+.searchiq.co proxy
+.gamerbraves.com proxy
+.progameguides.com proxy
+.gamerevolution.com proxy
+.images.spot.im proxy
 .youxihezi.net direct
 .lf127.net direct
 .cloudimg.io proxy
