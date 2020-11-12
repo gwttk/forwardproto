@@ -192,7 +192,16 @@ public class Smartproxy implements Callable<Void> {
 			// for local socket, use auto buf size
 			// ss.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
 			while (true) {
-				Socket s = ss.accept();
+				Socket s;
+				try {
+					s = ss.accept();
+				} catch (SocketException e) {
+					// accept will fail sometimes when closing UU
+					// wait a little then try again
+					e.printStackTrace();
+					Thread.sleep(1000);
+					continue;
+				}
 				// for local socket, use auto buf size
 				// s.setSendBufferSize(Launcher.SO_BUF_SIZE);
 				// use source port as id
