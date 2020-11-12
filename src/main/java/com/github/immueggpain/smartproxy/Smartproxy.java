@@ -198,7 +198,7 @@ public class Smartproxy implements Callable<Void> {
 				} catch (SocketException e) {
 					// accept will fail sometimes when closing UU
 					// wait a little then try again
-					e.printStackTrace();
+					e.printStackTrace(log);
 					Thread.sleep(1000);
 					continue;
 				}
