@@ -1085,7 +1085,7 @@ public class Smartproxy implements Callable<Void> {
 
 	private class TunnelPool {
 
-		private BlockingQueue<SocketBundle> halfTunnels = new ArrayBlockingQueue<>(hopen_max);
+		private BlockingQueue<SocketBundle> halfTunnels = new ArrayBlockingQueue<>(hopen_max * 2);
 		private String server_hostname;
 		private int server_port;
 
@@ -1100,6 +1100,15 @@ public class Smartproxy implements Callable<Void> {
 
 		private void connect() {
 			while (true) {
+				if (halfTunnels.size() >= hopen_max) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					continue;
+				}
+
 				SocketBundle half_tunnel = create_half_tunnel(server_hostname, server_port, ssf, password);
 				if (half_tunnel != null)
 					try {
