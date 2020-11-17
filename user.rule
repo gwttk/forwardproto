@@ -7,6 +7,22 @@
 # "reject" means drop connection
 
 #auto rules
+.tljpxm.com direct
+.nerdschalk.com proxy
+.wolfram.com proxy
+.gaosan.com direct
+.guokr.com direct
+.wolframalpha.com proxy
+.khanacademy.org proxy
+.genshin.cc proxy
+.duccnuer.com direct
+.genshin-center.com proxy
+.kastatic.org proxy
+.mathpapa.com proxy
+.ax1x.com proxy
+.bi-prime.com proxy
+.wolframcdn.com proxy
+.forums.mihoyo.com proxy
 .laowang.vip proxy
 .obs.camera proxy
 .thegamerimages.com proxy
