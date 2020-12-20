@@ -595,7 +595,7 @@ gwent.win proxy
 .gwern.net proxy
 .thiswaifudoesnotexist.net proxy
 .asmjit.com proxy
-.epic-games-api.arkoselabs.com direct
+.arkoselabs.com proxy
 .weikeimg.com direct
 .pinyuncloud.com direct
 .podbean.com proxy
