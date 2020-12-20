@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.mob.com direct
+.getintra.org proxy
+.v2fly.org proxy
+.getoutline.org proxy
+.bbvms.com proxy
+.techtimes.com proxy
 .yangkeduo.com direct
 .bluebillywig.com direct
 .cdn13.com proxy
