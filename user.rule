@@ -7,6 +7,13 @@
 # "reject" means drop connection
 
 #auto rules
+.gamerant.com proxy
+.928vbi.com direct
+.adnmb3.com direct
+.93hdw9.com direct
+.gamerantimages.com proxy
+.adnmb.com direct
+.dwz.date direct
 .bongacams7.com proxy
 .project1content.com proxy
 .uniregistry.com proxy
