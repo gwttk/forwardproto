@@ -94,7 +94,6 @@
 .mediacorp.sg proxy
 .fudaiapp.com direct
 .cecdc.com direct
-.api.arkoselabs.com direct
 .femax20.com proxy
 .javpark.net proxy
 .whotwi.com proxy
@@ -951,7 +950,6 @@ gwent.win proxy
 .weibocdn.com direct
 .outlook.office.com proxy
 .onedrive.com proxy
-.blizzard-api.arkoselabs.com direct
 .areyouahuman.com proxy
 .spigotmc.org proxy
 .api.www.s81c.com proxy
