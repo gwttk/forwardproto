@@ -7,6 +7,16 @@
 # "reject" means drop connection
 
 #auto rules
+.seaofthieves.com proxy
+.javcl.com proxy
+.volthamfondue.com proxy
+.email2.gog.com proxy
+.avct.cloud proxy
+.dood.watch proxy
+.doodstream.com proxy
+.doodcdn.com proxy
+.dood.video proxy
+.o0-1.com proxy
 .nonecss.com proxy
 .streamsb.com proxy
 .qianggou5.com direct
