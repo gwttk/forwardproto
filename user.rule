@@ -7,6 +7,35 @@
 # "reject" means drop connection
 
 #auto rules
+.71360.com direct
+.t58b.com direct
+.optifast.com proxy
+.pipaw.net direct
+.filestackcontent.com proxy
+.meili1123.com direct
+.hypemarks.com proxy
+.ilkwork.com direct
+.okgo.top direct
+.oleony.com direct
+.szbdyd.com direct
+.optifibre.fr proxy
+.4ggame8.com direct
+.protagcdn.com proxy
+.weizhenwx.com direct
+.optifibre.com proxy
+.pianshen.com proxy
+.baitugu.com direct
+.8090.com direct
+.netded.com direct
+.qqxzb-img.com direct
+.yxszhai.com direct
+.fusepump.com proxy
+.weibopie.com direct
+.lmrdwz.com proxy
+.filestackapi.com proxy
+.xiaozuowen.net direct
+.alading123.com direct
+.xia1ge.com proxy
 .duolingo.com proxy
 .fuimg.com direct
 .seaofthieves.com proxy
