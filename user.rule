@@ -7,6 +7,27 @@
 # "reject" means drop connection
 
 #auto rules
+.sos-campmobile.pstatic.net direct
+.baizhan.net direct
+.mogucdn.com direct
+.jstor.org proxy
+.ssl.pstatic.net direct
+.mogu.com direct
+.tieba.com direct
+.xiaomi.net direct
+.jintuomc.com direct
+.www.ifanjian.net proxy
+.fanli.com direct
+.993h.com direct
+.bang-phinf.pstatic.net direct
+.j-img.org proxy
+.shtopchamber.com direct
+.meili-inc.com direct
+.rs.ifanjian.net direct
+.band.us proxy
+.moot.us proxy
+.sstatic-rmcnmv.pstatic.net direct
+.ithaka.org proxy
 .71360.com direct
 .t58b.com direct
 .optifast.com proxy
