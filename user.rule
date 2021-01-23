@@ -7,6 +7,38 @@
 # "reject" means drop connection
 
 #auto rules
+.investopedia.com proxy
+.leha.com direct
+.economictimes.com proxy
+.static-exp1.licdn.com direct
+.cmbimg.com direct
+.toolforge.org proxy
+.etimg.com proxy
+.tencentcs.com direct
+.heytapmobi.com direct
+.teamspeak-services.com proxy
+.redeem.gog.com proxy
+.pricing.gog.com proxy
+.clmbtech.com proxy
+.indiatimes.com proxy
+.sc1618.com proxy
+.wanzhuang.com direct
+.payssion.com proxy
+.ruohu.com direct
+.bea.gov proxy
+.teamspeak.com proxy
+.timesinternet.in proxy
+.yuansfer.com proxy
+.sinaedge.com direct
+.dwcdn.net proxy
+.tautua.org proxy
+.qzone.cc proxy
+.markdownguide.org proxy
+.myteamspeak.com proxy
+.broadcom.com proxy
+.reviews.gog.com proxy
+.adt348.net proxy
+.users.gog.com proxy
 .sos-campmobile.pstatic.net direct
 .baizhan.net direct
 .mogucdn.com direct
@@ -6610,7 +6642,6 @@ gwent.win proxy
 .jdwl.com direct
 .toplife.com direct
 .jcloudcache.com direct
-.jd.hk proxy
 #panda.tv
 .pdim.gs direct
 .ourdvsss.com direct
