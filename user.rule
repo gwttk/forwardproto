@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.lanhuapp.com direct
+.myoppo.com direct
+.heytapcs.com direct
+.heytapimage.com direct
 .investopedia.com proxy
 .leha.com direct
 .economictimes.com proxy
