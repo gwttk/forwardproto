@@ -7,6 +7,17 @@
 # "reject" means drop connection
 
 #auto rules
+.wesane.com direct
+.7moor-fs1.com direct
+.daoyu8.com direct
+.edu.sg proxy
+.steamunlocked.net proxy
+.mihuashi.com direct
+.hugesky.com proxy
+.xboxservices.com direct
+.zuhaohao.com direct
+.jingguan.ai direct
+.smilevideo.jp proxy
 .sdoprofile.com direct
 .lanhuapp.com direct
 .myoppo.com direct
