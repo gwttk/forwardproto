@@ -7,6 +7,17 @@
 # "reject" means drop connection
 
 #auto rules
+.pindi88.com direct
+.missevan.com direct
+.nhaidu.net direct
+.coding-pages.com direct
+.brotherhoodmutual.com proxy
+.jqsex.com direct
+.tamaegis.com direct
+.lanzoui.com direct
+.rrmeiju.com proxy
+.gartic.io proxy
+.topdf.com proxy
 .wesane.com direct
 .7moor-fs1.com direct
 .daoyu8.com direct
