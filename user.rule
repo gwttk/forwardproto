@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+.dsp-wiki.com proxy
+.boohee.com direct
+.torrentsafe.com proxy
 .pindi88.com direct
 .missevan.com direct
 .nhaidu.net direct
