@@ -26,6 +26,7 @@ package com.github.immueggpain.smartproxy;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -44,7 +45,6 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,7 +96,7 @@ public class Smartproxy implements Callable<Void> {
 	public String logfile = "smartproxy.log";
 
 	@Option(names = { "-r", "--local-rule" }, description = "local user.rule.")
-	public Path local_rule;
+	public File local_rule;
 
 	@Option(names = { "--debug" }, description = "enable debug code")
 	public boolean debug = false;
@@ -1200,7 +1200,7 @@ public class Smartproxy implements Callable<Void> {
 			lines.addAll(lines1);
 		}
 		if (local_rule != null) {
-			try (BOMInputStream is = new BOMInputStream(new FileInputStream(local_rule.toFile()))) {
+			try (BOMInputStream is = new BOMInputStream(new FileInputStream(local_rule))) {
 				List<String> lines2 = IOUtils.readLines(is, sc.utf8);
 				lines.addAll(lines2);
 			}
