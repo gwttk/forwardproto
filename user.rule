@@ -7,6 +7,32 @@
 # "reject" means drop connection
 
 #auto rules
+.sctapi.ftqq.com direct
+.thunderurl.com direct
+.usercentrics.eu proxy
+.17qq.com direct
+.idongde.com direct
+.feifei6.com direct
+.genshin.dev proxy
+.sc.ftqq.com direct
+.autohotkey.com proxy
+.cnliken.com direct
+.mms.com proxy
+.pushbear.ftqq.com direct
+.theseven.ftqq.com direct
+.coozhi.com direct
+.pmagentur.com proxy
+.hnnzwhyy.com direct
+.sct.ftqq.com direct
+.taiqingjiu.com direct
+.webflow.com proxy
+.cdn27-okzy.com proxy
+.r.ftqq.com proxy
+.sorryow.com proxy
+.haima-zuida.com proxy
+.dy10000.com direct
+.mingtian6.com direct
+.xonlines.com proxy
 .dsp-wiki.com proxy
 .boohee.com direct
 .torrentsafe.com proxy
