@@ -7,6 +7,35 @@
 # "reject" means drop connection
 
 #auto rules
+.support.content.office.net proxy
+.handanxinkai.com direct
+.beiwo77.com proxy
+.fulevmy.com proxy
+.shblvalve.com proxy
+.k1k.cc direct
+.suanmiao-zuida.com proxy
+.mspoweruser.com proxy
+.www.k1k.cc proxy
+.queqh.com proxy
+.tianzuida.com proxy
+.xgxhy.com proxy
+.ttupyj.com proxy
+.bjsxljs.com proxy
+.bsskk.com proxy
+.akqipai.com proxy
+.ctobsnssdk.com direct
+.datll.com direct
+.xb1.cc proxy
+.cbi88.com proxy
+.58bo.com proxy
+.shell.cdn.office.net direct
+.dytt.net proxy
+.videoplayercdn.osi.office.net proxy
+.meethanshi.com direct
+.ogr2brr7208a9aqq.top proxy
+.genshin.pub proxy
+.yuanshen.site direct
+.cytcm.com direct
 .sctapi.ftqq.com direct
 .thunderurl.com direct
 .usercentrics.eu proxy
