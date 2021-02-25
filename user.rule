@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.jd.hk direct
 .support.content.office.net proxy
 .handanxinkai.com direct
 .beiwo77.com proxy
