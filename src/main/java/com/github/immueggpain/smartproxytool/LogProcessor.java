@@ -95,9 +95,9 @@ class LogProcessor {
 				} else {
 					latency = (latency1 + latency2) / 2;
 
-					if (latency <= 60) {
+					if (latency <= 50) {
 						target = "direct";
-					} else if (latency > 160) {
+					} else if (latency >= 150) {
 						target = "proxy";
 					} else {
 						target = queryIpRules(addr);
