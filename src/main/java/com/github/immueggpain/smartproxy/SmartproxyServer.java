@@ -106,6 +106,8 @@ public class SmartproxyServer implements Callable<Void> {
 	private byte[] realpswd = new byte[64];
 
 	public Void call() throws Exception {
+		System.out.println(String.format("running server %s", Launcher.VERSTR));
+
 		byte[] bytes = password.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, realpswd, 0, bytes.length);
 
