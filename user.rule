@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.picrew.me proxy
+.5h.com direct
+.keyboardtester.com proxy
+.mrshuhua.net proxy
 .jd.hk direct
 .support.content.office.net proxy
 .handanxinkai.com direct
