@@ -7,6 +7,17 @@
 # "reject" means drop connection
 
 #auto rules
+.aspxhtml.com direct
+.jbzj.com direct
+.0898888.com direct
+.iplaysoft.com direct
+.geekzu.org direct
+.mylittlefacewhen.com proxy
+.oppomobile.com direct
+.jetbrains.com proxy
+.plumz.me proxy
+.shipinmulu.com direct
+.jlelse.eu proxy
 .picrew.me proxy
 .5h.com direct
 .keyboardtester.com proxy
