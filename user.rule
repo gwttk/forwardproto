@@ -7,6 +7,26 @@
 # "reject" means drop connection
 
 #auto rules
+.asus.com proxy
+.sushanshan.com direct
+.bjzhedabingchong.com direct
+.book118.com direct
+.prprpr.me direct
+.wpcnzz.com direct
+.zip118.com direct
+.jiligame.com proxy
+.vscdns.com proxy
+.di2y21.top direct
+.levelaccess.net proxy
+.3801wd.com direct
+.aoinn.net direct
+.sitecity.ru proxy
+.milbank.com proxy
+.kdniao.com direct
+.186078.com direct
+.nyaa.si proxy
+.studiofow.com proxy
+.jam-software.com proxy
 .aspxhtml.com direct
 .jbzj.com direct
 .0898888.com direct
