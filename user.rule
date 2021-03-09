@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.monday.com proxy
 .asus.com proxy
 .sushanshan.com direct
 .bjzhedabingchong.com direct
