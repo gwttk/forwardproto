@@ -7,6 +7,23 @@
 # "reject" means drop connection
 
 #auto rules
+.granbluefantasy.jp proxy
+.1010jiajiao.com direct
+.fonts.com proxy
+.1010pic.com direct
+.vietnamnetjsc.vn proxy
+.zhongguowangshi.com direct
+.id.vietnamnet.vn proxy
+.xnxx-cdn.com proxy
+.veryins.com proxy
+.track-srv.vietnamnet.vn proxy
+.vgcloud.vn proxy
+.vietnamnettv.vn proxy
+.id6.me direct
+.vietnamnet.vn direct
+.yxlady.net direct
+.aayis.com direct
+.radiantmediatechs.com proxy
 .asus.com proxy
 .sushanshan.com direct
 .bjzhedabingchong.com direct
