@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.h3c.com direct
 .granbluefantasy.jp proxy
 .1010jiajiao.com direct
 .fonts.com proxy
