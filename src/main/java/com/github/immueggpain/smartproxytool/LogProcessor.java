@@ -2,6 +2,7 @@ package com.github.immueggpain.smartproxytool;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -83,6 +84,9 @@ class LogProcessor {
 					continue;
 				}
 
+				if (!(addr instanceof Inet4Address))
+					continue; // support in the future?
+
 				float latency = -1;
 				String target = null;
 
@@ -145,6 +149,8 @@ class LogProcessor {
 
 	private static long ip2long(InetAddress ip) {
 		byte[] parts = ip.getAddress();
+		if (parts.length != 4)
+			throw new RuntimeException("not an ipv4 address");
 		long ipLong = 0;
 		for (int i = 0; i < 4; i++)
 			ipLong += (parts[i] & 0xff) << (24 - (8 * i));
