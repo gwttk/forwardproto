@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.apester.com proxy
+.4gtv.tv proxy
+.realsport101.com proxy
+.tbcdb.com proxy
+.webpushs.com proxy
+.gnarlyguides.com proxy
+.unsplash.com proxy
+.wowclassicbis.com proxy
 .wjhlit.com direct
 .chinatelecom-ec.com direct
 .giocdn.com direct
