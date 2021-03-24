@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.wjhlit.com direct
+.chinatelecom-ec.com direct
+.giocdn.com direct
+.ooklaserver.net direct
+.bmcx.com direct
+.7x24s.com direct
 .westerndigital.com proxy
 .xitongzhijia.net direct
 .reichelt.com proxy
