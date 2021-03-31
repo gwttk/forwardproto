@@ -250,6 +250,10 @@ public class Smartproxy implements Callable<Void> {
 				is.unread(first_byte);
 				http_other(is, os, s);
 				return;
+			} else if (first_byte == 1 || first_byte == 3) {
+				// ss
+				ss_plain(first_byte, is, os, s);
+				return;
 			} else if (first_byte == 0x16) {
 				// possible 0x16 for SSL/TLS
 				log.println("error app is talking SSL/TLS, first byte: " + sctp.byte_to_string(first_byte));
@@ -488,6 +492,73 @@ public class Smartproxy implements Callable<Void> {
 			if (cserver_sb != null)
 				Util.abortiveCloseSocket(cserver_sb.socket);
 		}
+	}
+
+	private void ss_plain(byte first_byte, InputStream is1, OutputStream os1, Socket sclient_s) {
+		DataInputStream is;
+		is = new DataInputStream(is1);
+		byte[] buf;
+
+		InetSocketAddress dest_sockaddr;
+		try {
+			// address type
+			byte address_type = first_byte;
+			// System.out.println("address_type " + sctp.byte_to_string(address_type));
+
+			InetAddress dest_addr = null;
+			String dest_domain = null;
+
+			if (address_type == 1) {
+				// ipv4
+				buf = new byte[4];
+				is.readFully(buf);
+				dest_addr = InetAddress.getByAddress(buf);
+			} else if (address_type == 3) {
+				// domain name
+				int domain_length = is.readUnsignedByte();
+				buf = new byte[domain_length];
+				is.readFully(buf);
+				dest_domain = sc.b2s(buf);
+			} else if (address_type == 4) {
+				// ipv6
+				buf = new byte[16];
+				is.readFully(buf);
+				dest_addr = InetAddress.getByAddress(buf);
+				throw new Exception("error ipv6 address");
+			} else {
+				// unknown address_type
+				throw new Exception("error unknown address type");
+			}
+
+			// port
+			int dest_port = is.readUnsignedShort();
+
+			if (dest_addr != null)
+				dest_sockaddr = new InetSocketAddress(dest_addr, dest_port);
+			else
+				dest_sockaddr = InetSocketAddress.createUnresolved(dest_domain, dest_port);
+		} catch (Exception e) {
+			log.println("error when read ss dest addr");
+			e.printStackTrace(log);
+			Util.abortiveCloseSocket(sclient_s);
+			return;
+		}
+
+		// now we connect next node
+		SocketBundle cserver_sb = null;
+		try {
+			cserver_sb = create_connect_config_socket(dest_sockaddr, "ss");
+		} catch (Exception e) {
+			e.printStackTrace(log);
+		}
+		if (cserver_sb == null) {
+			// can't connect
+			Util.abortiveCloseSocket(sclient_s);
+			return;
+		}
+
+		// transfer data
+		handleConnection(cserver_sb.is, cserver_sb.os, is, os1, dest_sockaddr.toString(), cserver_sb.socket, sclient_s);
 	}
 
 	private void socks4(byte first_byte, InputStream is1, OutputStream os1, Socket sclient_s) throws Exception {
