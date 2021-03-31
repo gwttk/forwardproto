@@ -7,6 +7,19 @@
 # "reject" means drop connection
 
 #auto rules
+.nslookup.io proxy
+.rating-widget.com proxy
+.combit.com proxy
+.fiverr.com proxy
+.gammae.com proxy
+.apnic.net proxy
+.afdiancdn.com direct
+.zonaads.com proxy
+.com.do proxy
+.afdian.net direct
+.mainstreet.com proxy
+.etrade.com proxy
+.jp-josou.tokyo proxy
 .apester.com proxy
 .4gtv.tv proxy
 .realsport101.com proxy
