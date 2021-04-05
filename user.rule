@@ -7,6 +7,29 @@
 # "reject" means drop connection
 
 #auto rules
+.ppio.cloud direct
+.scriptinghelpers.org proxy
+.dual-boxing.com proxy
+.rbxcdn.com proxy
+.cbstatic.net proxy
+.furiouspaul.com proxy
+.codegrepper.com proxy
+.tukui.org proxy
+.hualv.com direct
+.clickbank.net proxy
+.wow-ratings.com proxy
+.joanasworld.com proxy
+.sankengriji.com direct
+.bbb.org proxy
+.classicdb.ch proxy
+.wowlazymacros.com proxy
+.normalgeeks.com proxy
+.yunqishi.net direct
+.swinterface.com proxy
+.groovypost.com proxy
+.javaer101.com proxy
+.bluetracker.gg proxy
+.ubgame.com direct
 .nslookup.io proxy
 .rating-widget.com proxy
 .combit.com proxy
