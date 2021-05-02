@@ -7,6 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.cgyouxi.com direct
+.baochuangames.com direct
+.66rpg.com direct
+.so168.top direct
+.139y.com direct
+.bisaibang.com direct
+.juancdn.com direct
+.neshpub.com direct
+.hyext.com direct
 .pinterest.jp proxy
 .nincontent.com proxy
 .sinaunrelean.info proxy
