@@ -7,6 +7,16 @@
 # "reject" means drop connection
 
 #auto rules
+.cnbc.com proxy
+.dakang-energy.com direct
+.dmzj1.com direct
+.baozhayun.cloud direct
+.seekingalpha.com proxy
+.tracker.gg proxy
+.trackerads.com proxy
+.trackercdn.com proxy
+.ethereum.org proxy
+.coingecko.com proxy
 .cgyouxi.com direct
 .baochuangames.com direct
 .66rpg.com direct
