@@ -132,7 +132,7 @@ public class Smartproxy implements Callable<Void> {
 	/** client to server socket connect timeout */
 	private static final int toCltConnectToSvr = 7 * 1000;
 	/** client to direct dest socket read/write timeout */
-	private static final int toCltReadFromDirect = 59 * 1000;
+	private static final int toCltReadFromDirect = 345 * 1000;
 	/** client to direct dest socket connect timeout */
 	private static final int toCltConnectToDirect = 5 * 1000;
 	/** client to server socket rest time when out-of-pool */

@@ -7,6 +7,18 @@
 # "reject" means drop connection
 
 #auto rules
+.wowwiki.com proxy
+.tb58.net proxy
+.jsbeautifier.org proxy
+.fosshub.com proxy
+.tencent-cloud.com direct
+.dcode.fr proxy
+.fox.ftqq.com direct
+.yindan.me proxy
+.tutuzx.com direct
+.musicheng.com direct
+.fastgit.org proxy
+.curiouscat.qa proxy
 .bnbstatic.com proxy
 .chainnode.com direct
 .api.fx361.com direct
