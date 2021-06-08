@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.intergient.com proxy
+.int.alibabacloud.com direct
+.flatpanelshd.com proxy
+.nicehash.com proxy
 .wowwiki.com proxy
 .tb58.net proxy
 .jsbeautifier.org proxy
