@@ -7,6 +7,19 @@
 # "reject" means drop connection
 
 #auto rules
+.jscalc-blog.com proxy
+.1ka.com proxy
+.nwxs7.com proxy
+.s11.snscz.com direct
+.jscalc.io proxy
+.s14.snscz.com direct
+.trydnc.com proxy
+.shushuwu123.com proxy
+.polymedia.nl proxy
+.lameixs.net proxy
+.kavbook.com proxy
+.rootonline.de proxy
+.embedcdn.com proxy
 .intergient.com proxy
 .int.alibabacloud.com direct
 .flatpanelshd.com proxy
