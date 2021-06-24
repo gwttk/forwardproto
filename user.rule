@@ -7,6 +7,16 @@
 # "reject" means drop connection
 
 #auto rules
+.wsj.com proxy
+.nvidia.partners proxy
+.cxpublic.com proxy
+.wsj.net proxy
+.narakathegame.com proxy
+.dowjones.io proxy
+.my-safe-net.com proxy
+.dowjoneson.com proxy
+.privacy-mgmt.com proxy
+.barrons.com proxy
 .jscalc-blog.com proxy
 .1ka.com proxy
 .nwxs7.com proxy
