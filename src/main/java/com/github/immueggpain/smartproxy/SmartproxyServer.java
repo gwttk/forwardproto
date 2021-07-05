@@ -89,12 +89,14 @@ public class SmartproxyServer implements Callable<Void> {
 	// timeouts
 	// basic connect timeout
 	public static final int toBasicConnect = 10 * 1000;
+	// basic read timeout
+	public static final int toBasicRead = 300 * 1000;
 	// small timeout when server read from client at connection start
 	public static final int toSvrReadFromCltSmall = 10 * 1000;
 	// timeout when server read from client at normal transfer
-	public static final int toSvrReadFromClt = 300 * 1000;
+	public static final int toSvrReadFromClt = toBasicRead;
 	// timeout when server read from dest
-	private static final int toSvrReadFromDest = 300 * 1000;
+	private static final int toSvrReadFromDest = toBasicRead;
 	// timeout when server connect dest
 	private static final int toSvrConnectToDest = toBasicConnect;
 
