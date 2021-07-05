@@ -60,13 +60,12 @@ import com.github.immueggpain.common.sct;
 public class Http2socks {
 
 	// timeouts
-	public static final int toHttpWithDest = 300 * 1000;
 	/** http2socks outgoing BHttpClientConnection timeout between 2 http req/rsp */
-	public static final int toHttpWithDest2 = 60 * 1000;
+	public static final int toHttpWithDest2 = SmartproxyServer.toBasicRead;
 	/** http2socks outgoing socket read timeout */
-	public static final int toH2sReadFromSocks = toHttpWithDest + 10 * 1000;
+	public static final int toH2sReadFromSocks = SmartproxyServer.toBasicRead;
 	/** http2socks outgoing socket connect timeout */
-	private static final int toH2sConnectThruSocks = 20 * 1000;
+	private static final int toH2sConnectThruSocks = SmartproxyServer.toBasicConnect;
 
 	// these 2 for: outgoing BHttpClientConnection & incoming BHttpServerConnection
 	private static final int bufferSize = 32 * 1024;
