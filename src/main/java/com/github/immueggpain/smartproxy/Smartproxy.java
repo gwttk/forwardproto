@@ -109,7 +109,7 @@ public class Smartproxy implements Callable<Void> {
 
 	@Option(names = { "--halfopen-maxtime" },
 			description = "how many seconds half-open tunnel can rest for. default is ${DEFAULT-VALUE}.")
-	public int hopen_maxtime = 180;
+	public int hopen_maxtime = 300;
 
 	@Option(names = { "--halfopen-max" },
 			description = "how many half-open tunnels can be used. default is ${DEFAULT-VALUE}.")
@@ -124,19 +124,17 @@ public class Smartproxy implements Callable<Void> {
 
 	// timeouts
 	/** client incoming socket read/write timeout */
-	private static final int toCltReadFromApp = SmartproxyServer.toSvrReadFromClt + 10 * 1000;
+	private static final int toCltReadFromApp = SmartproxyServer.toBasicRead;
 	/** client to server socket after rest read/write timeout */
-	public static final int toCltReadFromSvr = Http2socks.toH2sReadFromSocks + 10 * 1000;
+	public static final int toCltReadFromSvr = SmartproxyServer.toBasicRead;
 	/** client to server socket before rest read timeout */
-	private static final int toCltReadFromSvrSmall = 10 * 1000;
+	private static final int toCltReadFromSvrSmall = SmartproxyServer.toSvrReadFromCltSmall;
 	/** client to server socket connect timeout */
-	private static final int toCltConnectToSvr = 7 * 1000;
+	private static final int toCltConnectToSvr = SmartproxyServer.toBasicConnect;
 	/** client to direct dest socket read/write timeout */
-	private static final int toCltReadFromDirect = 345 * 1000;
+	private static final int toCltReadFromDirect = SmartproxyServer.toBasicRead;
 	/** client to direct dest socket connect timeout */
-	private static final int toCltConnectToDirect = 5 * 1000;
-	/** client to server socket rest time when out-of-pool */
-	private static final int toSvrReadFromCltSmall = toCltReadFromSvrSmall;
+	private static final int toCltConnectToDirect = SmartproxyServer.toBasicConnect;
 	/** how long half-open tunnel can rest for */
 	private int toSvrReadFromCltRest = hopen_maxtime * 1000;
 
@@ -1004,7 +1002,7 @@ public class Smartproxy implements Callable<Void> {
 
 			// send rest timeout
 			try {
-				os.writeInt(toSvrReadFromCltSmall);
+				os.writeInt(toSvrReadFromCltRest);
 			} catch (Exception e) {
 				log.println(sct.datetime() + " error when send timeout " + e);
 				Util.abortiveCloseSocket(cserver_s);
