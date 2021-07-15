@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.applinzi.com direct
+.idcooling.com direct
+.fuman.de proxy
+.msftauth.net proxy
+.thermalright-china.com proxy
+.szwgmf.com direct
+.nxw.so direct
+.thermalright.com proxy
 .dcs.ettoday.net proxy
 .apts.ettoday.net proxy
 .thecalculatorsite.com proxy
@@ -34,7 +42,6 @@
 .cdn1.ettoday.net direct
 .btloader.com proxy
 .yx7088.com direct
-.cdn.survivetheark.com direct
 .playark.com proxy
 .cdn2.ettoday.net direct
 .ve42.co proxy
