@@ -7,6 +7,28 @@
 # "reject" means drop connection
 
 #auto rules
+.cloudfunctions.net proxy
+.trellocdn.com proxy
+.dazhuanlan.com proxy
+.fonts.rsb.net proxy
+.cdnxsalty9.com proxy
+.xanimu.com proxy
+.butlerfortrello.com proxy
+.loom.com proxy
+.cdnxsalty.com proxy
+.3839video.com direct
+.washpostpodcasts.com proxy
+.sm.ms proxy
+.3839app.net direct
+.kaihei.co direct
+.chatweblink04.netease.im direct
+.yxhhdl.com direct
+.cdnjs.rsb.net direct
+.3839img.com direct
+.syndication.realsrv.com proxy
+.a.realsrv.com direct
+.warframe.today proxy
+.3839pic.com direct
 .1drv.ms direct
 .inanage.com proxy
 .wallkit.net proxy
