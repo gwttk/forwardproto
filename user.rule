@@ -7,6 +7,27 @@
 # "reject" means drop connection
 
 #auto rules
+.indianexpress.com proxy
+.faisys.com direct
+.vuukle.com proxy
+.rebornbuddy.com proxy
+.lkdie.com direct
+.izooto.com proxy
+.fkw.com direct
+.globalsportsjobs.com proxy
+.thebuddyforum.com proxy
+.insidethegames.biz proxy
+.ggrecon.com proxy
+.shwilling.com direct
+.faiusr.com direct
+.lianzhixiu.com direct
+.gracenote.com proxy
+.amplify.ai proxy
+.sosoxian.com direct
+.worldpopulationreview.com proxy
+.fabiaoqing.com direct
+.gfinityesports.com proxy
+.dmcl.biz proxy
 .cloudfunctions.net proxy
 .trellocdn.com proxy
 .dazhuanlan.com proxy
