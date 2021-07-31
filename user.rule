@@ -7,7 +7,27 @@
 # "reject" means drop connection
 
 #auto rules
+.kra.lc proxy
+.twik.io proxy
+.bigda.com direct
+.arca.live proxy
+.namu.wiki proxy
+.fanyanapp.com direct
+.twisave.com proxy
+.archive-explorer.com proxy
+.bemyhole.com proxy
+.tweettunnel.com proxy
+.shwilling.com direct
+.betterhumans.pub proxy
+.libhunt.com proxy
+.buhitter.com direct
+.bmhole.cloud proxy
 .indianexpress.com proxy
+.namu.la proxy
+.mingzihui.com proxy
+.backtweets.com proxy
+.worldpopulationreview.com proxy
+.codeproject.com proxy
 .faisys.com direct
 .vuukle.com proxy
 .rebornbuddy.com proxy
@@ -18,13 +38,11 @@
 .thebuddyforum.com proxy
 .insidethegames.biz proxy
 .ggrecon.com proxy
-.shwilling.com direct
 .faiusr.com direct
 .lianzhixiu.com direct
 .gracenote.com proxy
 .amplify.ai proxy
 .sosoxian.com direct
-.worldpopulationreview.com proxy
 .fabiaoqing.com direct
 .gfinityesports.com proxy
 .dmcl.biz proxy
