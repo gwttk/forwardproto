@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.idreamsky.com direct
+.downkr.com direct
+.gamdream.com direct
+.yunxiu.com direct
 .yonsandileer.com proxy
 .ibytedtos.com proxy
 .lehuipay.com direct
