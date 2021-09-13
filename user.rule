@@ -7,6 +7,19 @@
 # "reject" means drop connection
 
 #auto rules
+.pixiv.net proxy
+.7724.com direct
+.seo.spot.im proxy
+.guides4gamers.com proxy
+.vidyawiki.com proxy
+.youxibao.com direct
+.harrypottermagicawakened.com direct
+.pximg.net proxy
+.awesomeagreement.com proxy
+.uploadir.com proxy
+.bubbleup.com proxy
+.kissonline.com proxy
+.patreonusercontent.com proxy
 .idreamsky.com direct
 .downkr.com direct
 .gamdream.com direct
