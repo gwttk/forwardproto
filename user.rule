@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.xiaokeai.party proxy
+.jenkov.com proxy
+.httpwg.org proxy
+.kodejava.org proxy
 .virtamate.com proxy
 .iqdb.org proxy
 .redgifs.com proxy
