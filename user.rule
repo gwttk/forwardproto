@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.autocommerce.io proxy
+.www.blackshark.com direct
+.global.blackshark.com proxy
+.revy.io proxy
+.oversea-storeapi.blackshark.com proxy
+.avada.io proxy
 .xiaokeai.party proxy
 .jenkov.com proxy
 .httpwg.org proxy
