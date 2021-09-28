@@ -7,6 +7,27 @@
 # "reject" means drop connection
 
 #auto rules
+.sweettooth.io proxy
+.smile.io proxy
+.tidio.co proxy
+.a8cd.com direct
+.reginapps.com proxy
+.nutaku.net proxy
+.privy.com proxy
+.jinrongwang.net direct
+.ds-cdn.com proxy
+.1752e.com direct
+.tidiochat.com proxy
+.grizzlyapps.com proxy
+.tubesafari.com proxy
+.9fsz.com direct
+.ashemalelive.com proxy
+.www.popmart.com direct
+.digismoothie.app proxy
+.catsnbootsncats2020.com proxy
+.yhsqxy.com direct
+.global.popmart.com proxy
+.boyfriendtv.com proxy
 .gzcl999.com direct
 .coregames.com proxy
 .volccdn.com direct
