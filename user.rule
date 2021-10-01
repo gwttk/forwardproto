@@ -7,6 +7,21 @@
 # "reject" means drop connection
 
 #auto rules
+.bytescm.com direct
+.osdn.net proxy
+.rwth-aachen.de proxy
+.bdzybf1.com proxy
+.yuyuangewh.com proxy
+.pooi.moe proxy
+.imj6.com proxy
+.huishij.com proxy
+.bcyimg.com direct
+.openhub.net proxy
+.ypncdn.com proxy
+.pornmd.com proxy
+.chroma-q.com proxy
+.west-games.com proxy
+.military.com proxy
 .sweettooth.io proxy
 .smile.io proxy
 .tidio.co proxy
