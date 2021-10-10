@@ -7,6 +7,32 @@
 # "reject" means drop connection
 
 #auto rules
+.mailgun.com proxy
+.documentation.mailjet.com proxy
+.awsstatic.com proxy
+.chilipiper.com direct
+.jscloud.net proxy
+.forethought.ai proxy
+.orayimg.com direct
+.aws.dev proxy
+.frontends.mailjet.com direct
+.workable.com proxy
+.woodpecker.co proxy
+.app.mailjet.com proxy
+.mailgun.net proxy
+.fr.mailjet.com proxy
+.web-sdk.aptrinsic.com direct
+.hello.mailjet.com proxy
+.osano.com proxy
+.assets.mailjet.com proxy
+.benchmarkemail.com direct
+.360tpcdn.com direct
+.sitesearch360.com proxy
+.www.mailjet.com proxy
+.mjt.lu proxy
+.admqr.com direct
+.mailjet.tech proxy
+.esp.aptrinsic.com proxy
 .bytescm.com direct
 .osdn.net proxy
 .rwth-aachen.de proxy
