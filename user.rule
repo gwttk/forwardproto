@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.nwxs8.com proxy
 .mailgun.com proxy
 .documentation.mailjet.com proxy
 .awsstatic.com proxy
