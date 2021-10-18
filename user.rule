@@ -7,6 +7,18 @@
 # "reject" means drop connection
 
 #auto rules
+.99box.com direct
+.ocr.space proxy
+.golmedia.net proxy
+.tuiplay.com direct
+.nvidianews.com proxy
+.khronos.org proxy
+.onlinemictest.com proxy
+.speechandhearing.net proxy
+.cmail19.com proxy
+.qiangqiangyouxi.com direct
+.voicepitchanalyzer.app proxy
+.technipages.com proxy
 .nwxs8.com proxy
 .mailgun.com proxy
 .documentation.mailjet.com proxy
