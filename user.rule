@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.www.rittor-music.co.jp proxy
+.voicedoctor.net proxy
+.img.ips.co.jp proxy
+.kdkw.jp proxy
 .99box.com direct
 .ocr.space proxy
 .golmedia.net proxy
