@@ -7,6 +7,30 @@
 # "reject" means drop connection
 
 #auto rules
+.openstreetmap.org proxy
+.laptopmag.com proxy
+.regular-expressions.info proxy
+.acesheep.com direct
+.techraptor.net proxy
+.automaton-media.com proxy
+.soapps.net proxy
+.apexlegendsstatus.com proxy
+.jijidown.com direct
+.joins.com proxy
+.yaoguo.com direct
+.actualidadiphone.com proxy
+.huotan.com direct
+.bilibilijj.com direct
+.biliimg.com direct
+.tenasia.jp proxy
+.geektnt.com proxy
+.guoxingjun.com direct
+.nme.com proxy
+.bastillepost.com proxy
+.ampfeed.com proxy
+.co.th proxy
+.newsdirectory3.com proxy
+.isanook.com proxy
 .www.rittor-music.co.jp proxy
 .voicedoctor.net proxy
 .img.ips.co.jp proxy
