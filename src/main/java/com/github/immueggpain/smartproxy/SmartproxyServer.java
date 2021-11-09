@@ -25,6 +25,7 @@ package com.github.immueggpain.smartproxy;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -173,8 +174,8 @@ public class SmartproxyServer implements Callable<Void> {
 			// random stuff, but fun string
 			{
 				try {
-					String string = is.readUTF();
-					System.out.println("client hello: " + string.length());
+					is.readUTF();
+					// System.out.println("client hello: " + string.length());
 				} catch (SocketTimeoutException e) {
 					System.out.println("timeout during hello, possible TLS handshake failed");
 					Util.abortiveCloseSocket(sclient_s);
@@ -238,8 +239,12 @@ public class SmartproxyServer implements Callable<Void> {
 					dest_hostname = is.readUTF();
 					dest_port = is.readUnsignedShort();
 				} catch (SocketTimeoutException e) {
-					System.out.println("timeout during reading dest info");
+					// System.out.println("timeout during reading dest info");
 					Util.abortiveCloseSocket(sclient_s);
+					return;
+				} catch (EOFException e) {
+					// System.out.println("eof during reading dest info");
+					Util.closeQuietly(sclient_s);
 					return;
 				} catch (Throwable e) {
 					System.out.println("exception during reading dest info " + e);
