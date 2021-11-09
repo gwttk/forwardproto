@@ -46,4 +46,3 @@ And lastly, if all miss, it uses default rule, which is **proxy**.
 ## Build
 You need [**Maven**](https://maven.apache.org/) to build.  
 Just run `maven install` and you will find the jar and zip generated in the `target` folder.  
-You can also import the project using [**Eclipse**](https://www.eclipse.org/).
