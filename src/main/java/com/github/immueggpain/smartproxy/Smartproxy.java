@@ -82,7 +82,7 @@ public class Smartproxy implements Callable<Void> {
 	@Option(names = { "-n", "--local_listen_port" }, required = true, description = "local listening port")
 	public int local_listen_port;
 
-	@Option(names = { "-s", "--server_ip" }, required = true, description = "server ip")
+	@Option(names = { "-s", "--server_ip", "--server_name" }, required = true, description = "server ip or domain name")
 	public String server_ip;
 
 	@Option(names = { "-p", "--server_port" }, required = true, description = "server port")
@@ -168,6 +168,8 @@ public class Smartproxy implements Callable<Void> {
 		log.println(String.format("running client %s", Launcher.VERSTR));
 		log.println(String.format("running on %s %s at %s.", System.getProperty("java.vendor"),
 				System.getProperty("java.runtime.version"), System.getProperty("java.home")));
+		log.println(String.format("server is %s", server_ip));
+
 		speedMeter = new SpeedMeter(1000 * 4);
 
 		byte[] bytes = passwordString.getBytes(StandardCharsets.UTF_8);
