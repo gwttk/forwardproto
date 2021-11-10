@@ -330,7 +330,7 @@ public class SmartproxyServer implements Callable<Void> {
 					else {
 						if (contxt.closing)
 							break;
-						System.out.println(String.format("sclient read timeout %s", contxt.toString()));
+//						System.out.println(String.format("sclient read timeout %s", contxt.toString()));
 						contxt.isBroken = true;
 						break;
 					}
@@ -346,7 +346,7 @@ public class SmartproxyServer implements Callable<Void> {
 				if (n == -1) {
 					if (contxt.closing)
 						break;
-					System.out.println(String.format("sclient read eof %s", contxt.toString()));
+					// System.out.println(String.format("sclient read eof %s", contxt.toString()));
 					break;
 				}
 
