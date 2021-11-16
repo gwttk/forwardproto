@@ -7,6 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.mongodbstitch.com proxy
+.yungao.mobi direct
+.yuxiaor.com direct
+.dywzx.com direct
+.ke.com direct
+.whatbox.ca proxy
+.haisheteam.com direct
+.centainfo.com direct
+.calculator.aws proxy
 .haomeit.com direct
 .xindingwealth.com direct
 .tldw.me proxy
