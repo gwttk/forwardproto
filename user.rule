@@ -7,6 +7,18 @@
 # "reject" means drop connection
 
 #auto rules
+.coolapk.com direct
+.mianbaoduo.com direct
+.macreports.com proxy
+.proboards.com proxy
+.kippura.org proxy
+.greencoin.life proxy
+.greencoin.online proxy
+.2zimu.com direct
+.closte.com direct
+.comments.app proxy
+.bootcdn.net direct
+.noembed.com proxy
 .drinkbai.com proxy
 .hbomax.com proxy
 .docusign.com proxy
