@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.drinkbai.com proxy
+.hbomax.com proxy
+.docusign.com proxy
+.rbw37.com proxy
+.hualeshe.com proxy
+.square-enix-games.com proxy
+.haileshe.club proxy
+.googleservs.com proxy
 .res-1.cdn.office.net proxy
 .gzasiatech.net direct
 .binaries.templates.cdn.office.net proxy
