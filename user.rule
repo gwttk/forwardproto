@@ -7,6 +7,29 @@
 # "reject" means drop connection
 
 #auto rules
+.ngfiles.com proxy
+.ptgncdn.com proxy
+.comixxx.net proxy
+.jiligamefun.com proxy
+.yingjianzhijia.com direct
+.nushara.com proxy
+.tielabs.com proxy
+.yiihuu.com direct
+.aplaybox.com direct
+.linktr.ee proxy
+.tricksfortech.com proxy
+.tsyndicate.com proxy
+.sb-cd.com proxy
+.tabnine.com proxy
+.jdoodle.com proxy
+.inn-studio.com proxy
+.videosection.com proxy
+.spankbang.com proxy
+.whatsapp.com proxy
+.lewdua.com proxy
+.xinchacha.com direct
+.fboom.me proxy
+.hq3x.com proxy
 .coolapk.com direct
 .mianbaoduo.com direct
 .macreports.com proxy
