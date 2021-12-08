@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+.xinxisea.com direct
+.5you.com direct
+.guyunsq.com direct
 .ngfiles.com proxy
 .ptgncdn.com proxy
 .comixxx.net proxy
