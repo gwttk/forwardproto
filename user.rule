@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.uri6.com direct
+.wetvinfo.com direct
+.papegames.com direct
+.wargaming.net proxy
+.onemob.mobi proxy
 .xinxisea.com direct
 .5you.com direct
 .guyunsq.com direct
