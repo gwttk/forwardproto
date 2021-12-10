@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.cdn321.com proxy
+.blog-video.jp proxy
+.peachring.com proxy
+.wejianzhan.com direct
 .uri6.com direct
 .wetvinfo.com direct
 .papegames.com direct
