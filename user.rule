@@ -7,6 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.mylust.com proxy
+.edtittel.com proxy
+.gyan.dev proxy
+.ebaydesc.com proxy
+.kompoz2.com proxy
+.jellyfin.org proxy
+.apexitemstore.com proxy
+.namitiyu.com direct
+.tanshudata.com direct
 .cdn321.com proxy
 .blog-video.jp proxy
 .peachring.com proxy
