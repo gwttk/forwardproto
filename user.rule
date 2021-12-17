@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+.trychameleon.com proxy
+.pst.tech proxy
+.w3resource.com proxy
 .dd-advisor.com direct
 .hitachivantara.com proxy
 .mylust.com proxy
