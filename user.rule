@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.alphr.com proxy
+.imhd.io proxy
+.dotnet-helpers.com proxy
+.maven.org proxy
+.puc-rio.br proxy
+.xim.tech proxy
+.loopduplicate.com proxy
+.media-lab.ai proxy
 .trychameleon.com proxy
 .pst.tech proxy
 .w3resource.com proxy
