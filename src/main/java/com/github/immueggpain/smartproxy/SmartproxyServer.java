@@ -251,7 +251,8 @@ public class SmartproxyServer implements Callable<Void> {
 					Util.abortiveCloseSocket(sclient_s);
 					return;
 				}
-				System.out.println("client request connect " + dest_hostname + ":" + dest_port);
+				// no longer log
+//				System.out.println("client request connect " + dest_hostname + ":" + dest_port);
 			}
 
 			// do dns
