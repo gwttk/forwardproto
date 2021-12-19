@@ -622,6 +622,7 @@ public class Smartproxy implements Callable<Void> {
 		log.println("socks4 dest_sockaddr " + dest_sockaddr);
 
 		// connect to nn
+		/** client socket which connects to server */
 		SocketBundle cserver_sb = create_connect_config_socket(dest_sockaddr, "socks4");
 		if (cserver_sb == null) {
 			buf = new byte[8];
@@ -739,6 +740,7 @@ public class Smartproxy implements Callable<Void> {
 		}
 	}
 
+	/** read from server, write to client */
 	private void handleConnection2(TunnelContext contxt, InputStream cserver_is, OutputStream sclient_os) {
 		byte[] buf = new byte[BUF_SIZE];
 		while (true) {
@@ -771,7 +773,8 @@ public class Smartproxy implements Callable<Void> {
 			if (n == -1) {
 				if (contxt.closing)
 					break;
-				log.println(String.format("%s cserver read eof %s", sct.datetime(), contxt.toString()));
+				// normal eof from server, no need to log
+//				log.println(String.format("%s cserver read eof %s", sct.datetime(), contxt.toString()));
 				break;
 			}
 
