@@ -696,7 +696,8 @@ public class Smartproxy implements Callable<Void> {
 			if (n == -1) {
 				if (contxt.closing)
 					break;
-				log.println(String.format("%s sclient read eof %s", sct.datetime(), contxt.toString()));
+				// normal eof from client, no need to log
+//				log.println(String.format("%s sclient read eof %s", sct.datetime(), contxt.toString()));
 				break;
 			}
 
