@@ -113,7 +113,7 @@ public class Smartproxy implements Callable<Void> {
 
 	@Option(names = { "--halfopen-max" },
 			description = "how many half-open tunnels can be used. default is ${DEFAULT-VALUE}.")
-	public int hopen_max = 40;
+	public int hopen_max = 60;
 
 	@Option(names = { "--halfopen-threads" },
 			description = "how many threads is used to create half-open tunnels. default is ${DEFAULT-VALUE}.")
