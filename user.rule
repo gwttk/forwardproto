@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.hath.network proxy
+.ehwiki.org proxy
 .alphr.com proxy
 .imhd.io proxy
 .dotnet-helpers.com proxy
