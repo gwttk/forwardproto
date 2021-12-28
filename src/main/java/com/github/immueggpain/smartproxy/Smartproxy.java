@@ -65,6 +65,8 @@ import javax.net.ssl.SSLSocketFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
+
 import com.github.immueggpain.common.sc;
 import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
@@ -1180,7 +1182,7 @@ public class Smartproxy implements Callable<Void> {
 			while (true) {
 				if (halfTunnels.size() >= hopen_max) {
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(RandomUtils.nextInt(1000, 2000));
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -1188,7 +1190,7 @@ public class Smartproxy implements Callable<Void> {
 				}
 
 				SocketBundle half_tunnel = create_half_tunnel(server_hostname, server_port, ssf, password);
-				if (half_tunnel != null)
+				if (half_tunnel != null) {
 					try {
 						halfTunnels.put(half_tunnel);
 						// log.println(sct.datetime() + " new half tunnel to pool " +
@@ -1196,6 +1198,15 @@ public class Smartproxy implements Callable<Void> {
 					} catch (InterruptedException e) {
 						e.printStackTrace(log);
 					}
+				} else {
+					// can't connect tunnel
+					try {
+						Thread.sleep(RandomUtils.nextInt(2000, 5000));
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					continue;
+				}
 			}
 		}
 
