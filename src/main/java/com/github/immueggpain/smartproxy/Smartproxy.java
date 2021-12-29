@@ -687,10 +687,16 @@ public class Smartproxy implements Callable<Void> {
 					break;
 				}
 			} catch (Throwable e) {
-				if (contxt.closing)
-					break;
-				log.println(String.format("%s sclient read exception %s (%s)", sct.datetime(), contxt.toString(), e));
-				contxt.isBroken = true;
+				if (contxt.closing) {
+				} else {
+					if (e instanceof SocketException && e.getMessage().equals("Connection reset")) {
+						// it's just client abortively close connection
+					} else {
+						log.println(String.format("%s sclient read exception %s (%s)", sct.datetime(),
+								contxt.toString(), e));
+					}
+					contxt.isBroken = true;
+				}
 				break;
 			}
 
