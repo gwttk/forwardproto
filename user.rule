@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.kegood.com direct
+.funcdn.com direct
+.annual-21.maj-soul.com proxy
+.download.maj-soul.com direct
+.hellonitrack.com direct
 .gplayspace.com direct
 .gitee.com direct
 .game.maj-soul.com proxy
