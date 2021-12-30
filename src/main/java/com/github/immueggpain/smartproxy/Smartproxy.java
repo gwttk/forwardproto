@@ -764,10 +764,14 @@ public class Smartproxy implements Callable<Void> {
 				if (sct.time_ms() - contxt.lastWriteToServer < toCltReadFromSvr)
 					continue;
 				else {
-					if (contxt.closing)
-						break;
-					log.println(String.format("%s cserver read timeout %s", sct.datetime(), contxt.toString()));
-					contxt.isBroken = true;
+					if (contxt.closing) {
+					} else {
+						// so the keep-alive of app-dest is longer.
+						// but there's nothing we can do about it,
+						// cuz NAT may timeout.
+//						log.println(String.format("%s cserver read timeout %s", sct.datetime(), contxt.toString()));
+						contxt.isBroken = true;
+					}
 					break;
 				}
 			} catch (Throwable e) {
