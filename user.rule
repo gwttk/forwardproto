@@ -7,6 +7,28 @@
 # "reject" means drop connection
 
 #auto rules
+.gplayspace.com direct
+.gitee.com direct
+.game.maj-soul.com proxy
+.gateway-v2.maj-soul.com direct
+.lb-v2.maj-soul.com direct
+.re2play.com direct
+.playfabapi.com proxy
+.gateway-cdn.maj-soul.com proxy
+.lb-cdn.maj-soul.com proxy
+.yo-star.com proxy
+.lb-sy.maj-soul.com direct
+.fireflyacg.com proxy
+.shop.app proxy
+.riichi.wiki proxy
+.gateway-sy.maj-soul.com direct
+.mahjongsoul.com proxy
+.lb-hw.maj-soul.com direct
+.we4game.com direct
+.www.maj-soul.com direct
+.gateway-hw.maj-soul.com direct
+.abc188.com direct
+.mcusercontent.com proxy
 .nodakelectric.com proxy
 .ityaitya-himeji.com proxy
 .zdhnayr.com proxy
