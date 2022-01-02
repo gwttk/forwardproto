@@ -7,8 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.bandori.org proxy
 .bestdori.com proxy
 .bandori.party proxy
+.tsundora.com proxy
 .kegood.com direct
 .funcdn.com direct
 .annual-21.maj-soul.com proxy
