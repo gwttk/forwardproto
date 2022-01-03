@@ -713,11 +713,12 @@ public class Smartproxy implements Callable<Void> {
 			try {
 				cserver_os.write(buf, 0, n);
 			} catch (Throwable e) {
-				if (contxt.closing)
-					break;
-				log.println(String.format("%s cserver write exception %s", sct.datetime(), contxt.toString()));
-				e.printStackTrace(log);
-				contxt.isBroken = true;
+				if (contxt.closing) {
+				} else {
+					log.println(String.format("%s cserver write exception %s", sct.datetime(), contxt.toString()));
+					e.printStackTrace(log);
+					contxt.isBroken = true;
+				}
 				break;
 			}
 			contxt.lastWriteToServer = sct.time_ms();
@@ -775,10 +776,16 @@ public class Smartproxy implements Callable<Void> {
 					break;
 				}
 			} catch (Throwable e) {
-				if (contxt.closing)
-					break;
-				log.println(String.format("%s cserver read exception %s (%s)", sct.datetime(), contxt.toString(), e));
-				contxt.isBroken = true;
+				if (contxt.closing) {
+				} else {
+					if (e.getMessage().equals("Connection reset")) {
+						// could be many reasons but i don't care
+					} else {
+						log.println(String.format("%s cserver read exception %s (%s)", sct.datetime(),
+								contxt.toString(), e));
+					}
+					contxt.isBroken = true;
+				}
 				break;
 			}
 
