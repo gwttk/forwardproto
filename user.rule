@@ -7,6 +7,13 @@
 # "reject" means drop connection
 
 #auto rules
+.zhswzxfw.com direct
+.xhzmjs.com direct
+.cjmx.com direct
+.58meizhuo.com direct
+.minjianxiaoshuo.com proxy
+.360kuai.com direct
+.book135.com proxy
 .pluso.ru proxy
 .jituofuture.com direct
 .seikim.com proxy
