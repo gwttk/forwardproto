@@ -121,22 +121,25 @@ public class Smartproxy implements Callable<Void> {
 			description = "how many threads is used to create half-open tunnels. default is ${DEFAULT-VALUE}.")
 	public int hopen_threads = 4;
 
+	@Option(names = { "--to-basic" }, description = "basic timeout value in ms. default is ${DEFAULT-VALUE}.")
+	public int toBasicRead = 300 * 1000;
+
 	// used in android
 	public InputStream userRuleStream;
 
 	// timeouts
 	/** client incoming socket read/write timeout */
-	private static final int toCltReadFromApp = SmartproxyServer.toBasicRead;
+	private int toCltReadFromApp = SmartproxyServer.toBasicRead;
 	/** client to server socket after rest read/write timeout */
-	public static final int toCltReadFromSvr = SmartproxyServer.toBasicRead;
+	public int toCltReadFromSvr = SmartproxyServer.toBasicRead;
 	/** client to server socket before rest read timeout */
-	private static final int toCltReadFromSvrSmall = SmartproxyServer.toSvrReadFromCltSmall;
+	private int toCltReadFromSvrSmall = SmartproxyServer.toSvrReadFromCltSmall;
 	/** client to server socket connect timeout */
-	private static final int toCltConnectToSvr = SmartproxyServer.toBasicConnect;
+	private int toCltConnectToSvr = SmartproxyServer.toBasicConnect;
 	/** client to direct dest socket read/write timeout */
-	private static final int toCltReadFromDirect = SmartproxyServer.toBasicRead;
+	private int toCltReadFromDirect = SmartproxyServer.toBasicRead;
 	/** client to direct dest socket connect timeout */
-	private static final int toCltConnectToDirect = SmartproxyServer.toBasicConnect;
+	private int toCltConnectToDirect = SmartproxyServer.toBasicConnect;
 	/** how long half-open tunnel can rest for */
 	private int toSvrReadFromCltRest = hopen_maxtime * 1000;
 
@@ -171,6 +174,16 @@ public class Smartproxy implements Callable<Void> {
 		log.println(String.format("running on %s %s at %s.", System.getProperty("java.vendor"),
 				System.getProperty("java.runtime.version"), System.getProperty("java.home")));
 		log.println(String.format("server is %s", server_ip));
+
+		// init timeouts
+		toCltReadFromApp = toBasicRead;
+		toCltReadFromSvr = toBasicRead;
+		toCltReadFromSvrSmall = SmartproxyServer.toSvrReadFromCltSmall;
+		toCltConnectToSvr = SmartproxyServer.toBasicConnect;
+		toCltReadFromDirect = toBasicRead;
+		toCltConnectToDirect = SmartproxyServer.toBasicConnect;
+		toSvrReadFromCltRest = hopen_maxtime * 1000;
+		log.println(String.format("half-open max time %d", toSvrReadFromCltRest));
 
 		speedMeter = new SpeedMeter(1000 * 4);
 
@@ -1153,7 +1166,7 @@ public class Smartproxy implements Callable<Void> {
 		}
 	}
 
-	private static SocketBundle create_full_tunnel(SocketBundle sb, String dest_hostname, int dest_port) {
+	private SocketBundle create_full_tunnel(SocketBundle sb, String dest_hostname, int dest_port) {
 		try {
 			// DataInputStream is = new DataInputStream(sb.is);
 			DataOutputStream os = new DataOutputStream(sb.os);

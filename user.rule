@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.163.fm direct
 .dailiantong.com direct
 .nelreports.net proxy
 .netstatic.net direct
