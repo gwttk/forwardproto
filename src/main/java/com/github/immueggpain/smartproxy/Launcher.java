@@ -13,7 +13,7 @@ import picocli.CommandLine.HelpCommand;
 		subcommands = { HelpCommand.class, Smartproxy.class, SmartproxyServer.class, DedupUserrule.class })
 public class Launcher implements Callable<Void> {
 
-	public static final String VERSTR = "2.0.8";
+	public static final String VERSTR = "2.0.9";
 
 	public static void main(String[] args) {
 		int exitCode = new CommandLine(new Launcher()).setCaseInsensitiveEnumValuesAllowed(true)

@@ -19,7 +19,7 @@
 
 	<groupId>com.github.immueggpain</groupId>
 	<artifactId>smartproxy</artifactId>
-	<version>2.0.8</version>
+	<version>2.0.9</version>
 
 	<name>smartproxy</name>
 	<url>https://github.com/Immueggpain/forwardproto</url>

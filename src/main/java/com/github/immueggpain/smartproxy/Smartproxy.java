@@ -111,11 +111,11 @@ public class Smartproxy implements Callable<Void> {
 
 	@Option(names = { "--halfopen-maxtime" },
 			description = "how many seconds half-open tunnel can rest for. default is ${DEFAULT-VALUE}.")
-	public int hopen_maxtime = 300;
+	public int hopen_maxtime = 120;
 
 	@Option(names = { "--halfopen-max" },
 			description = "how many half-open tunnels can be used. default is ${DEFAULT-VALUE}.")
-	public int hopen_max = 60;
+	public int hopen_max = 40;
 
 	@Option(names = { "--halfopen-threads" },
 			description = "how many threads is used to create half-open tunnels. default is ${DEFAULT-VALUE}.")
@@ -174,6 +174,9 @@ public class Smartproxy implements Callable<Void> {
 		log.println(String.format("running on %s %s at %s.", System.getProperty("java.vendor"),
 				System.getProperty("java.runtime.version"), System.getProperty("java.home")));
 		log.println(String.format("server is %s", server_ip));
+		log.println(String.format("--halfopen-maxtime = %d", hopen_maxtime));
+		log.println(String.format("--halfopen-max = %d", hopen_max));
+		log.println(String.format("--to-basic = %d", toBasicRead));
 
 		// init timeouts
 		toCltReadFromApp = toBasicRead;
@@ -183,7 +186,6 @@ public class Smartproxy implements Callable<Void> {
 		toCltReadFromDirect = toBasicRead;
 		toCltConnectToDirect = SmartproxyServer.toBasicConnect;
 		toSvrReadFromCltRest = hopen_maxtime * 1000;
-		log.println(String.format("half-open max time %d", toSvrReadFromCltRest));
 
 		speedMeter = new SpeedMeter(1000 * 4);
 
