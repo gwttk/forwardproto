@@ -7,6 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.data.adsrvr.org proxy
+.adobeprojectm.com proxy
+.uniconsent.com proxy
+.4dex.io proxy
+.zoominfo.com proxy
+.fiftyt.com direct
+.adobeoobe.com direct
+.truffle.bid proxy
+.iprom.net proxy
 .jxzzq.com direct
 .4s47.com proxy
 .zbxdvi.com proxy
