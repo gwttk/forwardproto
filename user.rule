@@ -7,6 +7,26 @@
 # "reject" means drop connection
 
 #auto rules
+.steamdeck.com proxy
+.rocketleague.com proxy
+.gamingintel.com proxy
+.theloadout.com proxy
+.zestyio.com proxy
+.simple-talk.com proxy
+.lifesavvy.com proxy
+.rd.gt proxy
+.red-gate.com proxy
+.enthusiastgaming.com proxy
+.enthusiastgaming.net proxy
+.hhs.gov proxy
+.vg247.com proxy
+.thelazy.net proxy
+.metaclassofnil.com proxy
+.altaro.com proxy
+.mktoweb.com proxy
+.volsiz.ru proxy
+.reshade.me proxy
+.twinmotion.com proxy
 .qiwi.com proxy
 .thjy1.com direct
 .vipsrc.com direct
