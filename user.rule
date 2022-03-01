@@ -7,6 +7,19 @@
 # "reject" means drop connection
 
 #auto rules
+.html5gamepad.com direct
+.gamepad-tester.com proxy
+.thoseawesomeguys.com proxy
+.github-wiki-see.page proxy
+.gamepadviewer.com proxy
+.easynth.com proxy
+.rankedboost.com proxy
+.b4x.com proxy
+.spieltimes.com proxy
+.foreui.com proxy
+.nog5.com proxy
+.mrmcpowned.com proxy
+.linguaholic.com proxy
 .steamdeck.com proxy
 .rocketleague.com proxy
 .gamingintel.com proxy
