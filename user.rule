@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+.mgtv.com direct
+.hitv.com direct
+.36krcdn.com direct
 .html5gamepad.com direct
 .gamepad-tester.com proxy
 .thoseawesomeguys.com proxy
