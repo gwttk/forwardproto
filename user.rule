@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.vtbs.moe direct
+.playlostark.com proxy
 .mgtv.com direct
 .hitv.com direct
 .36krcdn.com direct
