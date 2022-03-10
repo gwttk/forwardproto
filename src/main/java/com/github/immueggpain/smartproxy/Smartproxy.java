@@ -109,10 +109,6 @@ public class Smartproxy implements Callable<Void> {
 	@Option(names = { "--rcvbuf" }, description = "socket recv buf size. default is ${DEFAULT-VALUE}.")
 	public int rcvbuf_size = 1900000;
 
-	@Option(names = { "--halfopen-maxtime" },
-			description = "how many seconds half-open tunnel can rest for. default is ${DEFAULT-VALUE}.")
-	public int hopen_maxtime = 120;
-
 	@Option(names = { "--halfopen-max" },
 			description = "how many half-open tunnels can be used. default is ${DEFAULT-VALUE}.")
 	public int hopen_max = 40;
@@ -121,8 +117,8 @@ public class Smartproxy implements Callable<Void> {
 			description = "how many threads is used to create half-open tunnels. default is ${DEFAULT-VALUE}.")
 	public int hopen_threads = 4;
 
-	@Option(names = { "--to-basic" }, description = "basic timeout value in ms. default is ${DEFAULT-VALUE}.")
-	public int toBasicRead = 120 * 1000;
+	@Option(names = { "--to-basic" }, description = "basic timeout value in sec. default is ${DEFAULT-VALUE}.")
+	public int toBasicRead = 120;
 
 	// used in android
 	public InputStream userRuleStream;
@@ -174,18 +170,17 @@ public class Smartproxy implements Callable<Void> {
 		log.println(String.format("running on %s %s at %s.", System.getProperty("java.vendor"),
 				System.getProperty("java.runtime.version"), System.getProperty("java.home")));
 		log.println(String.format("server is %s", server_ip));
-		log.println(String.format("--halfopen-maxtime = %d", hopen_maxtime));
 		log.println(String.format("--halfopen-max = %d", hopen_max));
 		log.println(String.format("--to-basic = %d", toBasicRead));
 
 		// init timeouts
-		toCltReadFromApp = toBasicRead;
-		toCltReadFromSvr = toBasicRead;
+		toCltReadFromApp = toBasicRead * 1000;
+		toCltReadFromSvr = toBasicRead * 1000;
 		toCltReadFromSvrSmall = Launcher.toSvrReadFromCltSmall;
 		toCltConnectToSvr = Launcher.toBasicConnect;
-		toCltReadFromDirect = toBasicRead;
+		toCltReadFromDirect = toBasicRead * 1000;
 		toCltConnectToDirect = Launcher.toBasicConnect;
-		toSvrReadFromCltRest = toBasicRead;
+		toSvrReadFromCltRest = toBasicRead * 1000;
 
 		speedMeter = new SpeedMeter(1000 * 4);
 
