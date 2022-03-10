@@ -122,26 +122,26 @@ public class Smartproxy implements Callable<Void> {
 	public int hopen_threads = 4;
 
 	@Option(names = { "--to-basic" }, description = "basic timeout value in ms. default is ${DEFAULT-VALUE}.")
-	public int toBasicRead = 300 * 1000;
+	public int toBasicRead = 120 * 1000;
 
 	// used in android
 	public InputStream userRuleStream;
 
 	// timeouts
 	/** client incoming socket read/write timeout */
-	private int toCltReadFromApp = Launcher.toBasicRead;
+	private int toCltReadFromApp;
 	/** client to server socket after rest read/write timeout */
-	public int toCltReadFromSvr = Launcher.toBasicRead;
+	public int toCltReadFromSvr;
 	/** client to server socket before rest read timeout */
-	private int toCltReadFromSvrSmall = Launcher.toSvrReadFromCltSmall;
+	private int toCltReadFromSvrSmall;
 	/** client to server socket connect timeout */
-	private int toCltConnectToSvr = Launcher.toBasicConnect;
+	private int toCltConnectToSvr;
 	/** client to direct dest socket read/write timeout */
-	private int toCltReadFromDirect = Launcher.toBasicRead;
+	private int toCltReadFromDirect;
 	/** client to direct dest socket connect timeout */
-	private int toCltConnectToDirect = Launcher.toBasicConnect;
+	private int toCltConnectToDirect;
 	/** how long half-open tunnel can rest for */
-	private int toSvrReadFromCltRest = hopen_maxtime * 1000;
+	private int toSvrReadFromCltRest;
 
 	private static final int BUF_SIZE = 1024 * 512;
 	private static final SecureRandom rand = new SecureRandom();
@@ -185,7 +185,7 @@ public class Smartproxy implements Callable<Void> {
 		toCltConnectToSvr = Launcher.toBasicConnect;
 		toCltReadFromDirect = toBasicRead;
 		toCltConnectToDirect = Launcher.toBasicConnect;
-		toSvrReadFromCltRest = hopen_maxtime * 1000;
+		toSvrReadFromCltRest = toBasicRead;
 
 		speedMeter = new SpeedMeter(1000 * 4);
 
