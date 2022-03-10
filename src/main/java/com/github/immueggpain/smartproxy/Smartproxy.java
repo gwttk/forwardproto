@@ -193,7 +193,8 @@ public class Smartproxy implements Callable<Void> {
 		load_domain_nn_table();
 
 		http2socks = new Http2socks(
-				new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(local_listen_ip, local_listen_port)), log);
+				new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(local_listen_ip, local_listen_port)),
+				toBasicRead * 1000, log);
 
 		// set SSL
 		SSLContext context = SSLContext.getInstance("TLSv1.2");

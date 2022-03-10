@@ -21,8 +21,6 @@ public class Launcher implements Callable<Void> {
 
 	/** basic connect timeout */
 	public static final int toBasicConnect = 10 * 1000;
-	/** basic read timeout */
-	public static final int toBasicRead = 300 * 1000;
 	/** small timeout when server read from client at connection start */
 	public static final int toSvrReadFromCltSmall = 10 * 1000;
 

@@ -84,12 +84,15 @@ public class SmartproxyServer implements Callable<Void> {
 	@Option(names = { "--rcvbuf" }, description = "socket recv buf size. default is ${DEFAULT-VALUE}.")
 	public int rcvbuf_size = 0;
 
+	@Option(names = { "--to-basic" }, description = "basic timeout value in sec. default is ${DEFAULT-VALUE}.")
+	public int toBasicRead = 300;
+
 	// timeout when server read from client at normal transfer
-	public static final int toSvrReadFromClt = Launcher.toBasicRead;
+	public static int toSvrReadFromClt;
 	// timeout when server read from dest
-	private static final int toSvrReadFromDest = Launcher.toBasicRead;
+	private static int toSvrReadFromDest;
 	// timeout when server connect dest
-	private static final int toSvrConnectToDest = Launcher.toBasicConnect;
+	private static int toSvrConnectToDest;
 
 	public static final int SVRERRCODE_OK = 0x00; // request granted
 	public static final int SVRERRCODE_FAIL = 0x01; // general failure
@@ -107,6 +110,11 @@ public class SmartproxyServer implements Callable<Void> {
 
 	public Void call() throws Exception {
 		System.out.println(String.format("running server %s", Launcher.VERSTR));
+
+		// init timeouts
+		toSvrReadFromClt = toBasicRead * 1000;
+		toSvrReadFromDest = toBasicRead * 1000;
+		toSvrConnectToDest = Launcher.toBasicConnect;
 
 		byte[] bytes = password.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, realpswd, 0, bytes.length);

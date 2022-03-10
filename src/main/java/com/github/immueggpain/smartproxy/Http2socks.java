@@ -61,9 +61,9 @@ public class Http2socks {
 
 	// timeouts
 	/** http2socks outgoing BHttpClientConnection timeout between 2 http req/rsp */
-	public static final int toHttpWithDest2 = Launcher.toBasicRead;
+	private int toHttpWithDest2;
 	/** http2socks outgoing socket read timeout */
-	public static final int toH2sReadFromSocks = Launcher.toBasicRead;
+	private int toH2sReadFromSocks;
 	/** http2socks outgoing socket connect timeout */
 	private static final int toH2sConnectThruSocks = Launcher.toBasicConnect;
 
@@ -82,7 +82,9 @@ public class Http2socks {
 	private ModifiedConnFactory connFactory;
 	private BasicConnPool pool;
 
-	public Http2socks(Proxy socksProxy, PrintWriter log) {
+	public Http2socks(Proxy socksProxy, int toBasicRead, PrintWriter log) {
+		toHttpWithDest2 = toBasicRead;
+		toH2sReadFromSocks = toBasicRead;
 		this.log = log;
 		this.socketFactoryToSocks = new SocketFactory() {
 			@Override
