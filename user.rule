@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.www.clarity.ms direct
+.c.clarity.ms proxy
+.chmln-cdn.com proxy
+.j.clarity.ms proxy
+.k.clarity.ms proxy
 .vtbs.moe direct
 .playlostark.com proxy
 .mgtv.com direct
