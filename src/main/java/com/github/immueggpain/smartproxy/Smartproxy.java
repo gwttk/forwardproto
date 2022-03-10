@@ -129,17 +129,17 @@ public class Smartproxy implements Callable<Void> {
 
 	// timeouts
 	/** client incoming socket read/write timeout */
-	private int toCltReadFromApp = SmartproxyServer.toBasicRead;
+	private int toCltReadFromApp = Launcher.toBasicRead;
 	/** client to server socket after rest read/write timeout */
-	public int toCltReadFromSvr = SmartproxyServer.toBasicRead;
+	public int toCltReadFromSvr = Launcher.toBasicRead;
 	/** client to server socket before rest read timeout */
 	private int toCltReadFromSvrSmall = SmartproxyServer.toSvrReadFromCltSmall;
 	/** client to server socket connect timeout */
-	private int toCltConnectToSvr = SmartproxyServer.toBasicConnect;
+	private int toCltConnectToSvr = Launcher.toBasicConnect;
 	/** client to direct dest socket read/write timeout */
-	private int toCltReadFromDirect = SmartproxyServer.toBasicRead;
+	private int toCltReadFromDirect = Launcher.toBasicRead;
 	/** client to direct dest socket connect timeout */
-	private int toCltConnectToDirect = SmartproxyServer.toBasicConnect;
+	private int toCltConnectToDirect = Launcher.toBasicConnect;
 	/** how long half-open tunnel can rest for */
 	private int toSvrReadFromCltRest = hopen_maxtime * 1000;
 
@@ -182,9 +182,9 @@ public class Smartproxy implements Callable<Void> {
 		toCltReadFromApp = toBasicRead;
 		toCltReadFromSvr = toBasicRead;
 		toCltReadFromSvrSmall = SmartproxyServer.toSvrReadFromCltSmall;
-		toCltConnectToSvr = SmartproxyServer.toBasicConnect;
+		toCltConnectToSvr = Launcher.toBasicConnect;
 		toCltReadFromDirect = toBasicRead;
-		toCltConnectToDirect = SmartproxyServer.toBasicConnect;
+		toCltConnectToDirect = Launcher.toBasicConnect;
 		toSvrReadFromCltRest = hopen_maxtime * 1000;
 
 		speedMeter = new SpeedMeter(1000 * 4);

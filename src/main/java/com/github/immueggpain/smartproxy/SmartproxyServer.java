@@ -84,19 +84,14 @@ public class SmartproxyServer implements Callable<Void> {
 	@Option(names = { "--rcvbuf" }, description = "socket recv buf size. default is ${DEFAULT-VALUE}.")
 	public int rcvbuf_size = 0;
 
-	// timeouts
-	// basic connect timeout
-	public static final int toBasicConnect = 10 * 1000;
-	// basic read timeout
-	public static final int toBasicRead = 300 * 1000;
 	// small timeout when server read from client at connection start
 	public static final int toSvrReadFromCltSmall = 10 * 1000;
 	// timeout when server read from client at normal transfer
-	public static final int toSvrReadFromClt = toBasicRead;
+	public static final int toSvrReadFromClt = Launcher.toBasicRead;
 	// timeout when server read from dest
-	private static final int toSvrReadFromDest = toBasicRead;
+	private static final int toSvrReadFromDest = Launcher.toBasicRead;
 	// timeout when server connect dest
-	private static final int toSvrConnectToDest = toBasicConnect;
+	private static final int toSvrConnectToDest = Launcher.toBasicConnect;
 
 	public static final int SVRERRCODE_OK = 0x00; // request granted
 	public static final int SVRERRCODE_FAIL = 0x01; // general failure

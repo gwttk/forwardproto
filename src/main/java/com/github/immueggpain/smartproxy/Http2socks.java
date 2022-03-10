@@ -61,11 +61,11 @@ public class Http2socks {
 
 	// timeouts
 	/** http2socks outgoing BHttpClientConnection timeout between 2 http req/rsp */
-	public static final int toHttpWithDest2 = SmartproxyServer.toBasicRead;
+	public static final int toHttpWithDest2 = Launcher.toBasicRead;
 	/** http2socks outgoing socket read timeout */
-	public static final int toH2sReadFromSocks = SmartproxyServer.toBasicRead;
+	public static final int toH2sReadFromSocks = Launcher.toBasicRead;
 	/** http2socks outgoing socket connect timeout */
-	private static final int toH2sConnectThruSocks = SmartproxyServer.toBasicConnect;
+	private static final int toH2sConnectThruSocks = Launcher.toBasicConnect;
 
 	// these 2 for: outgoing BHttpClientConnection & incoming BHttpServerConnection
 	private static final int bufferSize = 32 * 1024;
