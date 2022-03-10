@@ -84,8 +84,6 @@ public class SmartproxyServer implements Callable<Void> {
 	@Option(names = { "--rcvbuf" }, description = "socket recv buf size. default is ${DEFAULT-VALUE}.")
 	public int rcvbuf_size = 0;
 
-	// small timeout when server read from client at connection start
-	public static final int toSvrReadFromCltSmall = 10 * 1000;
 	// timeout when server read from client at normal transfer
 	public static final int toSvrReadFromClt = Launcher.toBasicRead;
 	// timeout when server read from dest
@@ -161,7 +159,7 @@ public class SmartproxyServer implements Callable<Void> {
 			DataOutputStream os = new DataOutputStream(sclient_s.getOutputStream());
 
 			// use small timeout when connection starts
-			sclient_s.setSoTimeout(toSvrReadFromCltSmall);
+			sclient_s.setSoTimeout(Launcher.toSvrReadFromCltSmall);
 
 			// random stuff, but fun string
 			{

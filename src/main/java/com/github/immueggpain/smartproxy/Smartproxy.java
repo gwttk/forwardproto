@@ -133,7 +133,7 @@ public class Smartproxy implements Callable<Void> {
 	/** client to server socket after rest read/write timeout */
 	public int toCltReadFromSvr = Launcher.toBasicRead;
 	/** client to server socket before rest read timeout */
-	private int toCltReadFromSvrSmall = SmartproxyServer.toSvrReadFromCltSmall;
+	private int toCltReadFromSvrSmall = Launcher.toSvrReadFromCltSmall;
 	/** client to server socket connect timeout */
 	private int toCltConnectToSvr = Launcher.toBasicConnect;
 	/** client to direct dest socket read/write timeout */
@@ -181,7 +181,7 @@ public class Smartproxy implements Callable<Void> {
 		// init timeouts
 		toCltReadFromApp = toBasicRead;
 		toCltReadFromSvr = toBasicRead;
-		toCltReadFromSvrSmall = SmartproxyServer.toSvrReadFromCltSmall;
+		toCltReadFromSvrSmall = Launcher.toSvrReadFromCltSmall;
 		toCltConnectToSvr = Launcher.toBasicConnect;
 		toCltReadFromDirect = toBasicRead;
 		toCltConnectToDirect = Launcher.toBasicConnect;
