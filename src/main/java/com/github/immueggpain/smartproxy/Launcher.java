@@ -15,6 +15,10 @@ public class Launcher implements Callable<Void> {
 
 	public static final String VERSTR = "2.0.9";
 
+	// settings for both client & server
+	public static final String[] TLS_CIPHERS = new String[] { "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256" };
+	public static final String[] TLS_PROTOCOLS = new String[] { "TLSv1.2" };
+
 	public static void main(String[] args) {
 		int exitCode = new CommandLine(new Launcher()).setCaseInsensitiveEnumValuesAllowed(true)
 				.setUsageHelpLongOptionsMaxWidth(40).setUsageHelpAutoWidth(true).execute(args);

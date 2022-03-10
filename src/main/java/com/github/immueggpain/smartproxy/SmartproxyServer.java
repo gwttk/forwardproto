@@ -62,9 +62,6 @@ import picocli.CommandLine.Option;
 @Command(description = "Run server", name = "server", mixinStandardHelpOptions = true, version = Launcher.VERSTR)
 public class SmartproxyServer implements Callable<Void> {
 
-	public static final String[] TLS_CIPHERS = new String[] { "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256" };
-	public static final String[] TLS_PROTOCOLS = new String[] { "TLSv1.2" };
-
 	@Option(names = { "-w", "--password" }, required = true,
 			description = "password must be same between server and client, recommend 64 bytes")
 	public String password;
@@ -146,8 +143,8 @@ public class SmartproxyServer implements Callable<Void> {
 		try (SSLServerSocket ss = (SSLServerSocket) ssf.createServerSocket()) {
 
 			// config ss here
-			ss.setEnabledProtocols(SmartproxyServer.TLS_PROTOCOLS);
-			ss.setEnabledCipherSuites(SmartproxyServer.TLS_CIPHERS);
+			ss.setEnabledProtocols(Launcher.TLS_PROTOCOLS);
+			ss.setEnabledCipherSuites(Launcher.TLS_CIPHERS);
 			if (rcvbuf_size > 0)
 				ss.setReceiveBufferSize(rcvbuf_size);
 

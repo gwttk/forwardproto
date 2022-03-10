@@ -998,8 +998,8 @@ public class Smartproxy implements Callable<Void> {
 			SSLSocket cserver_s = (SSLSocket) ssf.createSocket();
 
 			// config sslsocket
-			cserver_s.setEnabledProtocols(SmartproxyServer.TLS_PROTOCOLS);
-			cserver_s.setEnabledCipherSuites(SmartproxyServer.TLS_CIPHERS);
+			cserver_s.setEnabledProtocols(Launcher.TLS_PROTOCOLS);
+			cserver_s.setEnabledCipherSuites(Launcher.TLS_CIPHERS);
 			// use small timeout first
 			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
 			cserver_s.setTcpNoDelay(true);
@@ -1092,8 +1092,8 @@ public class Smartproxy implements Callable<Void> {
 			SSLSocket cserver_s = (SSLSocket) ssf.createSocket();
 
 			// config sslsocket
-			cserver_s.setEnabledProtocols(SmartproxyServer.TLS_PROTOCOLS);
-			cserver_s.setEnabledCipherSuites(SmartproxyServer.TLS_CIPHERS);
+			cserver_s.setEnabledProtocols(Launcher.TLS_PROTOCOLS);
+			cserver_s.setEnabledCipherSuites(Launcher.TLS_CIPHERS);
 			// use small timeout first
 			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
 			cserver_s.setTcpNoDelay(true);
