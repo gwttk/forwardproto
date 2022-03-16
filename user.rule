@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.clarity.ms proxy
+.smshx.com direct
 .cornpic.com proxy
 .6399tp.com proxy
 .upload.cc proxy
@@ -51,11 +53,7 @@
 .event-stream.spot.im proxy
 .issuu.com proxy
 .lcyimg.com proxy
-.www.clarity.ms direct
-.c.clarity.ms proxy
 .chmln-cdn.com proxy
-.j.clarity.ms proxy
-.k.clarity.ms proxy
 .vtbs.moe direct
 .playlostark.com proxy
 .mgtv.com direct
