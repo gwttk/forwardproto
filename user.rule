@@ -7,6 +7,13 @@
 # "reject" means drop connection
 
 #auto rules
+.kuaishouapp.com direct
+.kwaicdn.com direct
+.ksapisrv.com direct
+.codesector.com proxy
+.chenzhongtech.com direct
+.kwimgs.com direct
+.cookiefirst.com proxy
 .clarity.ms proxy
 .smshx.com direct
 .cornpic.com proxy
