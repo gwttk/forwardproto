@@ -13,7 +13,7 @@ import picocli.CommandLine.HelpCommand;
 		subcommands = { HelpCommand.class, Smartproxy.class, SmartproxyServer.class, DedupUserrule.class })
 public class Launcher implements Callable<Void> {
 
-	public static final String VERSTR = "2.0.9";
+	public static final String VERSTR = "2.1.0";
 
 	// settings for both client & server
 	public static final String[] TLS_CIPHERS = new String[] { "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256" };
