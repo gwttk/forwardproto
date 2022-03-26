@@ -1,5 +1,6 @@
 package com.github.immueggpain.smartproxy;
 
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class SpeedMeter {
@@ -34,7 +35,8 @@ public class SpeedMeter {
 				double speedRecv = (double) atomRecv.getAndSet(0) / ((double) duration / 1000) / 1024;
 				double speedSend = (double) atomSend.getAndSet(0) / ((double) duration / 1000) / 1024;
 				lastReportTime = now;
-				System.out.println(String.format("download: %.2f KB/s, upload: %.2f KB/s", speedRecv, speedSend));
+				System.out.println(
+						String.format(Locale.ROOT, "download: %.2f KB/s, upload: %.2f KB/s", speedRecv, speedSend));
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();

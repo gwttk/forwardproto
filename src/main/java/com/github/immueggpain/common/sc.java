@@ -105,8 +105,7 @@ public final class sc {
 	/**
 	 * wait for process terminated and return 1&2&exitValue in strings.
 	 * 
-	 * @param print
-	 *            if true, print command
+	 * @param print if true, print command
 	 */
 	public static ExecCmdRet execCommandR(String command, boolean print) throws IOException, InterruptedException {
 		if (print)
@@ -215,10 +214,6 @@ public final class sc {
 		}
 		sb.append('}');
 		return sb.toString();
-	}
-
-	public static String percent(double v) {
-		return String.format("%d%%", (int) (v * 100));
 	}
 
 	public static void redirect_sysout(String file, boolean append)

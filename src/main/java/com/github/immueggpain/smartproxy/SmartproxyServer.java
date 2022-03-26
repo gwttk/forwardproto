@@ -44,6 +44,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 import javax.net.ssl.KeyManager;
@@ -449,8 +450,9 @@ public class SmartproxyServer implements Callable<Void> {
 					int sbufsz = contxt.sclient_s.getSendBufferSize();
 					int drbufsz = contxt.cdest_s.getReceiveBufferSize();
 					int dsbufsz = contxt.cdest_s.getSendBufferSize();
-					System.out.println(String.format("%s, rbufsz: %d, sbufsz: %d, drbufsz: %d, dsbufsz: %d", dest,
-							rbufsz, sbufsz, drbufsz, dsbufsz));
+					System.out
+							.println(String.format(Locale.ROOT, "%s, rbufsz: %d, sbufsz: %d, drbufsz: %d, dsbufsz: %d",
+									dest, rbufsz, sbufsz, drbufsz, dsbufsz));
 				} catch (SocketException e) {
 					e.printStackTrace();
 				}
