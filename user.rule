@@ -7,6 +7,17 @@
 # "reject" means drop connection
 
 #auto rules
+.windowsreport.com proxy
+.tutorialkart.com proxy
+.playstation.net proxy
+.manapebbles.com proxy
+.craigslist.com proxy
+.craigslist.org proxy
+.revampcdn.com proxy
+.zetcode.com proxy
+.stoel.com proxy
+.ponystyle.com proxy
+.coursera.org proxy
 .lampbrother.net direct
 .uri.edu proxy
 .tawk.link proxy
