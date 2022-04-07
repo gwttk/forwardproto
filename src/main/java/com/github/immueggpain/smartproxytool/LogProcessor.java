@@ -64,7 +64,6 @@ class LogProcessor {
 		load_domain_nn_table();
 		HashSet<String> rules = new HashSet<>();
 		HashSet<String> recordedDomains = new HashSet<>();
-		HashSet<String> unpingableDomains = new HashSet<>();
 		List<String> lines = Files.readAllLines(Paths.get(logFilePath), StandardCharsets.UTF_8);
 		for (String line : lines) {
 			Matcher m = default_line.matcher(line);
@@ -90,25 +89,9 @@ class LogProcessor {
 				float latency = -1;
 				String target = null;
 
-				float latency1 = ping_win(addr);
-				float latency2 = ping_win(addr);
-				if (latency1 < 0 || latency2 < 0) {
-					unpingableDomains.add(domainName);
-					target = queryIpRules(addr);
-					rules.add("." + domainName + " " + target);
-				} else {
-					latency = (latency1 + latency2) / 2;
+				target = queryIpRules(addr);
+				rules.add("." + domainName + " " + target);
 
-					if (latency <= 50) {
-						target = "direct";
-					} else if (latency >= 150) {
-						target = "proxy";
-					} else {
-						target = queryIpRules(addr);
-					}
-					rules.add("." + domainName + " " + target);
-
-				}
 				if (addr.isLoopbackAddress())
 					System.err.println(String.format("ping test: %-50s %7.2fms %s",
 							domainName + " " + addr.getHostAddress(), latency, target));
@@ -125,6 +108,7 @@ class LogProcessor {
 		return rules;
 	}
 
+	@SuppressWarnings("unused")
 	private static float ping_win(InetAddress ip) throws IOException {
 		ProcessResult r = scp.collectResult(Runtime.getRuntime().exec("ping -n 1 " + ip.getHostAddress()));
 		Matcher m = ping_regex_win.matcher(r.stdout);
