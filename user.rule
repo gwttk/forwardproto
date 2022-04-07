@@ -38,7 +38,6 @@
 .logicalincrements.com proxy
 .sony.com proxy
 .pubwise.io proxy
-.stackshare.io direct
 .codecks.io proxy
 .vkguide.dev proxy
 .stackauth.com proxy
@@ -80,7 +79,7 @@
 .pressablecdn.com proxy
 .cppcast.com proxy
 .api.uptodown.com proxy
-.img.stackshare.io proxy
+.stackshare.io proxy
 .news.cnet.com direct
 .clydeshaffer.com proxy
 .ryiah.com proxy
