@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.cxccm.com direct
+.99ab04p.top direct
+.peropero.net direct
+.abbreviationfinder.org proxy
+.uscdn.top direct
+.iigs9.com direct
 .windowsreport.com proxy
 .tutorialkart.com proxy
 .playstation.net proxy
@@ -4267,7 +4273,6 @@ gwent.win proxy
 .hubspot.com proxy
 .jooq.org proxy
 .qubitproducts.com proxy
-.dsa01.ps4.update.playstation.net proxy
 .widget.uservoice.com proxy
 .yahooapis.com proxy
 .softpedia.com proxy
@@ -4303,7 +4308,6 @@ gwent.win proxy
 .jboss.org proxy
 .play4free.com proxy
 .bizographics.com proxy
-.dus01.ps4.update.playstation.net proxy
 .wtfpl.net proxy
 .sessioncam.com proxy
 .adxvip.com direct
@@ -4317,7 +4321,6 @@ gwent.win proxy
 .connatix.com proxy
 .ipv6test.com proxy
 .50zera.com direct
-.us-gmsg.np.community.playstation.net proxy
 .wikidiff.com proxy
 .salesforceliveagent.com proxy
 .com.au proxy
@@ -4351,7 +4354,6 @@ gwent.win proxy
 .zaobang.com direct
 .psntl.com proxy
 .rfihub.com proxy
-.manuals.playstation.net proxy
 .mshishang.com direct
 .pricespider.com proxy
 .usgamer.net proxy
@@ -4426,7 +4428,6 @@ gwent.win proxy
 .playwire.com proxy
 .247-inc.net proxy
 .zopim.io proxy
-.eventcom.api.np.km.playstation.net proxy
 .playstationlifestyle.net proxy
 .rakuten-static.com proxy
 .loughboroughecho.net proxy
@@ -4437,7 +4438,6 @@ gwent.win proxy
 .pcmag.com proxy
 .pubguru.com proxy
 .effectivemeasure.net proxy
-.homer.dl.playstation.net proxy
 .1684.cc direct
 .pub.network proxy
 .ziffprod.com proxy
@@ -4485,7 +4485,6 @@ gwent.win proxy
 .photios-raj.com proxy
 .rtxplatform.com proxy
 .evolvemediallc.com proxy
-.remoteplay.dl.playstation.net proxy
 .swiki.jp proxy
 .zeyi5.com direct
 .gorillanation.com proxy
@@ -4494,9 +4493,7 @@ gwent.win proxy
 .evolveplatform.net proxy
 .diablo3.com proxy
 .mail.ru proxy
-.us-gcd.np.community.playstation.net proxy
 .drivereasy.com proxy
-.nsx.np.dl.playstation.net proxy
 .arkinhechershedt.info proxy
 .connectad.io proxy
 .wdfiles.com proxy
@@ -4561,7 +4558,6 @@ gwent.win proxy
 .swasc.homedepot.com proxy
 .ziffstatic.com proxy
 .volvelle.tech proxy
-.trophy01.np.community.playstation.net proxy
 .wololo.net proxy
 .birdiecdn.com proxy
 .kochava.com direct
@@ -4623,7 +4619,6 @@ gwent.win proxy
 .fengyx.com direct
 .contentgrid.homedepot-static.com direct
 .powerreviews.com proxy
-.apollo.dl.playstation.net proxy
 .concert.io proxy
 .w.org proxy
 .arstechnica.com proxy
@@ -4639,7 +4634,6 @@ gwent.win proxy
 .pythonhosted.org proxy
 .pxltopxl.com proxy
 .secure2.homedepot.com proxy
-.us-ivt.np.community.playstation.net proxy
 .merriam-webster.com proxy
 .cbsi.com proxy
 .insticator.com proxy
@@ -4657,7 +4651,6 @@ gwent.win proxy
 .tribalfusion.com proxy
 .krxd.net proxy
 .criteo.com proxy
-.static-resource.np.community.playstation.net proxy
 .www.bleepingcomputer.com proxy
 .kfd3sm2c.com direct
 .popup.chat proxy
@@ -4713,7 +4706,6 @@ gwent.win proxy
 .clevernt.com proxy
 .technicallyeasy.net proxy
 .bestreviews.guide proxy
-.apollo2.dl.playstation.net proxy
 .zergnet.com proxy
 .keywee.co proxy
 .justjaredjr.com proxy
@@ -4772,7 +4764,6 @@ gwent.win proxy
 .sojern.com direct
 .collector-pxszbkva5m.perimeterx.net direct
 .animenewsnetwork.com proxy
-.us-prof.np.community.playstation.net proxy
 .jacklmoore.com proxy
 .adsafety.net proxy
 .americanexpress.com proxy
@@ -4791,7 +4782,6 @@ gwent.win proxy
 .chatid.com proxy
 .polygon.com proxy
 .psntrophyleaders.com proxy
-.psn-rsc.prod.dl.playstation.net proxy
 .flashtalking.com proxy
 .attractivecap.com direct
 .gobono.ml proxy
@@ -4801,7 +4791,6 @@ gwent.win proxy
 .bidr.io proxy
 .micpn.com proxy
 .a3cloud.net proxy
-.np.communication.playstation.net proxy
 .stoic-jackrabbit.com proxy
 .imgbox.com proxy
 .lucklayed.info proxy
@@ -4849,7 +4838,6 @@ gwent.win proxy
 .chatra.io proxy
 .wclink.co proxy
 .adziff.com proxy
-.asm.np.community.playstation.net proxy
 .www.homedepot.com proxy
 .psprices.com proxy
 .bazaarvoice.com proxy
