@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.inotgo.com direct
+.4k8k.xyz proxy
+.erwinhofman.com proxy
+.chowdera.com direct
 .cxccm.com direct
 .99ab04p.top direct
 .peropero.net direct
@@ -4511,7 +4515,6 @@ gwent.win proxy
 .gamespot.com proxy
 .feitian001.com direct
 .adbooth.com proxy
-.recs.api.np.km.playstation.net direct
 .croissed.info proxy
 .berkshireeagle.com proxy
 .ff0000-cdn.net proxy
@@ -4538,7 +4541,6 @@ gwent.win proxy
 .hantinlethemsed.info proxy
 .gifsoup.com proxy
 .innovid.com proxy
-.image.api.np.km.playstation.net direct
 .us-east-ads.aralego.com proxy
 .psnine.com direct
 .pypi.org proxy
@@ -4548,7 +4550,6 @@ gwent.win proxy
 .thrtle.com proxy
 .mythicscribes.com proxy
 .googlecommerce.com proxy
-.commerce.api.np.km.playstation.net direct
 .adrtx.net proxy
 .pinimg.com proxy
 .audiencemanager.de proxy
@@ -4604,7 +4605,6 @@ gwent.win proxy
 .niuxgame77.com direct
 .sylab.co proxy
 .chatidcdn.com proxy
-.regcam.api.np.km.playstation.net direct
 .popads.net proxy
 .brightcove.com proxy
 .pagefair.com proxy
@@ -4768,7 +4768,6 @@ gwent.win proxy
 .americanexpress.com proxy
 .xploder.net proxy
 .wowodm.com proxy
-.activity.api.np.km.playstation.net direct
 .getlnk4.com proxy
 .conversionlogic.net proxy
 .dzcdn.net proxy
