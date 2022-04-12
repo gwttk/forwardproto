@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.g2a.com proxy
+.azimiao.com direct
 .piano.io proxy
 .chrono.gg proxy
 .6071.com direct
@@ -1811,11 +1813,9 @@
 .huijiwiki.com direct
 .138top.com direct
 .thefatherofsalmon.com direct
-.images-3.gog.com direct
 .rollbar.com direct
 .schema.org proxy
 .game234.com direct
-.images-4.gog.com direct
 .huijidata.com direct
 .gg.deals proxy
 .thottbot.com proxy
