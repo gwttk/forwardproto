@@ -2722,7 +2722,7 @@ gwent.win proxy
 .cloudflareinsights.com proxy
 .taxamo.com proxy
 .akn.services.autodesk.com proxy
-.chimpstatic.com direct
+.chimpstatic.com proxy
 .hbidserver.com proxy
 .whiteboard.ms proxy
 .warcraftlogs.com proxy
