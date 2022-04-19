@@ -7,6 +7,19 @@
 # "reject" means drop connection
 
 #auto rules
+.weshineapp.com direct
+.gamebaike.com direct
+.zkx.cc direct
+.hoyoverse.com proxy
+.yottaa.com proxy
+.minitool.com proxy
+.0xzx.com proxy
+.yottaa.net proxy
+.yxdwj.com direct
+.qxxmls.com proxy
+.bmucuc.com proxy
+.3loumao.org proxy
+.partitionwizard.com proxy
 .mouselog.org proxy
 .tecagile.com proxy
 .dmcdn.net proxy
