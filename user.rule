@@ -7,6 +7,28 @@
 # "reject" means drop connection
 
 #auto rules
+.linuxtopia.org proxy
+.bytednsdoc.com direct
+.ibytedapm.com direct
+.windowsitpro.com proxy
+.itprotoday.com proxy
+.paperblog.com proxy
+.accuwebhosting.com proxy
+.felady.com direct
+.iu.edu proxy
+.serverbrain.org proxy
+.networkencyclopedia.com proxy
+.douyinvod.com direct
+.netsetman.com proxy
+.bibblio.org proxy
+.sowellwell.com direct
+.ivy.ai proxy
+.biblio.org proxy
+.douyin.com direct
+.zjcdn.com direct
+.ivy-cdn.com proxy
+.zijieapi.com direct
+.zyxel.com proxy
 .bytehwm.com direct
 .laihua.com proxy
 .bsonspec.org proxy
