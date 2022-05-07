@@ -7,6 +7,27 @@
 # "reject" means drop connection
 
 #auto rules
+.aspire-ebm.com proxy
+.xboxab.com proxy
+.whatismyipaddress.com proxy
+.whatismyipaddress.info proxy
+.libsyn.com proxy
+.lightwaveonline.com proxy
+.infoblox.com proxy
+.iconify.design proxy
+.top10vpn.com proxy
+.fusebox.fm proxy
+.identity-x.io proxy
+.deepfocus.io proxy
+.jsgytf.com direct
+.pingserverstatus.com proxy
+.downdetectorapi.com proxy
+.unbanster.com proxy
+.lining.com direct
+.prosettings.com proxy
+.gaminggem.com proxy
+.blurbusters.com proxy
+.tweaktown.com proxy
 .linuxtopia.org proxy
 .bytednsdoc.com direct
 .ibytedapm.com direct
