@@ -7,6 +7,27 @@
 # "reject" means drop connection
 
 #auto rules
+.fanbyte.com proxy
+.zenahr.com proxy
+.lolstage.com proxy
+.easy.ac proxy
+.akismet.com proxy
+.avantlink.com proxy
+.rampfesthudson.com proxy
+.audioaural.com proxy
+.stores.jp proxy
+.wikihow.com proxy
+.systutorials.com proxy
+.dmca.com proxy
+.ozlabs.org proxy
+.imageflux.jp proxy
+.mind.be proxy
+.nesvery.com proxy
+.netfilter.org proxy
+.kent.edu proxy
+.kviks.net proxy
+.typesquare.com proxy
+.myaudiolover.com proxy
 .aspire-ebm.com proxy
 .xboxab.com proxy
 .whatismyipaddress.com proxy
