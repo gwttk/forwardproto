@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.ui-avatars.com proxy
+.doublexp.com proxy
+.musedash.moe proxy
+.mdmc.moe proxy
 .fanbyte.com proxy
 .zenahr.com proxy
 .lolstage.com proxy
