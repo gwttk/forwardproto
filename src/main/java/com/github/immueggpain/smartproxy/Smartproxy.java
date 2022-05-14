@@ -46,6 +46,8 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +63,8 @@ import java.util.regex.Pattern;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
@@ -119,6 +123,9 @@ public class Smartproxy implements Callable<Void> {
 
 	@Option(names = { "--to-basic" }, description = "basic timeout value in sec. default is ${DEFAULT-VALUE}.")
 	public int toBasicRead = 120;
+
+	@Option(names = { "--unsafe-cert" }, description = "trust all certs, whether they are safe or not.")
+	public boolean unsafeCert = false;
 
 	// used in android
 	public InputStream userRuleStream;
@@ -198,7 +205,25 @@ public class Smartproxy implements Callable<Void> {
 
 		// set SSL
 		SSLContext context = SSLContext.getInstance("TLSv1.2");
-		context.init(null, null, null);
+		if (unsafeCert) {
+			TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+				@Override
+				public X509Certificate[] getAcceptedIssuers() {
+					return new X509Certificate[0];
+				}
+
+				@Override
+				public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+				}
+
+				@Override
+				public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+				}
+			} };
+			context.init(null, trustAllCerts, null);
+		} else {
+			context.init(null, null, null);
+		}
 		ssf = context.getSocketFactory();
 
 		tunnelPool = new TunnelPool(server_ip, server_port);
