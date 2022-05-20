@@ -189,8 +189,6 @@ public class Smartproxy implements Callable<Void> {
 		toCltConnectToDirect = Launcher.toBasicConnect;
 		toSvrReadFromCltRest = toBasicRead * 1000;
 
-		speedMeter = new SpeedMeter(1000 * 4);
-
 		byte[] bytes = passwordString.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, this.password, 0, bytes.length);
 
@@ -227,6 +225,8 @@ public class Smartproxy implements Callable<Void> {
 		ssf = context.getSocketFactory();
 
 		tunnelPool = new TunnelPool(server_ip, server_port);
+
+		speedMeter = new SpeedMeter(1000 * 4, tunnelPool.halfTunnels);
 
 		try (ServerSocket ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip))) {
 			log.println("listened on port " + local_listen_port);

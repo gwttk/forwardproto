@@ -7,6 +7,16 @@
 # "reject" means drop connection
 
 #auto rules
+.mouse-sensitivity.com proxy
+.lura.live proxy
+.cnn.io proxy
+.onetrust.io proxy
+.nexstardigital.net proxy
+.ngtv.io proxy
+.wivb.com proxy
+.telghub.com proxy
+.tarnished.dev proxy
+.chinadra.com proxy
 .ui-avatars.com proxy
 .doublexp.com proxy
 .musedash.moe proxy
