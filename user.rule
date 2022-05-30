@@ -7,6 +7,22 @@
 # "reject" means drop connection
 
 #auto rules
+.wakwb.com proxy
+.yhdmp.cc proxy
+.sogowan.com direct
+.xmfans.me proxy
+.wkyaoye.com direct
+.yellowmessenger.com proxy
+.yellow.ai proxy
+.yhdmtu.com proxy
+.yinghuacd.com proxy
+.51dzt.com direct
+.kukuw.com direct
+.jhscm.com direct
+.bang-dream.com proxy
+.coinmarketcap.com proxy
+.cointelegraph.com proxy
+.dwq.com direct
 .kkmh.com direct
 .kuaikanmanhua.com direct
 .haoman6.com proxy
