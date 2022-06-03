@@ -919,6 +919,7 @@ public class Smartproxy implements Callable<Void> {
 			log.println(client_protocol + " got a loopback address");
 			return null;
 		}
+		int port = dest_sockaddr.getPort();
 
 		NextNode nextNode;
 		if (dest_sockaddr.isUnresolved()) {
@@ -929,19 +930,19 @@ public class Smartproxy implements Callable<Void> {
 				IpRange ipRange = ip_to_nn.floorEntry(ip).getValue();
 				if (ip > ipRange.end) {
 					nextNode = nn_proxy;
-					log.println(String.format("%s %-7s: %-6s <- default <- %s", sct.datetime(), client_protocol,
-							nextNode, hostString));
+					log.println(String.format("%s %-7s: %-6s <- default <- %s:%d", sct.datetime(), client_protocol,
+							nextNode, hostString, port));
 				} else {
 					nextNode = ipRange.nextnode;
-					log.println(String.format("%s %-7s: %-6s <- %s ~ %s <- %s", sct.datetime(), client_protocol,
-							nextNode, long2ip(ipRange.begin), long2ip(ipRange.end), hostString));
+					log.println(String.format("%s %-7s: %-6s <- %s ~ %s <- %s:%d", sct.datetime(), client_protocol,
+							nextNode, long2ip(ipRange.begin), long2ip(ipRange.end), hostString, port));
 				}
 			} else {
 				// is a domain string
 				nextNode = domain_to_nn.get(hostString);
 				if (nextNode != null) {
-					log.println(String.format("%s %-7s: %-6s <- %s", sct.datetime(), client_protocol, nextNode,
-							hostString));
+					log.println(String.format("%s %-7s: %-6s <- %s:%d", sct.datetime(), client_protocol, nextNode,
+							hostString, port));
 				} else {
 					String intermediate = "." + hostString;
 					while (true) {
@@ -955,11 +956,11 @@ public class Smartproxy implements Callable<Void> {
 					}
 					if (nextNode == null) {
 						nextNode = nn_proxy;
-						log.println(String.format("%s %-7s: %-6s <- default <- %s", sct.datetime(), client_protocol,
-								nextNode, hostString));
+						log.println(String.format("%s %-7s: %-6s <- default <- %s:%d", sct.datetime(), client_protocol,
+								nextNode, hostString, port));
 					} else {
-						log.println(String.format("%s %-7s: %-6s <- %s <- %s", sct.datetime(), client_protocol,
-								nextNode, intermediate, hostString));
+						log.println(String.format("%s %-7s: %-6s <- %s <- %s:%d", sct.datetime(), client_protocol,
+								nextNode, intermediate, hostString, port));
 					}
 				}
 			}
@@ -969,12 +970,12 @@ public class Smartproxy implements Callable<Void> {
 			IpRange ipRange = ip_to_nn.floorEntry(ip).getValue();
 			if (ip > ipRange.end) {
 				nextNode = nn_proxy;
-				log.println(String.format("%s %-7s: %-6s <- default <- %s", sct.datetime(), client_protocol, nextNode,
-						hostString));
+				log.println(String.format("%s %-7s: %-6s <- default <- %s:%d", sct.datetime(), client_protocol,
+						nextNode, hostString, port));
 			} else {
 				nextNode = ipRange.nextnode;
-				log.println(String.format("%s %-7s: %-6s <- %s ~ %s <- %s", sct.datetime(), client_protocol, nextNode,
-						long2ip(ipRange.begin), long2ip(ipRange.end), hostString));
+				log.println(String.format("%s %-7s: %-6s <- %s ~ %s <- %s:%d", sct.datetime(), client_protocol,
+						nextNode, long2ip(ipRange.begin), long2ip(ipRange.end), hostString, port));
 			}
 		}
 

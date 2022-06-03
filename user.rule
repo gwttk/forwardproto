@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.tianqistatic.com direct
+.alimebot.com direct
 .wakwb.com proxy
 .yhdmp.cc proxy
 .sogowan.com direct
