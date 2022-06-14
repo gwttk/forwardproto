@@ -7,6 +7,26 @@
 # "reject" means drop connection
 
 #auto rules
+.vercel.app proxy
+.genshin-wishes.com proxy
+.91zhenghao.com direct
+.puu.sh proxy
+.52pictu.com direct
+.searchpstatp.com direct
+.ac-web.org proxy
+.hndt.com direct
+.qqkou.com proxy
+.nana-music.com proxy
+.qqzhi.com direct
+.mora.jp proxy
+.sjz5.com direct
+.dmkt-sp.jp proxy
+.kfs.io proxy
+.bushiroad-music.com proxy
+.recochoku.jp proxy
+.cv.bkmkn.kodansha.co.jp proxy
+.sonolus.com proxy
+.cloudflareresearch.com proxy
 .tianqistatic.com direct
 .alimebot.com direct
 .wakwb.com proxy
