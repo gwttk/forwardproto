@@ -228,7 +228,8 @@ public class Smartproxy implements Callable<Void> {
 
 		speedMeter = new SpeedMeter(1000 * 4, tunnelPool.halfTunnels);
 
-		try (ServerSocket ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip))) {
+		ServerSocket ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip));
+		try {
 			log.println("listened on port " + local_listen_port);
 			// for local socket, use auto buf size
 			// ss.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
@@ -238,9 +239,11 @@ public class Smartproxy implements Callable<Void> {
 					s = ss.accept();
 				} catch (SocketException e) {
 					// accept will fail sometimes when closing UU
-					// wait a little then try again
+					// wait a moment then recreate serversocket
 					e.printStackTrace(log);
 					Thread.sleep(1000);
+					ss.close();
+					ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip));
 					continue;
 				}
 				// for local socket, use auto buf size
@@ -249,6 +252,8 @@ public class Smartproxy implements Callable<Void> {
 				int id = s.getPort();
 				scmt.execAsync("recv_" + id + "_client", () -> recv_client(s));
 			}
+		} finally {
+			ss.close();
 		}
 	}
 
