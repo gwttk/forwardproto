@@ -3934,7 +3934,7 @@ gwent.win proxy
 .sciences-po.fr proxy
 .hololive.tv proxy
 .strikinglycdn.com proxy
-.msauth.net direct
+.msauth.net proxy
 .ghacks.net proxy
 .sysinternals.com proxy
 .moimg.net direct
@@ -5212,7 +5212,7 @@ gwent.win proxy
 .flashtalking.com proxy
 .attractivecap.com direct
 .gobono.ml proxy
-.xbox.com direct
+.xbox.com proxy
 .aexp-static.com proxy
 .serverbid.com proxy
 .bidr.io proxy
