@@ -1296,16 +1296,10 @@ public class Smartproxy implements Callable<Void> {
 	}
 
 	/**
-	 * return null means connection refused, or connect timed out, or is loopback
+	 * return null means connection refused, or connect timed out
 	 */
 	private Socket direct_create_config_connect_socket(InetSocketAddress dest_sockaddr, String protocolFromApp)
 			throws IOException {
-		// reject if it's loopback address.
-		if (dest_sockaddr.getAddress().isLoopbackAddress()) {
-			log.println(protocolFromApp + " got a loopback address");
-			return null;
-		}
-
 		Socket s = new Socket(Proxy.NO_PROXY);
 		s.setTcpNoDelay(true);
 		s.setSoTimeout(toCltReadFromDirect);
