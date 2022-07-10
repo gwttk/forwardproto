@@ -915,19 +915,20 @@ public class Smartproxy implements Callable<Void> {
 	 */
 	private SocketBundle create_connect_config_socket(InetSocketAddress dest_sockaddr, String client_protocol)
 			throws Exception {
-		// reject if it's loopback address.
-		// this will only check ip addr(resolved).
-		// for unresolved addr, check after resolved.
-		// if it's direct, check at direct_create_config_connect_socket().
-		// if it's proxy, check at server.
-		if (dest_sockaddr.getAddress() != null && dest_sockaddr.getAddress().isLoopbackAddress()) {
-			log.println(client_protocol + " got a loopback address");
-			return null;
-		}
 		int port = dest_sockaddr.getPort();
 
 		NextNode nextNode;
-		if (dest_sockaddr.isUnresolved()) {
+		if (dest_sockaddr.getAddress() != null && dest_sockaddr.getAddress().isLoopbackAddress()) {
+			// if it's loopback address.
+			// this will only check ip addr(resolved).
+			// for unresolved addr, check after resolved.
+			// if it's direct, check at direct_create_config_connect_socket().
+			// if it's proxy, check at server.
+			String hostString = dest_sockaddr.getAddress().getHostAddress();
+			nextNode = nn_direct;
+			log.println(String.format("%s %-7s: %-6s <- loopback <- %s:%d", sct.datetime(), client_protocol, nextNode,
+					hostString, port));
+		} else if (dest_sockaddr.isUnresolved()) {
 			String hostString = dest_sockaddr.getHostString();
 			if (ip_regex.matcher(hostString).matches()) {
 				// is an ip string
