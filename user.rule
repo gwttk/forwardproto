@@ -7,6 +7,16 @@
 # "reject" means drop connection
 
 #auto rules
+.messaging.engagement.office.com proxy
+.liulanqi.net direct
+.office.net proxy
+.kkeji.com direct
+.naraka.win proxy
+.freshchat.com proxy
+.geren-jianli.org proxy
+.50bangzh.com direct
+.c1-excel-15.cdn.office.net direct
+.ikafan.com direct
 .nichengzhan.com proxy
 .tokenai.top direct
 .dreamwidth.org proxy
