@@ -7,6 +7,28 @@
 # "reject" means drop connection
 
 #auto rules
+.grab-colab.com proxy
+.twitchtracker.com proxy
+.twitchmetrics.net proxy
+.evorra.net proxy
+.nerdstreet.com proxy
+.fanxiaocuo.com direct
+.gumlet.com proxy
+.exputer.com proxy
+.gamingsmart.com proxy
+.gamertweak.com proxy
+.brightback.com proxy
+.strawpoll.me proxy
+.vpnmentor.com proxy
+.futuu.com direct
+.huigetv.com direct
+.rgpub.io proxy
+.q578.com direct
+.playvalorant.com proxy
+.soundalerts.com proxy
+.lolesports.com proxy
+.machow2.com proxy
+.bj-kevin.com direct
 .allkeyshop.com proxy
 .twitch-extension-backend.com proxy
 .realonomics.net proxy
