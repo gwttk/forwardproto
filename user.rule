@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.avast.com proxy
+.canto.com proxy
+.mxtoolbox.com proxy
+.stripocdn.email proxy
+.the-digital-life.com proxy
+.sparkpost.com proxy
 .mtusgate.de proxy
 .todesk.com direct
 .qoo10.jp proxy
