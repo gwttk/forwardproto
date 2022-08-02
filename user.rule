@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.epidm.edgesuite.net proxy
+.canardpc.com proxy
+.leafmedia.io proxy
+.dkpsigs.com proxy
 .avast.com proxy
 .canto.com proxy
 .mxtoolbox.com proxy
