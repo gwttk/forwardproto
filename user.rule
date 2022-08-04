@@ -7,6 +7,30 @@
 # "reject" means drop connection
 
 #auto rules
+.remixd.com proxy
+.documentfoundation.org proxy
+.winpenpack.com proxy
+.libreoffice.org proxy
+.gcfglobal.org proxy
+.tips.net proxy
+.osuosl.org proxy
+.translateth.is proxy
+.officeppe.net proxy
+.mediacollege.com proxy
+.gamepass.com proxy
+.gcflearnfree.org proxy
+.theapptimes.com proxy
+.apachecon.com proxy
+.streamtheworld.com proxy
+.openoffice.org proxy
+.messaging.action.office.com proxy
+.aplawrence.com proxy
+.colocrossing.com proxy
+.deluxe.com proxy
+.stackpointer.io proxy
+.bencane.com proxy
+.getapp.com proxy
+.capterra.com proxy
 .epidm.edgesuite.net proxy
 .canardpc.com proxy
 .leafmedia.io proxy
