@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.pp373.com direct
+.dylanfortune.com proxy
+.townlong-yak.com proxy
+.dd373.com direct
 .remixd.com proxy
 .documentfoundation.org proxy
 .winpenpack.com proxy
