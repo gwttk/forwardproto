@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.wow.tools proxy
+.educba.com proxy
+.msigeek.com proxy
+.parsec.app proxy
+.huishouchang.com direct
+.guangsuan.com direct
 .mianfeiziti.com direct
 .session-replays.io proxy
 .strongzero.ch proxy
