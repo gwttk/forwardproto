@@ -7,6 +7,26 @@
 # "reject" means drop connection
 
 #auto rules
+.icongr.am proxy
+.ccacg.xyz proxy
+.gitlab.net proxy
+.doe.gov proxy
+.oup.com proxy
+.highgroundgaming.com proxy
+.discourse.group proxy
+.vikacg.com proxy
+.sayhuahuo.com proxy
+.nodiatis.com proxy
+.sodocumentation.net proxy
+.marlamin.com proxy
+.wowpedia.org proxy
+.woozooo.com direct
+.ototoy.jp proxy
+.jupyter.org proxy
+.pypa.io proxy
+.unendli.ch proxy
+.jar-download.com proxy
+.moepoipoi.com proxy
 .wow.tools proxy
 .educba.com proxy
 .msigeek.com proxy
