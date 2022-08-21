@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+.leyoujia.com direct
+.yzfcdn.com direct
+.returnpath.net proxy
 .icongr.am proxy
 .ccacg.xyz proxy
 .gitlab.net proxy
