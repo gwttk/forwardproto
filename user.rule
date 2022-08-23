@@ -7,6 +7,16 @@
 # "reject" means drop connection
 
 #auto rules
+.git.io proxy
+.vip-pussy.com proxy
+.ubiqfile.com proxy
+.mygirls.me proxy
+.vip-pussy.click proxy
+.rabid-rabbit.club proxy
+.lockmy.link proxy
+.v2ray.com proxy
+.cbox.im proxy
+.wechat.com direct
 .leyoujia.com direct
 .yzfcdn.com direct
 .returnpath.net proxy
