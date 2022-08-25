@@ -1001,7 +1001,7 @@ public class Smartproxy implements Callable<Void> {
 			Socket raw = direct_create_config_connect_socket(dest_sockaddr, client_protocol);
 			if (raw == null)
 				return null;
-			return new SocketBundle(raw, raw.getInputStream(), raw.getOutputStream());
+			return new SocketBundle(raw, raw.getInputStream(), new DataOutputStream(raw.getOutputStream()));
 		} else if (nextNode.type == NextNode.Type.PROXY) {
 			// connect through sp server
 			SocketBundle tunnel = tunnelPool.pollTunnel(dest_sockaddr.getHostString(), dest_sockaddr.getPort());
@@ -1022,75 +1022,10 @@ public class Smartproxy implements Callable<Void> {
 	private SocketBundle create_tunnel(String server_hostname, int server_port, SSLSocketFactory ssf, byte[] password,
 			String dest_hostname, int dest_port) {
 		try {
-			// create sslsocket
-			SSLSocket cserver_s = (SSLSocket) ssf.createSocket();
-
-			// config sslsocket
-			cserver_s.setEnabledProtocols(Launcher.TLS_PROTOCOLS);
-			cserver_s.setEnabledCipherSuites(Launcher.TLS_CIPHERS);
-			// use small timeout first
-			cserver_s.setSoTimeout(toCltReadFromSvrSmall);
-			cserver_s.setTcpNoDelay(true);
-			if (rcvbuf_size > 0)
-				cserver_s.setReceiveBufferSize(rcvbuf_size);
-			if (sndbuf_size > 0)
-				cserver_s.setSendBufferSize(sndbuf_size);
-
-			// connect to sp server
-			try {
-				cserver_s.connect(new InetSocketAddress(server_hostname, server_port), toCltConnectToSvr);
-			} catch (Throwable e) {
-				log.println(sct.datetime() + " error when connect sp server " + e);
-				Util.abortiveCloseSocket(cserver_s);
-				return null;
-			}
-
-			DataInputStream is = new DataInputStream(cserver_s.getInputStream());
-			DataOutputStream os = new DataOutputStream(cserver_s.getOutputStream());
-
-			// random stuff hello
-			try {
-				int len = rand.nextInt(500) + 90;
-				String hellostr = RandomStringUtils.randomAlphanumeric(len);
-				os.writeUTF(hellostr);
-			} catch (Exception e) {
-				log.println(sct.datetime() + " error when send hello " + e);
-				Util.abortiveCloseSocket(cserver_s);
-				return null;
-			}
-
-			// authn
-			try {
-				os.write(password);
-			} catch (Exception e) {
-				log.println(sct.datetime() + " error when send pswd " + e);
-				Util.abortiveCloseSocket(cserver_s);
-				return null;
-			}
-
-			// send rest timeout
-			try {
-				os.writeInt(toSvrReadFromCltRest);
-			} catch (Exception e) {
-				log.println(sct.datetime() + " error when send timeout " + e);
-				Util.abortiveCloseSocket(cserver_s);
-				return null;
-			}
-
-			// get server error code
-			byte ecode;
-			try {
-				ecode = is.readByte();
-			} catch (Exception e) {
-				log.println(sct.datetime() + " error when read svr err code " + e);
-				Util.abortiveCloseSocket(cserver_s);
-				return null;
-			}
-			if (ecode != 0) {
-				log.println(sct.datetime() + " server err code " + ecode);
-				Util.orderlyCloseSocket(cserver_s);
-				return null;
-			}
+			SocketBundle half_tunnel = create_half_tunnel(server_hostname, server_port, ssf, password);
+			DataOutputStream os = half_tunnel.os;
+			InputStream is = half_tunnel.is;
+			Socket cserver_s = half_tunnel.socket;
 
 			// send dest info
 			try {
@@ -1396,11 +1331,11 @@ public class Smartproxy implements Callable<Void> {
 	private static class SocketBundle {
 		public Socket socket;
 		public InputStream is;
-		public OutputStream os;
+		public DataOutputStream os;
 		// optional
 		public long expireTime;
 
-		public SocketBundle(Socket socket, InputStream is, OutputStream os) {
+		public SocketBundle(Socket socket, InputStream is, DataOutputStream os) {
 			this.socket = socket;
 			this.is = is;
 			this.os = os;
