@@ -82,8 +82,7 @@
 								</zip>
 								<copy
 									file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
-									tofile="${project.build.directory}/${project.artifactId}.jar"
-									overwrite="true" />
+									tofile="${project.build.directory}/${project.artifactId}.jar" />
 							</target>
 						</configuration>
 					</execution>
