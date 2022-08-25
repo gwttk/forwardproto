@@ -189,6 +189,8 @@ public class Smartproxy implements Callable<Void> {
 		toCltConnectToDirect = Launcher.toBasicConnect;
 		toSvrReadFromCltRest = toBasicRead * 1000;
 
+		log.println(String.format("small connect timeout to sp server = %d", toCltConnectToSvr));
+
 		byte[] bytes = passwordString.getBytes(StandardCharsets.UTF_8);
 		System.arraycopy(bytes, 0, this.password, 0, bytes.length);
 
@@ -1070,6 +1072,15 @@ public class Smartproxy implements Callable<Void> {
 				cserver_s.connect(new InetSocketAddress(server_hostname, server_port), toCltConnectToSvr);
 			} catch (Throwable e) {
 				log.println(sct.datetime() + " error when connect sp server " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+
+			try {
+				cserver_s.startHandshake();
+			} catch (IOException e) {
+				log.println(sct.datetime() + " error when start tls handshake");
+				e.printStackTrace(log);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
