@@ -80,6 +80,10 @@
 									<fileset dir="${project.build.directory}"
 										includes="${project.artifactId}-${project.version}.jar" />
 								</zip>
+								<copy
+									file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+									tofile="${project.build.directory}/${project.artifactId}.jar"
+									overwrite="true" />
 							</target>
 						</configuration>
 					</execution>
