@@ -1025,6 +1025,9 @@ public class Smartproxy implements Callable<Void> {
 			String dest_hostname, int dest_port) {
 		try {
 			SocketBundle half_tunnel = create_half_tunnel(server_hostname, server_port, ssf, password);
+			if (half_tunnel == null)
+				return null;
+
 			DataOutputStream os = half_tunnel.os;
 			InputStream is = half_tunnel.is;
 			Socket cserver_s = half_tunnel.socket;
@@ -1080,7 +1083,6 @@ public class Smartproxy implements Callable<Void> {
 				cserver_s.startHandshake();
 			} catch (IOException e) {
 				log.println(sct.datetime() + " error when start tls handshake");
-				e.printStackTrace(log);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
