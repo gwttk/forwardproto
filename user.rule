@@ -7,6 +7,19 @@
 # "reject" means drop connection
 
 #auto rules
+.canime.jp proxy
+.xunkong.cc proxy
+.le.com direct
+.techiedelight.com proxy
+.danmu9.com proxy
+.swallow-p.com proxy
+.projecteuler.net proxy
+.justamonad.com proxy
+.canvasjs.com proxy
+.download3k.com proxy
+.openjdk.org proxy
+.optimole.com proxy
+.ck.page proxy
 .addonswow.com proxy
 .worldtimeserver.com proxy
 .gpsites.co proxy
