@@ -29,12 +29,14 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PushbackInputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -42,9 +44,10 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import javax.net.ssl.KeyManager;
@@ -53,6 +56,26 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
+
+import org.apache.http.ConnectionReuseStrategy;
+import org.apache.http.HttpResponseFactory;
+import org.apache.http.config.MessageConstraints;
+import org.apache.http.impl.DefaultBHttpServerConnection;
+import org.apache.http.impl.DefaultConnectionReuseStrategy;
+import org.apache.http.impl.DefaultHttpResponseFactory;
+import org.apache.http.impl.entity.StrictContentLengthStrategy;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpCoreContext;
+import org.apache.http.protocol.HttpProcessor;
+import org.apache.http.protocol.HttpProcessorBuilder;
+import org.apache.http.protocol.HttpRequestHandler;
+import org.apache.http.protocol.HttpRequestHandlerMapper;
+import org.apache.http.protocol.HttpService;
+import org.apache.http.protocol.ResponseConnControl;
+import org.apache.http.protocol.ResponseContent;
+import org.apache.http.protocol.ResponseDate;
+import org.apache.http.protocol.ResponseServer;
+import org.apache.http.protocol.UriHttpRequestHandlerMapper;
 
 import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
@@ -109,8 +132,13 @@ public class SmartproxyServer implements Callable<Void> {
 
 	private byte[] realpswd = new byte[64];
 
+	private HttpService httpService;
+
 	public Void call() throws Exception {
 		System.out.println(String.format("running server %s", Launcher.VERSTR));
+
+		// init http server
+		httpService = create();
 
 		// init timeouts
 		toSvrReadFromClt = toBasicRead * 1000;
@@ -162,13 +190,45 @@ public class SmartproxyServer implements Callable<Void> {
 		}
 	}
 
-	private void handleConnection(Socket sclient_s) {
+	private void handleConnection(SSLSocket sclient_s) {
 		try {
-			DataInputStream is = new DataInputStream(sclient_s.getInputStream());
-			DataOutputStream os = new DataOutputStream(sclient_s.getOutputStream());
+			PushbackInputStream pis = new PushbackInputStream(sclient_s.getInputStream(), 64);
+			DataInputStream is = new DataInputStream(pis);
+			OutputStream os_ = sclient_s.getOutputStream();
+			DataOutputStream os = new DataOutputStream(os_);
 
 			// use small timeout when connection starts
 			sclient_s.setSoTimeout(Launcher.toSvrReadFromCltSmall);
+
+			// read some and check pswd
+			// authn this connection
+			{
+				int offset = 0;
+				byte[] buf = new byte[64];
+				while (true) {
+					int n = 0;
+					try {
+						n = pis.read(buf, offset, buf.length - offset);
+					} catch (Exception e) {
+						System.out.println("exception during reading pswd");
+						e.printStackTrace();
+						Util.abortiveCloseSocket(sclient_s);
+						return;
+					}
+					if (!ByteBuffer.wrap(buf, offset, n).equals(ByteBuffer.wrap(realpswd, offset, n))) {
+						pis.unread(buf, 0, offset + n);
+						handleHttp(sclient_s, pis, os_);
+						return;
+					} else {
+						offset += n;
+						if (offset == 64)
+							break;
+						else
+							continue;
+					}
+				}
+				System.out.println("authn passed");
+			}
 
 			// random stuff, but fun string
 			{
@@ -186,26 +246,7 @@ public class SmartproxyServer implements Callable<Void> {
 				}
 			}
 
-			// authn this connection
-			{
-				byte[] pswd = new byte[64];
-				try {
-					is.readFully(pswd);
-				} catch (SocketTimeoutException e) {
-					System.out.println("timeout during authn, possibly a scan");
-					Util.abortiveCloseSocket(sclient_s);
-					return;
-				} catch (Exception e) {
-					System.out.println("someone is scanning you, do something! " + e);
-					Util.abortiveCloseSocket(sclient_s);
-					return;
-				}
-				if (!Arrays.equals(pswd, realpswd)) {
-					System.out.println("someone is scanning you, do something!!");
-					Util.abortiveCloseSocket(sclient_s);
-					return;
-				}
-			}
+			// System.out.println(sclient_s.getSession().getProtocol());
 
 			// increase timeout to wait for pooling conn
 			{
@@ -390,6 +431,75 @@ public class SmartproxyServer implements Callable<Void> {
 		} catch (Throwable e) {
 			System.err.println("there shouldn't be any exception here");
 			e.printStackTrace();
+		}
+	}
+
+	public HttpService create() {
+		HttpProcessor httpProcessorCopy;
+		{
+			final HttpProcessorBuilder b = HttpProcessorBuilder.create();
+
+			String serverInfoCopy = "Apache/2.4";
+
+			b.addAll(new ResponseDate(), new ResponseServer(serverInfoCopy), new ResponseContent(),
+					new ResponseConnControl());
+			httpProcessorCopy = b.build();
+		}
+
+		HashMap<String, HttpRequestHandler> handlerMap = new HashMap<String, HttpRequestHandler>();
+		handlerMap.put("/", new MarkdownRenderHandler());
+
+		HttpRequestHandlerMapper handlerMapperCopy;
+		{
+			final UriHttpRequestHandlerMapper reqistry = new UriHttpRequestHandlerMapper();
+			{
+				for (final Map.Entry<String, HttpRequestHandler> entry : handlerMap.entrySet()) {
+					reqistry.register(entry.getKey(), entry.getValue());
+				}
+			}
+			handlerMapperCopy = reqistry;
+		}
+
+		ConnectionReuseStrategy connStrategyCopy = DefaultConnectionReuseStrategy.INSTANCE;
+
+		HttpResponseFactory responseFactoryCopy = DefaultHttpResponseFactory.INSTANCE;
+
+		final HttpService httpService = new HttpService(httpProcessorCopy, connStrategyCopy, responseFactoryCopy,
+				handlerMapperCopy, null);
+
+		return httpService;
+	}
+
+	private void handleHttp(SSLSocket sclient_s, PushbackInputStream is, OutputStream os) {
+		DefaultBHttpServerConnection conn = new DefaultBHttpServerConnection(8 * 1024, 8 * 1024, null, null,
+				MessageConstraints.DEFAULT, StrictContentLengthStrategy.INSTANCE, StrictContentLengthStrategy.INSTANCE,
+				null, null) {
+			@Override
+			protected InputStream getSocketInputStream(Socket socket) {
+				return is;
+			}
+
+			@Override
+			protected OutputStream getSocketOutputStream(Socket socket) {
+				return os;
+			}
+		};
+		try {
+			final BasicHttpContext localContext = new BasicHttpContext();
+			final HttpCoreContext context = HttpCoreContext.adapt(localContext);
+			while (!Thread.interrupted() && conn.isOpen()) {
+				httpService.handleRequest(conn, context);
+				localContext.clear();
+			}
+			conn.close();
+		} catch (final Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				conn.shutdown();
+			} catch (final IOException ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 

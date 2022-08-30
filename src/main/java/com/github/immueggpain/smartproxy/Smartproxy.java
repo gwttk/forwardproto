@@ -1092,22 +1092,23 @@ public class Smartproxy implements Callable<Void> {
 			DataInputStream is = new DataInputStream(cserver_s.getInputStream());
 			DataOutputStream os = new DataOutputStream(cserver_s.getOutputStream());
 
-			// random stuff hello
-			try {
-				int len = rand.nextInt(500) + 90;
-				String hellostr = RandomStringUtils.randomAlphanumeric(len);
-				os.writeUTF(hellostr);
-			} catch (Exception e) {
-				log.println(sct.datetime() + " error when send hello " + e);
-				Util.abortiveCloseSocket(cserver_s);
-				return null;
-			}
-
 			// authn
 			try {
 				os.write(password);
 			} catch (Exception e) {
 				log.println(sct.datetime() + " error when send pswd " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+
+			// random stuff hello
+			try {
+				int len = rand.nextInt(500) + 90;
+				String hellostr = RandomStringUtils.randomAlphanumeric(len);
+				os.writeUTF(hellostr);
+				os.flush();
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when send hello " + e);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
