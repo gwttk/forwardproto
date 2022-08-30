@@ -204,7 +204,7 @@ public class Smartproxy implements Callable<Void> {
 				toBasicRead * 1000, log);
 
 		// set SSL
-		SSLContext context = SSLContext.getInstance("TLSv1.2");
+		SSLContext context = SSLContext.getInstance("TLS");
 		if (unsafeCert) {
 			TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
 				@Override
@@ -1086,6 +1086,8 @@ public class Smartproxy implements Callable<Void> {
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
+
+			// log.println(cserver_s.getSession().getCipherSuite());
 
 			DataInputStream is = new DataInputStream(cserver_s.getInputStream());
 			DataOutputStream os = new DataOutputStream(cserver_s.getOutputStream());

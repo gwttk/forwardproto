@@ -137,7 +137,7 @@ public class SmartproxyServer implements Callable<Void> {
 		kmf.init(ks, "123456".toCharArray());
 		KeyManager[] keyManagers = kmf.getKeyManagers();
 
-		SSLContext context = SSLContext.getInstance("TLSv1.2");
+		SSLContext context = SSLContext.getInstance("TLS");
 		context.init(keyManagers, null, null);
 
 		SSLServerSocketFactory ssf = context.getServerSocketFactory();
