@@ -471,6 +471,13 @@ public class SmartproxyServer implements Callable<Void> {
 	}
 
 	private void handleHttp(SSLSocket sclient_s, PushbackInputStream is, OutputStream os) {
+		try {
+			sclient_s.setSoTimeout(60 * 1000);
+		} catch (SocketException e) {
+			System.err.println("should be impossible!");
+			e.printStackTrace();
+		}
+
 		DefaultBHttpServerConnection conn = new DefaultBHttpServerConnection(8 * 1024, 8 * 1024, null, null,
 				MessageConstraints.DEFAULT, StrictContentLengthStrategy.INSTANCE, StrictContentLengthStrategy.INSTANCE,
 				null, null) {
