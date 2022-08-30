@@ -9,10 +9,6 @@
 - handles http connect and socks requests.
 - also redispatches HTTP requests, so some old HTTP clients without keep-alive support will enjoy some performance boost.
 
-![diagram](diagram.svg)
-
-[//]: # (<img src="diagram.svg" width="90%">)
-
 ## QuickStart
 * Make sure you have **[Java](https://jdk.java.net/11/) 8+** installed. 
 * Prepare a **valid** SSL cert at <cert_file> and its private key at <private_key_file>. The private key must be encoded in PEM.
