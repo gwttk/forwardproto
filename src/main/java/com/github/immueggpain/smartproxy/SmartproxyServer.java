@@ -439,7 +439,7 @@ public class SmartproxyServer implements Callable<Void> {
 		{
 			final HttpProcessorBuilder b = HttpProcessorBuilder.create();
 
-			String serverInfoCopy = "Apache/2.4";
+			String serverInfoCopy = "Apache/2.4.54 (Unix)";
 
 			b.addAll(new ResponseDate(), new ResponseServer(serverInfoCopy), new ResponseContent(),
 					new ResponseConnControl());
@@ -484,6 +484,13 @@ public class SmartproxyServer implements Callable<Void> {
 				return os;
 			}
 		};
+
+		try {
+			conn.bind(sclient_s);
+		} catch (IOException e) {
+			throw new RuntimeException("this should be impossible", e);
+		}
+
 		try {
 			final BasicHttpContext localContext = new BasicHttpContext();
 			final HttpCoreContext context = HttpCoreContext.adapt(localContext);
