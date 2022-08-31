@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+.creditsailing.com direct
+.myhuaweicloud.com direct
+.d.oracleinfinity.io proxy
 .canime.jp proxy
 .xunkong.cc proxy
 .le.com direct
