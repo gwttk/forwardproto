@@ -7,6 +7,31 @@
 # "reject" means drop connection
 
 #auto rules
+.qnbook.com proxy
+.cdeledu.com direct
+.upan.cc direct
+.xianlishi.com direct
+.alternativeto.net proxy
+.hostevaluate.com proxy
+.omnidesk.ru proxy
+.analyticsindiamag.com proxy
+.fpsmon.com proxy
+.duotegame.com direct
+.dmit.io proxy
+.hf.space proxy
+.chunyuqiufeng.com direct
+.dxsbb.com direct
+.zcbpx.com direct
+.pytorch.org proxy
+.huggingface.tech proxy
+.paperswithcode.com proxy
+.replicate.com proxy
+.zhufuwang.net proxy
+.qyxxpd.com direct
+.wd-purchase.com direct
+.huggingface.co proxy
+.ykai.com direct
+.fileinfo.com proxy
 .creditsailing.com direct
 .myhuaweicloud.com direct
 .d.oracleinfinity.io proxy
