@@ -7,6 +7,16 @@
 # "reject" means drop connection
 
 #auto rules
+.cjyun.org direct
+.aliyundrive.com direct
+.surgeplay.com proxy
+.leatrix.com proxy
+.bome.com proxy
+.ghproxy.com proxy
+.wowup.io proxy
+.digitalocean.com proxy
+.opensource.guide proxy
+.sk1er.club proxy
 .qnbook.com proxy
 .cdeledu.com direct
 .upan.cc direct
