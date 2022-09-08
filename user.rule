@@ -7,6 +7,22 @@
 # "reject" means drop connection
 
 #auto rules
+.gaotu100.com direct
+.easyliao.net direct
+.gaotuxueyuan.com direct
+.awstrack.me proxy
+.gsxtj.com direct
+.gsxcdn.com direct
+.imgfw.com proxy
+.alicloudccp.com direct
+.usd-cny.com direct
+.cngoldres.com direct
+.pureinfotech.com proxy
+.ichehome.com direct
+.luosimao.com direct
+.elevenforum.com proxy
+.aliyunpds.com direct
+.jijinhao.com direct
 .cjyun.org direct
 .aliyundrive.com direct
 .surgeplay.com proxy
