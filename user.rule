@@ -7,6 +7,28 @@
 # "reject" means drop connection
 
 #auto rules
+.roland.com proxy
+.image-line.com proxy
+.typeform.com proxy
+.vnmfnk.com direct
+.rolandus.com proxy
+.biccamera.com proxy
+.ableton.com proxy
+.roland-china.com direct
+.youshop10.com direct
+.xs4all.nl proxy
+.bedroomproducersblog.com proxy
+.muwai.com direct
+.transer-cn.com direct
+.native-instruments.com proxy
+.selectize.dev proxy
+.zerochan.net proxy
+.kcdnvip.com direct
+.hapying.com direct
+.qisaoba.com direct
+.whippedcreamsounds.com proxy
+.directus.app proxy
+.flowplayer.com proxy
 .fivern.com proxy
 .xnlyfanx.com proxy
 .qrco.de proxy
