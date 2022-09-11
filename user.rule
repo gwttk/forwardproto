@@ -7,6 +7,13 @@
 # "reject" means drop connection
 
 #auto rules
+.extpose.com proxy
+.chrome.com proxy
+.vivaldi.net proxy
+.webrtc.org proxy
+.vpnunlimited.com proxy
+.airvpn.org proxy
+.browserleaks.com proxy
 .roland.com proxy
 .image-line.com proxy
 .typeform.com proxy
@@ -4859,7 +4866,6 @@ gwent.win proxy
 .baomitu.com direct
 .77y4.com direct
 .gobyexample.com proxy
-.chrome.com direct
 .shaqm.com direct
 .qhstatic.com direct
 .qhupdate.com direct
