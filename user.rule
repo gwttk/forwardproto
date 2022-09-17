@@ -7,6 +7,35 @@
 # "reject" means drop connection
 
 #auto rules
+.chargebeestaticv2.com proxy
+.vi-control.net proxy
+.homemusicproducer.com proxy
+.blacktidemusic.com proxy
+.muzychenko.net proxy
+.steinberg.de proxy
+.zdnet.com proxy
+.reaperblog.net proxy
+.primesound.org proxy
+.give.academy proxy
+.thewelltemperedcomputer.com proxy
+.vidance.com proxy
+.fastspring.com proxy
+.asio2ks.de proxy
+.apigee.net proxy
+.gigperformer.com proxy
+.spectrasonics.net proxy
+.pianodreamers.com proxy
+.ubackup.com proxy
+.mokahr.com direct
+.affilimate.io proxy
+.plugins4free.com proxy
+.pluginboutique.com proxy
+.diskpart.com proxy
+.magicsound.live proxy
+.truepianos.com proxy
+.asio4all.com proxy
+.asio4all.org proxy
+.uwe-sieber.de proxy
 .sampleswap.org proxy
 .landr.com proxy
 .cleantalk.org proxy
