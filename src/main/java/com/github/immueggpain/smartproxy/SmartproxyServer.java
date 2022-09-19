@@ -496,7 +496,7 @@ public class SmartproxyServer implements Callable<Void> {
 			conn.bind(sclient_s);
 		} catch (IOException e) {
 			try {
-				conn.shutdown();
+				conn.close();
 			} catch (final IOException ex) {
 				ex.printStackTrace();
 			}
