@@ -7,6 +7,30 @@
 # "reject" means drop connection
 
 #auto rules
+.maogw.com proxy
+.coqui.ai proxy
+.hiphopmakers.com proxy
+.gradio.app proxy
+.lanzoug.com direct
+.sagemaker.aws proxy
+.hcx123.com direct
+.tutorialexample.com proxy
+.kaldi-asr.org proxy
+.nkmk.me proxy
+.nbviewer.org proxy
+.python-forum.io proxy
+.hcx99.com direct
+.vc-challenge.org proxy
+.dotmetrics.net proxy
+.resemble.ai proxy
+.lanzoub.com direct
+.aimcx.com direct
+.ibruce.info proxy
+.mlr.press proxy
+.soundbridge.io proxy
+.keithito.com proxy
+.wpmucdn.com proxy
+.formaloo.net proxy
 .chargebeestaticv2.com proxy
 .vi-control.net proxy
 .homemusicproducer.com proxy
