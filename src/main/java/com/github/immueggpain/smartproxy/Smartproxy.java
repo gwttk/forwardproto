@@ -353,12 +353,13 @@ public class Smartproxy implements Callable<Void> {
 		}
 
 		InetSocketAddress dest_sockaddr;
+		byte command_code;
 		try {
 			// socks version
 			is.readByte();
 
 			// recv command code
-			byte command_code = is.readByte();
+			command_code = is.readByte();
 			if (command_code != 1)
 				log.println("error command_code " + sctp.byte_to_string(command_code));
 
@@ -405,6 +406,40 @@ public class Smartproxy implements Callable<Void> {
 			log.println("error when read socks5 dest addr");
 			e.printStackTrace(log);
 			Util.abortiveCloseSocket(sclient_s);
+			return;
+		}
+
+		// if command_code is 0x03, udp associate
+		if (command_code == 3) {
+			buf = new byte[10];
+
+			// reply socks version again
+			buf[0] = 5;
+
+			// reply status
+			// 0x07: command not supported / protocol error
+			buf[1] = 7;
+
+			// reserved
+			buf[2] = 0;
+
+			// bind address data, not used
+			buf[3] = 1;
+
+			// buf[4~7] is ip 0.0.0.0
+			// buf[8~9] is port 0
+
+			try {
+				os.write(buf);
+				os.flush();
+			} catch (Exception e) {
+				log.println("error when write socks5 status");
+				e.printStackTrace(log);
+				Util.abortiveCloseSocket(sclient_s);
+				return;
+			}
+
+			Util.orderlyCloseSocket(sclient_s);
 			return;
 		}
 
