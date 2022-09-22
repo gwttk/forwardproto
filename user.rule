@@ -7,6 +7,33 @@
 # "reject" means drop connection
 
 #auto rules
+.yonelabo.com proxy
+.wildnihongo.com proxy
+.hinative.com proxy
+.anton.website proxy
+.lingq.com proxy
+.weblio.jp proxy
+.mitao521.com proxy
+.jfurness.uk proxy
+.sonarsource.com proxy
+.cnbkw.com direct
+.yuntiancloud.com direct
+.learnku.com direct
+.bangkao.com direct
+.amazonwebservices.com proxy
+.zouaw.com direct
+.siege-amazon.com proxy
+.te5.com direct
+.ybscjp.com direct
+.wendoc.com direct
+.cloud-ping.com direct
+.vrviu.com direct
+.5pub.com direct
+.wootric.com proxy
+.szszpx.com direct
+.plasticscm.com proxy
+.xuekao123.com direct
+.trjcn.net direct
 .maogw.com proxy
 .coqui.ai proxy
 .hiphopmakers.com proxy
