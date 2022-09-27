@@ -7,6 +7,24 @@
 # "reject" means drop connection
 
 #auto rules
+.habrastorage.org proxy
+.wendadaohang.com proxy
+.steamserver.net proxy
+.habr.com proxy
+.8atour.com direct
+.contentstack.com proxy
+.nathalielawhead.com proxy
+.tutorialsteacher.com proxy
+.dictionary.com proxy
+.flixdot.com proxy
+.banhq.com proxy
+.iiapple.com direct
+.58corp.com direct
+.sankuai.com direct
+.gamedeveloper.com proxy
+.hsto.org proxy
+.physicsclassroom.com proxy
+.flassari.is proxy
 .yonelabo.com proxy
 .wildnihongo.com proxy
 .hinative.com proxy
