@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.extendoffice.com proxy
+.qianyanshe.com direct
+.fshuiren.com direct
+.dftzj.com direct
+.heweather.com direct
+.qweather.com direct
 .habrastorage.org proxy
 .wendadaohang.com proxy
 .steamserver.net proxy
