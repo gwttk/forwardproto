@@ -210,7 +210,7 @@ public class SmartproxyServer implements Callable<Void> {
 					try {
 						n = pis.read(buf, offset, buf.length - offset);
 					} catch (Exception e) {
-						System.out.println("exception during reading pswd");
+						System.out.println("exception during reading first 64 bytes");
 						e.printStackTrace();
 						Util.abortiveCloseSocket(sclient_s);
 						return;
