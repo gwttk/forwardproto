@@ -7,6 +7,24 @@
 # "reject" means drop connection
 
 #auto rules
+.geevisit.com proxy
+.vhtcloud.com proxy
+.mooncell.wiki direct
+.genbaike.com direct
+.yixue.com direct
+.kq7.com direct
+.tumanyi.com direct
+.mobtou.com direct
+.t8tcdn.com direct
+.jwview.com direct
+.gogunlocked.com proxy
+.dmm-extension.com proxy
+.jidianwang.com direct
+.anime-sharing.com proxy
+.p-smith.com proxy
+.navismithapis-cdn.com proxy
+.gamefabrique.com proxy
+.uploadhaven.com proxy
 .appboy-images.com proxy
 .braze.eu proxy
 .retrology.net proxy
