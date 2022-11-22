@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.guayunfan.com direct
+.yuexw.com direct
 .geevisit.com proxy
 .vhtcloud.com proxy
 .mooncell.wiki direct
