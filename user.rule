@@ -7,6 +7,22 @@
 # "reject" means drop connection
 
 #auto rules
+.miyoushe.com direct
+.data.amazon.co.jp proxy
+.gogen-yurai.jp proxy
+.read.amazon.co.jp proxy
+.akashadata.com proxy
+.8181zx.com direct
+.completion.amazon.co.jp proxy
+.znds.net direct
+.dangbei.net direct
+.dora13.com direct
+.mpc-hc.org proxy
+.isthisheroforreal.com proxy
+.touhouwiki.net proxy
+.doom9.org proxy
+.twitcount.com proxy
+.hwang.info proxy
 .jiemian.com direct
 .busuu.com proxy
 .fc2.xxx proxy
