@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.userscript.zone proxy
 .consentmanager.net proxy
 .jmj.cc direct
 .imyfone.com proxy
@@ -66,7 +67,6 @@
 .ryuugames.com proxy
 .helloshopowner.com proxy
 .imoutomoe.net proxy
-.dl-a10b-0470.mypikpak.com direct
 .illiweb.com proxy
 .2heng.xin proxy
 .invitereferrals.com proxy
@@ -97,7 +97,6 @@
 .daidr.me proxy
 .gdtimg.com direct
 .bunny.net proxy
-.static.mypikpak.com direct
 .sstmlt.com proxy
 .biginjap.com proxy
 .jirayajp.cyou proxy
