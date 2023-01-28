@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.7zy1.com proxy
+.pixiv.org proxy
+.mwimser2.cc proxy
+.manwa.me proxy
+.ads-pixiv.net proxy
+.hmm910.com proxy
 .userscript.zone proxy
 .consentmanager.net proxy
 .jmj.cc direct
