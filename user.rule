@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.yunmd.net direct
 .7zy1.com proxy
 .pixiv.org proxy
 .mwimser2.cc proxy
