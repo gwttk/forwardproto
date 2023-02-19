@@ -7,6 +7,17 @@
 # "reject" means drop connection
 
 #auto rules
+.douyincdn.com direct
+.thisisdb.com proxy
+.lydingpin.com proxy
+.assetlab.io proxy
+.lnk.to proxy
+.instant.page proxy
+.linkmedya.com proxy
+.apkmirror.com proxy
+.techbriefly.com proxy
+.uc1z.com direct
+.protobuf.dev proxy
 .worldoftanks.com proxy
 .tanks.gg proxy
 .tts.yunmd.net proxy
