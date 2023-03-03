@@ -10,6 +10,7 @@ package com.v2ray.core.app.router.routercommon;
  *
  * Protobuf type {@code v2ray.core.app.router.routercommon.CIDR}
  */
+@SuppressWarnings("unchecked")
 public final class CIDR extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:v2ray.core.app.router.routercommon.CIDR)
@@ -25,7 +26,7 @@ private static final long serialVersionUID = 0L;
   }
 
   @java.lang.Override
-  @SuppressWarnings({"unused"})
+  @SuppressWarnings({})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new CIDR();
@@ -80,7 +81,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IP_ADDR_FIELD_NUMBER = 68000;
-  @SuppressWarnings("serial")
   private volatile java.lang.Object ipAddr_ = "";
   /**
    * <code>string ip_addr = 68000 [(.v2ray.core.common.protoext.field_opt) = { ... }</code>
@@ -186,7 +186,7 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @java.lang.Override
+@java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;

@@ -6,6 +6,7 @@ package com.v2ray.core.common.protoext;
 /**
  * Protobuf type {@code v2ray.core.common.protoext.FieldOpt}
  */
+@SuppressWarnings("unchecked")
 public final class FieldOpt extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:v2ray.core.common.protoext.FieldOpt)
@@ -25,7 +26,7 @@ private static final long serialVersionUID = 0L;
   }
 
   @java.lang.Override
-  @SuppressWarnings({"unused"})
+  @SuppressWarnings({})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new FieldOpt();
@@ -50,7 +51,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ANY_WANTS_FIELD_NUMBER = 1;
-  @SuppressWarnings("serial")
   private com.google.protobuf.LazyStringList anyWants_;
   /**
    * <code>repeated string any_wants = 1;</code>
@@ -86,7 +86,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ALLOWED_VALUES_FIELD_NUMBER = 2;
-  @SuppressWarnings("serial")
   private com.google.protobuf.LazyStringList allowedValues_;
   /**
    * <code>repeated string allowed_values = 2;</code>
@@ -122,7 +121,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ALLOWED_VALUE_TYPES_FIELD_NUMBER = 3;
-  @SuppressWarnings("serial")
   private com.google.protobuf.LazyStringList allowedValueTypes_;
   /**
    * <code>repeated string allowed_value_types = 3;</code>
@@ -158,7 +156,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CONVERT_TIME_READ_FILE_INTO_FIELD_NUMBER = 4;
-  @SuppressWarnings("serial")
   private volatile java.lang.Object convertTimeReadFileInto_ = "";
   /**
    * <pre>
@@ -220,7 +217,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CONVERT_TIME_RESOURCE_LOADING_FIELD_NUMBER = 6;
-  @SuppressWarnings("serial")
   private volatile java.lang.Object convertTimeResourceLoading_ = "";
   /**
    * <pre>
@@ -267,7 +263,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CONVERT_TIME_PARSE_IP_FIELD_NUMBER = 7;
-  @SuppressWarnings("serial")
   private volatile java.lang.Object convertTimeParseIp_ = "";
   /**
    * <pre>

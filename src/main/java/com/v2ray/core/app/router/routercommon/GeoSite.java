@@ -6,6 +6,7 @@ package com.v2ray.core.app.router.routercommon;
 /**
  * Protobuf type {@code v2ray.core.app.router.routercommon.GeoSite}
  */
+@SuppressWarnings("unchecked")
 public final class GeoSite extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:v2ray.core.app.router.routercommon.GeoSite)
@@ -24,7 +25,7 @@ private static final long serialVersionUID = 0L;
   }
 
   @java.lang.Override
-  @SuppressWarnings({"unused"})
+  @SuppressWarnings({})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new GeoSite();
@@ -49,7 +50,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COUNTRY_CODE_FIELD_NUMBER = 1;
-  @SuppressWarnings("serial")
   private volatile java.lang.Object countryCode_ = "";
   /**
    * <code>string country_code = 1;</code>
@@ -88,7 +88,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DOMAIN_FIELD_NUMBER = 2;
-  @SuppressWarnings("serial")
   private java.util.List<com.v2ray.core.app.router.routercommon.Domain> domain_;
   /**
    * <code>repeated .v2ray.core.app.router.routercommon.Domain domain = 2;</code>
@@ -144,7 +143,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CODE_FIELD_NUMBER = 4;
-  @SuppressWarnings("serial")
   private volatile java.lang.Object code_ = "";
   /**
    * <code>string code = 4;</code>
@@ -183,7 +181,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FILE_PATH_FIELD_NUMBER = 68000;
-  @SuppressWarnings("serial")
   private volatile java.lang.Object filePath_ = "";
   /**
    * <code>string file_path = 68000 [(.v2ray.core.common.protoext.field_opt) = { ... }</code>

@@ -22,7 +22,7 @@ private static final long serialVersionUID = 0L;
   }
 
   @java.lang.Override
-  @SuppressWarnings({"unused"})
+  @SuppressWarnings({})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new MessageOpt();
@@ -47,7 +47,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TYPE_FIELD_NUMBER = 1;
-  @SuppressWarnings("serial")
   private com.google.protobuf.LazyStringList type_;
   /**
    * <code>repeated string type = 1;</code>
@@ -83,7 +82,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SHORT_NAME_FIELD_NUMBER = 2;
-  @SuppressWarnings("serial")
   private com.google.protobuf.LazyStringList shortName_;
   /**
    * <code>repeated string short_name = 2;</code>
@@ -119,7 +117,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TRANSPORT_ORIGINAL_NAME_FIELD_NUMBER = 86001;
-  @SuppressWarnings("serial")
   private volatile java.lang.Object transportOriginalName_ = "";
   /**
    * <code>string transport_original_name = 86001;</code>
@@ -233,7 +230,8 @@ private static final long serialVersionUID = 0L;
     return true;
   }
 
-  @java.lang.Override
+  @SuppressWarnings("unchecked")
+@java.lang.Override
   public int hashCode() {
     if (memoizedHashCode != 0) {
       return memoizedHashCode;

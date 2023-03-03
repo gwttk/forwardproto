@@ -10,6 +10,7 @@ package com.v2ray.core.app.router.routercommon;
  *
  * Protobuf type {@code v2ray.core.app.router.routercommon.Domain}
  */
+@SuppressWarnings("unchecked")
 public final class Domain extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:v2ray.core.app.router.routercommon.Domain)
@@ -26,7 +27,7 @@ private static final long serialVersionUID = 0L;
   }
 
   @java.lang.Override
-  @SuppressWarnings({"unused"})
+  @SuppressWarnings({})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
     return new Domain();
@@ -269,7 +270,7 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    @SuppressWarnings({"unused"})
+    @SuppressWarnings({})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
       return new Attribute();
@@ -335,7 +336,6 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int KEY_FIELD_NUMBER = 1;
-    @SuppressWarnings("serial")
     private volatile java.lang.Object key_ = "";
     /**
      * <code>string key = 1;</code>
@@ -496,7 +496,7 @@ private static final long serialVersionUID = 0L;
       return true;
     }
 
-    @java.lang.Override
+	@java.lang.Override
     public int hashCode() {
       if (memoizedHashCode != 0) {
         return memoizedHashCode;
@@ -1076,7 +1076,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VALUE_FIELD_NUMBER = 2;
-  @SuppressWarnings("serial")
   private volatile java.lang.Object value_ = "";
   /**
    * <pre>
@@ -1123,7 +1122,6 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ATTRIBUTE_FIELD_NUMBER = 3;
-  @SuppressWarnings("serial")
   private java.util.List<com.v2ray.core.app.router.routercommon.Domain.Attribute> attribute_;
   /**
    * <pre>
