@@ -26,6 +26,7 @@ package com.github.immueggpain.smartproxy;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -151,6 +152,7 @@ public class Smartproxy implements Callable<Void> {
 	private int toSvrReadFromCltRest;
 
 	private static final int BUF_SIZE = 1024 * 512;
+	private static final int UDP_PKT_SIZE = 1024 * 8;
 	private static final SecureRandom rand = new SecureRandom();
 
 	private static final Pattern httpconnect_regex = Pattern.compile("CONNECT (.+):([0-9]+) HTTP/1[.][01]");
@@ -796,7 +798,7 @@ public class Smartproxy implements Callable<Void> {
 		}
 	}
 
-	private static InetSocketAddress readSocks5Addr(DataInputStream is) {
+	private static InetSocketAddress readSocks5Addr(DataInput is) {
 		byte address_type = is.readByte();
 		InetAddress dest_addr = null;
 		String dest_domain = null;
@@ -841,7 +843,9 @@ public class Smartproxy implements Callable<Void> {
 			// read one packet
 			int n;
 			try {
-				cserver_is.read();
+				InetSocketAddress packetDstAddr = readSocks5Addr(cserver_is);
+				int packetLength = cserver_is.readInt();
+				cserver_is.readFully(b);
 			} catch (SocketTimeoutException e) {
 				// timeout cuz read no data
 				// if we are writing, then continue
