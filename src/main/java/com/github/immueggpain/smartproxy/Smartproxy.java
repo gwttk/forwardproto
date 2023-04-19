@@ -492,8 +492,7 @@ public class Smartproxy implements Callable<Void> {
 		if (cserver_sb == null) {
 			// can't connect
 			// X'04' Host unreachable
-			socks5Reply(sclient_s, os, (byte) 0x04);
-			Util.orderlyCloseSocket(sclient_s);
+			socks5FinalReply(sclient_s, os, (byte) 0x04);
 			return;
 		}
 		// reply ok
@@ -528,7 +527,8 @@ public class Smartproxy implements Callable<Void> {
 		handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket, sclient_s);
 	}
 
-	private void socks5Reply(Socket socket, DataOutputStream os, byte replyStatus) {
+	/** also close socket */
+	private void socks5FinalReply(Socket socket, DataOutputStream os, byte replyStatus) {
 		byte[] buf = new byte[10];
 
 		// reply socks version again
@@ -554,6 +554,8 @@ public class Smartproxy implements Callable<Void> {
 			Util.abortiveCloseSocket(socket);
 			return;
 		}
+
+		Util.closeQuietly(socket);
 	}
 
 	private void http_connect(byte first_byte, InputStream is, OutputStream os, Socket sclient_s) {
