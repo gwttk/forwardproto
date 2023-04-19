@@ -227,7 +227,7 @@ public class SmartproxyServer implements Callable<Void> {
 							continue;
 					}
 				}
-				System.out.println("authn passed");
+				// System.out.println("authn passed");
 			}
 
 			// random stuff, but fun string
