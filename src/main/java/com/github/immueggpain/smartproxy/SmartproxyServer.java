@@ -387,6 +387,7 @@ public class SmartproxyServer implements Callable<Void> {
 				Util.abortiveCloseSocket(cdest_s);
 				return;
 			} catch (Exception e) {
+				System.out.println(String.format("%s exception during connect dest", dest_sockaddr.toString()));
 				e.printStackTrace();
 				Util.abortiveCloseSocket(sclient_s);
 				Util.abortiveCloseSocket(cdest_s);
