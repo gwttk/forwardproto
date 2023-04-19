@@ -783,7 +783,7 @@ public class Smartproxy implements Callable<Void> {
 				() -> handleConnectionUdp2(contxt, cserver_is, sclient_os));
 
 		// client to server loop
-		byte[] buf = new byte[2048];
+		byte[] buf = new byte[UDP_PKT_SIZE];
 		DatagramPacket p = new DatagramPacket(buf, buf.length);
 		while (true) {
 			p.setLength(buf.length);
@@ -839,13 +839,17 @@ public class Smartproxy implements Callable<Void> {
 	/** read from server, write to client */
 	private void handleConnectionUdp2(TunnelContext contxt, InputStream cserver_is_, OutputStream sclient_os) {
 		DataInputStream cserver_is = new DataInputStream(new BufferedInputStream(cserver_is_, BUF_SIZE));
+		byte[] buf = new byte[UDP_PKT_SIZE];
 		while (true) {
 			// read one packet
-			int n;
+			int n = 0;
 			try {
 				InetSocketAddress packetDstAddr = readSocks5Addr(cserver_is);
+				n += 6;
 				int packetLength = cserver_is.readInt();
-				cserver_is.readFully(b);
+				n += 4;
+				cserver_is.readFully(buf, 0, packetLength);
+				n += packetLength;
 			} catch (SocketTimeoutException e) {
 				// timeout cuz read no data
 				// if we are writing, then continue
