@@ -37,6 +37,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.PushbackInputStream;
 import java.net.ConnectException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -413,6 +415,7 @@ public class Smartproxy implements Callable<Void> {
 		}
 
 		if (command_code == 1) {
+			// if command_code is 0x01, tcp connect
 			// now we connect next node
 			SocketBundle cserver_sb = null;
 			try {
@@ -465,23 +468,35 @@ public class Smartproxy implements Callable<Void> {
 			return;
 		} else if (command_code == 3) {
 			// if command_code is 0x03, udp associate
-			buf = new byte[10];
 
+			// create udp socket
+			DatagramSocket udpSocket;
+			try {
+				udpSocket = new DatagramSocket(new InetSocketAddress(InetAddress.getByName(local_listen_ip), 0));
+			} catch (Exception e) {
+				log.println("error when creating DatagramSocket");
+				e.printStackTrace(log);
+				Util.abortiveCloseSocket(sclient_s);
+				return;
+			}
+
+			int udpPort = udpSocket.getLocalPort();
+
+			// reply to client
+			buf = new byte[10];
 			// reply socks version again
 			buf[0] = 5;
-
 			// reply status
 			// X'00' succeeded
 			buf[1] = 0;
-
 			// reserved
 			buf[2] = 0;
-
 			// bind address data
 			buf[3] = 1; // ipv4
 			// buf[4~7] is ip 0.0.0.0
-			// buf[8~9] is port 0
-
+			// buf[8~9] is port
+			buf[8] = (byte) ((udpPort >>> 8) & 0xFF);
+			buf[9] = (byte) ((udpPort >>> 0) & 0xFF);
 			try {
 				os.write(buf);
 				os.flush();
@@ -492,16 +507,13 @@ public class Smartproxy implements Callable<Void> {
 				return;
 			}
 
-			handleConnectionUdp();
+			handleConnectionUdp(udpSocket, dest_sockaddr);
 			return;
 		} else {
 			log.println("error command_code " + sctp.byte_to_string(command_code));
 			Util.abortiveCloseSocket(sclient_s);
 			return;
 		}
-	}
-
-	private void handleConnectionUdp() {
 	}
 
 	/** also close socket */
@@ -692,7 +704,7 @@ public class Smartproxy implements Callable<Void> {
 			buf[pos++] = (byte) b;
 		}
 		String userid = sc.b2s(buf, 0, pos);
-		log.println("userid " + userid);
+		log.println("socks4a userid " + userid);
 
 		// domain
 		String dest_domain = null;
@@ -753,6 +765,125 @@ public class Smartproxy implements Callable<Void> {
 		// transfer data
 		handleConnection(cserver_sb.is, cserver_sb.os, is1, os1, dest_sockaddr.toString(), cserver_sb.socket,
 				sclient_s);
+	}
+
+	private void handleConnectionUdp(DatagramSocket udpSocket, InetSocketAddress client_udp_sockaddr) {
+		int receiveBufferSize;
+		try {
+			receiveBufferSize = udpSocket.getReceiveBufferSize();
+			log.println(String.format("udp receiveBufferSize: %d", receiveBufferSize));
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
+
+		Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn2",
+				() -> handleConnectionUdp2(contxt, cserver_is, sclient_os));
+
+		// client to server loop
+		byte[] buf = new byte[2048];
+		DatagramPacket p = new DatagramPacket(buf, buf.length);
+		while (true) {
+			p.setLength(buf.length);
+			try {
+				udpSocket.receive(p);
+			} catch (IOException e) {
+				e.printStackTrace(log);
+				udpSocket.close();
+				return;
+			}
+			System.out.println(String.format("udp recv: %d", p.getLength()));
+		}
+	}
+
+	/** read from server, write to client */
+	private void handleConnectionUdp2(TunnelContext contxt, InputStream cserver_is, OutputStream sclient_os) {
+		byte[] buf = new byte[BUF_SIZE];
+		while (true) {
+			// read some bytes
+			int n;
+			try {
+				n = cserver_is.read(buf);
+			} catch (SocketTimeoutException e) {
+				// timeout cuz read no data
+				// if we are writing, then continue
+				// if we are not writing, just RST close connection
+				if (sct.time_ms() - contxt.lastWriteToServer < toCltReadFromSvr)
+					continue;
+				else {
+					if (contxt.closing) {
+					} else {
+						// so the keep-alive of app-dest is longer.
+						// but there's nothing we can do about it,
+						// cuz NAT may timeout.
+//						log.println(String.format("%s cserver read timeout %s", sct.datetime(), contxt.toString()));
+						contxt.isBroken = true;
+					}
+					break;
+				}
+			} catch (Throwable e) {
+				if (contxt.closing) {
+				} else {
+					if (e.getMessage().equals("Connection reset")) {
+						// could be many reasons but i don't care
+					} else {
+						log.println(String.format("%s cserver read exception %s (%s)", sct.datetime(),
+								contxt.toString(), e));
+					}
+					contxt.isBroken = true;
+				}
+				break;
+			}
+
+			// normal EOF
+			if (n == -1) {
+				if (contxt.closing)
+					break;
+				// normal eof from server, no need to log
+//				log.println(String.format("%s cserver read eof %s", sct.datetime(), contxt.toString()));
+				break;
+			}
+
+			speedMeter.countRecv(n);
+
+			// write some bytes
+			try {
+				sclient_os.write(buf, 0, n);
+			} catch (Throwable e) {
+				if (contxt.closing)
+					break;
+				log.println(String.format("%s sclient write exception %s", sct.datetime(), contxt.toString()));
+				e.printStackTrace(log);
+				contxt.isBroken = true;
+				break;
+			}
+			contxt.lastWriteToClient = sct.time_ms();
+
+			// debug show socket buf size
+			if (debug) {
+				try {
+					String local = contxt.cserver_s.getLocalSocketAddress().toString();
+					int rbufsz = contxt.cserver_s.getReceiveBufferSize();
+					int sbufsz = contxt.cserver_s.getSendBufferSize();
+					System.out.println(String.format("%s, rbufsz: %d, sbufsz: %d", local, rbufsz, sbufsz));
+				} catch (SocketException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		// shutdown connections
+		synchronized (contxt) {
+			if (!contxt.closing) {
+				contxt.closing = true;
+				if (contxt.isBroken) {
+					Util.abortiveCloseSocket(contxt.cserver_s);
+					Util.abortiveCloseSocket(contxt.sclient_s);
+				} else {
+					Util.orderlyCloseSocket(contxt.cserver_s);
+					Util.orderlyCloseSocket(contxt.sclient_s);
+				}
+			}
+		}
 	}
 
 	// blockingly mutual transfer 2 sockets, make sure closing before return
