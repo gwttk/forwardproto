@@ -491,33 +491,8 @@ public class Smartproxy implements Callable<Void> {
 		}
 		if (cserver_sb == null) {
 			// can't connect
-			buf = new byte[10];
-
-			// reply socks version again
-			buf[0] = 5;
-
-			// reply status
 			// X'04' Host unreachable
-			buf[1] = 4;
-
-			// reserved
-			buf[2] = 0;
-
-			// bind address data
-			buf[3] = 1; // ipv4
-			// buf[4~7] is ip 0.0.0.0
-			// buf[8~9] is port 0
-
-			try {
-				os.write(buf);
-				os.flush();
-			} catch (Exception e) {
-				log.println("error when write socks5 status");
-				e.printStackTrace(log);
-				Util.abortiveCloseSocket(sclient_s);
-				return;
-			}
-
+			socks5Reply(sclient_s, os, (byte) 0x04);
 			Util.orderlyCloseSocket(sclient_s);
 			return;
 		}
@@ -551,6 +526,34 @@ public class Smartproxy implements Callable<Void> {
 
 		// transfer data
 		handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket, sclient_s);
+	}
+
+	private void socks5Reply(Socket socket, DataOutputStream os, byte replyStatus) {
+		byte[] buf = new byte[10];
+
+		// reply socks version again
+		buf[0] = 5;
+
+		// reply status
+		buf[1] = replyStatus;
+
+		// reserved
+		buf[2] = 0;
+
+		// bind address data
+		buf[3] = 1; // ipv4
+		// buf[4~7] is ip 0.0.0.0
+		// buf[8~9] is port 0
+
+		try {
+			os.write(buf);
+			os.flush();
+		} catch (Exception e) {
+			log.println("error when write socks5 status");
+			e.printStackTrace(log);
+			Util.abortiveCloseSocket(socket);
+			return;
+		}
 	}
 
 	private void http_connect(byte first_byte, InputStream is, OutputStream os, Socket sclient_s) {
