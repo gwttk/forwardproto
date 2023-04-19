@@ -7,6 +7,23 @@
 # "reject" means drop connection
 
 #auto rules
+.fandango.com proxy
+.adt598.com proxy
+.allsci-fi.com proxy
+.scified.com proxy
+.rottentomatoes.com proxy
+.sffchronicles.com proxy
+.st-note.com proxy
+.xingxiaoculture.com direct
+.shenlanbao.com direct
+.mmbang.info direct
+.caofeij.com proxy
+.gearslutz.com proxy
+.theplatform.com proxy
+.jddj.com direct
+.wendangwang.com direct
+.digitalcertvalidation.com proxy
+.steamusercontent.com proxy
 .szbubu.com direct
 .eurolandir.com proxy
 .simplelocalize.io proxy
