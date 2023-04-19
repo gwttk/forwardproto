@@ -1102,8 +1102,11 @@ public class Smartproxy implements Callable<Void> {
 
 			// log.println(cserver_s.getSession().getCipherSuite());
 
-			DataInputStream is = new DataInputStream(cserver_s.getInputStream());
-			DataOutputStream os = new DataOutputStream(new BufferedOutputStream(cserver_s.getOutputStream(), 1024 * 2));
+			InputStream raw_is = cserver_s.getInputStream();
+			OutputStream raw_os = cserver_s.getOutputStream();
+			DataInputStream is = new DataInputStream(raw_is);
+			@SuppressWarnings("resource")
+			DataOutputStream os = new DataOutputStream(new BufferedOutputStream(raw_os, 1024 * 2));
 			// use 2k buffer so that we only send to network when flush()
 
 			// authn
@@ -1151,7 +1154,7 @@ public class Smartproxy implements Callable<Void> {
 				return null;
 			}
 
-			SocketBundle sb = new SocketBundle(cserver_s, is, os);
+			SocketBundle sb = new SocketBundle(cserver_s, raw_is, raw_os);
 			sb.expireTime = System.currentTimeMillis() + toSvrReadFromCltRest - 10000;
 			return sb;
 		} catch (Throwable e) {
