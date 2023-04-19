@@ -471,8 +471,8 @@ public class Smartproxy implements Callable<Void> {
 			buf[0] = 5;
 
 			// reply status
-			// 0x07: command not supported / protocol error
-			buf[1] = 7;
+			// X'00' succeeded
+			buf[1] = 0;
 
 			// reserved
 			buf[2] = 0;
@@ -492,13 +492,16 @@ public class Smartproxy implements Callable<Void> {
 				return;
 			}
 
-			Util.orderlyCloseSocket(sclient_s);
+			handleConnectionUdp();
 			return;
 		} else {
 			log.println("error command_code " + sctp.byte_to_string(command_code));
 			Util.abortiveCloseSocket(sclient_s);
 			return;
 		}
+	}
+
+	private void handleConnectionUdp() {
 	}
 
 	/** also close socket */
