@@ -190,6 +190,7 @@ public class SmartproxyServer implements Callable<Void> {
 		}
 	}
 
+	@SuppressWarnings("resource")
 	private void handleConnection(SSLSocket sclient_s) {
 		try {
 			PushbackInputStream pis = new PushbackInputStream(sclient_s.getInputStream(), 64);
