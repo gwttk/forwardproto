@@ -796,6 +796,44 @@ public class Smartproxy implements Callable<Void> {
 		}
 	}
 
+	private static InetSocketAddress readSocks5Addr(DataInputStream is) {
+		byte address_type = is.readByte();
+		InetAddress dest_addr = null;
+		String dest_domain = null;
+		byte[] buf;
+
+		if (address_type == 1) {
+			// ipv4
+			buf = new byte[4];
+			is.readFully(buf);
+			dest_addr = InetAddress.getByAddress(buf);
+		} else if (address_type == 3) {
+			// domain name
+			int domain_length = is.readUnsignedByte();
+			buf = new byte[domain_length];
+			is.readFully(buf);
+			dest_domain = sc.b2s(buf);
+		} else if (address_type == 4) {
+			// ipv6
+			buf = new byte[16];
+			is.readFully(buf);
+			dest_addr = InetAddress.getByAddress(buf);
+		} else {
+			// unknown address_type
+			throw new Exception("error unknown address type");
+		}
+
+		// port
+		int dest_port = is.readUnsignedShort();
+
+		InetSocketAddress dest_sockaddr;
+		if (dest_addr != null)
+			dest_sockaddr = new InetSocketAddress(dest_addr, dest_port);
+		else
+			dest_sockaddr = InetSocketAddress.createUnresolved(dest_domain, dest_port);
+		return dest_sockaddr;
+	}
+
 	/** read from server, write to client */
 	private void handleConnectionUdp2(TunnelContext contxt, InputStream cserver_is_, OutputStream sclient_os) {
 		DataInputStream cserver_is = new DataInputStream(new BufferedInputStream(cserver_is_, BUF_SIZE));
