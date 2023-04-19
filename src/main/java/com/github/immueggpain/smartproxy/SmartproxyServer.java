@@ -290,10 +290,11 @@ public class SmartproxyServer implements Callable<Void> {
 					return;
 				}
 
-				if (opCode != 3)
-					break;
-				else {
+				if (opCode == 3) {
 					// System.out.println("keep-alive");
+					continue;
+				} else {
+					break;
 				}
 			}
 
@@ -303,6 +304,8 @@ public class SmartproxyServer implements Callable<Void> {
 				return;
 			} else if (opCode == 2) {
 				// udp
+				System.out.println("udp not yet");
+				Util.abortiveCloseSocket(sclient_s);
 				return;
 			} else {
 				System.out.println("unkown opcode " + opCode);
