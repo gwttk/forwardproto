@@ -393,7 +393,7 @@ public class SmartproxyServer implements Callable<Void> {
 			sclient_s.setSoTimeout(toSvrReadFromClt);
 
 			Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn2",
-					() -> handleConnection2(contxt, cdest_is, os));
+					() -> handleConnTcp2(contxt, cdest_is, os));
 
 			// client to dest loop
 			byte[] buf = new byte[BUF_SIZE];
@@ -562,7 +562,7 @@ public class SmartproxyServer implements Callable<Void> {
 		}
 	}
 
-	private void handleConnection2(TunnelContext contxt, InputStream cdest_is, OutputStream sclient_os) {
+	private void handleConnTcp2(TunnelContext contxt, InputStream cdest_is, OutputStream sclient_os) {
 		byte[] buf = new byte[BUF_SIZE];
 		while (true) {
 			// read some bytes
