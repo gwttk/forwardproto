@@ -1163,15 +1163,17 @@ public class Smartproxy implements Callable<Void> {
 
 	private SocketBundle create_full_tunnel(SocketBundle sb, String dest_hostname, int dest_port) {
 		try {
-			// DataInputStream is = new DataInputStream(sb.is);
-			DataOutputStream os = new DataOutputStream(sb.os);
 			Socket cserver_s = sb.socket;
+			// DataInputStream is = new DataInputStream(sb.is);
+			DataOutputStream os = new DataOutputStream(new BufferedOutputStream(sb.os, 1024));
+			// use buffer so that we only send to network when flush()
 
 			// send opcode and dest info
 			try {
 				os.writeInt(Launcher.OPCODE_TCP);
 				os.writeUTF(dest_hostname);
 				os.writeShort(dest_port);
+				os.flush();
 			} catch (Exception e) {
 				log.println(sct.datetime() + " error when send dest info " + e);
 				Util.abortiveCloseSocket(cserver_s);
@@ -1362,11 +1364,11 @@ public class Smartproxy implements Callable<Void> {
 	private static class SocketBundle {
 		public Socket socket;
 		public InputStream is;
-		public DataOutputStream os;
+		public OutputStream os;
 		// optional
 		public long expireTime;
 
-		public SocketBundle(Socket socket, InputStream is, DataOutputStream os) {
+		public SocketBundle(Socket socket, InputStream is, OutputStream os) {
 			this.socket = socket;
 			this.is = is;
 			this.os = os;
