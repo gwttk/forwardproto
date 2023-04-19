@@ -503,9 +503,8 @@ public class Smartproxy implements Callable<Void> {
 			// reserved
 			buf[2] = 0;
 
-			// bind address data, not used
-			buf[3] = 1;
-
+			// bind address data
+			buf[3] = 1; // ipv4
 			// buf[4~7] is ip 0.0.0.0
 			// buf[8~9] is port 0
 
@@ -535,9 +534,8 @@ public class Smartproxy implements Callable<Void> {
 		// reserved
 		buf[2] = 0;
 
-		// bind address data, not used
-		buf[3] = 1;
-
+		// bind address data
+		buf[3] = 1; // ipv4
 		// buf[4~7] is ip 0.0.0.0
 		// buf[8~9] is port 0
 
