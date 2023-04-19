@@ -5784,7 +5784,7 @@ gwent.win proxy
 .cachefly.net proxy
 .dnsmadeeasy.com proxy
 .crsspxl.com proxy
-.ipinfo.io direct
+.ipinfo.io proxy
 .discourse-cdn-sjc1.com proxy
 .vox-cdn.com proxy
 .kxcdn.com proxy
