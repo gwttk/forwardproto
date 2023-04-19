@@ -153,6 +153,11 @@ public class Http2socks {
 		try {
 			connFromApp.bind(socket);
 		} catch (IOException e) {
+			// should be impossible
+			try {
+				connFromApp.shutdown();
+			} catch (IOException ignore) {
+			}
 			throw new RuntimeException("this should be impossible", e);
 		}
 
