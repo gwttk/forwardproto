@@ -1058,34 +1058,11 @@ public class Smartproxy implements Callable<Void> {
 
 	private SocketBundle create_tunnel(String server_hostname, int server_port, SSLSocketFactory ssf, byte[] password,
 			String dest_hostname, int dest_port) {
-		try {
-			SocketBundle half_tunnel = create_half_tunnel(server_hostname, server_port, ssf, password);
-			if (half_tunnel == null)
-				return null;
-
-			DataOutputStream os = half_tunnel.os;
-			InputStream is = half_tunnel.is;
-			Socket cserver_s = half_tunnel.socket;
-
-			// send dest info
-			try {
-				os.writeUTF(dest_hostname);
-				os.writeShort(dest_port);
-			} catch (Exception e) {
-				log.println(sct.datetime() + " error when send dest info " + e);
-				Util.abortiveCloseSocket(cserver_s);
-				return null;
-			}
-
-			// restore to normal timeout
-			cserver_s.setSoTimeout(toCltReadFromSvr);
-
-			return new SocketBundle(cserver_s, is, os);
-		} catch (Throwable e) {
-			log.println("there shouldn't be any exception here");
-			e.printStackTrace(log);
+		SocketBundle half_tunnel = create_half_tunnel(server_hostname, server_port, ssf, password);
+		if (half_tunnel == null)
 			return null;
-		}
+
+		return create_full_tunnel(half_tunnel, dest_hostname, dest_port);
 	}
 
 	private SocketBundle create_half_tunnel(String server_hostname, int server_port, SSLSocketFactory ssf,
