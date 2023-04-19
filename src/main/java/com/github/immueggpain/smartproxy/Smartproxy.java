@@ -23,6 +23,7 @@
  *******************************************************************************/
 package com.github.immueggpain.smartproxy;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -1102,7 +1103,8 @@ public class Smartproxy implements Callable<Void> {
 			// log.println(cserver_s.getSession().getCipherSuite());
 
 			DataInputStream is = new DataInputStream(cserver_s.getInputStream());
-			DataOutputStream os = new DataOutputStream(cserver_s.getOutputStream());
+			DataOutputStream os = new DataOutputStream(new BufferedOutputStream(cserver_s.getOutputStream(), 1024 * 2));
+			// use 2k buffer so that we only send to network when flush()
 
 			// authn
 			try {
@@ -1118,7 +1120,6 @@ public class Smartproxy implements Callable<Void> {
 				int len = rand.nextInt(500) + 90;
 				String hellostr = RandomStringUtils.randomAlphanumeric(len);
 				os.writeUTF(hellostr);
-				os.flush();
 			} catch (Exception e) {
 				log.println(sct.datetime() + " error when send hello " + e);
 				Util.abortiveCloseSocket(cserver_s);
@@ -1128,6 +1129,7 @@ public class Smartproxy implements Callable<Void> {
 			// send rest timeout
 			try {
 				os.writeInt(toSvrReadFromCltRest);
+				os.flush();
 			} catch (Exception e) {
 				log.println(sct.datetime() + " error when send timeout " + e);
 				Util.abortiveCloseSocket(cserver_s);
@@ -1165,8 +1167,9 @@ public class Smartproxy implements Callable<Void> {
 			DataOutputStream os = new DataOutputStream(sb.os);
 			Socket cserver_s = sb.socket;
 
-			// send dest info
+			// send opcode and dest info
 			try {
+				os.writeInt(Launcher.OPCODE_TCP);
 				os.writeUTF(dest_hostname);
 				os.writeShort(dest_port);
 			} catch (Exception e) {
