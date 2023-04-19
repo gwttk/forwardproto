@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.szbubu.com direct
+.eurolandir.com proxy
+.simplelocalize.io proxy
+.euroland.com proxy
+.idol001.com direct
+.stadiamaps.com proxy
+.sspanel.net proxy
+.appledi.com proxy
 .fghrsh.net proxy
 .tenorshare.com proxy
 .fantia.jp proxy
@@ -142,7 +150,6 @@
 .protobuf.dev proxy
 .worldoftanks.com proxy
 .tanks.gg proxy
-.tts.yunmd.net proxy
 .hro-beauty.com direct
 .keepcdn.com direct
 .marmot-cloud.com direct
@@ -3328,7 +3335,6 @@
 .taiqingjiu.com direct
 .webflow.com proxy
 .cdn27-okzy.com proxy
-.r.ftqq.com proxy
 .sorryow.com proxy
 .haima-zuida.com proxy
 .dy10000.com direct
