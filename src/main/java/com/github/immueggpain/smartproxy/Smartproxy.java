@@ -1246,7 +1246,7 @@ public class Smartproxy implements Callable<Void> {
 				SocketBundle sb = halfTunnels.peek();
 				if (sb != null && sb.expireTime < System.currentTimeMillis()) {
 					if (halfTunnels.remove(sb)) {
-						Util.abortiveCloseSocket(sb.socket);
+						Util.closeQuietly(sb.socket);
 						// log.println(sct.datetime() + " half tunnel expires");
 					}
 				}
