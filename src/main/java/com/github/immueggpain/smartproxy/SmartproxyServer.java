@@ -285,7 +285,11 @@ public class SmartproxyServer implements Callable<Void> {
 					Util.closeQuietly(sclient_s);
 					return;
 				} catch (Throwable e) {
-					System.out.println("exception during reading opcode " + e);
+					if (e instanceof SocketException && e.getMessage().equals("Connection reset")) {
+						// it's just client abortively close connection
+					} else {
+						System.out.println("exception during reading opcode " + e);
+					}
 					Util.abortiveCloseSocket(sclient_s);
 					return;
 				}
