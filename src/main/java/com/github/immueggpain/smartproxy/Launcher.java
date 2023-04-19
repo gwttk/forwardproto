@@ -24,6 +24,13 @@ public class Launcher implements Callable<Void> {
 	/** small timeout when server read from client at connection start */
 	public static final int toSvrReadFromCltSmall = 10 * 1000;
 
+	/** opcode: tcp forward */
+	public static final int OPCODE_TCP = 1;
+	/** opcode: udp forward */
+	public static final int OPCODE_UDP = 2;
+	/** opcode: keep-alive */
+	public static final int OPCODE_KEEPALIVE = 3;
+
 	public static void main(String[] args) {
 		int exitCode = new CommandLine(new Launcher()).setCaseInsensitiveEnumValuesAllowed(true)
 				.setUsageHelpLongOptionsMaxWidth(40).setUsageHelpAutoWidth(true).execute(args);

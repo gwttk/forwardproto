@@ -272,6 +272,46 @@ public class SmartproxyServer implements Callable<Void> {
 			}
 
 			// may rest here
+			// waiting for op code
+			int opCode = -1;
+			{
+				try {
+					opCode = is.readInt();
+				} catch (SocketTimeoutException e) {
+					Util.abortiveCloseSocket(sclient_s);
+					return;
+				} catch (EOFException e) {
+					Util.closeQuietly(sclient_s);
+					return;
+				} catch (Throwable e) {
+					System.out.println("exception during reading opcode " + e);
+					Util.abortiveCloseSocket(sclient_s);
+					return;
+				}
+			}
+
+			if (opCode == 1) {
+				// tcp
+			} else if (opCode == 2) {
+				// udp
+			} else if (opCode == 3) {
+				// keep-alive
+			} else {
+				System.out.println("unkown opcode " + opCode);
+				Util.abortiveCloseSocket(sclient_s);
+				return;
+			}
+
+			handleConnTcp(sclient_s, is, os);
+		} catch (Throwable e) {
+			System.err.println("there shouldn't be any exception here");
+			e.printStackTrace();
+		}
+	}
+
+	private void handleConnTcp(SSLSocket sclient_s, DataInputStream is, DataOutputStream os) {
+		try {
+			// read dest addr
 			String dest_hostname;
 			int dest_port;
 			{
