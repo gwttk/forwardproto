@@ -23,6 +23,7 @@
  *******************************************************************************/
 package com.github.immueggpain.smartproxy;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -796,13 +797,13 @@ public class Smartproxy implements Callable<Void> {
 	}
 
 	/** read from server, write to client */
-	private void handleConnectionUdp2(TunnelContext contxt, InputStream cserver_is, OutputStream sclient_os) {
-		byte[] buf = new byte[BUF_SIZE];
+	private void handleConnectionUdp2(TunnelContext contxt, InputStream cserver_is_, OutputStream sclient_os) {
+		DataInputStream cserver_is = new DataInputStream(new BufferedInputStream(cserver_is_, BUF_SIZE));
 		while (true) {
-			// read some bytes
+			// read one packet
 			int n;
 			try {
-				n = cserver_is.read(buf);
+				cserver_is.read();
 			} catch (SocketTimeoutException e) {
 				// timeout cuz read no data
 				// if we are writing, then continue
@@ -857,18 +858,6 @@ public class Smartproxy implements Callable<Void> {
 				break;
 			}
 			contxt.lastWriteToClient = sct.time_ms();
-
-			// debug show socket buf size
-			if (debug) {
-				try {
-					String local = contxt.cserver_s.getLocalSocketAddress().toString();
-					int rbufsz = contxt.cserver_s.getReceiveBufferSize();
-					int sbufsz = contxt.cserver_s.getSendBufferSize();
-					System.out.println(String.format("%s, rbufsz: %d, sbufsz: %d", local, rbufsz, sbufsz));
-				} catch (SocketException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 
 		// shutdown connections
