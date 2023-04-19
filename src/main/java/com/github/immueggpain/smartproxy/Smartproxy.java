@@ -390,6 +390,8 @@ public class Smartproxy implements Callable<Void> {
 				buf = new byte[16];
 				is.readFully(buf);
 				dest_addr = InetAddress.getByAddress(buf);
+				// the reason that we can't do ipv6 is because we don't have ipv6 user.rule
+				// things
 				throw new Exception("error ipv6 address");
 			} else {
 				// unknown address_type
