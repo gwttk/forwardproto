@@ -413,17 +413,28 @@ public class Smartproxy implements Callable<Void> {
 		}
 
 		if (command_code == 1) {
-
-		} else if (command_code == 2) {
-			// if command_code is 0x02, tcp port binding
+			// now we connect next node
+			SocketBundle cserver_sb = null;
+			try {
+				cserver_sb = create_connect_config_socket(dest_sockaddr, "socks5");
+			} catch (Exception e) {
+				e.printStackTrace(log);
+			}
+			if (cserver_sb == null) {
+				// can't connect
+				// X'04' Host unreachable
+				socks5FinalReply(sclient_s, os, (byte) 0x04);
+				return;
+			}
+			// reply ok
 			buf = new byte[10];
 
 			// reply socks version again
 			buf[0] = 5;
 
 			// reply status
-			// 0x07: command not supported / protocol error
-			buf[1] = 7;
+			// X'00' succeeded
+			buf[1] = 0;
 
 			// reserved
 			buf[2] = 0;
@@ -443,7 +454,14 @@ public class Smartproxy implements Callable<Void> {
 				return;
 			}
 
-			Util.orderlyCloseSocket(sclient_s);
+			// transfer data
+			handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket,
+					sclient_s);
+			return;
+		} else if (command_code == 2) {
+			// if command_code is 0x02, tcp port binding
+			// 0x07: command not supported / protocol error
+			socks5FinalReply(sclient_s, os, (byte) 0x07);
 			return;
 		} else if (command_code == 3) {
 			// if command_code is 0x03, udp associate
@@ -481,50 +499,6 @@ public class Smartproxy implements Callable<Void> {
 			Util.abortiveCloseSocket(sclient_s);
 			return;
 		}
-
-		// now we connect next node
-		SocketBundle cserver_sb = null;
-		try {
-			cserver_sb = create_connect_config_socket(dest_sockaddr, "socks5");
-		} catch (Exception e) {
-			e.printStackTrace(log);
-		}
-		if (cserver_sb == null) {
-			// can't connect
-			// X'04' Host unreachable
-			socks5FinalReply(sclient_s, os, (byte) 0x04);
-			return;
-		}
-		// reply ok
-		buf = new byte[10];
-
-		// reply socks version again
-		buf[0] = 5;
-
-		// reply status
-		// X'00' succeeded
-		buf[1] = 0;
-
-		// reserved
-		buf[2] = 0;
-
-		// bind address data
-		buf[3] = 1; // ipv4
-		// buf[4~7] is ip 0.0.0.0
-		// buf[8~9] is port 0
-
-		try {
-			os.write(buf);
-			os.flush();
-		} catch (Exception e) {
-			log.println("error when write socks5 status");
-			e.printStackTrace(log);
-			Util.abortiveCloseSocket(sclient_s);
-			return;
-		}
-
-		// transfer data
-		handleConnection(cserver_sb.is, cserver_sb.os, is, os, dest_sockaddr.toString(), cserver_sb.socket, sclient_s);
 	}
 
 	/** also close socket */
