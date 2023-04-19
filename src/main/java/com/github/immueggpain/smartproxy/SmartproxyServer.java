@@ -274,7 +274,7 @@ public class SmartproxyServer implements Callable<Void> {
 			// may rest here
 			// waiting for op code
 			int opCode = -1;
-			{
+			while (true) {
 				try {
 					opCode = is.readInt();
 				} catch (SocketTimeoutException e) {
@@ -288,21 +288,26 @@ public class SmartproxyServer implements Callable<Void> {
 					Util.abortiveCloseSocket(sclient_s);
 					return;
 				}
+
+				if (opCode != 3)
+					break;
+				else {
+					// System.out.println("keep-alive");
+				}
 			}
 
 			if (opCode == 1) {
 				// tcp
+				handleConnTcp(sclient_s, is, os);
+				return;
 			} else if (opCode == 2) {
 				// udp
-			} else if (opCode == 3) {
-				// keep-alive
+				return;
 			} else {
 				System.out.println("unkown opcode " + opCode);
 				Util.abortiveCloseSocket(sclient_s);
 				return;
 			}
-
-			handleConnTcp(sclient_s, is, os);
 		} catch (Throwable e) {
 			System.err.println("there shouldn't be any exception here");
 			e.printStackTrace();
