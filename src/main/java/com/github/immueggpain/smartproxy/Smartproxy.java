@@ -419,6 +419,7 @@ public class Smartproxy implements Callable<Void> {
 
 		if (command_code == 1) {
 			// if command_code is 0x01, tcp connect
+
 			// now we connect next node
 			SocketBundle cserver_sb = null;
 			try {
@@ -432,24 +433,20 @@ public class Smartproxy implements Callable<Void> {
 				socks5FinalReply(sclient_s, os, (byte) 0x04);
 				return;
 			}
+
 			// reply ok
 			buf = new byte[10];
-
 			// reply socks version again
 			buf[0] = 5;
-
 			// reply status
 			// X'00' succeeded
 			buf[1] = 0;
-
 			// reserved
 			buf[2] = 0;
-
 			// bind address data
 			buf[3] = 1; // ipv4
 			// buf[4~7] is ip 0.0.0.0
 			// buf[8~9] is port 0
-
 			try {
 				os.write(buf);
 				os.flush();
@@ -482,8 +479,21 @@ public class Smartproxy implements Callable<Void> {
 				Util.abortiveCloseSocket(sclient_s);
 				return;
 			}
-
 			int udpPort = udpSocket.getLocalPort();
+
+			// now we connect next node
+			SocketBundle cserver_sb = null;
+			try {
+				cserver_sb = create_connect_config_socket(dest_sockaddr, "socks5");
+			} catch (Exception e) {
+				e.printStackTrace(log);
+			}
+			if (cserver_sb == null) {
+				// can't connect
+				// X'04' Host unreachable
+				socks5FinalReply(sclient_s, os, (byte) 0x04);
+				return;
+			}
 
 			// reply to client
 			buf = new byte[10];
@@ -779,6 +789,7 @@ public class Smartproxy implements Callable<Void> {
 			e.printStackTrace();
 		}
 
+		TunnelContext contxt = new TunnelContext(client_udp_sockaddr.toString(), cserver_s, sclient_s);
 		Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn2",
 				() -> handleConnectionUdp2(contxt, cserver_is, sclient_os));
 
