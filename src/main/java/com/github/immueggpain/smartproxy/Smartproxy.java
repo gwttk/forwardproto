@@ -789,7 +789,8 @@ public class Smartproxy implements Callable<Void> {
 			e.printStackTrace();
 		}
 
-		Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn-udp2", () -> handleConnectionUdp2(null, null));
+		Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn-udp2",
+				() -> handleConnectionUdp2(null, null, udpSocket));
 
 		// client to server loop
 		byte[] buf = new byte[UDP_PKT_SIZE];
@@ -807,7 +808,7 @@ public class Smartproxy implements Callable<Void> {
 		}
 	}
 
-	private static InetSocketAddress readSocks5Addr(DataInput is) {
+	private static InetSocketAddress readSocks5Addr(DataInput is) throws Exception {
 		byte address_type = is.readByte();
 		InetAddress dest_addr = null;
 		String dest_domain = null;
@@ -846,7 +847,7 @@ public class Smartproxy implements Callable<Void> {
 	}
 
 	private static int writeSocks5Addr(InetSocketAddress addr, byte[] buf, int offset) {
-
+		return 0;
 	}
 
 	/** read from server, write to client */
