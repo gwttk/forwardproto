@@ -789,9 +789,7 @@ public class Smartproxy implements Callable<Void> {
 			e.printStackTrace();
 		}
 
-		TunnelContext contxt = new TunnelContext(client_udp_sockaddr.toString(), cserver_s, sclient_s);
-		Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn2",
-				() -> handleConnectionUdp2(contxt, cserver_is, sclient_os));
+		Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn-udp2", () -> handleConnectionUdp2(null, null));
 
 		// client to server loop
 		byte[] buf = new byte[UDP_PKT_SIZE];
@@ -847,20 +845,25 @@ public class Smartproxy implements Callable<Void> {
 		return dest_sockaddr;
 	}
 
+	private static int writeSocks5Addr(InetSocketAddress addr, byte[] buf, int offset) {
+
+	}
+
 	/** read from server, write to client */
-	private void handleConnectionUdp2(TunnelContext contxt, InputStream cserver_is_, OutputStream sclient_os) {
+	private void handleConnectionUdp2(TunnelContext contxt, InputStream cserver_is_, DatagramSocket socks5_udp_socket) {
 		DataInputStream cserver_is = new DataInputStream(new BufferedInputStream(cserver_is_, BUF_SIZE));
-		byte[] buf = new byte[UDP_PKT_SIZE];
+		InetSocketAddress packetDstAddr;
+		byte[] databuf = new byte[UDP_PKT_SIZE];
+		int dataLen;
+		byte[] socks5udpbuf = new byte[UDP_PKT_SIZE];
+		DatagramPacket p = new DatagramPacket(socks5udpbuf, socks5udpbuf.length);
+
 		while (true) {
 			// read one packet
-			int n = 0;
 			try {
-				InetSocketAddress packetDstAddr = readSocks5Addr(cserver_is);
-				n += 6;
-				int packetLength = cserver_is.readInt();
-				n += 4;
-				cserver_is.readFully(buf, 0, packetLength);
-				n += packetLength;
+				packetDstAddr = readSocks5Addr(cserver_is);
+				dataLen = cserver_is.readInt();
+				cserver_is.readFully(databuf, 0, dataLen);
 			} catch (SocketTimeoutException e) {
 				// timeout cuz read no data
 				// if we are writing, then continue
@@ -892,6 +895,7 @@ public class Smartproxy implements Callable<Void> {
 				break;
 			}
 
+			int n = 0;
 			// normal EOF
 			if (n == -1) {
 				if (contxt.closing)
@@ -901,11 +905,23 @@ public class Smartproxy implements Callable<Void> {
 				break;
 			}
 
+			// RSV
+			socks5udpbuf[0] = 0;
+			socks5udpbuf[1] = 0;
+			// FRAG
+			socks5udpbuf[2] = 0;
+			// socks5addr
+			n = 3 + writeSocks5Addr(packetDstAddr, socks5udpbuf, 3);
+			// data
+			System.arraycopy(databuf, 0, socks5udpbuf, n, dataLen);
+			n += dataLen;
+
 			speedMeter.countRecv(n);
 
 			// write some bytes
 			try {
-				sclient_os.write(buf, 0, n);
+				p.setData(socks5udpbuf, 0, n);
+				socks5_udp_socket.send(p);
 			} catch (Throwable e) {
 				if (contxt.closing)
 					break;
