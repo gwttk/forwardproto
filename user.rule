@@ -7,6 +7,19 @@
 # "reject" means drop connection
 
 #auto rules
+.huashengls.com direct
+.86cg.com proxy
+.gcores.com direct
+.pipedriveassets.com proxy
+.cloudflare-dns.com proxy
+.socialsnap.com proxy
+.ufme.net direct
+.browsium.com proxy
+.cccitu.com proxy
+.every1dns.net proxy
+.pipedrive.com proxy
+.alidns.com direct
+.cnjoel.com direct
 .fandango.com proxy
 .adt598.com proxy
 .allsci-fi.com proxy
