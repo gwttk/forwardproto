@@ -7,6 +7,34 @@
 # "reject" means drop connection
 
 #auto rules
+.jomoxc.com direct
+.shiyuegame.com direct
+.honwen123.com proxy
+.virusbtn.com proxy
+.hpe.com proxy
+.resources.alibabacloud.com proxy
+.beebom.com proxy
+.starrailstation.com proxy
+.aldeee.com direct
+.anoopcnair.com proxy
+.perfecto.io proxy
+.gadgethacks.com proxy
+.auxiliary.alibabacloud.com proxy
+.bugherd.com proxy
+.mumuglobal.com proxy
+.virusbulletin.com proxy
+.eu-1-id5-sync.com proxy
+.community.com proxy
+.bunpro.jp proxy
+.tappx.com proxy
+.hypergryph.com direct
+.aescrypt.com proxy
+.nexonstatic.com proxy
+.loowu.com proxy
+.wujinkk.com proxy
+.yasensz.com proxy
+.vrtcal.com proxy
+.bhsr.com direct
 .huashengls.com direct
 .86cg.com proxy
 .gcores.com direct
