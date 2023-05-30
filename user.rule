@@ -7,6 +7,13 @@
 # "reject" means drop connection
 
 #auto rules
+.ones.ai direct
+.img.apkzu.com direct
+.602.com direct
+.tj.apkzu.com direct
+.fgo.wiki direct
+.www.apkzu.com proxy
+.31dj.com proxy
 .sgss8.net proxy
 .x-x-x.tube proxy
 .dvdempire.com proxy
