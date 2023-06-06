@@ -7,6 +7,22 @@
 # "reject" means drop connection
 
 #auto rules
+.skillbuilder.aws proxy
+.clym-sdk.net proxy
+.awswaf.com proxy
+.gdevelop.io proxy
+.stripecdn.com proxy
+.knoji.com proxy
+.api.aws proxy
+.dtssrv.com proxy
+.clym.io proxy
+.phoenixnap.com proxy
+.yimian.xyz direct
+.doutub.com direct
+.imgtp.com proxy
+.onlinewebfonts.com proxy
+.us-lighthouse.com proxy
+.vvhan.com direct
 .ones.ai direct
 .img.apkzu.com direct
 .602.com direct
@@ -58,7 +74,7 @@
 .stackoverflowteams.com proxy
 .dolphin-emu.org proxy
 .holdegoor.online proxy
-.maa.plus proxy
+.maa.plus direct
 .mrf.io proxy
 .heitu.com direct
 .riotpixels.net proxy
@@ -80,7 +96,6 @@
 .littlerocksoiree.com proxy
 .office369.com direct
 .hard-drive.net proxy
-.ota.maa.plus direct
 .riotpixels.com proxy
 .kwer.top direct
 .fitgirl-repacks.site proxy
@@ -93,7 +108,6 @@
 .imgg.dev proxy
 .danasoft.com proxy
 .hermietkreeft.site proxy
-.prts.maa.plus direct
 .project357.com proxy
 .baozicdn.com proxy
 .o7planning.org proxy
