@@ -7,6 +7,32 @@
 # "reject" means drop connection
 
 #auto rules
+.idouyinvod.com direct
+.shareaholic.net proxy
+.fpshelper.com proxy
+.cambridge.org proxy
+.flagcdn.com proxy
+.qumath.in proxy
+.dartmouth.edu proxy
+.vedantu.com proxy
+.webchest.io proxy
+.pipiads.com proxy
+.biqudd.com proxy
+.intelliticks.com proxy
+.bezpiecznainwestycja.pl proxy
+.google.tm proxy
+.find-prizes.life proxy
+.learnosity.com proxy
+.google.sk proxy
+.wangamela.com direct
+.socratic.org proxy
+.lanzou.com proxy
+.cuemath.com proxy
+.apxor.com proxy
+.qy0.ru proxy
+.calatopia.com direct
+.bytefcdnrd.com direct
+.calculatorandconverter.com proxy
 .akamai-video-content.com proxy
 .fapopedia.net proxy
 .cldz.info proxy
