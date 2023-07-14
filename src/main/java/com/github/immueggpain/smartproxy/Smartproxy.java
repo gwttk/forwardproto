@@ -1221,6 +1221,7 @@ public class Smartproxy implements Callable<Void> {
 				}
 			}
 		} else {
+			// is an ip string
 			String hostString = dest_sockaddr.getAddress().getHostAddress();
 			long ip = ip2long(dest_sockaddr.getAddress());
 			IpRange ipRange = ip_to_nn.floorEntry(ip).getValue();
@@ -1236,7 +1237,7 @@ public class Smartproxy implements Callable<Void> {
 		}
 
 		if (nextNode.type == NextNode.Type.BAN) {
-			throw new Exception("this address is banned");
+			return null;
 		} else if (nextNode.type == NextNode.Type.DIRECT) {
 			// dns resolve
 			InetAddress dest_addr = null;
