@@ -7,6 +7,30 @@
 # "reject" means drop connection
 
 #auto rules
+xy123x4x221x14xy.mcdn.bilivideo.cn reject
+xy114x97x80x200xy.mcdn.bilivideo.cn reject
+.wisc.cloud proxy
+.izotope.com proxy
+.911electronic.com proxy
+.surveyfiles.com proxy
+.hu-manity.co proxy
+.bushiroad.com proxy
+.gsu.edu proxy
+.bushimo.jp proxy
+.numbeo.com proxy
+.jhu.edu proxy
+.fiverrcdn.com proxy
+.bulbagarden.net proxy
+.omnichannelengagementhub.com proxy
+.voicefoundation.org proxy
+.digitalsoundandmusic.com proxy
+.wisc.edu proxy
+.botframework.com proxy
+.rochester.edu proxy
+.lit.link proxy
+.px-cloud.net proxy
+.decipherinc.com proxy
+.japan-dev.com proxy
 .highgo.ca proxy
 .sonassi.net proxy
 .rightanswers.com proxy
