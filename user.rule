@@ -7,6 +7,27 @@
 # "reject" means drop connection
 
 #auto rules
+.2fast-app.de proxy
+.xhscdn.net direct
+.getaegis.app proxy
+.krafton.com proxy
+.tagboard.com proxy
+.gamesatlas.com proxy
+.rudderlabs.com proxy
+.teamfortress.com proxy
+.cashify.in proxy
+.klayge.org proxy
+.hltv.org proxy
+.demonware.net proxy
+.thesmackdownhotel.com proxy
+.proguides.com proxy
+.ob.maj-soul.com proxy
+.google.ca proxy
+.icomoon.io proxy
+.steamchina.com direct
+.beanstalk.io proxy
+.toss.im proxy
+.rudderstack.com proxy
 .236z.com direct
 .tinyurl.com proxy
 .sndimg.com proxy
