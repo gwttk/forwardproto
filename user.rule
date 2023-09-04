@@ -7,6 +7,33 @@
 # "reject" means drop connection
 
 #auto rules
+.civfanatics.com proxy
+.2k.com proxy
+.valvesoftware.com proxy
+.tfogc.com direct
+.account-cn-s.alibabacloud.com direct
+.haomeili.net direct
+.govdelivery.com proxy
+.a3ion.com proxy
+.special-k.info proxy
+.belabelwise.org proxy
+.githubuniverse.com proxy
+.ew52.com direct
+.differentk.fyi proxy
+.destructoid.com proxy
+.gafferongames.com proxy
+.mouseacceleration.com proxy
+.bitrix.info proxy
+.primagames.com proxy
+.2kgames.com proxy
+.civilization.com proxy
+.exacdn.com proxy
+.stripcash.com proxy
+.fulla.bet proxy
+.steamgames.com proxy
+.abtasty.com proxy
+.radmin-club.com proxy
+.taobao.org direct
 .2fast-app.de proxy
 .xhscdn.net direct
 .getaegis.app proxy
