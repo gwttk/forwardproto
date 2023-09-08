@@ -7,6 +7,25 @@
 # "reject" means drop connection
 
 #auto rules
+.yicaiglobal.com direct
+.zwwank.com direct
+.360sres.com direct
+.kjcesports.com proxy
+.sitefinity.com proxy
+.kkfesw.com direct
+.dignitas.gg proxy
+.360simg.com direct
+.dajiaxx.com proxy
+.focusrite.com proxy
+.progress.com proxy
+.wafzi.com direct
+.firstsportz.com proxy
+.malwarebytes.com proxy
+.iter.org proxy
+.howtogeekimages.com proxy
+.culturedvultures.com proxy
+.singular.net proxy
+.thevrsoldier.com proxy
 .civfanatics.com proxy
 .2k.com proxy
 .valvesoftware.com proxy
