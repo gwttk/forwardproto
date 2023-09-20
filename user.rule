@@ -7,6 +7,21 @@
 # "reject" means drop connection
 
 #auto rules
+.zhuanzfx.com direct
+.ceve-market.org direct
+.321fenx.com direct
+.ccpgames.com proxy
+.laiqukankan.com direct
+.winterco.org proxy
+.evetech.net proxy
+.isboxer.com proxy
+.eims.games direct
+.baihuwang.com direct
+.bk-cdn.com direct
+.goingkj.com direct
+.exacttarget.com proxy
+.fuelcdn.com proxy
+.eve-search.com proxy
 .yicaiglobal.com direct
 .zwwank.com direct
 .360sres.com direct
