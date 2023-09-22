@@ -205,8 +205,7 @@ public class Smartproxy implements Callable<Void> {
 		nn_proxy = new NextNode(NextNode.Type.PROXY, next_proxy);
 		load_domain_nn_table();
 
-		http2socks = new Http2socks(
-				new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(local_listen_ip, local_listen_port)),
+		http2socks = new Http2socks(new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("127.0.0.1", local_listen_port)),
 				toBasicRead * 1000, log);
 
 		// set SSL
