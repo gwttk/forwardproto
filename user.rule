@@ -7,6 +7,21 @@
 # "reject" means drop connection
 
 #auto rules
+.skoli.ru proxy
+.edgesrv.com direct
+.cerlestes.de proxy
+.extccp.com proxy
+.e-351.com proxy
+.eve-files.com proxy
+.eveminingfleet.ovh proxy
+.top-password.com proxy
+.eve-gatecheck.space proxy
+.zkillboard.com proxy
+.jsdesign1.com direct
+.grismar.net proxy
+.eve-offline.net proxy
+.thealphasguide.com proxy
+.evebk.com proxy
 .zhuanzfx.com direct
 .ceve-market.org direct
 .321fenx.com direct
