@@ -132,6 +132,7 @@ public class Http2socks {
 		pool = new BasicConnPool(connFactory);
 		pool.setDefaultMaxPerRoute(6);
 		pool.setMaxTotal(6 * 20);
+		pool.setValidateAfterInactivity(2000);
 		new Thread(this::connPoolCleaner, "h2s-connPoolCleaner").start();
 	}
 
@@ -313,6 +314,7 @@ public class Http2socks {
 		}
 
 		StatusLine statusLine = responseFromDest.getStatusLine();
+		log.println(statusLine);
 		responseToApp.setStatusLine(requestFromApp.getProtocolVersion(), statusLine.getStatusCode(),
 				statusLine.getReasonPhrase());
 		responseToApp.setHeaders(responseFromDest.getAllHeaders());
