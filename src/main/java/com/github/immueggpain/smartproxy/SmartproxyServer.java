@@ -213,7 +213,7 @@ public class SmartproxyServer implements Callable<Void> {
 						n = pis.read(buf, offset, buf.length - offset);
 					} catch (Exception e) {
 						System.out.println("exception during reading first 64 bytes");
-						e.printStackTrace();
+						System.out.println(e);
 						Util.abortiveCloseSocket(sclient_s);
 						return;
 					}
