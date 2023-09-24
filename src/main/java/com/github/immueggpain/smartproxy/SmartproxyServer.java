@@ -53,6 +53,8 @@ import java.util.concurrent.Callable;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
@@ -211,6 +213,10 @@ public class SmartproxyServer implements Callable<Void> {
 					int n = 0;
 					try {
 						n = pis.read(buf, offset, buf.length - offset);
+					} catch (SSLException e) {
+						// if ssl error, no log cuz it's too common
+						Util.abortiveCloseSocket(sclient_s);
+						return;
 					} catch (Exception e) {
 						System.out.println("exception during reading first 64 bytes");
 						System.out.println(e);
