@@ -7,6 +7,18 @@
 # "reject" means drop connection
 
 #auto rules
+.hyvor.com proxy
+.calculate-linux.org proxy
+.elinux.org proxy
+.downtowndougbrown.com proxy
+.kgimg.com direct
+.puppylinux.com proxy
+.lobste.rs proxy
+.pikapod.net proxy
+.getsitectrl.com proxy
+.itsfoss.com proxy
+.mik.ua proxy
+.lesimple.fr proxy
 .skoli.ru proxy
 .edgesrv.com direct
 .cerlestes.de proxy
