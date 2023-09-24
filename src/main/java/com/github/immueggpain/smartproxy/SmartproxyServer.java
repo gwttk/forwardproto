@@ -217,6 +217,11 @@ public class SmartproxyServer implements Callable<Void> {
 						Util.abortiveCloseSocket(sclient_s);
 						return;
 					}
+					if (n == -1) {
+						// eof
+						Util.abortiveCloseSocket(sclient_s);
+						return;
+					}
 					if (!ByteBuffer.wrap(buf, offset, n).equals(ByteBuffer.wrap(realpswd, offset, n))) {
 						pis.unread(buf, 0, offset + n);
 						handleHttp(sclient_s, pis, os_);
