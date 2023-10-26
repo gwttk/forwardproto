@@ -7,6 +7,19 @@
 # "reject" means drop connection
 
 #auto rules
+.hiccears.com proxy
+.diskaa.com proxy
+.yinmh.com proxy
+.components.unrealengine.com proxy
+.165tchuang.com direct
+.mianfeiwendang.com proxy
+.woshitu.sbs proxy
+.linguee.com proxy
+.pwmail.vip proxy
+.changyexiaoshuo.com proxy
+.rawgithub.com proxy
+.deepl.com proxy
+.toolmm.com proxy
 .acgilive.com proxy
 .darkanddarker.com proxy
 .mmupup.com proxy
