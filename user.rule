@@ -7,6 +7,17 @@
 # "reject" means drop connection
 
 #auto rules
+.libreofficechina.org direct
+.boredomfiles.com proxy
+.xlrdcgrgs.xyz direct
+.honesttopaws.com proxy
+.uptodate.com proxy
+.contentiq.com proxy
+.usi.edu proxy
+.nightdaily.com proxy
+.172tt.com direct
+.toutiaovod.com direct
+.a0bi.com direct
 .collabnix.com proxy
 .characterai.io proxy
 .youpumao.xyz direct
