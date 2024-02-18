@@ -1,6 +1,7 @@
 package com.github.immueggpain.smartproxytool;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -61,6 +62,13 @@ public class DedupUserrule implements Callable<Void> {
 		try (BOMInputStream is = new BOMInputStream(new FileInputStream(Paths.get("user.rule").toFile()))) {
 			oldRules = IOUtils.readLines(is, sc.utf8);
 		}
+		int localRuleSize = 0;
+		try (BOMInputStream is = new BOMInputStream(new FileInputStream(Paths.get("local.rule").toFile()))) {
+			List<String> localRules = IOUtils.readLines(is, sc.utf8);
+			localRuleSize = localRules.size();
+			oldRules.addAll(localRules);
+		} catch (FileNotFoundException ignore) {
+		}
 		// notice the oldRules contain comments & empty lines.
 		// also I want to insert new rules after the '#auto rules' line.
 		ArrayList<String> merged = new ArrayList<String>(oldRules.size() + newRules.size());
@@ -71,7 +79,7 @@ public class DedupUserrule implements Callable<Void> {
 
 		// step 3: find duplicates such as aaa.bbb.cc & ddd.bbb.cc
 		// merge them into .bbb.cc
-		new DedupUserrule().run(merged, outputUserRuleFile);
+		new DedupUserrule().run(merged, outputUserRuleFile, localRuleSize);
 		return null;
 	}
 
@@ -110,7 +118,7 @@ public class DedupUserrule implements Callable<Void> {
 	// domains
 	private HashMap<String, String> domains;
 
-	private void run(List<String> inputUserRules, String outputFile) throws Exception {
+	private void run(List<String> inputUserRules, String outputFile, int localRuleSize) throws Exception {
 		domains = new HashMap<>();
 		ArrayList<String> outputLines = new ArrayList<>();
 
@@ -184,7 +192,7 @@ public class DedupUserrule implements Callable<Void> {
 				outputLines.remove(outputLines.size() - 1);
 			} else {
 				// conflict
-				System.err.println("conflict!!! " + fulldn);
+				System.err.println("error: same domain, different targets! " + fulldn);
 				// this is an important error: same domain, different targets
 			}
 		}
@@ -288,7 +296,7 @@ public class DedupUserrule implements Callable<Void> {
 
 		// write output with utf8 BOM
 		outputLines.set(0, "\ufeff" + outputLines.get(0));
-		Files.write(Paths.get(outputFile), outputLines);
+		Files.write(Paths.get(outputFile), outputLines.subList(0, outputLines.size() - localRuleSize));
 	}
 
 	private static HashMap<String, String> excepRules = new HashMap<String, String>();
