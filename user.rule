@@ -7,6 +7,34 @@
 # "reject" means drop connection
 
 #auto rules
+.behindthename.com proxy
+.ataxia.org proxy
+.slf4j.org proxy
+.parklogic.com proxy
+.printfriendly.com proxy
+.intellipaat.com proxy
+.jax.org proxy
+.sayjack.com proxy
+.mediago.io proxy
+.intercom-attachments-7.com proxy
+.parents.com proxy
+.namaejiten.com proxy
+.dljdy.com direct
+.actionbutton.co proxy
+.nbc.com proxy
+.nlark.com direct
+.today.com proxy
+.intuit.ru proxy
+.kmw.com direct
+.99images.com proxy
+.tenable.com proxy
+.guwendao.net direct
+.haidii.com direct
+.5go.biz proxy
+.courier.com proxy
+.yuque.com direct
+.admetricspro.com proxy
+.copyprogramming.com proxy
 .charactermedia.com proxy
 .labadena.com proxy
 .yanmaga.jp proxy
@@ -6320,7 +6348,6 @@ gwent.win proxy
 .java.com proxy
 .yfscdn.net direct
 .joyoung.com direct
-.hkpxy0.netease.im proxy
 .jiuhaochufang.com direct
 .comodoca4.com proxy
 .kuaishou.com direct
