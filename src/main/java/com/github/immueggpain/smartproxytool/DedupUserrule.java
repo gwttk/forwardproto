@@ -2,6 +2,7 @@ package com.github.immueggpain.smartproxytool;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -62,6 +63,7 @@ public class DedupUserrule implements Callable<Void> {
 		try (BOMInputStream is = new BOMInputStream(new FileInputStream(Paths.get("user.rule").toFile()))) {
 			oldRules = IOUtils.readLines(is, sc.utf8);
 		}
+		// also put local.rule into oldRules but remember local.rule line count
 		int localRuleSize = 0;
 		try (BOMInputStream is = new BOMInputStream(new FileInputStream(Paths.get("local.rule").toFile()))) {
 			List<String> localRules = IOUtils.readLines(is, sc.utf8);
@@ -79,6 +81,7 @@ public class DedupUserrule implements Callable<Void> {
 
 		// step 3: find duplicates such as aaa.bbb.cc & ddd.bbb.cc
 		// merge them into .bbb.cc
+		// when output to file, cut last localRuleSize lines
 		new DedupUserrule().run(merged, outputUserRuleFile, localRuleSize);
 		return null;
 	}
@@ -191,9 +194,9 @@ public class DedupUserrule implements Callable<Void> {
 				// dup
 				outputLines.remove(outputLines.size() - 1);
 			} else {
-				// conflict
+				// same domain, different targets
+				// user should fix it
 				System.err.println("error: same domain, different targets! " + fulldn);
-				// this is an important error: same domain, different targets
 			}
 		}
 
@@ -326,6 +329,21 @@ public class DedupUserrule implements Callable<Void> {
 		excepRules.put(".unagi-cn.amazon.com", "direct");
 		excepRules.put(".render-api-cn.worldofwarcraft.com", "direct");
 		excepRules.put(".forums.mihoyo.com", "proxy");
+
+		// read excepRules from exception.rule
+		try (BOMInputStream is = new BOMInputStream(new FileInputStream(Paths.get("exception.rule").toFile()))) {
+			for (String line : IOUtils.readLines(is, sc.utf8)) {
+				if (line.isEmpty())
+					continue;
+				if (line.startsWith("#"))
+					continue;
+				String[] segments = line.split(" ");
+				excepRules.put(segments[0], segments[1]);
+			}
+		} catch (FileNotFoundException ignore) {
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/** some domains are exceptions as they differ from parent domains. */
