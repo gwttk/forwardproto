@@ -54,7 +54,6 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
@@ -85,6 +84,7 @@ import com.github.immueggpain.common.sct;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
+@SuppressWarnings("unused")
 @Command(description = "Run server", name = "server", mixinStandardHelpOptions = true, version = Launcher.VERSTR)
 public class SmartproxyServer implements Callable<Void> {
 
@@ -690,7 +690,6 @@ public class SmartproxyServer implements Callable<Void> {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private static class Connection {
 
 		private Socket s;

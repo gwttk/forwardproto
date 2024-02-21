@@ -84,6 +84,7 @@ import com.github.immueggpain.common.sctp;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
+@SuppressWarnings("unused")
 @Command(description = "Run client", name = "client", mixinStandardHelpOptions = true, version = Launcher.VERSTR)
 public class Smartproxy implements Callable<Void> {
 
@@ -1157,8 +1158,7 @@ public class Smartproxy implements Callable<Void> {
 	}
 
 	/**
-	 * return null means connection refused, or connect timed out, or can't resolve
-	 * hostname, or it's loopback
+	 * return null means connection refused, or connect timed out, or can't resolve hostname, or it's loopback
 	 * 
 	 * @param client_protocol
 	 */
