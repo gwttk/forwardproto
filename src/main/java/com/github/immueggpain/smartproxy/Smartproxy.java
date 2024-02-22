@@ -38,6 +38,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.PushbackInputStream;
+import java.lang.ref.WeakReference;
 import java.net.ConnectException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -56,12 +57,15 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -240,7 +244,6 @@ public class Smartproxy implements Callable<Void> {
 		try {
 			log.println("listened on port " + local_listen_port);
 			// for local socket, use auto buf size
-			// ss.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
 			while (true) {
 				Socket s;
 				try {
@@ -255,7 +258,6 @@ public class Smartproxy implements Callable<Void> {
 					continue;
 				}
 				// for local socket, use auto buf size
-				// s.setSendBufferSize(Launcher.SO_BUF_SIZE);
 				// use source port as id
 				int id = s.getPort();
 				scmt.execAsync("recv_" + id + "_client", () -> recv_client(s));
@@ -1136,20 +1138,57 @@ public class Smartproxy implements Callable<Void> {
 		public volatile long lastWriteToClient = 0;
 		public volatile long lastWriteToServer = 0;
 		public final String dest_name;
+		/** client - server */
 		public Socket cserver_s;
+		/** app - client */
 		public Socket sclient_s;
 		public boolean isBroken = false;
 		public boolean closing = false;
+		private WeakReference<TunnelContext> weakRef;
 
 		public TunnelContext(String dest_name, Socket cserver_s, Socket sclient_s) {
 			this.dest_name = dest_name;
 			this.cserver_s = cserver_s;
 			this.sclient_s = sclient_s;
+			weakRef = new WeakReference<>(this);
+			allOngoings.add(weakRef);
 		}
 
 		@Override
 		public String toString() {
 			return String.format("%s", dest_name);
+		}
+
+		private static Set<WeakReference<TunnelContext>> allOngoings = ConcurrentHashMap.newKeySet();
+
+		static {
+			new Thread(TunnelContext::tcStatThread, "TunnelContextStat").start();
+		}
+
+		private static void tcStatThread() {
+			try {
+				while (true) {
+					Thread.sleep(8000);
+
+					for (WeakReference<TunnelContext> weakReference : allOngoings) {
+						TunnelContext tc = weakReference.get();
+						if (tc == null) {
+							allOngoings.remove(weakReference);
+							continue;
+						}
+						if (!tc.isBroken && !tc.closing) {
+							int receiveBufferSize = tc.cserver_s.getReceiveBufferSize();
+							String str = String.format("%s %d", tc.cserver_s.getInetAddress(), receiveBufferSize);
+							System.out.println(str);
+						} else {
+							allOngoings.remove(weakReference);
+						}
+					}
+					System.out.println(allOngoings.size());
+				}
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -1492,10 +1531,6 @@ public class Smartproxy implements Callable<Void> {
 		s.setTcpNoDelay(true);
 		s.setSoTimeout(toCltReadFromDirect);
 		// use auto buf size for direct connect
-		// s.setReceiveBufferSize(1024 * 128);
-
-		// s.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
-		// s.setSendBufferSize(Launcher.SO_BUF_SIZE);
 
 		try {
 			s.connect(dest_sockaddr, toCltConnectToDirect);
