@@ -1492,6 +1492,8 @@ public class Smartproxy implements Callable<Void> {
 		s.setTcpNoDelay(true);
 		s.setSoTimeout(toCltReadFromDirect);
 		// use auto buf size for direct connect
+		// s.setReceiveBufferSize(1024 * 128);
+
 		// s.setReceiveBufferSize(Launcher.SO_BUF_SIZE);
 		// s.setSendBufferSize(Launcher.SO_BUF_SIZE);
 
