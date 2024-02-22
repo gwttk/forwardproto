@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.10000gd.tech direct
 .behindthename.com proxy
 .ataxia.org proxy
 .slf4j.org proxy
