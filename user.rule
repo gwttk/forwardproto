@@ -7,6 +7,24 @@
 # "reject" means drop connection
 
 #auto rules
+.volctrack.com direct
+.qualified.com proxy
+.nxp.com proxy
+.mozambiquehe.re proxy
+.zi-scripts.com proxy
+.cloudflare.tv proxy
+.heytapmobile.com proxy
+.att.com proxy
+.araknisnetworks.com proxy
+.serverok.in proxy
+.nuance.com proxy
+.quantummetric.com proxy
+.salesforce-sites.com proxy
+.inq.com proxy
+.oneplusmobile.com direct
+.heytapdownload.com direct
+.510flash.com direct
+.nuangel.net proxy
 .10000gd.tech direct
 .behindthename.com proxy
 .ataxia.org proxy
