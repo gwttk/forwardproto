@@ -7,6 +7,18 @@
 # "reject" means drop connection
 
 #auto rules
+.eporner.com proxy
+.hiddenfolks.com proxy
+.webp.se proxy
+.sipsolutions.net proxy
+.metcheck.com proxy
+.nefarius.at proxy
+.spinics.net proxy
+.cartocdn.com proxy
+.gl-inet.com proxy
+.esm.sh proxy
+.vigem.de proxy
+.isitdownorjustme.net proxy
 .eoscity.com proxy
 .jinshu7.top proxy
 .steamvipmall.com direct
