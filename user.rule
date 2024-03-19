@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+oauth.battle.net direct
+.zhenguangchem.com proxy
+.iu13.net proxy
 .ufitjvn.com proxy
 .cjkypo.com direct
 .iqiyim3u8.com proxy
