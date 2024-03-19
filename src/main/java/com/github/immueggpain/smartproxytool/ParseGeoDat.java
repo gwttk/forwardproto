@@ -59,19 +59,24 @@ public class ParseGeoDat {
 		}
 
 		ArrayList<String> outputLines = new ArrayList<>();
+		long lastLow = 0;
 		long lastHigh = -1;
 		for (Entry<Long, Long> entry : ordered.entrySet()) {
 			long lipLow = entry.getKey();
 			long lipHigh = entry.getValue();
 
-			lastHigh++;
-			if (lipLow > lastHigh)
-				outputLines.add(String.format("%s %s proxy", Util.long2ip(lastHigh), Util.long2ip(lipLow - 1)));
-
-			outputLines.add(String.format("%s %s direct", Util.long2ip(lipLow), Util.long2ip(lipHigh)));
-
-			lastHigh = lipHigh;
+			if (lipLow > lastHigh + 1) {
+				outputLines.add(String.format("%s %s direct", Util.long2ip(lastLow), Util.long2ip(lastHigh)));
+				outputLines.add(String.format("%s %s proxy", Util.long2ip(lastHigh + 1), Util.long2ip(lipLow - 1)));
+				lastLow = lipLow;
+				lastHigh = lipHigh;
+			} else {
+				lastHigh = lipHigh;
+			}
 		}
+		outputLines.add(String.format("%s %s direct", Util.long2ip(lastLow), Util.long2ip(lastHigh)));
+		if (lastHigh < 4294967295L)
+			outputLines.add(String.format("%s %s proxy", Util.long2ip(lastHigh + 1), Util.long2ip(4294967295L)));
 
 		Files.write(Paths.get("ip.rule"), outputLines);
 	}
