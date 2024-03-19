@@ -18,3 +18,4 @@ debug.bat
 local.rule
 exception.rule
 geoip.dat
+geosite.dat
