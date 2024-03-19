@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+.ufitjvn.com proxy
+.cjkypo.com direct
+.iqiyim3u8.com proxy
 .linuxfoundation.org proxy
 .wsrv.nl proxy
 .hotclubofcowtown.com proxy
