@@ -3,7 +3,6 @@ package com.github.immueggpain.smartproxytool;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -38,8 +37,8 @@ public class DedupUserrule implements Callable<Void> {
 	@Option(names = { "-l", "--log" }, required = true, description = "log file path")
 	String logFile;
 
+	@SuppressWarnings("unused")
 	private static class IpRange {
-		@SuppressWarnings("unused")
 		public final long begin;
 		public final long end;
 		public final String target;
@@ -84,25 +83,6 @@ public class DedupUserrule implements Callable<Void> {
 		// when output to file, cut last localRuleSize lines
 		new DedupUserrule().run(merged, outputUserRuleFile, localRuleSize);
 		return null;
-	}
-
-	@SuppressWarnings("unused")
-	private String queryIpRules(InetAddress addr) {
-		long ip = ip2long(addr);
-		IpRange ipRange = ip_to_nn.floorEntry(ip).getValue();
-		if (ip > ipRange.end) {
-			return null;
-		} else {
-			return ipRange.target;
-		}
-	}
-
-	private static long ip2long(InetAddress ip) {
-		byte[] parts = ip.getAddress();
-		long ipLong = 0;
-		for (int i = 0; i < 4; i++)
-			ipLong += (parts[i] & 0xff) << (24 - (8 * i));
-		return ipLong;
 	}
 
 	private static long ip2long(String ip) {
