@@ -3,14 +3,15 @@ package com.github.immueggpain.smartproxy;
 import java.util.concurrent.Callable;
 
 import com.github.immueggpain.smartproxytool.DedupUserrule;
+import com.github.immueggpain.smartproxytool.ParseGeoDat;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
 
 @Command(description = "Please report issues at https://github.com/Immueggpain/forwardproto/issues",
-		name = "smartproxy", mixinStandardHelpOptions = true, version = Launcher.VERSTR,
-		subcommands = { HelpCommand.class, Smartproxy.class, SmartproxyServer.class, DedupUserrule.class })
+		name = "smartproxy", mixinStandardHelpOptions = true, version = Launcher.VERSTR, subcommands = {
+				HelpCommand.class, Smartproxy.class, SmartproxyServer.class, DedupUserrule.class, ParseGeoDat.class })
 public class Launcher implements Callable<Void> {
 
 	public static final String VERSTR = "2.4.2";

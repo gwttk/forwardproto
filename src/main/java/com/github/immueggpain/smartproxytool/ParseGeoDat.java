@@ -8,16 +8,22 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.Callable;
 import java.util.TreeMap;
 
 import org.apache.commons.net.util.SubnetUtils;
 
+import com.github.immueggpain.smartproxy.Launcher;
 import com.github.immueggpain.smartproxy.Util;
 import com.v2ray.core.app.router.routercommon.CIDR;
 import com.v2ray.core.app.router.routercommon.GeoIP;
 import com.v2ray.core.app.router.routercommon.GeoIPList;
 
-public class ParseGeoDat {
+import picocli.CommandLine.Command;
+
+@Command(description = "Process geoip.dat, then output to ip.rule file.", name = "iprule",
+		mixinStandardHelpOptions = true, version = Launcher.VERSTR)
+public class ParseGeoDat implements Callable<Void> {
 
 	public static void main(String[] args) {
 		try {
@@ -25,6 +31,12 @@ public class ParseGeoDat {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public Void call() throws Exception {
+		run(null);
+		return null;
 	}
 
 	private void run(String[] args) throws Exception {
