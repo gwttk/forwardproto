@@ -14,7 +14,7 @@ import picocli.CommandLine.HelpCommand;
 				HelpCommand.class, Smartproxy.class, SmartproxyServer.class, DedupUserrule.class, ParseGeoDat.class })
 public class Launcher implements Callable<Void> {
 
-	public static final String VERSTR = "2.4.2";
+	public static final String VERSTR = "2.5.0";
 
 	// settings for both client & server
 	public static final String[] TLS_CIPHERS = new String[] { "TLS_AES_128_GCM_SHA256" };
