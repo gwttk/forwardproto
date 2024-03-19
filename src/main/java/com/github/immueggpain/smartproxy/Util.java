@@ -24,6 +24,7 @@
 package com.github.immueggpain.smartproxy;
 
 import java.io.Closeable;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class Util {
@@ -72,6 +73,27 @@ public class Util {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static long ip2long(String ip) {
+		String[] parts = ip.split("\\.");
+		long ipLong = 0;
+		for (int i = 0; i < 4; i++)
+			ipLong += Long.parseLong(parts[i]) << (24 - (8 * i));
+		return ipLong;
+	}
+
+	public static long ip2long(InetAddress ip) {
+		byte[] parts = ip.getAddress();
+		long ipLong = 0;
+		for (int i = 0; i < 4; i++)
+			ipLong += (long) (parts[i] & 0xff) << (24 - (8 * i));
+		return ipLong;
+	}
+
+	public static String long2ip(long l) {
+		String ip = (l >> 24 & 0xff) + "." + (l >> 16 & 0xff) + "." + (l >> 8 & 0xff) + "." + (l & 0xff);
+		return ip;
 	}
 
 }

@@ -23,10 +23,10 @@ import org.apache.commons.io.input.BOMInputStream;
 import com.github.immueggpain.common.sc;
 import com.github.immueggpain.common.scp;
 import com.github.immueggpain.common.scp.ProcessResult;
+import com.github.immueggpain.smartproxy.Util;
 
 /**
- * process the log to get all default rules. ping them to check if DIRECT is
- * better than PROXY
+ * process the log to get all default rules. ping them to check if DIRECT is better than PROXY
  */
 class LogProcessor {
 
@@ -141,14 +141,6 @@ class LogProcessor {
 		return ipLong;
 	}
 
-	private static long ip2long(String ip) {
-		String[] parts = ip.split("\\.");
-		long ipLong = 0;
-		for (int i = 0; i < 4; i++)
-			ipLong += Integer.parseInt(parts[i]) << (24 - (8 * i));
-		return ipLong;
-	}
-
 	private void load_domain_nn_table() throws Exception {
 		ip_to_nn = new TreeMap<>();
 		Path path = Paths.get("user.rule");
@@ -175,8 +167,8 @@ class LogProcessor {
 						target = segments[2];
 					else
 						throw new Exception("nn_table bad line " + line);
-					long begin = ip2long(segments[0]);
-					long end = ip2long(segments[1]);
+					long begin = Util.ip2long(segments[0]);
+					long end = Util.ip2long(segments[1]);
 					ip_to_nn.put(begin, new IpRange(begin, end, target));
 					continue;
 				}

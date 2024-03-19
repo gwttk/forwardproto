@@ -20,6 +20,7 @@ import org.apache.commons.io.input.BOMInputStream;
 
 import com.github.immueggpain.common.sc;
 import com.github.immueggpain.smartproxy.Launcher;
+import com.github.immueggpain.smartproxy.Util;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -85,14 +86,6 @@ public class DedupUserrule implements Callable<Void> {
 		return null;
 	}
 
-	private static long ip2long(String ip) {
-		String[] parts = ip.split("\\.");
-		long ipLong = 0;
-		for (int i = 0; i < 4; i++)
-			ipLong += Integer.parseInt(parts[i]) << (24 - (8 * i));
-		return ipLong;
-	}
-
 	private static final Pattern domain_regex = Pattern.compile("[a-z0-9-_]*(\\.[a-z0-9-_]+)*");
 	private static final Pattern domain_line_regex = Pattern.compile("[a-z0-9-_]*(\\.[a-z0-9-_]+)* [a-z]+");
 	private static final Pattern ip_regex = Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+");
@@ -135,8 +128,8 @@ public class DedupUserrule implements Callable<Void> {
 					target = "proxy";
 				else
 					throw new Exception("user.rule bad line " + line);
-				long begin = ip2long(segments[0]);
-				long end = ip2long(segments[1]);
+				long begin = Util.ip2long(segments[0]);
+				long end = Util.ip2long(segments[1]);
 				ip_to_nn.put(begin, new IpRange(begin, end, target));
 				continue;
 			}

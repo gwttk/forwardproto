@@ -1220,7 +1220,7 @@ public class Smartproxy implements Callable<Void> {
 			String hostString = dest_sockaddr.getHostString();
 			if (ip_regex.matcher(hostString).matches()) {
 				// is an ip string
-				long ip = ip2long(hostString);
+				long ip = Util.ip2long(hostString);
 				IpRange ipRange = ip_to_nn.floorEntry(ip).getValue();
 				if (ip > ipRange.end) {
 					nextNode = nn_proxy;
@@ -1229,7 +1229,7 @@ public class Smartproxy implements Callable<Void> {
 				} else {
 					nextNode = ipRange.nextnode;
 					log.println(String.format("%s %-7s: %-6s <- %s ~ %s <- %s:%d", sct.datetime(), client_protocol,
-							nextNode, long2ip(ipRange.begin), long2ip(ipRange.end), hostString, port));
+							nextNode, Util.long2ip(ipRange.begin), Util.long2ip(ipRange.end), hostString, port));
 				}
 			} else {
 				// is a domain string
@@ -1261,7 +1261,7 @@ public class Smartproxy implements Callable<Void> {
 		} else {
 			// is an ip string
 			String hostString = dest_sockaddr.getAddress().getHostAddress();
-			long ip = ip2long(dest_sockaddr.getAddress());
+			long ip = Util.ip2long(dest_sockaddr.getAddress());
 			IpRange ipRange = ip_to_nn.floorEntry(ip).getValue();
 			if (ip > ipRange.end) {
 				nextNode = nn_proxy;
@@ -1270,7 +1270,7 @@ public class Smartproxy implements Callable<Void> {
 			} else {
 				nextNode = ipRange.nextnode;
 				log.println(String.format("%s %-7s: %-6s <- %s ~ %s <- %s:%d", sct.datetime(), client_protocol,
-						nextNode, long2ip(ipRange.begin), long2ip(ipRange.end), hostString, port));
+						nextNode, Util.long2ip(ipRange.begin), Util.long2ip(ipRange.end), hostString, port));
 			}
 		}
 
@@ -1594,8 +1594,8 @@ public class Smartproxy implements Callable<Void> {
 					target = nn_proxy;
 				else
 					throw new Exception("nn_table bad line " + line);
-				long begin = ip2long(segments[0]);
-				long end = ip2long(segments[1]);
+				long begin = Util.ip2long(segments[0]);
+				long end = Util.ip2long(segments[1]);
 				ip_to_nn.put(begin, new IpRange(begin, end, target));
 				continue;
 			}
@@ -1660,27 +1660,6 @@ public class Smartproxy implements Callable<Void> {
 			this.end = end;
 			this.nextnode = target;
 		}
-	}
-
-	private static long ip2long(String ip) {
-		String[] parts = ip.split("\\.");
-		long ipLong = 0;
-		for (int i = 0; i < 4; i++)
-			ipLong += Integer.parseInt(parts[i]) << (24 - (8 * i));
-		return ipLong;
-	}
-
-	private static long ip2long(InetAddress ip) {
-		byte[] parts = ip.getAddress();
-		long ipLong = 0;
-		for (int i = 0; i < 4; i++)
-			ipLong += (parts[i] & 0xff) << (24 - (8 * i));
-		return ipLong;
-	}
-
-	private static String long2ip(long l) {
-		String ip = (l >> 24 & 0xff) + "." + (l >> 16 & 0xff) + "." + (l >> 8 & 0xff) + "." + (l & 0xff);
-		return ip;
 	}
 
 }
