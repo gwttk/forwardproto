@@ -122,23 +122,13 @@ class LogProcessor {
 	}
 
 	private String queryIpRules(InetAddress addr) {
-		long ip = ip2long(addr);
+		long ip = Util.ip2long(addr);
 		IpRange ipRange = ip_to_nn.floorEntry(ip).getValue();
 		if (ip > ipRange.end) {
 			return null;
 		} else {
 			return ipRange.target;
 		}
-	}
-
-	private static long ip2long(InetAddress ip) {
-		byte[] parts = ip.getAddress();
-		if (parts.length != 4)
-			throw new RuntimeException("not an ipv4 address");
-		long ipLong = 0;
-		for (int i = 0; i < 4; i++)
-			ipLong += (parts[i] & 0xff) << (24 - (8 * i));
-		return ipLong;
 	}
 
 	private void load_domain_nn_table() throws Exception {
