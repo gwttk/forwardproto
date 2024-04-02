@@ -7,6 +7,19 @@
 # "reject" means drop connection
 
 #auto rules
+.cavo.me direct
+.css.moe proxy
+.bustle.com proxy
+.rm-api.com proxy
+.enable-cors.org proxy
+.servicewechat.com direct
+.uniicreative.com proxy
+.sensedia.com proxy
+.pagecrafter.com proxy
+.sitepoint.com proxy
+.geniusfit.net proxy
+.http.dev proxy
+.inverse.com proxy
 .diygod.cc proxy
 .yuc.wiki proxy
 .diygod.me proxy
