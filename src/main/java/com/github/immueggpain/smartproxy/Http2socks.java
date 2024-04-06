@@ -154,6 +154,11 @@ public class Http2socks {
 		try {
 			connFromApp.bind(socket);
 		} catch (IOException e) {
+			try {
+				connFromApp.close();
+			} catch (IOException e1) {
+				e1.printStackTrace(log);
+			}
 			throw new RuntimeException("this should be impossible", e);
 		}
 
