@@ -1500,7 +1500,10 @@ public class Smartproxy implements Callable<Void> {
 		Socket s = new Socket(Proxy.NO_PROXY);
 		s.setTcpNoDelay(true);
 		s.setSoTimeout(toCltReadFromDirect);
-		// use auto buf size for direct connect
+		if (rcvbuf_size > 0)
+			s.setReceiveBufferSize(rcvbuf_size);
+		if (sndbuf_size > 0)
+			s.setSendBufferSize(sndbuf_size);
 
 		try {
 			s.connect(dest_sockaddr, toCltConnectToDirect);
