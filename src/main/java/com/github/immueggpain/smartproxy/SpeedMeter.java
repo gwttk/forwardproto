@@ -57,7 +57,7 @@ public class SpeedMeter {
 					}
 					if (!tc.isBroken && !tc.closing) {
 						int receiveBufferSize = tc.cserver_s.getReceiveBufferSize();
-						String str = String.format("%s %d", tc.cserver_s.getInetAddress(), receiveBufferSize);
+						String str = String.format("    %s %d", tc.cserver_s.getInetAddress(), receiveBufferSize);
 						System.out.println(str);
 					} else {
 						onGoings.remove(weakReference);
