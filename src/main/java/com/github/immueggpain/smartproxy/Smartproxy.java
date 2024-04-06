@@ -238,7 +238,7 @@ public class Smartproxy implements Callable<Void> {
 
 		tunnelPool = new TunnelPool(server_ip, server_port);
 
-		speedMeter = new SpeedMeter(1000 * 4, tunnelPool.halfTunnels, TunnelContext.allOngoings);
+		speedMeter = new SpeedMeter(1000 * 4, tunnelPool.halfTunnels, TunnelContext.allOngoings, this);
 
 		ServerSocket ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip));
 		try {
