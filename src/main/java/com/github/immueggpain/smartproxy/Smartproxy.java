@@ -238,7 +238,7 @@ public class Smartproxy implements Callable<Void> {
 
 		tunnelPool = new TunnelPool(server_ip, server_port);
 
-		speedMeter = new SpeedMeter(1000 * 4, tunnelPool.halfTunnels);
+		speedMeter = new SpeedMeter(1000 * 4, tunnelPool.halfTunnels, TunnelContext.allOngoings);
 
 		ServerSocket ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip));
 		try {
@@ -1134,7 +1134,7 @@ public class Smartproxy implements Callable<Void> {
 		}
 	}
 
-	private static class TunnelContext {
+	public static class TunnelContext {
 		public volatile long lastWriteToClient = 0;
 		public volatile long lastWriteToServer = 0;
 		public final String dest_name;
@@ -1160,36 +1160,6 @@ public class Smartproxy implements Callable<Void> {
 		}
 
 		private static Set<WeakReference<TunnelContext>> allOngoings = ConcurrentHashMap.newKeySet();
-
-		static {
-			new Thread(TunnelContext::tcStatThread, "TunnelContextStat").start();
-		}
-
-		private static void tcStatThread() {
-			try {
-				while (true) {
-					Thread.sleep(8000);
-
-					for (WeakReference<TunnelContext> weakReference : allOngoings) {
-						TunnelContext tc = weakReference.get();
-						if (tc == null) {
-							allOngoings.remove(weakReference);
-							continue;
-						}
-						if (!tc.isBroken && !tc.closing) {
-							int receiveBufferSize = tc.cserver_s.getReceiveBufferSize();
-							String str = String.format("%s %d", tc.cserver_s.getInetAddress(), receiveBufferSize);
-							System.out.println(str);
-						} else {
-							allOngoings.remove(weakReference);
-						}
-					}
-					System.out.println(allOngoings.size());
-				}
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	private void http_other(InputStream is, OutputStream os, Socket socket) {
