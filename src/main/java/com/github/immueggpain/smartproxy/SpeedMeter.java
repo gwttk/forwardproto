@@ -46,9 +46,9 @@ public class SpeedMeter {
 				double speedRecv = (double) atomRecv.getAndSet(0) / ((double) duration / 1000) / 1024;
 				double speedSend = (double) atomSend.getAndSet(0) / ((double) duration / 1000) / 1024;
 				lastReportTime = now;
-				System.out.println(
-						String.format(Locale.ROOT, "download: %.2f KB/s, upload: %.2f KB/s, half-open: %d, ongoing: %d",
-								speedRecv, speedSend, halfOpenPool.size(), onGoings.size()));
+				System.out.println(String.format(Locale.ROOT,
+						"half-open: %2d, ongoing: %2d, upload: %6.1f KB/s, download: %7.1f KB/s", halfOpenPool.size(),
+						onGoings.size(), speedSend, speedRecv));
 
 				// print ongoings infos
 				for (WeakReference<TunnelContext> weakReference : onGoings) {
