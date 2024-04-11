@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.euid.eu proxy
+.pbstck.com proxy
+.niagaralauncher.app proxy
+.mm20.de proxy
+.technologyadvice.com proxy
+.wemod.com proxy
+.izzysoft.de proxy
+.welk.co direct
 .cavo.me direct
 .css.moe proxy
 .bustle.com proxy
