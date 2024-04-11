@@ -278,7 +278,7 @@ public class Smartproxy implements Callable<Void> {
 			// read first byte cuz we need to know which protocol the app is using
 			int byte1 = is.read();
 			if (byte1 == -1) {
-				log.println("error app closed connection without sending any data");
+//				log.println("error app closed connection without sending any data");
 				Util.abortiveCloseSocket(s);
 				return;
 			}
