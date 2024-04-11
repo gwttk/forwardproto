@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.com/Immueggpain/forwardproto.svg?branch=master)](https://travis-ci.com/Immueggpain/forwardproto)
-
 ## Introduction 
 
 **A naive forwarding protocol. This is a proof of concept (PoC).**
