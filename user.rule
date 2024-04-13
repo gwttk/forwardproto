@@ -7,6 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.logrocket.com proxy
+.urlencoder.org proxy
+.arcade.software proxy
+.lr-wa.com proxy
+.urldecoder.org proxy
+.oa.com proxy
+.geoip-js.com proxy
+.mux.com proxy
+.jconnor.org proxy
 .euid.eu proxy
 .pbstck.com proxy
 .niagaralauncher.app proxy
