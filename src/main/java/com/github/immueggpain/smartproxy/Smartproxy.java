@@ -778,7 +778,7 @@ public class Smartproxy implements Callable<Void> {
 		byte[] buf = new byte[UDP_PKT_SIZE];
 		DatagramPacket p = new DatagramPacket(buf, buf.length);
 		while (true) {
-			p.setLength(buf.length);
+			p.setData(buf);
 			try {
 				udpSocket.receive(p);
 			} catch (IOException e) {
@@ -786,7 +786,65 @@ public class Smartproxy implements Callable<Void> {
 				udpSocket.close();
 				return;
 			}
-			System.out.println(String.format("udp recv: %d", p.getLength()));
+			log.println(String.format("udp recv len %d", p.getLength()));
+
+			// buf[0~1] reserved
+			// buf[2] fragment number
+			if (buf[2] != 0) {
+				// not supported, silent drop
+				continue;
+			}
+			// buf[3] address type
+			byte address_type = buf[3];
+			// parse address
+			InetSocketAddress dest_sockaddr;
+			int offset = 4;
+			try {
+				InetAddress dest_addr = null;
+				String dest_domain = null;
+				if (address_type == 1) {
+					// ipv4
+					byte[] buf2 = new byte[4];
+					System.arraycopy(buf, 4, buf2, 0, 4);
+					dest_addr = InetAddress.getByAddress(buf2);
+					offset += 4;
+				} else if (address_type == 3) {
+					// domain name
+					int domain_length = buf[4];
+					byte[] buf2 = new byte[domain_length];
+					System.arraycopy(buf, 5, buf2, 0, domain_length);
+					dest_domain = sc.b2s(buf);
+					offset += 1 + domain_length;
+				} else if (address_type == 4) {
+					// ipv6
+					byte[] buf2 = new byte[16];
+					System.arraycopy(buf, 4, buf2, 0, 16);
+					dest_addr = InetAddress.getByAddress(buf);
+					offset += 16;
+					// the reason that we can't do ipv6 is because we don't have ipv6 user.rule
+					// things
+					throw new Exception("error ipv6 address");
+				} else {
+					// unknown address_type
+					throw new Exception("error unknown address type");
+				}
+
+				int dest_port = sctp.bytes_to_ushort(buf, offset);
+				offset += 2;
+
+				if (dest_addr != null)
+					dest_sockaddr = new InetSocketAddress(dest_addr, dest_port);
+				else
+					dest_sockaddr = InetSocketAddress.createUnresolved(dest_domain, dest_port);
+			} catch (Exception e) {
+				log.println("error when read udp socks5 dest addr");
+				e.printStackTrace(log);
+				udpSocket.close();
+				return;
+			}
+
+			//
+			log.println(String.format("dst addr %s", dest_sockaddr, p.getLength() - offset));
 		}
 	}
 
