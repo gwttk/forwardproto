@@ -87,54 +87,61 @@ import com.github.immueggpain.common.sctp;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
+import picocli.CommandLine.Help.Visibility;
 
 @SuppressWarnings("unused")
 @Command(description = "Run client", name = "client", mixinStandardHelpOptions = true, version = Launcher.VERSTR)
 public class Smartproxy implements Callable<Void> {
 
-	@Option(names = { "-i", "--local_listen_ip" }, description = "local listening ip. default is ${DEFAULT-VALUE}")
+	@Option(names = { "-i", "--local_listen_ip" }, description = "local listening ip",
+			showDefaultValue = Visibility.ALWAYS)
 	public String local_listen_ip = "127.0.0.1";
 
-	@Option(names = { "-n", "--local_listen_port" }, required = true, description = "local listening port")
+	@Option(names = { "-n", "--local_listen_port" }, required = true, description = "local listening port",
+			showDefaultValue = Visibility.ALWAYS)
 	public int local_listen_port;
 
-	@Option(names = { "-s", "--server_ip", "--server_name" }, required = true, description = "server ip or domain name")
+	@Option(names = { "-s", "--server_ip", "--server_name" }, required = true, description = "server ip or domain name",
+			showDefaultValue = Visibility.ALWAYS)
 	public String server_ip;
 
-	@Option(names = { "-p", "--server_port" }, required = true, description = "server port")
+	@Option(names = { "-p", "--server_port" }, required = true, description = "server port",
+			showDefaultValue = Visibility.ALWAYS)
 	public int server_port;
 
 	@Option(names = { "-w", "--password" }, required = true,
-			description = "password must be same between server and client, recommend 64 bytes")
+			description = "password must be same between server and client, recommend 64 bytes",
+			showDefaultValue = Visibility.ALWAYS)
 	public String passwordString;
 
-	@Option(names = { "-l", "--log" }, description = "log file path. default is ${DEFAULT-VALUE}")
+	@Option(names = { "-l", "--log" }, description = "log file path", showDefaultValue = Visibility.ALWAYS)
 	public String logfile = "smartproxy.log";
 
-	@Option(names = { "-r", "--local-rule" }, description = "local user.rule.")
+	@Option(names = { "-r", "--local-rule" }, description = "local user.rule", showDefaultValue = Visibility.ALWAYS)
 	public File local_rule;
 
-	@Option(names = { "--debug" }, description = "enable debug code")
+	@Option(names = { "--debug" }, description = "enable debug code", showDefaultValue = Visibility.ALWAYS)
 	public boolean debug = false;
 
-	@Option(names = { "--sndbuf" }, description = "socket send buf size. default is ${DEFAULT-VALUE}.")
+	@Option(names = { "--sndbuf" }, description = "socket send buf size", showDefaultValue = Visibility.ALWAYS)
 	public int sndbuf_size = 0;
 
-	@Option(names = { "--rcvbuf" }, description = "socket recv buf size. default is ${DEFAULT-VALUE}.")
+	@Option(names = { "--rcvbuf" }, description = "socket recv buf size", showDefaultValue = Visibility.ALWAYS)
 	public int rcvbuf_size = 1900000;
 
-	@Option(names = { "--halfopen-max" },
-			description = "how many half-open tunnels can be used. default is ${DEFAULT-VALUE}.")
+	@Option(names = { "--halfopen-max" }, description = "how many half-open tunnels can be used",
+			showDefaultValue = Visibility.ALWAYS)
 	public int hopen_max = 40;
 
-	@Option(names = { "--halfopen-threads" },
-			description = "how many threads is used to create half-open tunnels. default is ${DEFAULT-VALUE}.")
+	@Option(names = { "--halfopen-threads" }, description = "how many threads is used to create half-open tunnels",
+			showDefaultValue = Visibility.ALWAYS)
 	public int hopen_threads = 4;
 
-	@Option(names = { "--to-basic" }, description = "basic timeout value in sec. default is ${DEFAULT-VALUE}.")
-	public int toBasicRead = 120;
+	@Option(names = { "--to-basic" }, description = "basic timeout value in sec", showDefaultValue = Visibility.ALWAYS)
+	public int toBasicRead = 300;
 
-	@Option(names = { "--unsafe-cert" }, description = "trust all certs, whether they are safe or not.")
+	@Option(names = { "--unsafe-cert" }, description = "trust all certs, whether they are safe or not.",
+			showDefaultValue = Visibility.ALWAYS)
 	public boolean unsafeCert = false;
 
 	// used in android
