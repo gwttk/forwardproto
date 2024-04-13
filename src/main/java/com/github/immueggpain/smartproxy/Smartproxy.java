@@ -465,11 +465,13 @@ public class Smartproxy implements Callable<Void> {
 			return;
 		} else if (command_code == 2) {
 			// if command_code is 0x02, tcp port binding
+			log.println(String.format("rcv cmd code %d", command_code));
 			// 0x07: command not supported / protocol error
 			socks5FinalReply(sclient_s, os, (byte) 0x07);
 			return;
 		} else if (command_code == 3) {
 			// if command_code is 0x03, udp associate
+			log.println(String.format("rcv cmd code %d, dst addr %s", command_code, dest_sockaddr));
 
 			// create udp socket
 			DatagramSocket udpSocket;
@@ -482,20 +484,6 @@ public class Smartproxy implements Callable<Void> {
 				return;
 			}
 			int udpPort = udpSocket.getLocalPort();
-
-			// now we connect next node
-			SocketBundle cserver_sb = null;
-			try {
-				cserver_sb = create_connect_config_socket(dest_sockaddr, "socks5");
-			} catch (Exception e) {
-				e.printStackTrace(log);
-			}
-			if (cserver_sb == null) {
-				// can't connect
-				// X'04' Host unreachable
-				socks5FinalReply(sclient_s, os, (byte) 0x04);
-				return;
-			}
 
 			// reply to client
 			buf = new byte[10];
@@ -522,7 +510,7 @@ public class Smartproxy implements Callable<Void> {
 				return;
 			}
 
-			handleConnectionUdp(udpSocket, dest_sockaddr);
+			handleConnectionUdp(udpSocket);
 			return;
 		} else {
 			log.println("error command_code " + sctp.byte_to_string(command_code));
@@ -782,15 +770,7 @@ public class Smartproxy implements Callable<Void> {
 				sclient_s);
 	}
 
-	private void handleConnectionUdp(DatagramSocket udpSocket, InetSocketAddress client_udp_sockaddr) {
-		int receiveBufferSize;
-		try {
-			receiveBufferSize = udpSocket.getReceiveBufferSize();
-			log.println(String.format("udp receiveBufferSize: %d", receiveBufferSize));
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
-
+	private void handleConnectionUdp(DatagramSocket udpSocket) {
 		Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn-udp2",
 				() -> handleConnectionUdp2(null, null, udpSocket));
 
