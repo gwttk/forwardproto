@@ -137,6 +137,10 @@ public class Smartproxy implements Callable<Void> {
 			showDefaultValue = Visibility.ALWAYS)
 	public int hopen_threads = 4;
 
+	@Option(names = { "--halfopen-rest" }, description = "how many seconds a half-open tunnel can wait",
+			showDefaultValue = Visibility.ALWAYS)
+	public int hopen_rest = 300;
+
 	@Option(names = { "--to-basic" }, description = "basic timeout value in sec", showDefaultValue = Visibility.ALWAYS)
 	public int toBasicRead = 300;
 
@@ -196,6 +200,8 @@ public class Smartproxy implements Callable<Void> {
 				System.getProperty("java.runtime.version"), System.getProperty("java.home")));
 		log.println(String.format("server is %s", server_ip));
 		log.println(String.format("--halfopen-max = %d", hopen_max));
+		log.println(String.format("--halfopen-threads = %d", hopen_threads));
+		log.println(String.format("--halfopen-rest = %d", hopen_rest));
 		log.println(String.format("--to-basic = %d", toBasicRead));
 
 		// init timeouts
@@ -205,7 +211,7 @@ public class Smartproxy implements Callable<Void> {
 		toCltConnectToSvr = Launcher.toBasicConnect;
 		toCltReadFromDirect = toBasicRead * 1000;
 		toCltConnectToDirect = Launcher.toBasicConnect;
-		toSvrReadFromCltRest = toBasicRead * 1000;
+		toSvrReadFromCltRest = hopen_rest * 1000;
 
 		log.println(String.format("small connect timeout to sp server = %d", toCltConnectToSvr));
 
