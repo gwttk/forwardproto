@@ -860,8 +860,8 @@ public class Smartproxy implements Callable<Void> {
 			log.println(String.format("dst addr %s", dest_sockaddr, p.getLength() - offset));
 
 			// find nextnode
-			// if proxy  -> poll tunnel   -> snd/rcv
-			// if direct -> direct socket -> snd/rcv 
+			// if proxy -> poll tunnel -> snd/rcv
+			// if direct -> direct socket -> snd/rcv
 		}
 	}
 
@@ -1470,6 +1470,34 @@ public class Smartproxy implements Callable<Void> {
 		}
 	}
 
+	private SocketBundle create_full_tunnel_udp(SocketBundle sb, String dest_hostname, int dest_port) {
+		try {
+			Socket cserver_s = sb.socket;
+			// DataInputStream is = new DataInputStream(sb.is);
+			DataOutputStream os = new DataOutputStream(new BufferedOutputStream(sb.os, 1024));
+			// use buffer so that we only send to network when flush()
+
+			// send opcode and dest info
+			try {
+				os.writeInt(Launcher.OPCODE_UDP);
+				os.flush();
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when send opcode " + e);
+				Util.abortiveCloseSocket(cserver_s);
+				return null;
+			}
+
+			// restore to normal timeout
+			cserver_s.setSoTimeout(toCltReadFromSvr);
+
+			return sb;
+		} catch (Throwable e) {
+			log.println("there shouldn't be any exception here");
+			e.printStackTrace(log);
+			return null;
+		}
+	}
+
 	private class TunnelPool {
 
 		private BlockingQueue<SocketBundle> halfTunnels = new ArrayBlockingQueue<>(hopen_max * 2);
@@ -1541,9 +1569,11 @@ public class Smartproxy implements Callable<Void> {
 			return create_full_tunnel(half_tunnel, dest_hostname, dest_port);
 		}
 
-		public SocketBundle pollHalfTunnel() throws InterruptedException {
+		public SocketBundle pollTunnelUdp(String dest_hostname, int dest_port) throws InterruptedException {
 			SocketBundle half_tunnel = halfTunnels.poll();
-			return half_tunnel;
+			if (half_tunnel == null)
+				return null;
+			return create_full_tunnel_udp(half_tunnel, dest_hostname, dest_port);
 		}
 	}
 
