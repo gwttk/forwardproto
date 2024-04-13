@@ -784,8 +784,8 @@ public class Smartproxy implements Callable<Void> {
 	}
 
 	private void handleConnectionUdp(DatagramSocket udpSocket) {
-		Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn-udp2",
-				() -> handleConnectionUdp2(null, null, udpSocket));
+//		Thread handleConn2 = scmt.execAsync("multi-thread-handle-conn-udp2",
+//				() -> handleConnectionUdp2(null, null, udpSocket));
 
 		// client to server loop
 		byte[] buf = new byte[UDP_PKT_SIZE];
@@ -858,6 +858,10 @@ public class Smartproxy implements Callable<Void> {
 
 			//
 			log.println(String.format("dst addr %s", dest_sockaddr, p.getLength() - offset));
+
+			// find nextnode
+			// if proxy  -> poll tunnel   -> snd/rcv
+			// if direct -> direct socket -> snd/rcv 
 		}
 	}
 
