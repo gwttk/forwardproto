@@ -7,6 +7,26 @@
 # "reject" means drop connection
 
 #auto rules
+.mumuplayer.com proxy
+.htlbid.com proxy
+.kaomojiya.com proxy
+.rockstargames.com proxy
+.fontshare.com proxy
+.suno.ai proxy
+.gamurs.group proxy
+.suno.com proxy
+.emoticonfun.com proxy
+.idreamskystrinova.aihelp.net proxy
+.cdn.aihelp.net proxy
+.thespike.gg proxy
+.www.strinova.com proxy
+.cdnimage.aihelp.net direct
+.cdnconfig.aihelp.net direct
+.toronto.edu proxy
+.resource-download.strinova.com direct
+.rsg.sc proxy
+.kai-you.net proxy
+.klbq-web-cdn.strinova.com proxy
 .avaamo.com proxy
 .iterable.com proxy
 .wiki.gg proxy
