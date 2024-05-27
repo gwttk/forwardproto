@@ -7,6 +7,22 @@
 # "reject" means drop connection
 
 #auto rules
+.kurogame.xyz direct
+.kurogames.com direct
+.kurobbs.com direct
+.aki-game.com direct
+.challonge.com proxy
+.lenspiration.com proxy
+.202014.xyz proxy
+.cloud-rtc.com direct
+.jingjiniao.info proxy
+.vikacg.xyz proxy
+.imageglass.org proxy
+.cloudflare-cn.com direct
+.hotleaks.tv proxy
+.tunesbro.com proxy
+.imagemagick.org proxy
+.onlinejpgtools.com proxy
 .audioviser.com proxy
 .audacityteam.org proxy
 .javatpoint.com proxy
