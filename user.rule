@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.brandis.us proxy
+.aomeisoftware.com proxy
+.kouch.tv proxy
+.dbdtwitch.com proxy
 .kurogame.xyz direct
 .kurogames.com direct
 .kurobbs.com direct
