@@ -7,6 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.expedient.com proxy
+.ferndocs.com proxy
+.helps.live proxy
+.wiredtiger.com proxy
+.klei.com proxy
+.playeternalreturn.com proxy
+.fmt.dev proxy
+.aethergazer.com proxy
+.kleientertainment.com proxy
 .codersrank.io proxy
 .a1c.jp proxy
 .azure-api.net proxy
