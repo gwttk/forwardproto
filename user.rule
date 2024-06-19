@@ -7,6 +7,20 @@
 # "reject" means drop connection
 
 #auto rules
+.dnsleaktest.com proxy
+.asu.edu proxy
+.odroid.com proxy
+.gnwcdn.com proxy
+.thepublicdiscourse.com proxy
+.zhishikoo.com proxy
+.linfo.org proxy
+.smartbear.com proxy
+.smartbear.co proxy
+.ipleak.com proxy
+.thecloudside.com proxy
+.dnschecker.org proxy
+.pythian.com proxy
+.kapa.ai proxy
 .expedient.com proxy
 .ferndocs.com proxy
 .helps.live proxy
