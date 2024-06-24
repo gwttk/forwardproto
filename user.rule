@@ -7,6 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.aia.startssl.com proxy
+.www.startssl.com direct
+.coursehero.com proxy
+.lxadm.com proxy
+.portswigger.net proxy
+.repology.org proxy
+.wpkg.org proxy
+.snapcraft.io proxy
+.jfrog.com proxy
 .dnsleaktest.com proxy
 .asu.edu proxy
 .odroid.com proxy
