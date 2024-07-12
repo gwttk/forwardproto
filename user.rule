@@ -7,6 +7,17 @@
 # "reject" means drop connection
 
 #auto rules
+.www.meijiyasuda.co.jp proxy
+.paidy.com proxy
+.internationalsaimoe.com proxy
+.mcd.blue direct
+.chunithm-net.com proxy
+.mimicle.com proxy
+.adoption.com proxy
+.marv.jp proxy
+.imglnkx.com proxy
+.worldcosplay.net proxy
+.maimaidx.jp proxy
 .uu11991.com proxy
 .spmailtechnolo.com proxy
 .chkaja.com proxy
