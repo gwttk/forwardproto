@@ -7,6 +7,27 @@
 # "reject" means drop connection
 
 #auto rules
+.beop.io proxy
+.daoyunai.com proxy
+.getsquirrel.co proxy
+.networknmedia.com proxy
+.kanogoma.com proxy
+.spheron.network proxy
+.jiain.net direct
+.fatsecret.com proxy
+.smartmidea.net direct
+.hashnode.com proxy
+.mutinycdn.com proxy
+.stibee.com proxy
+.zobj.net proxy
+.beopinion.com proxy
+.japan-guide.com proxy
+.eshian.com direct
+.cloudconvert.com proxy
+.symbolab.com proxy
+.ftscrt.com proxy
+.swguancha.com direct
+.pubcol.gg proxy
 .www.meijiyasuda.co.jp proxy
 .paidy.com proxy
 .internationalsaimoe.com proxy
