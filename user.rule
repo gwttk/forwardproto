@@ -7,6 +7,28 @@
 # "reject" means drop connection
 
 #auto rules
+.sensitivity-converter.com proxy
+.mechabreak.com proxy
+.amantang.com direct
+.xoyocdn.com direct
+.directupload.net proxy
+.getkoala.com proxy
+.iegcom.com proxy
+.mmk73tf.top proxy
+.blr844.com proxy
+.1cxjld.net proxy
+.nextjs.org proxy
+.fule2024.shop proxy
+.savsp.com proxy
+.qiweiwangguo.com direct
+.fish.audio proxy
+.sportnanoapi.com direct
+.chingc.cc proxy
+.levelinfinite.com proxy
+.torrentkitty.red proxy
+.intlgame.com proxy
+.geojs.io proxy
+.3h8tjd9.top proxy
 .termly.io proxy
 .neoteric.eu proxy
 .venturepact.com proxy
