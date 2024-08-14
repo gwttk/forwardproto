@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.pincong.rocks proxy
+.pathfinderwiki.com proxy
+.stcfile.com direct
+.aifabu.com direct
+.abetterinternet.org proxy
+.piaotia.com proxy
+.acg55.com proxy
+.7b2.com direct
 .cms-assets.unrealengine.com proxy
 .anticheatexpert.com direct
 .sensitivity-converter.com proxy
