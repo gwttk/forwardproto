@@ -7,6 +7,33 @@
 # "reject" means drop connection
 
 #auto rules
+.mod.io proxy
+.modcdn.io proxy
+.socinvestigation.com proxy
+.shapez.io proxy
+.echotrail.io proxy
+.fanbook.me proxy
+.stefanobordoni.cloud proxy
+.dreamhost.com proxy
+.engagement.ai proxy
+.nc-img.com proxy
+.domain.com proxy
+.namesilo.com proxy
+.sqspcdn.com proxy
+.namecheapapi.com proxy
+.tld-list.com proxy
+.namecheap.com proxy
+.mno8.net proxy
+.regery.net proxy
+.ubidots.com proxy
+.naraka.wiki proxy
+.endurance.com proxy
+.mypurecloud.com proxy
+.web.com proxy
+.regery.com proxy
+.cloudflarestatus.com proxy
+.pc.domains proxy
+.bluehost.com proxy
 .lo4d.com proxy
 .csbops.io proxy
 .npmjs.com proxy
