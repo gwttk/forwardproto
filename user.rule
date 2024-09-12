@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.fanqienovel.com direct
+.20xs.org proxy
+.yingsx.com proxy
+.fqnovelstatic.com direct
+.feibzw.com proxy
+.trip.com proxy
 .mod.io proxy
 .modcdn.io proxy
 .socinvestigation.com proxy
