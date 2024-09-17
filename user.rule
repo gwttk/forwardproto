@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.5eplay.com direct
+.123957.com direct
+.cjjd19.com direct
+.xaidc.com direct
 .fanqienovel.com direct
 .20xs.org proxy
 .yingsx.com proxy
