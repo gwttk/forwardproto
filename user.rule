@@ -7,6 +7,18 @@
 # "reject" means drop connection
 
 #auto rules
+.ht-blue.com direct
+.fwscripts.com proxy
+.spinwheelapp.com proxy
+.contlo.com proxy
+.pop-convert.com proxy
+.fireworkapi1.com proxy
+.gotolstoy.com proxy
+.zbanx.com proxy
+.fireworktv.com proxy
+.gtranslate.io proxy
+.cirkleinc.com proxy
+.fwcdn3.com proxy
 .5eplay.com direct
 .123957.com direct
 .cjjd19.com direct
