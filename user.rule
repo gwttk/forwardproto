@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.ecombdimg.com direct
+.ecombdstatic.com direct
+.bytegecko.com direct
+.supportkb.dell.com proxy
+.wbgames.com proxy
 .ht-blue.com direct
 .fwscripts.com proxy
 .spinwheelapp.com proxy
