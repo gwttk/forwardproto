@@ -7,6 +7,16 @@
 # "reject" means drop connection
 
 #auto rules
+.jianshuw.in proxy
+.hf.co proxy
+.trendshift.io proxy
+.kala.love proxy
+.onnx.ai proxy
+.contrib.rocks proxy
+.123yx.com direct
+.voice-models.com proxy
+.hf-mirror.com proxy
+.easyaivoice.com proxy
 .wxwidgets.org proxy
 .powershell.org proxy
 .doudou.fun direct
