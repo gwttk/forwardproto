@@ -7,6 +7,16 @@
 # "reject" means drop connection
 
 #auto rules
+.wxwidgets.org proxy
+.powershell.org proxy
+.doudou.fun direct
+.yunxinfw.com direct
+.adamtheautomator.com proxy
+.csandker.io proxy
+.collectingwisdom.com proxy
+.winehq.org proxy
+.brightdata.com proxy
+.debugbear.com proxy
 .1a-1791.com proxy
 .rumble.com proxy
 .ecombdimg.com direct
