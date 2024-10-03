@@ -6,903 +6,950 @@ package com.v2ray.core.common.protoext;
 /**
  * Protobuf type {@code v2ray.core.common.protoext.MessageOpt}
  */
-public final class MessageOpt extends
-    com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:v2ray.core.common.protoext.MessageOpt)
-    MessageOptOrBuilder {
-private static final long serialVersionUID = 0L;
-  // Use MessageOpt.newBuilder() to construct.
-  private MessageOpt(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-    super(builder);
-  }
-  private MessageOpt() {
-    type_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    shortName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    transportOriginalName_ = "";
-  }
+public final class MessageOpt extends com.google.protobuf.GeneratedMessageV3 implements
+		// @@protoc_insertion_point(message_implements:v2ray.core.common.protoext.MessageOpt)
+		MessageOptOrBuilder {
+	private static final long serialVersionUID = 0L;
 
-  @java.lang.Override
-  @SuppressWarnings({})
-  protected java.lang.Object newInstance(
-      UnusedPrivateParameter unused) {
-    return new MessageOpt();
-  }
+	// Use MessageOpt.newBuilder() to construct.
+	private MessageOpt(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+		super(builder);
+	}
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  public static final com.google.protobuf.Descriptors.Descriptor
-      getDescriptor() {
-    return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_MessageOpt_descriptor;
-  }
+	private MessageOpt() {
+		type_ = com.google.protobuf.LazyStringArrayList.emptyList();
+		shortName_ = com.google.protobuf.LazyStringArrayList.emptyList();
+		transportOriginalName_ = "";
+	}
 
-  @java.lang.Override
-  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internalGetFieldAccessorTable() {
-    return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_MessageOpt_fieldAccessorTable
-        .ensureFieldAccessorsInitialized(
-            com.v2ray.core.common.protoext.MessageOpt.class, com.v2ray.core.common.protoext.MessageOpt.Builder.class);
-  }
+	@java.lang.Override
+	@SuppressWarnings({})
+	protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+		return new MessageOpt();
+	}
 
-  public static final int TYPE_FIELD_NUMBER = 1;
-  private com.google.protobuf.LazyStringList type_;
-  /**
-   * <code>repeated string type = 1;</code>
-   * @return A list containing the type.
-   */
-  public com.google.protobuf.ProtocolStringList
-      getTypeList() {
-    return type_;
-  }
-  /**
-   * <code>repeated string type = 1;</code>
-   * @return The count of type.
-   */
-  public int getTypeCount() {
-    return type_.size();
-  }
-  /**
-   * <code>repeated string type = 1;</code>
-   * @param index The index of the element to return.
-   * @return The type at the given index.
-   */
-  public java.lang.String getType(int index) {
-    return type_.get(index);
-  }
-  /**
-   * <code>repeated string type = 1;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the type at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getTypeBytes(int index) {
-    return type_.getByteString(index);
-  }
+	@java.lang.Override
+	public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+		return this.unknownFields;
+	}
 
-  public static final int SHORT_NAME_FIELD_NUMBER = 2;
-  private com.google.protobuf.LazyStringList shortName_;
-  /**
-   * <code>repeated string short_name = 2;</code>
-   * @return A list containing the shortName.
-   */
-  public com.google.protobuf.ProtocolStringList
-      getShortNameList() {
-    return shortName_;
-  }
-  /**
-   * <code>repeated string short_name = 2;</code>
-   * @return The count of shortName.
-   */
-  public int getShortNameCount() {
-    return shortName_.size();
-  }
-  /**
-   * <code>repeated string short_name = 2;</code>
-   * @param index The index of the element to return.
-   * @return The shortName at the given index.
-   */
-  public java.lang.String getShortName(int index) {
-    return shortName_.get(index);
-  }
-  /**
-   * <code>repeated string short_name = 2;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the shortName at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getShortNameBytes(int index) {
-    return shortName_.getByteString(index);
-  }
+	public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+		return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_MessageOpt_descriptor;
+	}
 
-  public static final int TRANSPORT_ORIGINAL_NAME_FIELD_NUMBER = 86001;
-  private volatile java.lang.Object transportOriginalName_ = "";
-  /**
-   * <code>string transport_original_name = 86001;</code>
-   * @return The transportOriginalName.
-   */
-  @java.lang.Override
-  public java.lang.String getTransportOriginalName() {
-    java.lang.Object ref = transportOriginalName_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      transportOriginalName_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string transport_original_name = 86001;</code>
-   * @return The bytes for transportOriginalName.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getTransportOriginalNameBytes() {
-    java.lang.Object ref = transportOriginalName_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      transportOriginalName_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
+	@java.lang.Override
+	protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+		return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_MessageOpt_fieldAccessorTable
+				.ensureFieldAccessorsInitialized(com.v2ray.core.common.protoext.MessageOpt.class,
+						com.v2ray.core.common.protoext.MessageOpt.Builder.class);
+	}
 
-  private byte memoizedIsInitialized = -1;
-  @java.lang.Override
-  public final boolean isInitialized() {
-    byte isInitialized = memoizedIsInitialized;
-    if (isInitialized == 1) return true;
-    if (isInitialized == 0) return false;
+	public static final int TYPE_FIELD_NUMBER = 1;
+	private com.google.protobuf.LazyStringList type_;
 
-    memoizedIsInitialized = 1;
-    return true;
-  }
+	/**
+	 * <code>repeated string type = 1;</code>
+	 * 
+	 * @return A list containing the type.
+	 */
+	public com.google.protobuf.ProtocolStringList getTypeList() {
+		return type_;
+	}
 
-  @java.lang.Override
-  public void writeTo(com.google.protobuf.CodedOutputStream output)
-                      throws java.io.IOException {
-    for (int i = 0; i < type_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, type_.getRaw(i));
-    }
-    for (int i = 0; i < shortName_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, shortName_.getRaw(i));
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(transportOriginalName_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 86001, transportOriginalName_);
-    }
-    getUnknownFields().writeTo(output);
-  }
+	/**
+	 * <code>repeated string type = 1;</code>
+	 * 
+	 * @return The count of type.
+	 */
+	public int getTypeCount() {
+		return type_.size();
+	}
 
-  @java.lang.Override
-  public int getSerializedSize() {
-    int size = memoizedSize;
-    if (size != -1) return size;
+	/**
+	 * <code>repeated string type = 1;</code>
+	 * 
+	 * @param index The index of the element to return.
+	 * @return The type at the given index.
+	 */
+	public java.lang.String getType(int index) {
+		return type_.get(index);
+	}
 
-    size = 0;
-    {
-      int dataSize = 0;
-      for (int i = 0; i < type_.size(); i++) {
-        dataSize += computeStringSizeNoTag(type_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getTypeList().size();
-    }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < shortName_.size(); i++) {
-        dataSize += computeStringSizeNoTag(shortName_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getShortNameList().size();
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(transportOriginalName_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(86001, transportOriginalName_);
-    }
-    size += getUnknownFields().getSerializedSize();
-    memoizedSize = size;
-    return size;
-  }
+	/**
+	 * <code>repeated string type = 1;</code>
+	 * 
+	 * @param index The index of the value to return.
+	 * @return The bytes of the type at the given index.
+	 */
+	public com.google.protobuf.ByteString getTypeBytes(int index) {
+		return type_.getByteString(index);
+	}
 
-  @java.lang.Override
-  public boolean equals(final java.lang.Object obj) {
-    if (obj == this) {
-     return true;
-    }
-    if (!(obj instanceof com.v2ray.core.common.protoext.MessageOpt)) {
-      return super.equals(obj);
-    }
-    com.v2ray.core.common.protoext.MessageOpt other = (com.v2ray.core.common.protoext.MessageOpt) obj;
+	public static final int SHORT_NAME_FIELD_NUMBER = 2;
+	private com.google.protobuf.LazyStringList shortName_;
 
-    if (!getTypeList()
-        .equals(other.getTypeList())) return false;
-    if (!getShortNameList()
-        .equals(other.getShortNameList())) return false;
-    if (!getTransportOriginalName()
-        .equals(other.getTransportOriginalName())) return false;
-    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
-    return true;
-  }
+	/**
+	 * <code>repeated string short_name = 2;</code>
+	 * 
+	 * @return A list containing the shortName.
+	 */
+	public com.google.protobuf.ProtocolStringList getShortNameList() {
+		return shortName_;
+	}
 
-  @SuppressWarnings("unchecked")
-@java.lang.Override
-  public int hashCode() {
-    if (memoizedHashCode != 0) {
-      return memoizedHashCode;
-    }
-    int hash = 41;
-    hash = (19 * hash) + getDescriptor().hashCode();
-    if (getTypeCount() > 0) {
-      hash = (37 * hash) + TYPE_FIELD_NUMBER;
-      hash = (53 * hash) + getTypeList().hashCode();
-    }
-    if (getShortNameCount() > 0) {
-      hash = (37 * hash) + SHORT_NAME_FIELD_NUMBER;
-      hash = (53 * hash) + getShortNameList().hashCode();
-    }
-    hash = (37 * hash) + TRANSPORT_ORIGINAL_NAME_FIELD_NUMBER;
-    hash = (53 * hash) + getTransportOriginalName().hashCode();
-    hash = (29 * hash) + getUnknownFields().hashCode();
-    memoizedHashCode = hash;
-    return hash;
-  }
+	/**
+	 * <code>repeated string short_name = 2;</code>
+	 * 
+	 * @return The count of shortName.
+	 */
+	public int getShortNameCount() {
+		return shortName_.size();
+	}
 
-  public static com.v2ray.core.common.protoext.MessageOpt parseFrom(
-      java.nio.ByteBuffer data)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
-  }
-  public static com.v2ray.core.common.protoext.MessageOpt parseFrom(
-      java.nio.ByteBuffer data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
-  }
-  public static com.v2ray.core.common.protoext.MessageOpt parseFrom(
-      com.google.protobuf.ByteString data)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
-  }
-  public static com.v2ray.core.common.protoext.MessageOpt parseFrom(
-      com.google.protobuf.ByteString data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
-  }
-  public static com.v2ray.core.common.protoext.MessageOpt parseFrom(byte[] data)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
-  }
-  public static com.v2ray.core.common.protoext.MessageOpt parseFrom(
-      byte[] data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
-  }
-  public static com.v2ray.core.common.protoext.MessageOpt parseFrom(java.io.InputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
-  }
-  public static com.v2ray.core.common.protoext.MessageOpt parseFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
-  }
-  public static com.v2ray.core.common.protoext.MessageOpt parseDelimitedFrom(java.io.InputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input);
-  }
-  public static com.v2ray.core.common.protoext.MessageOpt parseDelimitedFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-  }
-  public static com.v2ray.core.common.protoext.MessageOpt parseFrom(
-      com.google.protobuf.CodedInputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
-  }
-  public static com.v2ray.core.common.protoext.MessageOpt parseFrom(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
-  }
+	/**
+	 * <code>repeated string short_name = 2;</code>
+	 * 
+	 * @param index The index of the element to return.
+	 * @return The shortName at the given index.
+	 */
+	public java.lang.String getShortName(int index) {
+		return shortName_.get(index);
+	}
 
-  @java.lang.Override
-  public Builder newBuilderForType() { return newBuilder(); }
-  public static Builder newBuilder() {
-    return DEFAULT_INSTANCE.toBuilder();
-  }
-  public static Builder newBuilder(com.v2ray.core.common.protoext.MessageOpt prototype) {
-    return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-  }
-  @java.lang.Override
-  public Builder toBuilder() {
-    return this == DEFAULT_INSTANCE
-        ? new Builder() : new Builder().mergeFrom(this);
-  }
+	/**
+	 * <code>repeated string short_name = 2;</code>
+	 * 
+	 * @param index The index of the value to return.
+	 * @return The bytes of the shortName at the given index.
+	 */
+	public com.google.protobuf.ByteString getShortNameBytes(int index) {
+		return shortName_.getByteString(index);
+	}
 
-  @java.lang.Override
-  protected Builder newBuilderForType(
-      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-    Builder builder = new Builder(parent);
-    return builder;
-  }
-  /**
-   * Protobuf type {@code v2ray.core.common.protoext.MessageOpt}
-   */
-  public static final class Builder extends
-      com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:v2ray.core.common.protoext.MessageOpt)
-      com.v2ray.core.common.protoext.MessageOptOrBuilder {
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_MessageOpt_descriptor;
-    }
+	public static final int TRANSPORT_ORIGINAL_NAME_FIELD_NUMBER = 86001;
+	private volatile java.lang.Object transportOriginalName_ = "";
 
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_MessageOpt_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.v2ray.core.common.protoext.MessageOpt.class, com.v2ray.core.common.protoext.MessageOpt.Builder.class);
-    }
+	/**
+	 * <code>string transport_original_name = 86001;</code>
+	 * 
+	 * @return The transportOriginalName.
+	 */
+	@java.lang.Override
+	public java.lang.String getTransportOriginalName() {
+		java.lang.Object ref = transportOriginalName_;
+		if (ref instanceof java.lang.String) {
+			return (java.lang.String) ref;
+		} else {
+			com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+			java.lang.String s = bs.toStringUtf8();
+			transportOriginalName_ = s;
+			return s;
+		}
+	}
 
-    // Construct using com.v2ray.core.common.protoext.MessageOpt.newBuilder()
-    private Builder() {
+	/**
+	 * <code>string transport_original_name = 86001;</code>
+	 * 
+	 * @return The bytes for transportOriginalName.
+	 */
+	@java.lang.Override
+	public com.google.protobuf.ByteString getTransportOriginalNameBytes() {
+		java.lang.Object ref = transportOriginalName_;
+		if (ref instanceof java.lang.String) {
+			com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+			transportOriginalName_ = b;
+			return b;
+		} else {
+			return (com.google.protobuf.ByteString) ref;
+		}
+	}
 
-    }
+	private byte memoizedIsInitialized = -1;
 
-    private Builder(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      super(parent);
+	@java.lang.Override
+	public final boolean isInitialized() {
+		byte isInitialized = memoizedIsInitialized;
+		if (isInitialized == 1)
+			return true;
+		if (isInitialized == 0)
+			return false;
 
-    }
-    @java.lang.Override
-    public Builder clear() {
-      super.clear();
-      bitField0_ = 0;
-      type_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      shortName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      transportOriginalName_ = "";
-      return this;
-    }
+		memoizedIsInitialized = 1;
+		return true;
+	}
 
-    @java.lang.Override
-    public com.google.protobuf.Descriptors.Descriptor
-        getDescriptorForType() {
-      return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_MessageOpt_descriptor;
-    }
+	@java.lang.Override
+	public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+		for (int i = 0; i < type_.size(); i++) {
+			com.google.protobuf.GeneratedMessageV3.writeString(output, 1, type_.getRaw(i));
+		}
+		for (int i = 0; i < shortName_.size(); i++) {
+			com.google.protobuf.GeneratedMessageV3.writeString(output, 2, shortName_.getRaw(i));
+		}
+		if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(transportOriginalName_)) {
+			com.google.protobuf.GeneratedMessageV3.writeString(output, 86001, transportOriginalName_);
+		}
+		getUnknownFields().writeTo(output);
+	}
 
-    @java.lang.Override
-    public com.v2ray.core.common.protoext.MessageOpt getDefaultInstanceForType() {
-      return com.v2ray.core.common.protoext.MessageOpt.getDefaultInstance();
-    }
+	@java.lang.Override
+	public int getSerializedSize() {
+		int size = memoizedSize;
+		if (size != -1)
+			return size;
 
-    @java.lang.Override
-    public com.v2ray.core.common.protoext.MessageOpt build() {
-      com.v2ray.core.common.protoext.MessageOpt result = buildPartial();
-      if (!result.isInitialized()) {
-        throw newUninitializedMessageException(result);
-      }
-      return result;
-    }
+		size = 0;
+		{
+			int dataSize = 0;
+			for (int i = 0; i < type_.size(); i++) {
+				dataSize += computeStringSizeNoTag(type_.getRaw(i));
+			}
+			size += dataSize;
+			size += 1 * getTypeList().size();
+		}
+		{
+			int dataSize = 0;
+			for (int i = 0; i < shortName_.size(); i++) {
+				dataSize += computeStringSizeNoTag(shortName_.getRaw(i));
+			}
+			size += dataSize;
+			size += 1 * getShortNameList().size();
+		}
+		if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(transportOriginalName_)) {
+			size += com.google.protobuf.GeneratedMessageV3.computeStringSize(86001, transportOriginalName_);
+		}
+		size += getUnknownFields().getSerializedSize();
+		memoizedSize = size;
+		return size;
+	}
 
-    @java.lang.Override
-    public com.v2ray.core.common.protoext.MessageOpt buildPartial() {
-      com.v2ray.core.common.protoext.MessageOpt result = new com.v2ray.core.common.protoext.MessageOpt(this);
-      buildPartialRepeatedFields(result);
-      if (bitField0_ != 0) { buildPartial0(result); }
-      onBuilt();
-      return result;
-    }
+	@java.lang.Override
+	public boolean equals(final java.lang.Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof com.v2ray.core.common.protoext.MessageOpt)) {
+			return super.equals(obj);
+		}
+		com.v2ray.core.common.protoext.MessageOpt other = (com.v2ray.core.common.protoext.MessageOpt) obj;
 
-    private void buildPartialRepeatedFields(com.v2ray.core.common.protoext.MessageOpt result) {
-      if (((bitField0_ & 0x00000001) != 0)) {
-        type_ = type_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.type_ = type_;
-      if (((bitField0_ & 0x00000002) != 0)) {
-        shortName_ = shortName_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000002);
-      }
-      result.shortName_ = shortName_;
-    }
+		if (!getTypeList().equals(other.getTypeList()))
+			return false;
+		if (!getShortNameList().equals(other.getShortNameList()))
+			return false;
+		if (!getTransportOriginalName().equals(other.getTransportOriginalName()))
+			return false;
+		if (!getUnknownFields().equals(other.getUnknownFields()))
+			return false;
+		return true;
+	}
 
-    private void buildPartial0(com.v2ray.core.common.protoext.MessageOpt result) {
-      int from_bitField0_ = bitField0_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.transportOriginalName_ = transportOriginalName_;
-      }
-    }
+	@SuppressWarnings("unchecked")
+	@java.lang.Override
+	public int hashCode() {
+		if (memoizedHashCode != 0) {
+			return memoizedHashCode;
+		}
+		int hash = 41;
+		hash = (19 * hash) + getDescriptor().hashCode();
+		if (getTypeCount() > 0) {
+			hash = (37 * hash) + TYPE_FIELD_NUMBER;
+			hash = (53 * hash) + getTypeList().hashCode();
+		}
+		if (getShortNameCount() > 0) {
+			hash = (37 * hash) + SHORT_NAME_FIELD_NUMBER;
+			hash = (53 * hash) + getShortNameList().hashCode();
+		}
+		hash = (37 * hash) + TRANSPORT_ORIGINAL_NAME_FIELD_NUMBER;
+		hash = (53 * hash) + getTransportOriginalName().hashCode();
+		hash = (29 * hash) + getUnknownFields().hashCode();
+		memoizedHashCode = hash;
+		return hash;
+	}
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @java.lang.Override
-    public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.v2ray.core.common.protoext.MessageOpt) {
-        return mergeFrom((com.v2ray.core.common.protoext.MessageOpt)other);
-      } else {
-        super.mergeFrom(other);
-        return this;
-      }
-    }
+	public static com.v2ray.core.common.protoext.MessageOpt parseFrom(java.nio.ByteBuffer data)
+			throws com.google.protobuf.InvalidProtocolBufferException {
+		return PARSER.parseFrom(data);
+	}
 
-    public Builder mergeFrom(com.v2ray.core.common.protoext.MessageOpt other) {
-      if (other == com.v2ray.core.common.protoext.MessageOpt.getDefaultInstance()) return this;
-      if (!other.type_.isEmpty()) {
-        if (type_.isEmpty()) {
-          type_ = other.type_;
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          ensureTypeIsMutable();
-          type_.addAll(other.type_);
-        }
-        onChanged();
-      }
-      if (!other.shortName_.isEmpty()) {
-        if (shortName_.isEmpty()) {
-          shortName_ = other.shortName_;
-          bitField0_ = (bitField0_ & ~0x00000002);
-        } else {
-          ensureShortNameIsMutable();
-          shortName_.addAll(other.shortName_);
-        }
-        onChanged();
-      }
-      if (!other.getTransportOriginalName().isEmpty()) {
-        transportOriginalName_ = other.transportOriginalName_;
-        bitField0_ |= 0x00000004;
-        onChanged();
-      }
-      this.mergeUnknownFields(other.getUnknownFields());
-      onChanged();
-      return this;
-    }
+	public static com.v2ray.core.common.protoext.MessageOpt parseFrom(java.nio.ByteBuffer data,
+			com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+			throws com.google.protobuf.InvalidProtocolBufferException {
+		return PARSER.parseFrom(data, extensionRegistry);
+	}
 
-    @java.lang.Override
-    public final boolean isInitialized() {
-      return true;
-    }
+	public static com.v2ray.core.common.protoext.MessageOpt parseFrom(com.google.protobuf.ByteString data)
+			throws com.google.protobuf.InvalidProtocolBufferException {
+		return PARSER.parseFrom(data);
+	}
 
-    @java.lang.Override
-    public Builder mergeFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-              ensureTypeIsMutable();
-              type_.add(s);
-              break;
-            } // case 10
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-              ensureShortNameIsMutable();
-              shortName_.add(s);
-              break;
-            } // case 18
-            case 688010: {
-              transportOriginalName_ = input.readStringRequireUtf8();
-              bitField0_ |= 0x00000004;
-              break;
-            } // case 688010
-            default: {
-              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
-                done = true; // was an endgroup tag
-              }
-              break;
-            } // default:
-          } // switch (tag)
-        } // while (!done)
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.unwrapIOException();
-      } finally {
-        onChanged();
-      } // finally
-      return this;
-    }
-    private int bitField0_;
+	public static com.v2ray.core.common.protoext.MessageOpt parseFrom(com.google.protobuf.ByteString data,
+			com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+			throws com.google.protobuf.InvalidProtocolBufferException {
+		return PARSER.parseFrom(data, extensionRegistry);
+	}
 
-    private com.google.protobuf.LazyStringList type_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureTypeIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
-        type_ = new com.google.protobuf.LazyStringArrayList(type_);
-        bitField0_ |= 0x00000001;
-       }
-    }
-    /**
-     * <code>repeated string type = 1;</code>
-     * @return A list containing the type.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getTypeList() {
-      return type_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string type = 1;</code>
-     * @return The count of type.
-     */
-    public int getTypeCount() {
-      return type_.size();
-    }
-    /**
-     * <code>repeated string type = 1;</code>
-     * @param index The index of the element to return.
-     * @return The type at the given index.
-     */
-    public java.lang.String getType(int index) {
-      return type_.get(index);
-    }
-    /**
-     * <code>repeated string type = 1;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the type at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getTypeBytes(int index) {
-      return type_.getByteString(index);
-    }
-    /**
-     * <code>repeated string type = 1;</code>
-     * @param index The index to set the value at.
-     * @param value The type to set.
-     * @return This builder for chaining.
-     */
-    public Builder setType(
-        int index, java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      ensureTypeIsMutable();
-      type_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string type = 1;</code>
-     * @param value The type to add.
-     * @return This builder for chaining.
-     */
-    public Builder addType(
-        java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      ensureTypeIsMutable();
-      type_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string type = 1;</code>
-     * @param values The type to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllType(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureTypeIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, type_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string type = 1;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearType() {
-      type_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string type = 1;</code>
-     * @param value The bytes of the type to add.
-     * @return This builder for chaining.
-     */
-    public Builder addTypeBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      checkByteStringIsUtf8(value);
-      ensureTypeIsMutable();
-      type_.add(value);
-      onChanged();
-      return this;
-    }
+	public static com.v2ray.core.common.protoext.MessageOpt parseFrom(byte[] data)
+			throws com.google.protobuf.InvalidProtocolBufferException {
+		return PARSER.parseFrom(data);
+	}
 
-    private com.google.protobuf.LazyStringList shortName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureShortNameIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
-        shortName_ = new com.google.protobuf.LazyStringArrayList(shortName_);
-        bitField0_ |= 0x00000002;
-       }
-    }
-    /**
-     * <code>repeated string short_name = 2;</code>
-     * @return A list containing the shortName.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getShortNameList() {
-      return shortName_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string short_name = 2;</code>
-     * @return The count of shortName.
-     */
-    public int getShortNameCount() {
-      return shortName_.size();
-    }
-    /**
-     * <code>repeated string short_name = 2;</code>
-     * @param index The index of the element to return.
-     * @return The shortName at the given index.
-     */
-    public java.lang.String getShortName(int index) {
-      return shortName_.get(index);
-    }
-    /**
-     * <code>repeated string short_name = 2;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the shortName at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getShortNameBytes(int index) {
-      return shortName_.getByteString(index);
-    }
-    /**
-     * <code>repeated string short_name = 2;</code>
-     * @param index The index to set the value at.
-     * @param value The shortName to set.
-     * @return This builder for chaining.
-     */
-    public Builder setShortName(
-        int index, java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      ensureShortNameIsMutable();
-      shortName_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string short_name = 2;</code>
-     * @param value The shortName to add.
-     * @return This builder for chaining.
-     */
-    public Builder addShortName(
-        java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      ensureShortNameIsMutable();
-      shortName_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string short_name = 2;</code>
-     * @param values The shortName to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllShortName(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureShortNameIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, shortName_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string short_name = 2;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearShortName() {
-      shortName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string short_name = 2;</code>
-     * @param value The bytes of the shortName to add.
-     * @return This builder for chaining.
-     */
-    public Builder addShortNameBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      checkByteStringIsUtf8(value);
-      ensureShortNameIsMutable();
-      shortName_.add(value);
-      onChanged();
-      return this;
-    }
+	public static com.v2ray.core.common.protoext.MessageOpt parseFrom(byte[] data,
+			com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+			throws com.google.protobuf.InvalidProtocolBufferException {
+		return PARSER.parseFrom(data, extensionRegistry);
+	}
 
-    private java.lang.Object transportOriginalName_ = "";
-    /**
-     * <code>string transport_original_name = 86001;</code>
-     * @return The transportOriginalName.
-     */
-    public java.lang.String getTransportOriginalName() {
-      java.lang.Object ref = transportOriginalName_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        transportOriginalName_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string transport_original_name = 86001;</code>
-     * @return The bytes for transportOriginalName.
-     */
-    public com.google.protobuf.ByteString
-        getTransportOriginalNameBytes() {
-      java.lang.Object ref = transportOriginalName_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        transportOriginalName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string transport_original_name = 86001;</code>
-     * @param value The transportOriginalName to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTransportOriginalName(
-        java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      transportOriginalName_ = value;
-      bitField0_ |= 0x00000004;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string transport_original_name = 86001;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearTransportOriginalName() {
-      transportOriginalName_ = getDefaultInstance().getTransportOriginalName();
-      bitField0_ = (bitField0_ & ~0x00000004);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string transport_original_name = 86001;</code>
-     * @param value The bytes for transportOriginalName to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTransportOriginalNameBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      checkByteStringIsUtf8(value);
-      transportOriginalName_ = value;
-      bitField0_ |= 0x00000004;
-      onChanged();
-      return this;
-    }
-    @java.lang.Override
-    public final Builder setUnknownFields(
-        final com.google.protobuf.UnknownFieldSet unknownFields) {
-      return super.setUnknownFields(unknownFields);
-    }
+	public static com.v2ray.core.common.protoext.MessageOpt parseFrom(java.io.InputStream input)
+			throws java.io.IOException {
+		return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+	}
 
-    @java.lang.Override
-    public final Builder mergeUnknownFields(
-        final com.google.protobuf.UnknownFieldSet unknownFields) {
-      return super.mergeUnknownFields(unknownFields);
-    }
+	public static com.v2ray.core.common.protoext.MessageOpt parseFrom(java.io.InputStream input,
+			com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+		return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+	}
 
+	public static com.v2ray.core.common.protoext.MessageOpt parseDelimitedFrom(java.io.InputStream input)
+			throws java.io.IOException {
+		return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+	}
 
-    // @@protoc_insertion_point(builder_scope:v2ray.core.common.protoext.MessageOpt)
-  }
+	public static com.v2ray.core.common.protoext.MessageOpt parseDelimitedFrom(java.io.InputStream input,
+			com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+		return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+	}
 
-  // @@protoc_insertion_point(class_scope:v2ray.core.common.protoext.MessageOpt)
-  private static final com.v2ray.core.common.protoext.MessageOpt DEFAULT_INSTANCE;
-  static {
-    DEFAULT_INSTANCE = new com.v2ray.core.common.protoext.MessageOpt();
-  }
+	public static com.v2ray.core.common.protoext.MessageOpt parseFrom(com.google.protobuf.CodedInputStream input)
+			throws java.io.IOException {
+		return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+	}
 
-  public static com.v2ray.core.common.protoext.MessageOpt getDefaultInstance() {
-    return DEFAULT_INSTANCE;
-  }
+	public static com.v2ray.core.common.protoext.MessageOpt parseFrom(com.google.protobuf.CodedInputStream input,
+			com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+		return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+	}
 
-  private static final com.google.protobuf.Parser<MessageOpt>
-      PARSER = new com.google.protobuf.AbstractParser<MessageOpt>() {
-    @java.lang.Override
-    public MessageOpt parsePartialFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      Builder builder = newBuilder();
-      try {
-        builder.mergeFrom(input, extensionRegistry);
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(builder.buildPartial());
-      } catch (com.google.protobuf.UninitializedMessageException e) {
-        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(e)
-            .setUnfinishedMessage(builder.buildPartial());
-      }
-      return builder.buildPartial();
-    }
-  };
+	@java.lang.Override
+	public Builder newBuilderForType() {
+		return newBuilder();
+	}
 
-  public static com.google.protobuf.Parser<MessageOpt> parser() {
-    return PARSER;
-  }
+	public static Builder newBuilder() {
+		return DEFAULT_INSTANCE.toBuilder();
+	}
 
-  @java.lang.Override
-  public com.google.protobuf.Parser<MessageOpt> getParserForType() {
-    return PARSER;
-  }
+	public static Builder newBuilder(com.v2ray.core.common.protoext.MessageOpt prototype) {
+		return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+	}
 
-  @java.lang.Override
-  public com.v2ray.core.common.protoext.MessageOpt getDefaultInstanceForType() {
-    return DEFAULT_INSTANCE;
-  }
+	@java.lang.Override
+	public Builder toBuilder() {
+		return this == DEFAULT_INSTANCE ? new Builder() : new Builder().mergeFrom(this);
+	}
+
+	@java.lang.Override
+	protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+		Builder builder = new Builder(parent);
+		return builder;
+	}
+
+	/**
+	 * Protobuf type {@code v2ray.core.common.protoext.MessageOpt}
+	 */
+	public static final class Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+			// @@protoc_insertion_point(builder_implements:v2ray.core.common.protoext.MessageOpt)
+			com.v2ray.core.common.protoext.MessageOptOrBuilder {
+		public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+			return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_MessageOpt_descriptor;
+		}
+
+		@java.lang.Override
+		protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+			return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_MessageOpt_fieldAccessorTable
+					.ensureFieldAccessorsInitialized(com.v2ray.core.common.protoext.MessageOpt.class,
+							com.v2ray.core.common.protoext.MessageOpt.Builder.class);
+		}
+
+		// Construct using com.v2ray.core.common.protoext.MessageOpt.newBuilder()
+		private Builder() {
+
+		}
+
+		private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+			super(parent);
+
+		}
+
+		@java.lang.Override
+		public Builder clear() {
+			super.clear();
+			bitField0_ = 0;
+			type_ = com.google.protobuf.LazyStringArrayList.emptyList();
+			bitField0_ = (bitField0_ & ~0x00000001);
+			shortName_ = com.google.protobuf.LazyStringArrayList.emptyList();
+			bitField0_ = (bitField0_ & ~0x00000002);
+			transportOriginalName_ = "";
+			return this;
+		}
+
+		@java.lang.Override
+		public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+			return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_MessageOpt_descriptor;
+		}
+
+		@java.lang.Override
+		public com.v2ray.core.common.protoext.MessageOpt getDefaultInstanceForType() {
+			return com.v2ray.core.common.protoext.MessageOpt.getDefaultInstance();
+		}
+
+		@java.lang.Override
+		public com.v2ray.core.common.protoext.MessageOpt build() {
+			com.v2ray.core.common.protoext.MessageOpt result = buildPartial();
+			if (!result.isInitialized()) {
+				throw newUninitializedMessageException(result);
+			}
+			return result;
+		}
+
+		@java.lang.Override
+		public com.v2ray.core.common.protoext.MessageOpt buildPartial() {
+			com.v2ray.core.common.protoext.MessageOpt result = new com.v2ray.core.common.protoext.MessageOpt(this);
+			buildPartialRepeatedFields(result);
+			if (bitField0_ != 0) {
+				buildPartial0(result);
+			}
+			onBuilt();
+			return result;
+		}
+
+		private void buildPartialRepeatedFields(com.v2ray.core.common.protoext.MessageOpt result) {
+			if (((bitField0_ & 0x00000001) != 0)) {
+				type_ = type_.getUnmodifiableView();
+				bitField0_ = (bitField0_ & ~0x00000001);
+			}
+			result.type_ = type_;
+			if (((bitField0_ & 0x00000002) != 0)) {
+				shortName_ = shortName_.getUnmodifiableView();
+				bitField0_ = (bitField0_ & ~0x00000002);
+			}
+			result.shortName_ = shortName_;
+		}
+
+		private void buildPartial0(com.v2ray.core.common.protoext.MessageOpt result) {
+			int from_bitField0_ = bitField0_;
+			if (((from_bitField0_ & 0x00000004) != 0)) {
+				result.transportOriginalName_ = transportOriginalName_;
+			}
+		}
+
+		@java.lang.Override
+		public Builder clone() {
+			return super.clone();
+		}
+
+		@java.lang.Override
+		public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+			return super.setField(field, value);
+		}
+
+		@java.lang.Override
+		public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+			return super.clearField(field);
+		}
+
+		@java.lang.Override
+		public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+			return super.clearOneof(oneof);
+		}
+
+		@java.lang.Override
+		public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index,
+				java.lang.Object value) {
+			return super.setRepeatedField(field, index, value);
+		}
+
+		@java.lang.Override
+		public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+			return super.addRepeatedField(field, value);
+		}
+
+		@java.lang.Override
+		public Builder mergeFrom(com.google.protobuf.Message other) {
+			if (other instanceof com.v2ray.core.common.protoext.MessageOpt) {
+				return mergeFrom((com.v2ray.core.common.protoext.MessageOpt) other);
+			} else {
+				super.mergeFrom(other);
+				return this;
+			}
+		}
+
+		public Builder mergeFrom(com.v2ray.core.common.protoext.MessageOpt other) {
+			if (other == com.v2ray.core.common.protoext.MessageOpt.getDefaultInstance())
+				return this;
+			if (!other.type_.isEmpty()) {
+				if (type_.isEmpty()) {
+					type_ = other.type_;
+					bitField0_ = (bitField0_ & ~0x00000001);
+				} else {
+					ensureTypeIsMutable();
+					type_.addAll(other.type_);
+				}
+				onChanged();
+			}
+			if (!other.shortName_.isEmpty()) {
+				if (shortName_.isEmpty()) {
+					shortName_ = other.shortName_;
+					bitField0_ = (bitField0_ & ~0x00000002);
+				} else {
+					ensureShortNameIsMutable();
+					shortName_.addAll(other.shortName_);
+				}
+				onChanged();
+			}
+			if (!other.getTransportOriginalName().isEmpty()) {
+				transportOriginalName_ = other.transportOriginalName_;
+				bitField0_ |= 0x00000004;
+				onChanged();
+			}
+			this.mergeUnknownFields(other.getUnknownFields());
+			onChanged();
+			return this;
+		}
+
+		@java.lang.Override
+		public final boolean isInitialized() {
+			return true;
+		}
+
+		@java.lang.Override
+		public Builder mergeFrom(com.google.protobuf.CodedInputStream input,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+			if (extensionRegistry == null) {
+				throw new java.lang.NullPointerException();
+			}
+			try {
+				boolean done = false;
+				while (!done) {
+					int tag = input.readTag();
+					switch (tag) {
+					case 0:
+						done = true;
+						break;
+					case 10: {
+						java.lang.String s = input.readStringRequireUtf8();
+						ensureTypeIsMutable();
+						type_.add(s);
+						break;
+					} // case 10
+					case 18: {
+						java.lang.String s = input.readStringRequireUtf8();
+						ensureShortNameIsMutable();
+						shortName_.add(s);
+						break;
+					} // case 18
+					case 688010: {
+						transportOriginalName_ = input.readStringRequireUtf8();
+						bitField0_ |= 0x00000004;
+						break;
+					} // case 688010
+					default: {
+						if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+							done = true; // was an endgroup tag
+						}
+						break;
+					} // default:
+					} // switch (tag)
+				} // while (!done)
+			} catch (com.google.protobuf.InvalidProtocolBufferException e) {
+				throw e.unwrapIOException();
+			} finally {
+				onChanged();
+			} // finally
+			return this;
+		}
+
+		private int bitField0_;
+
+		private com.google.protobuf.LazyStringList type_ = com.google.protobuf.LazyStringArrayList.emptyList();
+
+		private void ensureTypeIsMutable() {
+			if (!((bitField0_ & 0x00000001) != 0)) {
+				type_ = new com.google.protobuf.LazyStringArrayList(type_);
+				bitField0_ |= 0x00000001;
+			}
+		}
+
+		/**
+		 * <code>repeated string type = 1;</code>
+		 * 
+		 * @return A list containing the type.
+		 */
+		public com.google.protobuf.ProtocolStringList getTypeList() {
+			return type_.getUnmodifiableView();
+		}
+
+		/**
+		 * <code>repeated string type = 1;</code>
+		 * 
+		 * @return The count of type.
+		 */
+		public int getTypeCount() {
+			return type_.size();
+		}
+
+		/**
+		 * <code>repeated string type = 1;</code>
+		 * 
+		 * @param index The index of the element to return.
+		 * @return The type at the given index.
+		 */
+		public java.lang.String getType(int index) {
+			return type_.get(index);
+		}
+
+		/**
+		 * <code>repeated string type = 1;</code>
+		 * 
+		 * @param index The index of the value to return.
+		 * @return The bytes of the type at the given index.
+		 */
+		public com.google.protobuf.ByteString getTypeBytes(int index) {
+			return type_.getByteString(index);
+		}
+
+		/**
+		 * <code>repeated string type = 1;</code>
+		 * 
+		 * @param index The index to set the value at.
+		 * @param value The type to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setType(int index, java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			ensureTypeIsMutable();
+			type_.set(index, value);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string type = 1;</code>
+		 * 
+		 * @param value The type to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addType(java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			ensureTypeIsMutable();
+			type_.add(value);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string type = 1;</code>
+		 * 
+		 * @param values The type to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addAllType(java.lang.Iterable<java.lang.String> values) {
+			ensureTypeIsMutable();
+			com.google.protobuf.AbstractMessageLite.Builder.addAll(values, type_);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string type = 1;</code>
+		 * 
+		 * @return This builder for chaining.
+		 */
+		public Builder clearType() {
+			type_ = com.google.protobuf.LazyStringArrayList.emptyList();
+			bitField0_ = (bitField0_ & ~0x00000001);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string type = 1;</code>
+		 * 
+		 * @param value The bytes of the type to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addTypeBytes(com.google.protobuf.ByteString value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			checkByteStringIsUtf8(value);
+			ensureTypeIsMutable();
+			type_.add(value);
+			onChanged();
+			return this;
+		}
+
+		private com.google.protobuf.LazyStringList shortName_ = com.google.protobuf.LazyStringArrayList.emptyList();
+
+		private void ensureShortNameIsMutable() {
+			if (!((bitField0_ & 0x00000002) != 0)) {
+				shortName_ = new com.google.protobuf.LazyStringArrayList(shortName_);
+				bitField0_ |= 0x00000002;
+			}
+		}
+
+		/**
+		 * <code>repeated string short_name = 2;</code>
+		 * 
+		 * @return A list containing the shortName.
+		 */
+		public com.google.protobuf.ProtocolStringList getShortNameList() {
+			return shortName_.getUnmodifiableView();
+		}
+
+		/**
+		 * <code>repeated string short_name = 2;</code>
+		 * 
+		 * @return The count of shortName.
+		 */
+		public int getShortNameCount() {
+			return shortName_.size();
+		}
+
+		/**
+		 * <code>repeated string short_name = 2;</code>
+		 * 
+		 * @param index The index of the element to return.
+		 * @return The shortName at the given index.
+		 */
+		public java.lang.String getShortName(int index) {
+			return shortName_.get(index);
+		}
+
+		/**
+		 * <code>repeated string short_name = 2;</code>
+		 * 
+		 * @param index The index of the value to return.
+		 * @return The bytes of the shortName at the given index.
+		 */
+		public com.google.protobuf.ByteString getShortNameBytes(int index) {
+			return shortName_.getByteString(index);
+		}
+
+		/**
+		 * <code>repeated string short_name = 2;</code>
+		 * 
+		 * @param index The index to set the value at.
+		 * @param value The shortName to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setShortName(int index, java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			ensureShortNameIsMutable();
+			shortName_.set(index, value);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string short_name = 2;</code>
+		 * 
+		 * @param value The shortName to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addShortName(java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			ensureShortNameIsMutable();
+			shortName_.add(value);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string short_name = 2;</code>
+		 * 
+		 * @param values The shortName to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addAllShortName(java.lang.Iterable<java.lang.String> values) {
+			ensureShortNameIsMutable();
+			com.google.protobuf.AbstractMessageLite.Builder.addAll(values, shortName_);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string short_name = 2;</code>
+		 * 
+		 * @return This builder for chaining.
+		 */
+		public Builder clearShortName() {
+			shortName_ = com.google.protobuf.LazyStringArrayList.emptyList();
+			bitField0_ = (bitField0_ & ~0x00000002);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string short_name = 2;</code>
+		 * 
+		 * @param value The bytes of the shortName to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addShortNameBytes(com.google.protobuf.ByteString value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			checkByteStringIsUtf8(value);
+			ensureShortNameIsMutable();
+			shortName_.add(value);
+			onChanged();
+			return this;
+		}
+
+		private java.lang.Object transportOriginalName_ = "";
+
+		/**
+		 * <code>string transport_original_name = 86001;</code>
+		 * 
+		 * @return The transportOriginalName.
+		 */
+		public java.lang.String getTransportOriginalName() {
+			java.lang.Object ref = transportOriginalName_;
+			if (!(ref instanceof java.lang.String)) {
+				com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+				java.lang.String s = bs.toStringUtf8();
+				transportOriginalName_ = s;
+				return s;
+			} else {
+				return (java.lang.String) ref;
+			}
+		}
+
+		/**
+		 * <code>string transport_original_name = 86001;</code>
+		 * 
+		 * @return The bytes for transportOriginalName.
+		 */
+		public com.google.protobuf.ByteString getTransportOriginalNameBytes() {
+			java.lang.Object ref = transportOriginalName_;
+			if (ref instanceof String) {
+				com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+				transportOriginalName_ = b;
+				return b;
+			} else {
+				return (com.google.protobuf.ByteString) ref;
+			}
+		}
+
+		/**
+		 * <code>string transport_original_name = 86001;</code>
+		 * 
+		 * @param value The transportOriginalName to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setTransportOriginalName(java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			transportOriginalName_ = value;
+			bitField0_ |= 0x00000004;
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>string transport_original_name = 86001;</code>
+		 * 
+		 * @return This builder for chaining.
+		 */
+		public Builder clearTransportOriginalName() {
+			transportOriginalName_ = getDefaultInstance().getTransportOriginalName();
+			bitField0_ = (bitField0_ & ~0x00000004);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>string transport_original_name = 86001;</code>
+		 * 
+		 * @param value The bytes for transportOriginalName to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setTransportOriginalNameBytes(com.google.protobuf.ByteString value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			checkByteStringIsUtf8(value);
+			transportOriginalName_ = value;
+			bitField0_ |= 0x00000004;
+			onChanged();
+			return this;
+		}
+
+		@java.lang.Override
+		public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+			return super.setUnknownFields(unknownFields);
+		}
+
+		@java.lang.Override
+		public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+			return super.mergeUnknownFields(unknownFields);
+		}
+
+		// @@protoc_insertion_point(builder_scope:v2ray.core.common.protoext.MessageOpt)
+	}
+
+	// @@protoc_insertion_point(class_scope:v2ray.core.common.protoext.MessageOpt)
+	private static final com.v2ray.core.common.protoext.MessageOpt DEFAULT_INSTANCE;
+	static {
+		DEFAULT_INSTANCE = new com.v2ray.core.common.protoext.MessageOpt();
+	}
+
+	public static com.v2ray.core.common.protoext.MessageOpt getDefaultInstance() {
+		return DEFAULT_INSTANCE;
+	}
+
+	private static final com.google.protobuf.Parser<MessageOpt> PARSER = new com.google.protobuf.AbstractParser<MessageOpt>() {
+		@java.lang.Override
+		public MessageOpt parsePartialFrom(com.google.protobuf.CodedInputStream input,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws com.google.protobuf.InvalidProtocolBufferException {
+			Builder builder = newBuilder();
+			try {
+				builder.mergeFrom(input, extensionRegistry);
+			} catch (com.google.protobuf.InvalidProtocolBufferException e) {
+				throw e.setUnfinishedMessage(builder.buildPartial());
+			} catch (com.google.protobuf.UninitializedMessageException e) {
+				throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+			} catch (java.io.IOException e) {
+				throw new com.google.protobuf.InvalidProtocolBufferException(e)
+						.setUnfinishedMessage(builder.buildPartial());
+			}
+			return builder.buildPartial();
+		}
+	};
+
+	public static com.google.protobuf.Parser<MessageOpt> parser() {
+		return PARSER;
+	}
+
+	@java.lang.Override
+	public com.google.protobuf.Parser<MessageOpt> getParserForType() {
+		return PARSER;
+	}
+
+	@java.lang.Override
+	public com.v2ray.core.common.protoext.MessageOpt getDefaultInstanceForType() {
+		return DEFAULT_INSTANCE;
+	}
 
 }
-

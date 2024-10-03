@@ -1619,12 +1619,12 @@ public class Smartproxy implements Callable<Void> {
 		}
 
 		ArrayList<String> lines = new ArrayList<>();
-		try (BOMInputStream is = new BOMInputStream(uris)) {
+		try (BOMInputStream is = BOMInputStream.builder().setInputStream(uris).get()) {
 			List<String> lines1 = IOUtils.readLines(is, sc.utf8);
 			lines.addAll(lines1);
 		}
 		if (local_rule != null) {
-			try (BOMInputStream is = new BOMInputStream(new FileInputStream(local_rule))) {
+			try (BOMInputStream is = BOMInputStream.builder().setInputStream(new FileInputStream(local_rule)).get()) {
 				List<String> lines2 = IOUtils.readLines(is, sc.utf8);
 				lines.addAll(lines2);
 			}

@@ -134,7 +134,7 @@ class LogProcessor {
 	private void load_domain_nn_table() throws Exception {
 		ip_to_nn = new TreeMap<>();
 		Path path = Paths.get("user.rule");
-		try (BOMInputStream is = new BOMInputStream(new FileInputStream(path.toFile()))) {
+		try (BOMInputStream is = BOMInputStream.builder().setInputStream(new FileInputStream(path.toFile())).get()) {
 			for (String line : IOUtils.readLines(is, sc.utf8)) {
 				line = line.trim();
 				if (line.isEmpty())

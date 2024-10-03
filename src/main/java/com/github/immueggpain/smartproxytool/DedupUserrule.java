@@ -1,6 +1,5 @@
 package com.github.immueggpain.smartproxytool;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -60,12 +59,14 @@ public class DedupUserrule implements Callable<Void> {
 		// step 2: read old user.rule into list of lines
 		// merge old list with new list
 		List<String> oldRules;
-		try (BOMInputStream is = new BOMInputStream(new FileInputStream(Paths.get("user.rule").toFile()))) {
+		try (BOMInputStream is = BOMInputStream.builder().setInputStream(Files.newInputStream(Paths.get("user.rule")))
+				.get()) {
 			oldRules = IOUtils.readLines(is, sc.utf8);
 		}
 		// also put local.rule into oldRules but remember local.rule line count
 		int localRuleSize = 0;
-		try (BOMInputStream is = new BOMInputStream(new FileInputStream(Paths.get("local.rule").toFile()))) {
+		try (BOMInputStream is = BOMInputStream.builder().setInputStream(Files.newInputStream(Paths.get("local.rule")))
+				.get()) {
 			List<String> localRules = IOUtils.readLines(is, sc.utf8);
 			localRuleSize = localRules.size();
 			oldRules.addAll(localRules);
@@ -304,7 +305,8 @@ public class DedupUserrule implements Callable<Void> {
 		excepRules.put(".forums.mihoyo.com", "proxy");
 
 		// read excepRules from exception.rule
-		try (BOMInputStream is = new BOMInputStream(new FileInputStream(Paths.get("exception.rule").toFile()))) {
+		try (BOMInputStream is = BOMInputStream.builder()
+				.setInputStream(Files.newInputStream(Paths.get("exception.rule"))).get()) {
 			for (String line : IOUtils.readLines(is, sc.utf8)) {
 				if (line.isEmpty())
 					continue;

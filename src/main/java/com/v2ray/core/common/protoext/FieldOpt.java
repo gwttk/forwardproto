@@ -6,1520 +6,1613 @@ package com.v2ray.core.common.protoext;
 /**
  * Protobuf type {@code v2ray.core.common.protoext.FieldOpt}
  */
-@SuppressWarnings("unchecked")
-public final class FieldOpt extends
-    com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:v2ray.core.common.protoext.FieldOpt)
-    FieldOptOrBuilder {
-private static final long serialVersionUID = 0L;
-  // Use FieldOpt.newBuilder() to construct.
-  private FieldOpt(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-    super(builder);
-  }
-  private FieldOpt() {
-    anyWants_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    allowedValues_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    allowedValueTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    convertTimeReadFileInto_ = "";
-    convertTimeResourceLoading_ = "";
-    convertTimeParseIp_ = "";
-  }
+@SuppressWarnings({ "unchecked", "deprecation" })
+public final class FieldOpt extends com.google.protobuf.GeneratedMessageV3 implements
+		// @@protoc_insertion_point(message_implements:v2ray.core.common.protoext.FieldOpt)
+		FieldOptOrBuilder {
+	private static final long serialVersionUID = 0L;
 
-  @java.lang.Override
-  @SuppressWarnings({})
-  protected java.lang.Object newInstance(
-      UnusedPrivateParameter unused) {
-    return new FieldOpt();
-  }
+	// Use FieldOpt.newBuilder() to construct.
+	private FieldOpt(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+		super(builder);
+	}
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  public static final com.google.protobuf.Descriptors.Descriptor
-      getDescriptor() {
-    return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_FieldOpt_descriptor;
-  }
+	private FieldOpt() {
+		anyWants_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+		allowedValues_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+		allowedValueTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+		convertTimeReadFileInto_ = "";
+		convertTimeResourceLoading_ = "";
+		convertTimeParseIp_ = "";
+	}
 
-  @java.lang.Override
-  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internalGetFieldAccessorTable() {
-    return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_FieldOpt_fieldAccessorTable
-        .ensureFieldAccessorsInitialized(
-            com.v2ray.core.common.protoext.FieldOpt.class, com.v2ray.core.common.protoext.FieldOpt.Builder.class);
-  }
+	@java.lang.Override
+	@SuppressWarnings({})
+	protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+		return new FieldOpt();
+	}
 
-  public static final int ANY_WANTS_FIELD_NUMBER = 1;
-  private com.google.protobuf.LazyStringList anyWants_;
-  /**
-   * <code>repeated string any_wants = 1;</code>
-   * @return A list containing the anyWants.
-   */
-  public com.google.protobuf.ProtocolStringList
-      getAnyWantsList() {
-    return anyWants_;
-  }
-  /**
-   * <code>repeated string any_wants = 1;</code>
-   * @return The count of anyWants.
-   */
-  public int getAnyWantsCount() {
-    return anyWants_.size();
-  }
-  /**
-   * <code>repeated string any_wants = 1;</code>
-   * @param index The index of the element to return.
-   * @return The anyWants at the given index.
-   */
-  public java.lang.String getAnyWants(int index) {
-    return anyWants_.get(index);
-  }
-  /**
-   * <code>repeated string any_wants = 1;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the anyWants at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getAnyWantsBytes(int index) {
-    return anyWants_.getByteString(index);
-  }
+	@java.lang.Override
+	public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+		return this.unknownFields;
+	}
 
-  public static final int ALLOWED_VALUES_FIELD_NUMBER = 2;
-  private com.google.protobuf.LazyStringList allowedValues_;
-  /**
-   * <code>repeated string allowed_values = 2;</code>
-   * @return A list containing the allowedValues.
-   */
-  public com.google.protobuf.ProtocolStringList
-      getAllowedValuesList() {
-    return allowedValues_;
-  }
-  /**
-   * <code>repeated string allowed_values = 2;</code>
-   * @return The count of allowedValues.
-   */
-  public int getAllowedValuesCount() {
-    return allowedValues_.size();
-  }
-  /**
-   * <code>repeated string allowed_values = 2;</code>
-   * @param index The index of the element to return.
-   * @return The allowedValues at the given index.
-   */
-  public java.lang.String getAllowedValues(int index) {
-    return allowedValues_.get(index);
-  }
-  /**
-   * <code>repeated string allowed_values = 2;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the allowedValues at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getAllowedValuesBytes(int index) {
-    return allowedValues_.getByteString(index);
-  }
+	public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+		return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_FieldOpt_descriptor;
+	}
 
-  public static final int ALLOWED_VALUE_TYPES_FIELD_NUMBER = 3;
-  private com.google.protobuf.LazyStringList allowedValueTypes_;
-  /**
-   * <code>repeated string allowed_value_types = 3;</code>
-   * @return A list containing the allowedValueTypes.
-   */
-  public com.google.protobuf.ProtocolStringList
-      getAllowedValueTypesList() {
-    return allowedValueTypes_;
-  }
-  /**
-   * <code>repeated string allowed_value_types = 3;</code>
-   * @return The count of allowedValueTypes.
-   */
-  public int getAllowedValueTypesCount() {
-    return allowedValueTypes_.size();
-  }
-  /**
-   * <code>repeated string allowed_value_types = 3;</code>
-   * @param index The index of the element to return.
-   * @return The allowedValueTypes at the given index.
-   */
-  public java.lang.String getAllowedValueTypes(int index) {
-    return allowedValueTypes_.get(index);
-  }
-  /**
-   * <code>repeated string allowed_value_types = 3;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the allowedValueTypes at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getAllowedValueTypesBytes(int index) {
-    return allowedValueTypes_.getByteString(index);
-  }
+	@java.lang.Override
+	protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+		return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_FieldOpt_fieldAccessorTable
+				.ensureFieldAccessorsInitialized(com.v2ray.core.common.protoext.FieldOpt.class,
+						com.v2ray.core.common.protoext.FieldOpt.Builder.class);
+	}
 
-  public static final int CONVERT_TIME_READ_FILE_INTO_FIELD_NUMBER = 4;
-  private volatile java.lang.Object convertTimeReadFileInto_ = "";
-  /**
-   * <pre>
-   * convert_time_read_file_into read a file into another field, and clear this field during input parsing
-   * </pre>
-   *
-   * <code>string convert_time_read_file_into = 4;</code>
-   * @return The convertTimeReadFileInto.
-   */
-  @java.lang.Override
-  public java.lang.String getConvertTimeReadFileInto() {
-    java.lang.Object ref = convertTimeReadFileInto_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      convertTimeReadFileInto_ = s;
-      return s;
-    }
-  }
-  /**
-   * <pre>
-   * convert_time_read_file_into read a file into another field, and clear this field during input parsing
-   * </pre>
-   *
-   * <code>string convert_time_read_file_into = 4;</code>
-   * @return The bytes for convertTimeReadFileInto.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getConvertTimeReadFileIntoBytes() {
-    java.lang.Object ref = convertTimeReadFileInto_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      convertTimeReadFileInto_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
+	public static final int ANY_WANTS_FIELD_NUMBER = 1;
+	private com.google.protobuf.LazyStringList anyWants_;
 
-  public static final int FORBIDDEN_FIELD_NUMBER = 5;
-  private boolean forbidden_ = false;
-  /**
-   * <pre>
-   * forbidden marks a boolean to be inaccessible to user
-   * </pre>
-   *
-   * <code>bool forbidden = 5;</code>
-   * @return The forbidden.
-   */
-  @java.lang.Override
-  public boolean getForbidden() {
-    return forbidden_;
-  }
+	/**
+	 * <code>repeated string any_wants = 1;</code>
+	 * 
+	 * @return A list containing the anyWants.
+	 */
+	public com.google.protobuf.ProtocolStringList getAnyWantsList() {
+		return anyWants_;
+	}
 
-  public static final int CONVERT_TIME_RESOURCE_LOADING_FIELD_NUMBER = 6;
-  private volatile java.lang.Object convertTimeResourceLoading_ = "";
-  /**
-   * <pre>
-   * convert_time_resource_loading read a file, and place its resource hash into another field
-   * </pre>
-   *
-   * <code>string convert_time_resource_loading = 6;</code>
-   * @return The convertTimeResourceLoading.
-   */
-  @java.lang.Override
-  public java.lang.String getConvertTimeResourceLoading() {
-    java.lang.Object ref = convertTimeResourceLoading_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      convertTimeResourceLoading_ = s;
-      return s;
-    }
-  }
-  /**
-   * <pre>
-   * convert_time_resource_loading read a file, and place its resource hash into another field
-   * </pre>
-   *
-   * <code>string convert_time_resource_loading = 6;</code>
-   * @return The bytes for convertTimeResourceLoading.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getConvertTimeResourceLoadingBytes() {
-    java.lang.Object ref = convertTimeResourceLoading_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      convertTimeResourceLoading_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
+	/**
+	 * <code>repeated string any_wants = 1;</code>
+	 * 
+	 * @return The count of anyWants.
+	 */
+	public int getAnyWantsCount() {
+		return anyWants_.size();
+	}
 
-  public static final int CONVERT_TIME_PARSE_IP_FIELD_NUMBER = 7;
-  private volatile java.lang.Object convertTimeParseIp_ = "";
-  /**
-   * <pre>
-   * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
-   * </pre>
-   *
-   * <code>string convert_time_parse_ip = 7;</code>
-   * @return The convertTimeParseIp.
-   */
-  @java.lang.Override
-  public java.lang.String getConvertTimeParseIp() {
-    java.lang.Object ref = convertTimeParseIp_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      convertTimeParseIp_ = s;
-      return s;
-    }
-  }
-  /**
-   * <pre>
-   * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
-   * </pre>
-   *
-   * <code>string convert_time_parse_ip = 7;</code>
-   * @return The bytes for convertTimeParseIp.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getConvertTimeParseIpBytes() {
-    java.lang.Object ref = convertTimeParseIp_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      convertTimeParseIp_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
+	/**
+	 * <code>repeated string any_wants = 1;</code>
+	 * 
+	 * @param index The index of the element to return.
+	 * @return The anyWants at the given index.
+	 */
+	public java.lang.String getAnyWants(int index) {
+		return anyWants_.get(index);
+	}
 
-  private byte memoizedIsInitialized = -1;
-  @java.lang.Override
-  public final boolean isInitialized() {
-    byte isInitialized = memoizedIsInitialized;
-    if (isInitialized == 1) return true;
-    if (isInitialized == 0) return false;
+	/**
+	 * <code>repeated string any_wants = 1;</code>
+	 * 
+	 * @param index The index of the value to return.
+	 * @return The bytes of the anyWants at the given index.
+	 */
+	public com.google.protobuf.ByteString getAnyWantsBytes(int index) {
+		return anyWants_.getByteString(index);
+	}
 
-    memoizedIsInitialized = 1;
-    return true;
-  }
+	public static final int ALLOWED_VALUES_FIELD_NUMBER = 2;
+	private com.google.protobuf.LazyStringList allowedValues_;
 
-  @java.lang.Override
-  public void writeTo(com.google.protobuf.CodedOutputStream output)
-                      throws java.io.IOException {
-    for (int i = 0; i < anyWants_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, anyWants_.getRaw(i));
-    }
-    for (int i = 0; i < allowedValues_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, allowedValues_.getRaw(i));
-    }
-    for (int i = 0; i < allowedValueTypes_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, allowedValueTypes_.getRaw(i));
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(convertTimeReadFileInto_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, convertTimeReadFileInto_);
-    }
-    if (forbidden_ != false) {
-      output.writeBool(5, forbidden_);
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(convertTimeResourceLoading_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, convertTimeResourceLoading_);
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(convertTimeParseIp_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, convertTimeParseIp_);
-    }
-    getUnknownFields().writeTo(output);
-  }
+	/**
+	 * <code>repeated string allowed_values = 2;</code>
+	 * 
+	 * @return A list containing the allowedValues.
+	 */
+	public com.google.protobuf.ProtocolStringList getAllowedValuesList() {
+		return allowedValues_;
+	}
 
-  @java.lang.Override
-  public int getSerializedSize() {
-    int size = memoizedSize;
-    if (size != -1) return size;
+	/**
+	 * <code>repeated string allowed_values = 2;</code>
+	 * 
+	 * @return The count of allowedValues.
+	 */
+	public int getAllowedValuesCount() {
+		return allowedValues_.size();
+	}
 
-    size = 0;
-    {
-      int dataSize = 0;
-      for (int i = 0; i < anyWants_.size(); i++) {
-        dataSize += computeStringSizeNoTag(anyWants_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getAnyWantsList().size();
-    }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < allowedValues_.size(); i++) {
-        dataSize += computeStringSizeNoTag(allowedValues_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getAllowedValuesList().size();
-    }
-    {
-      int dataSize = 0;
-      for (int i = 0; i < allowedValueTypes_.size(); i++) {
-        dataSize += computeStringSizeNoTag(allowedValueTypes_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getAllowedValueTypesList().size();
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(convertTimeReadFileInto_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, convertTimeReadFileInto_);
-    }
-    if (forbidden_ != false) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeBoolSize(5, forbidden_);
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(convertTimeResourceLoading_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, convertTimeResourceLoading_);
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(convertTimeParseIp_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, convertTimeParseIp_);
-    }
-    size += getUnknownFields().getSerializedSize();
-    memoizedSize = size;
-    return size;
-  }
+	/**
+	 * <code>repeated string allowed_values = 2;</code>
+	 * 
+	 * @param index The index of the element to return.
+	 * @return The allowedValues at the given index.
+	 */
+	public java.lang.String getAllowedValues(int index) {
+		return allowedValues_.get(index);
+	}
 
-  @java.lang.Override
-  public boolean equals(final java.lang.Object obj) {
-    if (obj == this) {
-     return true;
-    }
-    if (!(obj instanceof com.v2ray.core.common.protoext.FieldOpt)) {
-      return super.equals(obj);
-    }
-    com.v2ray.core.common.protoext.FieldOpt other = (com.v2ray.core.common.protoext.FieldOpt) obj;
+	/**
+	 * <code>repeated string allowed_values = 2;</code>
+	 * 
+	 * @param index The index of the value to return.
+	 * @return The bytes of the allowedValues at the given index.
+	 */
+	public com.google.protobuf.ByteString getAllowedValuesBytes(int index) {
+		return allowedValues_.getByteString(index);
+	}
 
-    if (!getAnyWantsList()
-        .equals(other.getAnyWantsList())) return false;
-    if (!getAllowedValuesList()
-        .equals(other.getAllowedValuesList())) return false;
-    if (!getAllowedValueTypesList()
-        .equals(other.getAllowedValueTypesList())) return false;
-    if (!getConvertTimeReadFileInto()
-        .equals(other.getConvertTimeReadFileInto())) return false;
-    if (getForbidden()
-        != other.getForbidden()) return false;
-    if (!getConvertTimeResourceLoading()
-        .equals(other.getConvertTimeResourceLoading())) return false;
-    if (!getConvertTimeParseIp()
-        .equals(other.getConvertTimeParseIp())) return false;
-    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
-    return true;
-  }
+	public static final int ALLOWED_VALUE_TYPES_FIELD_NUMBER = 3;
+	private com.google.protobuf.LazyStringList allowedValueTypes_;
 
-  @java.lang.Override
-  public int hashCode() {
-    if (memoizedHashCode != 0) {
-      return memoizedHashCode;
-    }
-    int hash = 41;
-    hash = (19 * hash) + getDescriptor().hashCode();
-    if (getAnyWantsCount() > 0) {
-      hash = (37 * hash) + ANY_WANTS_FIELD_NUMBER;
-      hash = (53 * hash) + getAnyWantsList().hashCode();
-    }
-    if (getAllowedValuesCount() > 0) {
-      hash = (37 * hash) + ALLOWED_VALUES_FIELD_NUMBER;
-      hash = (53 * hash) + getAllowedValuesList().hashCode();
-    }
-    if (getAllowedValueTypesCount() > 0) {
-      hash = (37 * hash) + ALLOWED_VALUE_TYPES_FIELD_NUMBER;
-      hash = (53 * hash) + getAllowedValueTypesList().hashCode();
-    }
-    hash = (37 * hash) + CONVERT_TIME_READ_FILE_INTO_FIELD_NUMBER;
-    hash = (53 * hash) + getConvertTimeReadFileInto().hashCode();
-    hash = (37 * hash) + FORBIDDEN_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-        getForbidden());
-    hash = (37 * hash) + CONVERT_TIME_RESOURCE_LOADING_FIELD_NUMBER;
-    hash = (53 * hash) + getConvertTimeResourceLoading().hashCode();
-    hash = (37 * hash) + CONVERT_TIME_PARSE_IP_FIELD_NUMBER;
-    hash = (53 * hash) + getConvertTimeParseIp().hashCode();
-    hash = (29 * hash) + getUnknownFields().hashCode();
-    memoizedHashCode = hash;
-    return hash;
-  }
+	/**
+	 * <code>repeated string allowed_value_types = 3;</code>
+	 * 
+	 * @return A list containing the allowedValueTypes.
+	 */
+	public com.google.protobuf.ProtocolStringList getAllowedValueTypesList() {
+		return allowedValueTypes_;
+	}
 
-  public static com.v2ray.core.common.protoext.FieldOpt parseFrom(
-      java.nio.ByteBuffer data)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
-  }
-  public static com.v2ray.core.common.protoext.FieldOpt parseFrom(
-      java.nio.ByteBuffer data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
-  }
-  public static com.v2ray.core.common.protoext.FieldOpt parseFrom(
-      com.google.protobuf.ByteString data)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
-  }
-  public static com.v2ray.core.common.protoext.FieldOpt parseFrom(
-      com.google.protobuf.ByteString data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
-  }
-  public static com.v2ray.core.common.protoext.FieldOpt parseFrom(byte[] data)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
-  }
-  public static com.v2ray.core.common.protoext.FieldOpt parseFrom(
-      byte[] data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
-  }
-  public static com.v2ray.core.common.protoext.FieldOpt parseFrom(java.io.InputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
-  }
-  public static com.v2ray.core.common.protoext.FieldOpt parseFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
-  }
-  public static com.v2ray.core.common.protoext.FieldOpt parseDelimitedFrom(java.io.InputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input);
-  }
-  public static com.v2ray.core.common.protoext.FieldOpt parseDelimitedFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-  }
-  public static com.v2ray.core.common.protoext.FieldOpt parseFrom(
-      com.google.protobuf.CodedInputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
-  }
-  public static com.v2ray.core.common.protoext.FieldOpt parseFrom(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
-  }
+	/**
+	 * <code>repeated string allowed_value_types = 3;</code>
+	 * 
+	 * @return The count of allowedValueTypes.
+	 */
+	public int getAllowedValueTypesCount() {
+		return allowedValueTypes_.size();
+	}
 
-  @java.lang.Override
-  public Builder newBuilderForType() { return newBuilder(); }
-  public static Builder newBuilder() {
-    return DEFAULT_INSTANCE.toBuilder();
-  }
-  public static Builder newBuilder(com.v2ray.core.common.protoext.FieldOpt prototype) {
-    return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-  }
-  @java.lang.Override
-  public Builder toBuilder() {
-    return this == DEFAULT_INSTANCE
-        ? new Builder() : new Builder().mergeFrom(this);
-  }
+	/**
+	 * <code>repeated string allowed_value_types = 3;</code>
+	 * 
+	 * @param index The index of the element to return.
+	 * @return The allowedValueTypes at the given index.
+	 */
+	public java.lang.String getAllowedValueTypes(int index) {
+		return allowedValueTypes_.get(index);
+	}
 
-  @java.lang.Override
-  protected Builder newBuilderForType(
-      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-    Builder builder = new Builder(parent);
-    return builder;
-  }
-  /**
-   * Protobuf type {@code v2ray.core.common.protoext.FieldOpt}
-   */
-  public static final class Builder extends
-      com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:v2ray.core.common.protoext.FieldOpt)
-      com.v2ray.core.common.protoext.FieldOptOrBuilder {
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_FieldOpt_descriptor;
-    }
+	/**
+	 * <code>repeated string allowed_value_types = 3;</code>
+	 * 
+	 * @param index The index of the value to return.
+	 * @return The bytes of the allowedValueTypes at the given index.
+	 */
+	public com.google.protobuf.ByteString getAllowedValueTypesBytes(int index) {
+		return allowedValueTypes_.getByteString(index);
+	}
 
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_FieldOpt_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.v2ray.core.common.protoext.FieldOpt.class, com.v2ray.core.common.protoext.FieldOpt.Builder.class);
-    }
+	public static final int CONVERT_TIME_READ_FILE_INTO_FIELD_NUMBER = 4;
+	private volatile java.lang.Object convertTimeReadFileInto_ = "";
 
-    // Construct using com.v2ray.core.common.protoext.FieldOpt.newBuilder()
-    private Builder() {
+	/**
+	 * <pre>
+	 * convert_time_read_file_into read a file into another field, and clear this field during input parsing
+	 * </pre>
+	 *
+	 * <code>string convert_time_read_file_into = 4;</code>
+	 * 
+	 * @return The convertTimeReadFileInto.
+	 */
+	@java.lang.Override
+	public java.lang.String getConvertTimeReadFileInto() {
+		java.lang.Object ref = convertTimeReadFileInto_;
+		if (ref instanceof java.lang.String) {
+			return (java.lang.String) ref;
+		} else {
+			com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+			java.lang.String s = bs.toStringUtf8();
+			convertTimeReadFileInto_ = s;
+			return s;
+		}
+	}
 
-    }
+	/**
+	 * <pre>
+	 * convert_time_read_file_into read a file into another field, and clear this field during input parsing
+	 * </pre>
+	 *
+	 * <code>string convert_time_read_file_into = 4;</code>
+	 * 
+	 * @return The bytes for convertTimeReadFileInto.
+	 */
+	@java.lang.Override
+	public com.google.protobuf.ByteString getConvertTimeReadFileIntoBytes() {
+		java.lang.Object ref = convertTimeReadFileInto_;
+		if (ref instanceof java.lang.String) {
+			com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+			convertTimeReadFileInto_ = b;
+			return b;
+		} else {
+			return (com.google.protobuf.ByteString) ref;
+		}
+	}
 
-    private Builder(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      super(parent);
+	public static final int FORBIDDEN_FIELD_NUMBER = 5;
+	private boolean forbidden_ = false;
 
-    }
-    @java.lang.Override
-    public Builder clear() {
-      super.clear();
-      bitField0_ = 0;
-      anyWants_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      allowedValues_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      allowedValueTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000004);
-      convertTimeReadFileInto_ = "";
-      forbidden_ = false;
-      convertTimeResourceLoading_ = "";
-      convertTimeParseIp_ = "";
-      return this;
-    }
+	/**
+	 * <pre>
+	 * forbidden marks a boolean to be inaccessible to user
+	 * </pre>
+	 *
+	 * <code>bool forbidden = 5;</code>
+	 * 
+	 * @return The forbidden.
+	 */
+	@java.lang.Override
+	public boolean getForbidden() {
+		return forbidden_;
+	}
 
-    @java.lang.Override
-    public com.google.protobuf.Descriptors.Descriptor
-        getDescriptorForType() {
-      return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_FieldOpt_descriptor;
-    }
+	public static final int CONVERT_TIME_RESOURCE_LOADING_FIELD_NUMBER = 6;
+	private volatile java.lang.Object convertTimeResourceLoading_ = "";
 
-    @java.lang.Override
-    public com.v2ray.core.common.protoext.FieldOpt getDefaultInstanceForType() {
-      return com.v2ray.core.common.protoext.FieldOpt.getDefaultInstance();
-    }
+	/**
+	 * <pre>
+	 * convert_time_resource_loading read a file, and place its resource hash into another field
+	 * </pre>
+	 *
+	 * <code>string convert_time_resource_loading = 6;</code>
+	 * 
+	 * @return The convertTimeResourceLoading.
+	 */
+	@java.lang.Override
+	public java.lang.String getConvertTimeResourceLoading() {
+		java.lang.Object ref = convertTimeResourceLoading_;
+		if (ref instanceof java.lang.String) {
+			return (java.lang.String) ref;
+		} else {
+			com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+			java.lang.String s = bs.toStringUtf8();
+			convertTimeResourceLoading_ = s;
+			return s;
+		}
+	}
 
-    @java.lang.Override
-    public com.v2ray.core.common.protoext.FieldOpt build() {
-      com.v2ray.core.common.protoext.FieldOpt result = buildPartial();
-      if (!result.isInitialized()) {
-        throw newUninitializedMessageException(result);
-      }
-      return result;
-    }
+	/**
+	 * <pre>
+	 * convert_time_resource_loading read a file, and place its resource hash into another field
+	 * </pre>
+	 *
+	 * <code>string convert_time_resource_loading = 6;</code>
+	 * 
+	 * @return The bytes for convertTimeResourceLoading.
+	 */
+	@java.lang.Override
+	public com.google.protobuf.ByteString getConvertTimeResourceLoadingBytes() {
+		java.lang.Object ref = convertTimeResourceLoading_;
+		if (ref instanceof java.lang.String) {
+			com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+			convertTimeResourceLoading_ = b;
+			return b;
+		} else {
+			return (com.google.protobuf.ByteString) ref;
+		}
+	}
 
-    @java.lang.Override
-    public com.v2ray.core.common.protoext.FieldOpt buildPartial() {
-      com.v2ray.core.common.protoext.FieldOpt result = new com.v2ray.core.common.protoext.FieldOpt(this);
-      buildPartialRepeatedFields(result);
-      if (bitField0_ != 0) { buildPartial0(result); }
-      onBuilt();
-      return result;
-    }
+	public static final int CONVERT_TIME_PARSE_IP_FIELD_NUMBER = 7;
+	private volatile java.lang.Object convertTimeParseIp_ = "";
 
-    private void buildPartialRepeatedFields(com.v2ray.core.common.protoext.FieldOpt result) {
-      if (((bitField0_ & 0x00000001) != 0)) {
-        anyWants_ = anyWants_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.anyWants_ = anyWants_;
-      if (((bitField0_ & 0x00000002) != 0)) {
-        allowedValues_ = allowedValues_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000002);
-      }
-      result.allowedValues_ = allowedValues_;
-      if (((bitField0_ & 0x00000004) != 0)) {
-        allowedValueTypes_ = allowedValueTypes_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000004);
-      }
-      result.allowedValueTypes_ = allowedValueTypes_;
-    }
+	/**
+	 * <pre>
+	 * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
+	 * </pre>
+	 *
+	 * <code>string convert_time_parse_ip = 7;</code>
+	 * 
+	 * @return The convertTimeParseIp.
+	 */
+	@java.lang.Override
+	public java.lang.String getConvertTimeParseIp() {
+		java.lang.Object ref = convertTimeParseIp_;
+		if (ref instanceof java.lang.String) {
+			return (java.lang.String) ref;
+		} else {
+			com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+			java.lang.String s = bs.toStringUtf8();
+			convertTimeParseIp_ = s;
+			return s;
+		}
+	}
 
-    private void buildPartial0(com.v2ray.core.common.protoext.FieldOpt result) {
-      int from_bitField0_ = bitField0_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        result.convertTimeReadFileInto_ = convertTimeReadFileInto_;
-      }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        result.forbidden_ = forbidden_;
-      }
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        result.convertTimeResourceLoading_ = convertTimeResourceLoading_;
-      }
-      if (((from_bitField0_ & 0x00000040) != 0)) {
-        result.convertTimeParseIp_ = convertTimeParseIp_;
-      }
-    }
+	/**
+	 * <pre>
+	 * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
+	 * </pre>
+	 *
+	 * <code>string convert_time_parse_ip = 7;</code>
+	 * 
+	 * @return The bytes for convertTimeParseIp.
+	 */
+	@java.lang.Override
+	public com.google.protobuf.ByteString getConvertTimeParseIpBytes() {
+		java.lang.Object ref = convertTimeParseIp_;
+		if (ref instanceof java.lang.String) {
+			com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+			convertTimeParseIp_ = b;
+			return b;
+		} else {
+			return (com.google.protobuf.ByteString) ref;
+		}
+	}
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
-    @java.lang.Override
-    public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.v2ray.core.common.protoext.FieldOpt) {
-        return mergeFrom((com.v2ray.core.common.protoext.FieldOpt)other);
-      } else {
-        super.mergeFrom(other);
-        return this;
-      }
-    }
+	private byte memoizedIsInitialized = -1;
 
-    public Builder mergeFrom(com.v2ray.core.common.protoext.FieldOpt other) {
-      if (other == com.v2ray.core.common.protoext.FieldOpt.getDefaultInstance()) return this;
-      if (!other.anyWants_.isEmpty()) {
-        if (anyWants_.isEmpty()) {
-          anyWants_ = other.anyWants_;
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          ensureAnyWantsIsMutable();
-          anyWants_.addAll(other.anyWants_);
-        }
-        onChanged();
-      }
-      if (!other.allowedValues_.isEmpty()) {
-        if (allowedValues_.isEmpty()) {
-          allowedValues_ = other.allowedValues_;
-          bitField0_ = (bitField0_ & ~0x00000002);
-        } else {
-          ensureAllowedValuesIsMutable();
-          allowedValues_.addAll(other.allowedValues_);
-        }
-        onChanged();
-      }
-      if (!other.allowedValueTypes_.isEmpty()) {
-        if (allowedValueTypes_.isEmpty()) {
-          allowedValueTypes_ = other.allowedValueTypes_;
-          bitField0_ = (bitField0_ & ~0x00000004);
-        } else {
-          ensureAllowedValueTypesIsMutable();
-          allowedValueTypes_.addAll(other.allowedValueTypes_);
-        }
-        onChanged();
-      }
-      if (!other.getConvertTimeReadFileInto().isEmpty()) {
-        convertTimeReadFileInto_ = other.convertTimeReadFileInto_;
-        bitField0_ |= 0x00000008;
-        onChanged();
-      }
-      if (other.getForbidden() != false) {
-        setForbidden(other.getForbidden());
-      }
-      if (!other.getConvertTimeResourceLoading().isEmpty()) {
-        convertTimeResourceLoading_ = other.convertTimeResourceLoading_;
-        bitField0_ |= 0x00000020;
-        onChanged();
-      }
-      if (!other.getConvertTimeParseIp().isEmpty()) {
-        convertTimeParseIp_ = other.convertTimeParseIp_;
-        bitField0_ |= 0x00000040;
-        onChanged();
-      }
-      this.mergeUnknownFields(other.getUnknownFields());
-      onChanged();
-      return this;
-    }
+	@java.lang.Override
+	public final boolean isInitialized() {
+		byte isInitialized = memoizedIsInitialized;
+		if (isInitialized == 1)
+			return true;
+		if (isInitialized == 0)
+			return false;
 
-    @java.lang.Override
-    public final boolean isInitialized() {
-      return true;
-    }
+		memoizedIsInitialized = 1;
+		return true;
+	}
 
-    @java.lang.Override
-    public Builder mergeFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-              ensureAnyWantsIsMutable();
-              anyWants_.add(s);
-              break;
-            } // case 10
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-              ensureAllowedValuesIsMutable();
-              allowedValues_.add(s);
-              break;
-            } // case 18
-            case 26: {
-              java.lang.String s = input.readStringRequireUtf8();
-              ensureAllowedValueTypesIsMutable();
-              allowedValueTypes_.add(s);
-              break;
-            } // case 26
-            case 34: {
-              convertTimeReadFileInto_ = input.readStringRequireUtf8();
-              bitField0_ |= 0x00000008;
-              break;
-            } // case 34
-            case 40: {
-              forbidden_ = input.readBool();
-              bitField0_ |= 0x00000010;
-              break;
-            } // case 40
-            case 50: {
-              convertTimeResourceLoading_ = input.readStringRequireUtf8();
-              bitField0_ |= 0x00000020;
-              break;
-            } // case 50
-            case 58: {
-              convertTimeParseIp_ = input.readStringRequireUtf8();
-              bitField0_ |= 0x00000040;
-              break;
-            } // case 58
-            default: {
-              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
-                done = true; // was an endgroup tag
-              }
-              break;
-            } // default:
-          } // switch (tag)
-        } // while (!done)
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.unwrapIOException();
-      } finally {
-        onChanged();
-      } // finally
-      return this;
-    }
-    private int bitField0_;
+	@java.lang.Override
+	public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+		for (int i = 0; i < anyWants_.size(); i++) {
+			com.google.protobuf.GeneratedMessageV3.writeString(output, 1, anyWants_.getRaw(i));
+		}
+		for (int i = 0; i < allowedValues_.size(); i++) {
+			com.google.protobuf.GeneratedMessageV3.writeString(output, 2, allowedValues_.getRaw(i));
+		}
+		for (int i = 0; i < allowedValueTypes_.size(); i++) {
+			com.google.protobuf.GeneratedMessageV3.writeString(output, 3, allowedValueTypes_.getRaw(i));
+		}
+		if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(convertTimeReadFileInto_)) {
+			com.google.protobuf.GeneratedMessageV3.writeString(output, 4, convertTimeReadFileInto_);
+		}
+		if (forbidden_ != false) {
+			output.writeBool(5, forbidden_);
+		}
+		if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(convertTimeResourceLoading_)) {
+			com.google.protobuf.GeneratedMessageV3.writeString(output, 6, convertTimeResourceLoading_);
+		}
+		if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(convertTimeParseIp_)) {
+			com.google.protobuf.GeneratedMessageV3.writeString(output, 7, convertTimeParseIp_);
+		}
+		getUnknownFields().writeTo(output);
+	}
 
-    private com.google.protobuf.LazyStringList anyWants_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureAnyWantsIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
-        anyWants_ = new com.google.protobuf.LazyStringArrayList(anyWants_);
-        bitField0_ |= 0x00000001;
-       }
-    }
-    /**
-     * <code>repeated string any_wants = 1;</code>
-     * @return A list containing the anyWants.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getAnyWantsList() {
-      return anyWants_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string any_wants = 1;</code>
-     * @return The count of anyWants.
-     */
-    public int getAnyWantsCount() {
-      return anyWants_.size();
-    }
-    /**
-     * <code>repeated string any_wants = 1;</code>
-     * @param index The index of the element to return.
-     * @return The anyWants at the given index.
-     */
-    public java.lang.String getAnyWants(int index) {
-      return anyWants_.get(index);
-    }
-    /**
-     * <code>repeated string any_wants = 1;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the anyWants at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getAnyWantsBytes(int index) {
-      return anyWants_.getByteString(index);
-    }
-    /**
-     * <code>repeated string any_wants = 1;</code>
-     * @param index The index to set the value at.
-     * @param value The anyWants to set.
-     * @return This builder for chaining.
-     */
-    public Builder setAnyWants(
-        int index, java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      ensureAnyWantsIsMutable();
-      anyWants_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string any_wants = 1;</code>
-     * @param value The anyWants to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAnyWants(
-        java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      ensureAnyWantsIsMutable();
-      anyWants_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string any_wants = 1;</code>
-     * @param values The anyWants to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllAnyWants(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureAnyWantsIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, anyWants_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string any_wants = 1;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearAnyWants() {
-      anyWants_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string any_wants = 1;</code>
-     * @param value The bytes of the anyWants to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAnyWantsBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      checkByteStringIsUtf8(value);
-      ensureAnyWantsIsMutable();
-      anyWants_.add(value);
-      onChanged();
-      return this;
-    }
+	@java.lang.Override
+	public int getSerializedSize() {
+		int size = memoizedSize;
+		if (size != -1)
+			return size;
 
-    private com.google.protobuf.LazyStringList allowedValues_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureAllowedValuesIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
-        allowedValues_ = new com.google.protobuf.LazyStringArrayList(allowedValues_);
-        bitField0_ |= 0x00000002;
-       }
-    }
-    /**
-     * <code>repeated string allowed_values = 2;</code>
-     * @return A list containing the allowedValues.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getAllowedValuesList() {
-      return allowedValues_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string allowed_values = 2;</code>
-     * @return The count of allowedValues.
-     */
-    public int getAllowedValuesCount() {
-      return allowedValues_.size();
-    }
-    /**
-     * <code>repeated string allowed_values = 2;</code>
-     * @param index The index of the element to return.
-     * @return The allowedValues at the given index.
-     */
-    public java.lang.String getAllowedValues(int index) {
-      return allowedValues_.get(index);
-    }
-    /**
-     * <code>repeated string allowed_values = 2;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the allowedValues at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getAllowedValuesBytes(int index) {
-      return allowedValues_.getByteString(index);
-    }
-    /**
-     * <code>repeated string allowed_values = 2;</code>
-     * @param index The index to set the value at.
-     * @param value The allowedValues to set.
-     * @return This builder for chaining.
-     */
-    public Builder setAllowedValues(
-        int index, java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      ensureAllowedValuesIsMutable();
-      allowedValues_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string allowed_values = 2;</code>
-     * @param value The allowedValues to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllowedValues(
-        java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      ensureAllowedValuesIsMutable();
-      allowedValues_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string allowed_values = 2;</code>
-     * @param values The allowedValues to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllAllowedValues(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureAllowedValuesIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, allowedValues_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string allowed_values = 2;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearAllowedValues() {
-      allowedValues_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string allowed_values = 2;</code>
-     * @param value The bytes of the allowedValues to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllowedValuesBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      checkByteStringIsUtf8(value);
-      ensureAllowedValuesIsMutable();
-      allowedValues_.add(value);
-      onChanged();
-      return this;
-    }
+		size = 0;
+		{
+			int dataSize = 0;
+			for (int i = 0; i < anyWants_.size(); i++) {
+				dataSize += computeStringSizeNoTag(anyWants_.getRaw(i));
+			}
+			size += dataSize;
+			size += 1 * getAnyWantsList().size();
+		}
+		{
+			int dataSize = 0;
+			for (int i = 0; i < allowedValues_.size(); i++) {
+				dataSize += computeStringSizeNoTag(allowedValues_.getRaw(i));
+			}
+			size += dataSize;
+			size += 1 * getAllowedValuesList().size();
+		}
+		{
+			int dataSize = 0;
+			for (int i = 0; i < allowedValueTypes_.size(); i++) {
+				dataSize += computeStringSizeNoTag(allowedValueTypes_.getRaw(i));
+			}
+			size += dataSize;
+			size += 1 * getAllowedValueTypesList().size();
+		}
+		if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(convertTimeReadFileInto_)) {
+			size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, convertTimeReadFileInto_);
+		}
+		if (forbidden_ != false) {
+			size += com.google.protobuf.CodedOutputStream.computeBoolSize(5, forbidden_);
+		}
+		if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(convertTimeResourceLoading_)) {
+			size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, convertTimeResourceLoading_);
+		}
+		if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(convertTimeParseIp_)) {
+			size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, convertTimeParseIp_);
+		}
+		size += getUnknownFields().getSerializedSize();
+		memoizedSize = size;
+		return size;
+	}
 
-    private com.google.protobuf.LazyStringList allowedValueTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureAllowedValueTypesIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
-        allowedValueTypes_ = new com.google.protobuf.LazyStringArrayList(allowedValueTypes_);
-        bitField0_ |= 0x00000004;
-       }
-    }
-    /**
-     * <code>repeated string allowed_value_types = 3;</code>
-     * @return A list containing the allowedValueTypes.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getAllowedValueTypesList() {
-      return allowedValueTypes_.getUnmodifiableView();
-    }
-    /**
-     * <code>repeated string allowed_value_types = 3;</code>
-     * @return The count of allowedValueTypes.
-     */
-    public int getAllowedValueTypesCount() {
-      return allowedValueTypes_.size();
-    }
-    /**
-     * <code>repeated string allowed_value_types = 3;</code>
-     * @param index The index of the element to return.
-     * @return The allowedValueTypes at the given index.
-     */
-    public java.lang.String getAllowedValueTypes(int index) {
-      return allowedValueTypes_.get(index);
-    }
-    /**
-     * <code>repeated string allowed_value_types = 3;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the allowedValueTypes at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getAllowedValueTypesBytes(int index) {
-      return allowedValueTypes_.getByteString(index);
-    }
-    /**
-     * <code>repeated string allowed_value_types = 3;</code>
-     * @param index The index to set the value at.
-     * @param value The allowedValueTypes to set.
-     * @return This builder for chaining.
-     */
-    public Builder setAllowedValueTypes(
-        int index, java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      ensureAllowedValueTypesIsMutable();
-      allowedValueTypes_.set(index, value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string allowed_value_types = 3;</code>
-     * @param value The allowedValueTypes to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllowedValueTypes(
-        java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      ensureAllowedValueTypesIsMutable();
-      allowedValueTypes_.add(value);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string allowed_value_types = 3;</code>
-     * @param values The allowedValueTypes to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllAllowedValueTypes(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureAllowedValueTypesIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, allowedValueTypes_);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string allowed_value_types = 3;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearAllowedValueTypes() {
-      allowedValueTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000004);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>repeated string allowed_value_types = 3;</code>
-     * @param value The bytes of the allowedValueTypes to add.
-     * @return This builder for chaining.
-     */
-    public Builder addAllowedValueTypesBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      checkByteStringIsUtf8(value);
-      ensureAllowedValueTypesIsMutable();
-      allowedValueTypes_.add(value);
-      onChanged();
-      return this;
-    }
+	@java.lang.Override
+	public boolean equals(final java.lang.Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof com.v2ray.core.common.protoext.FieldOpt)) {
+			return super.equals(obj);
+		}
+		com.v2ray.core.common.protoext.FieldOpt other = (com.v2ray.core.common.protoext.FieldOpt) obj;
 
-    private java.lang.Object convertTimeReadFileInto_ = "";
-    /**
-     * <pre>
-     * convert_time_read_file_into read a file into another field, and clear this field during input parsing
-     * </pre>
-     *
-     * <code>string convert_time_read_file_into = 4;</code>
-     * @return The convertTimeReadFileInto.
-     */
-    public java.lang.String getConvertTimeReadFileInto() {
-      java.lang.Object ref = convertTimeReadFileInto_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        convertTimeReadFileInto_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <pre>
-     * convert_time_read_file_into read a file into another field, and clear this field during input parsing
-     * </pre>
-     *
-     * <code>string convert_time_read_file_into = 4;</code>
-     * @return The bytes for convertTimeReadFileInto.
-     */
-    public com.google.protobuf.ByteString
-        getConvertTimeReadFileIntoBytes() {
-      java.lang.Object ref = convertTimeReadFileInto_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        convertTimeReadFileInto_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <pre>
-     * convert_time_read_file_into read a file into another field, and clear this field during input parsing
-     * </pre>
-     *
-     * <code>string convert_time_read_file_into = 4;</code>
-     * @param value The convertTimeReadFileInto to set.
-     * @return This builder for chaining.
-     */
-    public Builder setConvertTimeReadFileInto(
-        java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      convertTimeReadFileInto_ = value;
-      bitField0_ |= 0x00000008;
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * convert_time_read_file_into read a file into another field, and clear this field during input parsing
-     * </pre>
-     *
-     * <code>string convert_time_read_file_into = 4;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearConvertTimeReadFileInto() {
-      convertTimeReadFileInto_ = getDefaultInstance().getConvertTimeReadFileInto();
-      bitField0_ = (bitField0_ & ~0x00000008);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * convert_time_read_file_into read a file into another field, and clear this field during input parsing
-     * </pre>
-     *
-     * <code>string convert_time_read_file_into = 4;</code>
-     * @param value The bytes for convertTimeReadFileInto to set.
-     * @return This builder for chaining.
-     */
-    public Builder setConvertTimeReadFileIntoBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      checkByteStringIsUtf8(value);
-      convertTimeReadFileInto_ = value;
-      bitField0_ |= 0x00000008;
-      onChanged();
-      return this;
-    }
+		if (!getAnyWantsList().equals(other.getAnyWantsList()))
+			return false;
+		if (!getAllowedValuesList().equals(other.getAllowedValuesList()))
+			return false;
+		if (!getAllowedValueTypesList().equals(other.getAllowedValueTypesList()))
+			return false;
+		if (!getConvertTimeReadFileInto().equals(other.getConvertTimeReadFileInto()))
+			return false;
+		if (getForbidden() != other.getForbidden())
+			return false;
+		if (!getConvertTimeResourceLoading().equals(other.getConvertTimeResourceLoading()))
+			return false;
+		if (!getConvertTimeParseIp().equals(other.getConvertTimeParseIp()))
+			return false;
+		if (!getUnknownFields().equals(other.getUnknownFields()))
+			return false;
+		return true;
+	}
 
-    private boolean forbidden_ ;
-    /**
-     * <pre>
-     * forbidden marks a boolean to be inaccessible to user
-     * </pre>
-     *
-     * <code>bool forbidden = 5;</code>
-     * @return The forbidden.
-     */
-    @java.lang.Override
-    public boolean getForbidden() {
-      return forbidden_;
-    }
-    /**
-     * <pre>
-     * forbidden marks a boolean to be inaccessible to user
-     * </pre>
-     *
-     * <code>bool forbidden = 5;</code>
-     * @param value The forbidden to set.
-     * @return This builder for chaining.
-     */
-    public Builder setForbidden(boolean value) {
-      
-      forbidden_ = value;
-      bitField0_ |= 0x00000010;
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * forbidden marks a boolean to be inaccessible to user
-     * </pre>
-     *
-     * <code>bool forbidden = 5;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearForbidden() {
-      bitField0_ = (bitField0_ & ~0x00000010);
-      forbidden_ = false;
-      onChanged();
-      return this;
-    }
+	@java.lang.Override
+	public int hashCode() {
+		if (memoizedHashCode != 0) {
+			return memoizedHashCode;
+		}
+		int hash = 41;
+		hash = (19 * hash) + getDescriptor().hashCode();
+		if (getAnyWantsCount() > 0) {
+			hash = (37 * hash) + ANY_WANTS_FIELD_NUMBER;
+			hash = (53 * hash) + getAnyWantsList().hashCode();
+		}
+		if (getAllowedValuesCount() > 0) {
+			hash = (37 * hash) + ALLOWED_VALUES_FIELD_NUMBER;
+			hash = (53 * hash) + getAllowedValuesList().hashCode();
+		}
+		if (getAllowedValueTypesCount() > 0) {
+			hash = (37 * hash) + ALLOWED_VALUE_TYPES_FIELD_NUMBER;
+			hash = (53 * hash) + getAllowedValueTypesList().hashCode();
+		}
+		hash = (37 * hash) + CONVERT_TIME_READ_FILE_INTO_FIELD_NUMBER;
+		hash = (53 * hash) + getConvertTimeReadFileInto().hashCode();
+		hash = (37 * hash) + FORBIDDEN_FIELD_NUMBER;
+		hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(getForbidden());
+		hash = (37 * hash) + CONVERT_TIME_RESOURCE_LOADING_FIELD_NUMBER;
+		hash = (53 * hash) + getConvertTimeResourceLoading().hashCode();
+		hash = (37 * hash) + CONVERT_TIME_PARSE_IP_FIELD_NUMBER;
+		hash = (53 * hash) + getConvertTimeParseIp().hashCode();
+		hash = (29 * hash) + getUnknownFields().hashCode();
+		memoizedHashCode = hash;
+		return hash;
+	}
 
-    private java.lang.Object convertTimeResourceLoading_ = "";
-    /**
-     * <pre>
-     * convert_time_resource_loading read a file, and place its resource hash into another field
-     * </pre>
-     *
-     * <code>string convert_time_resource_loading = 6;</code>
-     * @return The convertTimeResourceLoading.
-     */
-    public java.lang.String getConvertTimeResourceLoading() {
-      java.lang.Object ref = convertTimeResourceLoading_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        convertTimeResourceLoading_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <pre>
-     * convert_time_resource_loading read a file, and place its resource hash into another field
-     * </pre>
-     *
-     * <code>string convert_time_resource_loading = 6;</code>
-     * @return The bytes for convertTimeResourceLoading.
-     */
-    public com.google.protobuf.ByteString
-        getConvertTimeResourceLoadingBytes() {
-      java.lang.Object ref = convertTimeResourceLoading_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        convertTimeResourceLoading_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <pre>
-     * convert_time_resource_loading read a file, and place its resource hash into another field
-     * </pre>
-     *
-     * <code>string convert_time_resource_loading = 6;</code>
-     * @param value The convertTimeResourceLoading to set.
-     * @return This builder for chaining.
-     */
-    public Builder setConvertTimeResourceLoading(
-        java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      convertTimeResourceLoading_ = value;
-      bitField0_ |= 0x00000020;
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * convert_time_resource_loading read a file, and place its resource hash into another field
-     * </pre>
-     *
-     * <code>string convert_time_resource_loading = 6;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearConvertTimeResourceLoading() {
-      convertTimeResourceLoading_ = getDefaultInstance().getConvertTimeResourceLoading();
-      bitField0_ = (bitField0_ & ~0x00000020);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * convert_time_resource_loading read a file, and place its resource hash into another field
-     * </pre>
-     *
-     * <code>string convert_time_resource_loading = 6;</code>
-     * @param value The bytes for convertTimeResourceLoading to set.
-     * @return This builder for chaining.
-     */
-    public Builder setConvertTimeResourceLoadingBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      checkByteStringIsUtf8(value);
-      convertTimeResourceLoading_ = value;
-      bitField0_ |= 0x00000020;
-      onChanged();
-      return this;
-    }
+	public static com.v2ray.core.common.protoext.FieldOpt parseFrom(java.nio.ByteBuffer data)
+			throws com.google.protobuf.InvalidProtocolBufferException {
+		return PARSER.parseFrom(data);
+	}
 
-    private java.lang.Object convertTimeParseIp_ = "";
-    /**
-     * <pre>
-     * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
-     * </pre>
-     *
-     * <code>string convert_time_parse_ip = 7;</code>
-     * @return The convertTimeParseIp.
-     */
-    public java.lang.String getConvertTimeParseIp() {
-      java.lang.Object ref = convertTimeParseIp_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        convertTimeParseIp_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <pre>
-     * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
-     * </pre>
-     *
-     * <code>string convert_time_parse_ip = 7;</code>
-     * @return The bytes for convertTimeParseIp.
-     */
-    public com.google.protobuf.ByteString
-        getConvertTimeParseIpBytes() {
-      java.lang.Object ref = convertTimeParseIp_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        convertTimeParseIp_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <pre>
-     * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
-     * </pre>
-     *
-     * <code>string convert_time_parse_ip = 7;</code>
-     * @param value The convertTimeParseIp to set.
-     * @return This builder for chaining.
-     */
-    public Builder setConvertTimeParseIp(
-        java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      convertTimeParseIp_ = value;
-      bitField0_ |= 0x00000040;
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
-     * </pre>
-     *
-     * <code>string convert_time_parse_ip = 7;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearConvertTimeParseIp() {
-      convertTimeParseIp_ = getDefaultInstance().getConvertTimeParseIp();
-      bitField0_ = (bitField0_ & ~0x00000040);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
-     * </pre>
-     *
-     * <code>string convert_time_parse_ip = 7;</code>
-     * @param value The bytes for convertTimeParseIp to set.
-     * @return This builder for chaining.
-     */
-    public Builder setConvertTimeParseIpBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      checkByteStringIsUtf8(value);
-      convertTimeParseIp_ = value;
-      bitField0_ |= 0x00000040;
-      onChanged();
-      return this;
-    }
-    @java.lang.Override
-    public final Builder setUnknownFields(
-        final com.google.protobuf.UnknownFieldSet unknownFields) {
-      return super.setUnknownFields(unknownFields);
-    }
+	public static com.v2ray.core.common.protoext.FieldOpt parseFrom(java.nio.ByteBuffer data,
+			com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+			throws com.google.protobuf.InvalidProtocolBufferException {
+		return PARSER.parseFrom(data, extensionRegistry);
+	}
 
-    @java.lang.Override
-    public final Builder mergeUnknownFields(
-        final com.google.protobuf.UnknownFieldSet unknownFields) {
-      return super.mergeUnknownFields(unknownFields);
-    }
+	public static com.v2ray.core.common.protoext.FieldOpt parseFrom(com.google.protobuf.ByteString data)
+			throws com.google.protobuf.InvalidProtocolBufferException {
+		return PARSER.parseFrom(data);
+	}
 
+	public static com.v2ray.core.common.protoext.FieldOpt parseFrom(com.google.protobuf.ByteString data,
+			com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+			throws com.google.protobuf.InvalidProtocolBufferException {
+		return PARSER.parseFrom(data, extensionRegistry);
+	}
 
-    // @@protoc_insertion_point(builder_scope:v2ray.core.common.protoext.FieldOpt)
-  }
+	public static com.v2ray.core.common.protoext.FieldOpt parseFrom(byte[] data)
+			throws com.google.protobuf.InvalidProtocolBufferException {
+		return PARSER.parseFrom(data);
+	}
 
-  // @@protoc_insertion_point(class_scope:v2ray.core.common.protoext.FieldOpt)
-  private static final com.v2ray.core.common.protoext.FieldOpt DEFAULT_INSTANCE;
-  static {
-    DEFAULT_INSTANCE = new com.v2ray.core.common.protoext.FieldOpt();
-  }
+	public static com.v2ray.core.common.protoext.FieldOpt parseFrom(byte[] data,
+			com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+			throws com.google.protobuf.InvalidProtocolBufferException {
+		return PARSER.parseFrom(data, extensionRegistry);
+	}
 
-  public static com.v2ray.core.common.protoext.FieldOpt getDefaultInstance() {
-    return DEFAULT_INSTANCE;
-  }
+	public static com.v2ray.core.common.protoext.FieldOpt parseFrom(java.io.InputStream input)
+			throws java.io.IOException {
+		return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+	}
 
-  private static final com.google.protobuf.Parser<FieldOpt>
-      PARSER = new com.google.protobuf.AbstractParser<FieldOpt>() {
-    @java.lang.Override
-    public FieldOpt parsePartialFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      Builder builder = newBuilder();
-      try {
-        builder.mergeFrom(input, extensionRegistry);
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(builder.buildPartial());
-      } catch (com.google.protobuf.UninitializedMessageException e) {
-        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(e)
-            .setUnfinishedMessage(builder.buildPartial());
-      }
-      return builder.buildPartial();
-    }
-  };
+	public static com.v2ray.core.common.protoext.FieldOpt parseFrom(java.io.InputStream input,
+			com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+		return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+	}
 
-  public static com.google.protobuf.Parser<FieldOpt> parser() {
-    return PARSER;
-  }
+	public static com.v2ray.core.common.protoext.FieldOpt parseDelimitedFrom(java.io.InputStream input)
+			throws java.io.IOException {
+		return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+	}
 
-  @java.lang.Override
-  public com.google.protobuf.Parser<FieldOpt> getParserForType() {
-    return PARSER;
-  }
+	public static com.v2ray.core.common.protoext.FieldOpt parseDelimitedFrom(java.io.InputStream input,
+			com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+		return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+	}
 
-  @java.lang.Override
-  public com.v2ray.core.common.protoext.FieldOpt getDefaultInstanceForType() {
-    return DEFAULT_INSTANCE;
-  }
+	public static com.v2ray.core.common.protoext.FieldOpt parseFrom(com.google.protobuf.CodedInputStream input)
+			throws java.io.IOException {
+		return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+	}
+
+	public static com.v2ray.core.common.protoext.FieldOpt parseFrom(com.google.protobuf.CodedInputStream input,
+			com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+		return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+	}
+
+	@java.lang.Override
+	public Builder newBuilderForType() {
+		return newBuilder();
+	}
+
+	public static Builder newBuilder() {
+		return DEFAULT_INSTANCE.toBuilder();
+	}
+
+	public static Builder newBuilder(com.v2ray.core.common.protoext.FieldOpt prototype) {
+		return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+	}
+
+	@java.lang.Override
+	public Builder toBuilder() {
+		return this == DEFAULT_INSTANCE ? new Builder() : new Builder().mergeFrom(this);
+	}
+
+	@java.lang.Override
+	protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+		Builder builder = new Builder(parent);
+		return builder;
+	}
+
+	/**
+	 * Protobuf type {@code v2ray.core.common.protoext.FieldOpt}
+	 */
+	public static final class Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+			// @@protoc_insertion_point(builder_implements:v2ray.core.common.protoext.FieldOpt)
+			com.v2ray.core.common.protoext.FieldOptOrBuilder {
+		public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+			return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_FieldOpt_descriptor;
+		}
+
+		@java.lang.Override
+		protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+			return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_FieldOpt_fieldAccessorTable
+					.ensureFieldAccessorsInitialized(com.v2ray.core.common.protoext.FieldOpt.class,
+							com.v2ray.core.common.protoext.FieldOpt.Builder.class);
+		}
+
+		// Construct using com.v2ray.core.common.protoext.FieldOpt.newBuilder()
+		private Builder() {
+
+		}
+
+		private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+			super(parent);
+
+		}
+
+		@java.lang.Override
+		public Builder clear() {
+			super.clear();
+			bitField0_ = 0;
+			anyWants_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+			bitField0_ = (bitField0_ & ~0x00000001);
+			allowedValues_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+			bitField0_ = (bitField0_ & ~0x00000002);
+			allowedValueTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+			bitField0_ = (bitField0_ & ~0x00000004);
+			convertTimeReadFileInto_ = "";
+			forbidden_ = false;
+			convertTimeResourceLoading_ = "";
+			convertTimeParseIp_ = "";
+			return this;
+		}
+
+		@java.lang.Override
+		public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+			return com.v2ray.core.common.protoext.Extensions.internal_static_v2ray_core_common_protoext_FieldOpt_descriptor;
+		}
+
+		@java.lang.Override
+		public com.v2ray.core.common.protoext.FieldOpt getDefaultInstanceForType() {
+			return com.v2ray.core.common.protoext.FieldOpt.getDefaultInstance();
+		}
+
+		@java.lang.Override
+		public com.v2ray.core.common.protoext.FieldOpt build() {
+			com.v2ray.core.common.protoext.FieldOpt result = buildPartial();
+			if (!result.isInitialized()) {
+				throw newUninitializedMessageException(result);
+			}
+			return result;
+		}
+
+		@java.lang.Override
+		public com.v2ray.core.common.protoext.FieldOpt buildPartial() {
+			com.v2ray.core.common.protoext.FieldOpt result = new com.v2ray.core.common.protoext.FieldOpt(this);
+			buildPartialRepeatedFields(result);
+			if (bitField0_ != 0) {
+				buildPartial0(result);
+			}
+			onBuilt();
+			return result;
+		}
+
+		private void buildPartialRepeatedFields(com.v2ray.core.common.protoext.FieldOpt result) {
+			if (((bitField0_ & 0x00000001) != 0)) {
+				anyWants_ = anyWants_.getUnmodifiableView();
+				bitField0_ = (bitField0_ & ~0x00000001);
+			}
+			result.anyWants_ = anyWants_;
+			if (((bitField0_ & 0x00000002) != 0)) {
+				allowedValues_ = allowedValues_.getUnmodifiableView();
+				bitField0_ = (bitField0_ & ~0x00000002);
+			}
+			result.allowedValues_ = allowedValues_;
+			if (((bitField0_ & 0x00000004) != 0)) {
+				allowedValueTypes_ = allowedValueTypes_.getUnmodifiableView();
+				bitField0_ = (bitField0_ & ~0x00000004);
+			}
+			result.allowedValueTypes_ = allowedValueTypes_;
+		}
+
+		private void buildPartial0(com.v2ray.core.common.protoext.FieldOpt result) {
+			int from_bitField0_ = bitField0_;
+			if (((from_bitField0_ & 0x00000008) != 0)) {
+				result.convertTimeReadFileInto_ = convertTimeReadFileInto_;
+			}
+			if (((from_bitField0_ & 0x00000010) != 0)) {
+				result.forbidden_ = forbidden_;
+			}
+			if (((from_bitField0_ & 0x00000020) != 0)) {
+				result.convertTimeResourceLoading_ = convertTimeResourceLoading_;
+			}
+			if (((from_bitField0_ & 0x00000040) != 0)) {
+				result.convertTimeParseIp_ = convertTimeParseIp_;
+			}
+		}
+
+		@java.lang.Override
+		public Builder clone() {
+			return super.clone();
+		}
+
+		@java.lang.Override
+		public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+			return super.setField(field, value);
+		}
+
+		@java.lang.Override
+		public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+			return super.clearField(field);
+		}
+
+		@java.lang.Override
+		public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+			return super.clearOneof(oneof);
+		}
+
+		@java.lang.Override
+		public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index,
+				java.lang.Object value) {
+			return super.setRepeatedField(field, index, value);
+		}
+
+		@java.lang.Override
+		public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+			return super.addRepeatedField(field, value);
+		}
+
+		@java.lang.Override
+		public Builder mergeFrom(com.google.protobuf.Message other) {
+			if (other instanceof com.v2ray.core.common.protoext.FieldOpt) {
+				return mergeFrom((com.v2ray.core.common.protoext.FieldOpt) other);
+			} else {
+				super.mergeFrom(other);
+				return this;
+			}
+		}
+
+		public Builder mergeFrom(com.v2ray.core.common.protoext.FieldOpt other) {
+			if (other == com.v2ray.core.common.protoext.FieldOpt.getDefaultInstance())
+				return this;
+			if (!other.anyWants_.isEmpty()) {
+				if (anyWants_.isEmpty()) {
+					anyWants_ = other.anyWants_;
+					bitField0_ = (bitField0_ & ~0x00000001);
+				} else {
+					ensureAnyWantsIsMutable();
+					anyWants_.addAll(other.anyWants_);
+				}
+				onChanged();
+			}
+			if (!other.allowedValues_.isEmpty()) {
+				if (allowedValues_.isEmpty()) {
+					allowedValues_ = other.allowedValues_;
+					bitField0_ = (bitField0_ & ~0x00000002);
+				} else {
+					ensureAllowedValuesIsMutable();
+					allowedValues_.addAll(other.allowedValues_);
+				}
+				onChanged();
+			}
+			if (!other.allowedValueTypes_.isEmpty()) {
+				if (allowedValueTypes_.isEmpty()) {
+					allowedValueTypes_ = other.allowedValueTypes_;
+					bitField0_ = (bitField0_ & ~0x00000004);
+				} else {
+					ensureAllowedValueTypesIsMutable();
+					allowedValueTypes_.addAll(other.allowedValueTypes_);
+				}
+				onChanged();
+			}
+			if (!other.getConvertTimeReadFileInto().isEmpty()) {
+				convertTimeReadFileInto_ = other.convertTimeReadFileInto_;
+				bitField0_ |= 0x00000008;
+				onChanged();
+			}
+			if (other.getForbidden() != false) {
+				setForbidden(other.getForbidden());
+			}
+			if (!other.getConvertTimeResourceLoading().isEmpty()) {
+				convertTimeResourceLoading_ = other.convertTimeResourceLoading_;
+				bitField0_ |= 0x00000020;
+				onChanged();
+			}
+			if (!other.getConvertTimeParseIp().isEmpty()) {
+				convertTimeParseIp_ = other.convertTimeParseIp_;
+				bitField0_ |= 0x00000040;
+				onChanged();
+			}
+			this.mergeUnknownFields(other.getUnknownFields());
+			onChanged();
+			return this;
+		}
+
+		@java.lang.Override
+		public final boolean isInitialized() {
+			return true;
+		}
+
+		@java.lang.Override
+		public Builder mergeFrom(com.google.protobuf.CodedInputStream input,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+			if (extensionRegistry == null) {
+				throw new java.lang.NullPointerException();
+			}
+			try {
+				boolean done = false;
+				while (!done) {
+					int tag = input.readTag();
+					switch (tag) {
+					case 0:
+						done = true;
+						break;
+					case 10: {
+						java.lang.String s = input.readStringRequireUtf8();
+						ensureAnyWantsIsMutable();
+						anyWants_.add(s);
+						break;
+					} // case 10
+					case 18: {
+						java.lang.String s = input.readStringRequireUtf8();
+						ensureAllowedValuesIsMutable();
+						allowedValues_.add(s);
+						break;
+					} // case 18
+					case 26: {
+						java.lang.String s = input.readStringRequireUtf8();
+						ensureAllowedValueTypesIsMutable();
+						allowedValueTypes_.add(s);
+						break;
+					} // case 26
+					case 34: {
+						convertTimeReadFileInto_ = input.readStringRequireUtf8();
+						bitField0_ |= 0x00000008;
+						break;
+					} // case 34
+					case 40: {
+						forbidden_ = input.readBool();
+						bitField0_ |= 0x00000010;
+						break;
+					} // case 40
+					case 50: {
+						convertTimeResourceLoading_ = input.readStringRequireUtf8();
+						bitField0_ |= 0x00000020;
+						break;
+					} // case 50
+					case 58: {
+						convertTimeParseIp_ = input.readStringRequireUtf8();
+						bitField0_ |= 0x00000040;
+						break;
+					} // case 58
+					default: {
+						if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+							done = true; // was an endgroup tag
+						}
+						break;
+					} // default:
+					} // switch (tag)
+				} // while (!done)
+			} catch (com.google.protobuf.InvalidProtocolBufferException e) {
+				throw e.unwrapIOException();
+			} finally {
+				onChanged();
+			} // finally
+			return this;
+		}
+
+		private int bitField0_;
+
+		private com.google.protobuf.LazyStringList anyWants_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+
+		private void ensureAnyWantsIsMutable() {
+			if (!((bitField0_ & 0x00000001) != 0)) {
+				anyWants_ = new com.google.protobuf.LazyStringArrayList(anyWants_);
+				bitField0_ |= 0x00000001;
+			}
+		}
+
+		/**
+		 * <code>repeated string any_wants = 1;</code>
+		 * 
+		 * @return A list containing the anyWants.
+		 */
+		public com.google.protobuf.ProtocolStringList getAnyWantsList() {
+			return anyWants_.getUnmodifiableView();
+		}
+
+		/**
+		 * <code>repeated string any_wants = 1;</code>
+		 * 
+		 * @return The count of anyWants.
+		 */
+		public int getAnyWantsCount() {
+			return anyWants_.size();
+		}
+
+		/**
+		 * <code>repeated string any_wants = 1;</code>
+		 * 
+		 * @param index The index of the element to return.
+		 * @return The anyWants at the given index.
+		 */
+		public java.lang.String getAnyWants(int index) {
+			return anyWants_.get(index);
+		}
+
+		/**
+		 * <code>repeated string any_wants = 1;</code>
+		 * 
+		 * @param index The index of the value to return.
+		 * @return The bytes of the anyWants at the given index.
+		 */
+		public com.google.protobuf.ByteString getAnyWantsBytes(int index) {
+			return anyWants_.getByteString(index);
+		}
+
+		/**
+		 * <code>repeated string any_wants = 1;</code>
+		 * 
+		 * @param index The index to set the value at.
+		 * @param value The anyWants to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setAnyWants(int index, java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			ensureAnyWantsIsMutable();
+			anyWants_.set(index, value);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string any_wants = 1;</code>
+		 * 
+		 * @param value The anyWants to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addAnyWants(java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			ensureAnyWantsIsMutable();
+			anyWants_.add(value);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string any_wants = 1;</code>
+		 * 
+		 * @param values The anyWants to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addAllAnyWants(java.lang.Iterable<java.lang.String> values) {
+			ensureAnyWantsIsMutable();
+			com.google.protobuf.AbstractMessageLite.Builder.addAll(values, anyWants_);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string any_wants = 1;</code>
+		 * 
+		 * @return This builder for chaining.
+		 */
+		public Builder clearAnyWants() {
+			anyWants_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+			bitField0_ = (bitField0_ & ~0x00000001);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string any_wants = 1;</code>
+		 * 
+		 * @param value The bytes of the anyWants to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addAnyWantsBytes(com.google.protobuf.ByteString value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			checkByteStringIsUtf8(value);
+			ensureAnyWantsIsMutable();
+			anyWants_.add(value);
+			onChanged();
+			return this;
+		}
+
+		private com.google.protobuf.LazyStringList allowedValues_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+
+		private void ensureAllowedValuesIsMutable() {
+			if (!((bitField0_ & 0x00000002) != 0)) {
+				allowedValues_ = new com.google.protobuf.LazyStringArrayList(allowedValues_);
+				bitField0_ |= 0x00000002;
+			}
+		}
+
+		/**
+		 * <code>repeated string allowed_values = 2;</code>
+		 * 
+		 * @return A list containing the allowedValues.
+		 */
+		public com.google.protobuf.ProtocolStringList getAllowedValuesList() {
+			return allowedValues_.getUnmodifiableView();
+		}
+
+		/**
+		 * <code>repeated string allowed_values = 2;</code>
+		 * 
+		 * @return The count of allowedValues.
+		 */
+		public int getAllowedValuesCount() {
+			return allowedValues_.size();
+		}
+
+		/**
+		 * <code>repeated string allowed_values = 2;</code>
+		 * 
+		 * @param index The index of the element to return.
+		 * @return The allowedValues at the given index.
+		 */
+		public java.lang.String getAllowedValues(int index) {
+			return allowedValues_.get(index);
+		}
+
+		/**
+		 * <code>repeated string allowed_values = 2;</code>
+		 * 
+		 * @param index The index of the value to return.
+		 * @return The bytes of the allowedValues at the given index.
+		 */
+		public com.google.protobuf.ByteString getAllowedValuesBytes(int index) {
+			return allowedValues_.getByteString(index);
+		}
+
+		/**
+		 * <code>repeated string allowed_values = 2;</code>
+		 * 
+		 * @param index The index to set the value at.
+		 * @param value The allowedValues to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setAllowedValues(int index, java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			ensureAllowedValuesIsMutable();
+			allowedValues_.set(index, value);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string allowed_values = 2;</code>
+		 * 
+		 * @param value The allowedValues to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addAllowedValues(java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			ensureAllowedValuesIsMutable();
+			allowedValues_.add(value);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string allowed_values = 2;</code>
+		 * 
+		 * @param values The allowedValues to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addAllAllowedValues(java.lang.Iterable<java.lang.String> values) {
+			ensureAllowedValuesIsMutable();
+			com.google.protobuf.AbstractMessageLite.Builder.addAll(values, allowedValues_);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string allowed_values = 2;</code>
+		 * 
+		 * @return This builder for chaining.
+		 */
+		public Builder clearAllowedValues() {
+			allowedValues_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+			bitField0_ = (bitField0_ & ~0x00000002);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string allowed_values = 2;</code>
+		 * 
+		 * @param value The bytes of the allowedValues to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addAllowedValuesBytes(com.google.protobuf.ByteString value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			checkByteStringIsUtf8(value);
+			ensureAllowedValuesIsMutable();
+			allowedValues_.add(value);
+			onChanged();
+			return this;
+		}
+
+		private com.google.protobuf.LazyStringList allowedValueTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+
+		private void ensureAllowedValueTypesIsMutable() {
+			if (!((bitField0_ & 0x00000004) != 0)) {
+				allowedValueTypes_ = new com.google.protobuf.LazyStringArrayList(allowedValueTypes_);
+				bitField0_ |= 0x00000004;
+			}
+		}
+
+		/**
+		 * <code>repeated string allowed_value_types = 3;</code>
+		 * 
+		 * @return A list containing the allowedValueTypes.
+		 */
+		public com.google.protobuf.ProtocolStringList getAllowedValueTypesList() {
+			return allowedValueTypes_.getUnmodifiableView();
+		}
+
+		/**
+		 * <code>repeated string allowed_value_types = 3;</code>
+		 * 
+		 * @return The count of allowedValueTypes.
+		 */
+		public int getAllowedValueTypesCount() {
+			return allowedValueTypes_.size();
+		}
+
+		/**
+		 * <code>repeated string allowed_value_types = 3;</code>
+		 * 
+		 * @param index The index of the element to return.
+		 * @return The allowedValueTypes at the given index.
+		 */
+		public java.lang.String getAllowedValueTypes(int index) {
+			return allowedValueTypes_.get(index);
+		}
+
+		/**
+		 * <code>repeated string allowed_value_types = 3;</code>
+		 * 
+		 * @param index The index of the value to return.
+		 * @return The bytes of the allowedValueTypes at the given index.
+		 */
+		public com.google.protobuf.ByteString getAllowedValueTypesBytes(int index) {
+			return allowedValueTypes_.getByteString(index);
+		}
+
+		/**
+		 * <code>repeated string allowed_value_types = 3;</code>
+		 * 
+		 * @param index The index to set the value at.
+		 * @param value The allowedValueTypes to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setAllowedValueTypes(int index, java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			ensureAllowedValueTypesIsMutable();
+			allowedValueTypes_.set(index, value);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string allowed_value_types = 3;</code>
+		 * 
+		 * @param value The allowedValueTypes to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addAllowedValueTypes(java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			ensureAllowedValueTypesIsMutable();
+			allowedValueTypes_.add(value);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string allowed_value_types = 3;</code>
+		 * 
+		 * @param values The allowedValueTypes to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addAllAllowedValueTypes(java.lang.Iterable<java.lang.String> values) {
+			ensureAllowedValueTypesIsMutable();
+			com.google.protobuf.AbstractMessageLite.Builder.addAll(values, allowedValueTypes_);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string allowed_value_types = 3;</code>
+		 * 
+		 * @return This builder for chaining.
+		 */
+		public Builder clearAllowedValueTypes() {
+			allowedValueTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+			bitField0_ = (bitField0_ & ~0x00000004);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <code>repeated string allowed_value_types = 3;</code>
+		 * 
+		 * @param value The bytes of the allowedValueTypes to add.
+		 * @return This builder for chaining.
+		 */
+		public Builder addAllowedValueTypesBytes(com.google.protobuf.ByteString value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			checkByteStringIsUtf8(value);
+			ensureAllowedValueTypesIsMutable();
+			allowedValueTypes_.add(value);
+			onChanged();
+			return this;
+		}
+
+		private java.lang.Object convertTimeReadFileInto_ = "";
+
+		/**
+		 * <pre>
+		 * convert_time_read_file_into read a file into another field, and clear this field during input parsing
+		 * </pre>
+		 *
+		 * <code>string convert_time_read_file_into = 4;</code>
+		 * 
+		 * @return The convertTimeReadFileInto.
+		 */
+		public java.lang.String getConvertTimeReadFileInto() {
+			java.lang.Object ref = convertTimeReadFileInto_;
+			if (!(ref instanceof java.lang.String)) {
+				com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+				java.lang.String s = bs.toStringUtf8();
+				convertTimeReadFileInto_ = s;
+				return s;
+			} else {
+				return (java.lang.String) ref;
+			}
+		}
+
+		/**
+		 * <pre>
+		 * convert_time_read_file_into read a file into another field, and clear this field during input parsing
+		 * </pre>
+		 *
+		 * <code>string convert_time_read_file_into = 4;</code>
+		 * 
+		 * @return The bytes for convertTimeReadFileInto.
+		 */
+		public com.google.protobuf.ByteString getConvertTimeReadFileIntoBytes() {
+			java.lang.Object ref = convertTimeReadFileInto_;
+			if (ref instanceof String) {
+				com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+				convertTimeReadFileInto_ = b;
+				return b;
+			} else {
+				return (com.google.protobuf.ByteString) ref;
+			}
+		}
+
+		/**
+		 * <pre>
+		 * convert_time_read_file_into read a file into another field, and clear this field during input parsing
+		 * </pre>
+		 *
+		 * <code>string convert_time_read_file_into = 4;</code>
+		 * 
+		 * @param value The convertTimeReadFileInto to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setConvertTimeReadFileInto(java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			convertTimeReadFileInto_ = value;
+			bitField0_ |= 0x00000008;
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <pre>
+		 * convert_time_read_file_into read a file into another field, and clear this field during input parsing
+		 * </pre>
+		 *
+		 * <code>string convert_time_read_file_into = 4;</code>
+		 * 
+		 * @return This builder for chaining.
+		 */
+		public Builder clearConvertTimeReadFileInto() {
+			convertTimeReadFileInto_ = getDefaultInstance().getConvertTimeReadFileInto();
+			bitField0_ = (bitField0_ & ~0x00000008);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <pre>
+		 * convert_time_read_file_into read a file into another field, and clear this field during input parsing
+		 * </pre>
+		 *
+		 * <code>string convert_time_read_file_into = 4;</code>
+		 * 
+		 * @param value The bytes for convertTimeReadFileInto to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setConvertTimeReadFileIntoBytes(com.google.protobuf.ByteString value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			checkByteStringIsUtf8(value);
+			convertTimeReadFileInto_ = value;
+			bitField0_ |= 0x00000008;
+			onChanged();
+			return this;
+		}
+
+		private boolean forbidden_;
+
+		/**
+		 * <pre>
+		 * forbidden marks a boolean to be inaccessible to user
+		 * </pre>
+		 *
+		 * <code>bool forbidden = 5;</code>
+		 * 
+		 * @return The forbidden.
+		 */
+		@java.lang.Override
+		public boolean getForbidden() {
+			return forbidden_;
+		}
+
+		/**
+		 * <pre>
+		 * forbidden marks a boolean to be inaccessible to user
+		 * </pre>
+		 *
+		 * <code>bool forbidden = 5;</code>
+		 * 
+		 * @param value The forbidden to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setForbidden(boolean value) {
+
+			forbidden_ = value;
+			bitField0_ |= 0x00000010;
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <pre>
+		 * forbidden marks a boolean to be inaccessible to user
+		 * </pre>
+		 *
+		 * <code>bool forbidden = 5;</code>
+		 * 
+		 * @return This builder for chaining.
+		 */
+		public Builder clearForbidden() {
+			bitField0_ = (bitField0_ & ~0x00000010);
+			forbidden_ = false;
+			onChanged();
+			return this;
+		}
+
+		private java.lang.Object convertTimeResourceLoading_ = "";
+
+		/**
+		 * <pre>
+		 * convert_time_resource_loading read a file, and place its resource hash into another field
+		 * </pre>
+		 *
+		 * <code>string convert_time_resource_loading = 6;</code>
+		 * 
+		 * @return The convertTimeResourceLoading.
+		 */
+		public java.lang.String getConvertTimeResourceLoading() {
+			java.lang.Object ref = convertTimeResourceLoading_;
+			if (!(ref instanceof java.lang.String)) {
+				com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+				java.lang.String s = bs.toStringUtf8();
+				convertTimeResourceLoading_ = s;
+				return s;
+			} else {
+				return (java.lang.String) ref;
+			}
+		}
+
+		/**
+		 * <pre>
+		 * convert_time_resource_loading read a file, and place its resource hash into another field
+		 * </pre>
+		 *
+		 * <code>string convert_time_resource_loading = 6;</code>
+		 * 
+		 * @return The bytes for convertTimeResourceLoading.
+		 */
+		public com.google.protobuf.ByteString getConvertTimeResourceLoadingBytes() {
+			java.lang.Object ref = convertTimeResourceLoading_;
+			if (ref instanceof String) {
+				com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+				convertTimeResourceLoading_ = b;
+				return b;
+			} else {
+				return (com.google.protobuf.ByteString) ref;
+			}
+		}
+
+		/**
+		 * <pre>
+		 * convert_time_resource_loading read a file, and place its resource hash into another field
+		 * </pre>
+		 *
+		 * <code>string convert_time_resource_loading = 6;</code>
+		 * 
+		 * @param value The convertTimeResourceLoading to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setConvertTimeResourceLoading(java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			convertTimeResourceLoading_ = value;
+			bitField0_ |= 0x00000020;
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <pre>
+		 * convert_time_resource_loading read a file, and place its resource hash into another field
+		 * </pre>
+		 *
+		 * <code>string convert_time_resource_loading = 6;</code>
+		 * 
+		 * @return This builder for chaining.
+		 */
+		public Builder clearConvertTimeResourceLoading() {
+			convertTimeResourceLoading_ = getDefaultInstance().getConvertTimeResourceLoading();
+			bitField0_ = (bitField0_ & ~0x00000020);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <pre>
+		 * convert_time_resource_loading read a file, and place its resource hash into another field
+		 * </pre>
+		 *
+		 * <code>string convert_time_resource_loading = 6;</code>
+		 * 
+		 * @param value The bytes for convertTimeResourceLoading to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setConvertTimeResourceLoadingBytes(com.google.protobuf.ByteString value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			checkByteStringIsUtf8(value);
+			convertTimeResourceLoading_ = value;
+			bitField0_ |= 0x00000020;
+			onChanged();
+			return this;
+		}
+
+		private java.lang.Object convertTimeParseIp_ = "";
+
+		/**
+		 * <pre>
+		 * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
+		 * </pre>
+		 *
+		 * <code>string convert_time_parse_ip = 7;</code>
+		 * 
+		 * @return The convertTimeParseIp.
+		 */
+		public java.lang.String getConvertTimeParseIp() {
+			java.lang.Object ref = convertTimeParseIp_;
+			if (!(ref instanceof java.lang.String)) {
+				com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+				java.lang.String s = bs.toStringUtf8();
+				convertTimeParseIp_ = s;
+				return s;
+			} else {
+				return (java.lang.String) ref;
+			}
+		}
+
+		/**
+		 * <pre>
+		 * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
+		 * </pre>
+		 *
+		 * <code>string convert_time_parse_ip = 7;</code>
+		 * 
+		 * @return The bytes for convertTimeParseIp.
+		 */
+		public com.google.protobuf.ByteString getConvertTimeParseIpBytes() {
+			java.lang.Object ref = convertTimeParseIp_;
+			if (ref instanceof String) {
+				com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+				convertTimeParseIp_ = b;
+				return b;
+			} else {
+				return (com.google.protobuf.ByteString) ref;
+			}
+		}
+
+		/**
+		 * <pre>
+		 * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
+		 * </pre>
+		 *
+		 * <code>string convert_time_parse_ip = 7;</code>
+		 * 
+		 * @param value The convertTimeParseIp to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setConvertTimeParseIp(java.lang.String value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			convertTimeParseIp_ = value;
+			bitField0_ |= 0x00000040;
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <pre>
+		 * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
+		 * </pre>
+		 *
+		 * <code>string convert_time_parse_ip = 7;</code>
+		 * 
+		 * @return This builder for chaining.
+		 */
+		public Builder clearConvertTimeParseIp() {
+			convertTimeParseIp_ = getDefaultInstance().getConvertTimeParseIp();
+			bitField0_ = (bitField0_ & ~0x00000040);
+			onChanged();
+			return this;
+		}
+
+		/**
+		 * <pre>
+		 * convert_time_parse_ip parse a string ip address, and put its binary representation into another field
+		 * </pre>
+		 *
+		 * <code>string convert_time_parse_ip = 7;</code>
+		 * 
+		 * @param value The bytes for convertTimeParseIp to set.
+		 * @return This builder for chaining.
+		 */
+		public Builder setConvertTimeParseIpBytes(com.google.protobuf.ByteString value) {
+			if (value == null) {
+				throw new NullPointerException();
+			}
+			checkByteStringIsUtf8(value);
+			convertTimeParseIp_ = value;
+			bitField0_ |= 0x00000040;
+			onChanged();
+			return this;
+		}
+
+		@java.lang.Override
+		public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+			return super.setUnknownFields(unknownFields);
+		}
+
+		@java.lang.Override
+		public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+			return super.mergeUnknownFields(unknownFields);
+		}
+
+		// @@protoc_insertion_point(builder_scope:v2ray.core.common.protoext.FieldOpt)
+	}
+
+	// @@protoc_insertion_point(class_scope:v2ray.core.common.protoext.FieldOpt)
+	private static final com.v2ray.core.common.protoext.FieldOpt DEFAULT_INSTANCE;
+	static {
+		DEFAULT_INSTANCE = new com.v2ray.core.common.protoext.FieldOpt();
+	}
+
+	public static com.v2ray.core.common.protoext.FieldOpt getDefaultInstance() {
+		return DEFAULT_INSTANCE;
+	}
+
+	private static final com.google.protobuf.Parser<FieldOpt> PARSER = new com.google.protobuf.AbstractParser<FieldOpt>() {
+		@java.lang.Override
+		public FieldOpt parsePartialFrom(com.google.protobuf.CodedInputStream input,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws com.google.protobuf.InvalidProtocolBufferException {
+			Builder builder = newBuilder();
+			try {
+				builder.mergeFrom(input, extensionRegistry);
+			} catch (com.google.protobuf.InvalidProtocolBufferException e) {
+				throw e.setUnfinishedMessage(builder.buildPartial());
+			} catch (com.google.protobuf.UninitializedMessageException e) {
+				throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+			} catch (java.io.IOException e) {
+				throw new com.google.protobuf.InvalidProtocolBufferException(e)
+						.setUnfinishedMessage(builder.buildPartial());
+			}
+			return builder.buildPartial();
+		}
+	};
+
+	public static com.google.protobuf.Parser<FieldOpt> parser() {
+		return PARSER;
+	}
+
+	@java.lang.Override
+	public com.google.protobuf.Parser<FieldOpt> getParserForType() {
+		return PARSER;
+	}
+
+	@java.lang.Override
+	public com.v2ray.core.common.protoext.FieldOpt getDefaultInstanceForType() {
+		return DEFAULT_INSTANCE;
+	}
 
 }
-

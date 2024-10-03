@@ -50,7 +50,6 @@ public class SecTcpSocket implements Closeable {
 		return s;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void close() {
 		if (closed)
