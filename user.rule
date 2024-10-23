@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.macrium.com proxy
+.storagereview.com proxy
+.eunow4u.com proxy
+.m33x-mel9z.com proxy
+.gifsgo.com proxy
+.tezfiles.com proxy
 .acscdn.com proxy
 .simpshub.com proxy
 .vfgta.com proxy
