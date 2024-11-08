@@ -9,7 +9,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
 
-@Command(description = "Please report issues at https://github.com/Immueggpain/forwardproto/issues",
+@Command(description = "Please report issues at https://github.com/gwttk/forwardproto/issues",
 		name = "smartproxy", mixinStandardHelpOptions = true, version = Launcher.VERSTR, subcommands = {
 				HelpCommand.class, Smartproxy.class, SmartproxyServer.class, DedupUserrule.class, ParseGeoDat.class })
 public class Launcher implements Callable<Void> {
