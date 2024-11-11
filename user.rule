@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.hakush.in proxy
 .xdrtc.com direct
 .tokenex.com proxy
 .fpjs.io proxy
