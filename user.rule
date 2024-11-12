@@ -7,18 +7,31 @@
 # "reject" means drop connection
 
 #auto rules
+.aizhantj.com direct
+.dnsdaquan.com direct
+.countoon.com proxy
+.tzkczc.com proxy
+.storage-asset.msi.com direct
+.loadninja.com proxy
+.zoho.eu proxy
+.crystalmark.info proxy
+.4327777.com direct
+.simcompanies.com proxy
+.bimilou.org proxy
+.bimilou3.com proxy
+.openlibsys.org proxy
+.jp.msi.com proxy
+.zohopublic.eu proxy
 .hakush.in proxy
 .xdrtc.com direct
 .tokenex.com proxy
 .fpjs.io proxy
 .tutuwu.top proxy
-.akuma.moe direct
 .mangadex.org proxy
 .pokopokobanana.com proxy
 .crwd.in proxy
 .circle.ms proxy
 .knit.bid proxy
-.s1.akuma.moe proxy
 .faculty-of-feti.com proxy
 .xkcd.ru proxy
 .ddos-guard.net proxy
