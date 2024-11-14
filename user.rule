@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.huaqi.pro proxy
+.afpmti.net proxy
+.xxsmad4.com proxy
+.hanshuge.com proxy
+.theweeklydonut.org proxy
 .aizhantj.com direct
 .dnsdaquan.com direct
 .countoon.com proxy
