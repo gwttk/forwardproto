@@ -7,6 +7,26 @@
 # "reject" means drop connection
 
 #auto rules
+.ninetailed.co proxy
+.clamav.net proxy
+.voiceoveranything.com proxy
+.passwordmonster.com proxy
+.bitwarden.com proxy
+.keepersecurity.com proxy
+.ascii-code.com proxy
+.technewsworld.com proxy
+.mamoe.net proxy
+.afdian.com proxy
+.crmbuyer.com proxy
+.dmuth.org proxy
+.adoptium.net proxy
+.security.org proxy
+.hostingcanada.org proxy
+.linuxinsider.com proxy
+.ectnews.com proxy
+.jspm.dev proxy
+.ecommercetimes.com proxy
+.web2generators.com proxy
 .huaqi.pro proxy
 .afpmti.net proxy
 .xxsmad4.com proxy
