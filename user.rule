@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.dependencywalker.com proxy
+.win7dll.info proxy
+.pheqae.com direct
+.h528.com proxy
+.hanbige.com proxy
+.521danmei.com proxy
+.okaybuynow.com proxy
+.getsharex.com proxy
 .ninetailed.co proxy
 .clamav.net proxy
 .voiceoveranything.com proxy
