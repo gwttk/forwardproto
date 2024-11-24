@@ -7,6 +7,20 @@
 # "reject" means drop connection
 
 #auto rules
+.blerp.com proxy
+.brickd.com proxy
+.ldoverseas.com proxy
+.tangia.co proxy
+.klbq-web-cms.strinova.com proxy
+.thecodingforums.com proxy
+.www-backend.strinova.com proxy
+.strinova.link proxy
+.boost.io proxy
+.bodiscdn.com proxy
+.layerth.dev proxy
+.gearupbooster.com proxy
+.fanbook.com proxy
+.viewerattack.com proxy
 .dependencywalker.com proxy
 .win7dll.info proxy
 .pheqae.com direct
