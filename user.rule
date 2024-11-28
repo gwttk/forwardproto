@@ -7,6 +7,33 @@
 # "reject" means drop connection
 
 #auto rules
+.nexusedgeio.com direct
+.openv.tv proxy
+.unlimithealth.com direct
+.jddaojia.shop direct
+.booklive.jp proxy
+.common-202411.maj-soul.com proxy
+.valorantinfo.gg proxy
+.goaffpro.com proxy
+.sketchfab.com proxy
+.orderlogicapp.com proxy
+.ksu.edu proxy
+.gorgias-convert.com proxy
+.open-api.spot.im proxy
+.7tv.io proxy
+.activity.strinova.com proxy
+.xxptcs.com direct
+.tapcart.com proxy
+.vglnc.app proxy
+.verifypass.com proxy
+.tapc.art proxy
+.pro-aff.com proxy
+.localizeapi.com proxy
+.rebuyengine.com proxy
+.dyn-rev.app proxy
+.vgraphs.com proxy
+.indreams.me proxy
+.gamersupps.gg proxy
 .blerp.com proxy
 .brickd.com proxy
 .ldoverseas.com proxy
