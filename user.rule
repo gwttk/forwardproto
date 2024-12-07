@@ -7,6 +7,22 @@
 # "reject" means drop connection
 
 #auto rules
+.bingj.com proxy
+.nightfirepc.com proxy
+.codementor.io proxy
+.vsassets.io proxy
+.xiangha.com direct
+.vesselfinder.com proxy
+.stratfor.com proxy
+.jiaonizuocai.com direct
+.marinevesseltraffic.com proxy
+.vesselfinder.net proxy
+.gonavy.jp proxy
+.qcloudcdn.com direct
+.usni.org proxy
+.trafficsyncpro.com proxy
+.kunal-chowdhury.com proxy
+.handmade.network proxy
 .apm.infoldgames.com direct
 .nuanpaper.com direct
 .x6oversea-game-package.infoldgames.com proxy
