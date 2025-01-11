@@ -7,6 +7,21 @@
 # "reject" means drop connection
 
 #auto rules
+.thaiphoonburner.com proxy
+.memoryexpress.com proxy
+.softpedia-secure-download.com proxy
+.filecroco.com proxy
+.betterjoy.org proxy
+.tagtoo.co proxy
+.guyewxw.com proxy
+.novel543.com proxy
+.dui.ai direct
+.cacafly.net proxy
+.gn01.top proxy
+.cwlemoine.com proxy
+.xiaoshubao.net proxy
+.18comic.org proxy
+.18comic.vip proxy
 .pixnet.cc proxy
 .east-plus.net proxy
 .pixfs.net proxy
