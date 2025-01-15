@@ -7,6 +7,33 @@
 # "reject" means drop connection
 
 #auto rules
+.xfztgxt.com proxy
+.fw-cdn.com proxy
+.zohopublic.in proxy
+.gstatic.rsb.net proxy
+.verint-cdn.com proxy
+.link3.cc direct
+.cookiechimp.com proxy
+.wevolver.com proxy
+.u.sb direct
+.s3.rsb.net proxy
+.ymmiyun.com direct
+.img.mandarake.co.jp proxy
+.fwusercontent.com proxy
+.owasp.org proxy
+.smallcolor.link proxy
+.mjlyacg.cc proxy
+.starlwr.com proxy
+.mengzhan-save.xyz proxy
+.ganknow.com proxy
+.akthelp.com proxy
+.yinpaapi.top proxy
+.bbyaqpy.com direct
+.38b6ik.com direct
+.acecloud.ai proxy
+.cuppycake26.me proxy
+.shou.si proxy
+.wpcomstaging.com proxy
 .thaiphoonburner.com proxy
 .memoryexpress.com proxy
 .softpedia-secure-download.com proxy
