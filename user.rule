@@ -7,6 +7,20 @@
 # "reject" means drop connection
 
 #auto rules
+.canva.me proxy
+.canva.com proxy
+.adobecc.com proxy
+.picsart.com proxy
+.online-image-editor.com proxy
+.ftcdn.net proxy
+.tencentgames.com proxy
+.elpais.com proxy
+.ceobecanteen.top direct
+.immortalwrt.org proxy
+.redketchup.io proxy
+.photoaid.com proxy
+.mirrorchyan.com direct
+.optifyr.com proxy
 .freeones.com proxy
 .m3pd.com proxy
 .metatruemedia.com proxy
