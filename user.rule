@@ -7,6 +7,32 @@
 # "reject" means drop connection
 
 #auto rules
+.truemed.com proxy
+.urbndata.com proxy
+.mindbodygreen.com proxy
+.surveywriter.net proxy
+.visually-io.com proxy
+.klickly.com proxy
+.mynihonblog.com proxy
+.alia-cloudflare.com proxy
+.justone.ai proxy
+.ivansouriyavong.com proxy
+.funny-running-cotton.com proxy
+.socialsnowball.io proxy
+.gamebanana.com proxy
+.govx.com proxy
+.superfiliate-cdn.com proxy
+.getangler.ai proxy
+.integrations-itbl.co proxy
+.socialmedia-mc.kurogames-global.com direct
+.socialmedia-wutheringwaves-api.kurogames-global.com proxy
+.getfondue.com proxy
+.inari.site proxy
+.medicalnewstoday.com proxy
+.blackcrow.ai proxy
+.northbeam.io proxy
+.pdqprod.link proxy
+.rvohealth.io proxy
 .canva.me proxy
 .canva.com proxy
 .adobecc.com proxy
