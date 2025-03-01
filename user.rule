@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.fsu.edu proxy
+.midifan.com direct
+.sa.net proxy
+.peerjs.com proxy
+.gov.mo proxy
 .truemed.com proxy
 .urbndata.com proxy
 .mindbodygreen.com proxy
