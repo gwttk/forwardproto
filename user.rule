@@ -7,6 +7,17 @@
 # "reject" means drop connection
 
 #auto rules
+.opencv.org proxy
+.deltacv.org proxy
+.ann-benchmarks.com proxy
+.docker.io proxy
+.atspotify.com proxy
+.ubc.ca proxy
+.sonatype.com proxy
+.uu.nl proxy
+.liquid-themes.com proxy
+.bytedeco.org proxy
+.openpnp.org proxy
 .fsu.edu proxy
 .midifan.com direct
 .sa.net proxy
