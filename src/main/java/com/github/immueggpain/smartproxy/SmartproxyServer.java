@@ -196,7 +196,11 @@ public class SmartproxyServer implements Callable<Void> {
 						return;
 					} catch (Exception e) {
 						System.out.println("exception during reading first 64 bytes");
-						System.out.println(e);
+						if (e instanceof SocketTimeoutException) {
+							// too many
+						} else {
+							e.printStackTrace();
+						}
 						Util.abortiveCloseSocket(sclient_s);
 						return;
 					}
@@ -561,6 +565,7 @@ public class SmartproxyServer implements Callable<Void> {
 				localContext.clear();
 			}
 			conn.close();
+		} catch (SocketTimeoutException ignore) {
 		} catch (final Exception ex) {
 			ex.printStackTrace();
 		} finally {
