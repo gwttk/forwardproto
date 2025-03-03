@@ -1539,6 +1539,30 @@ public class Smartproxy implements Callable<Void> {
 			}
 		}
 
+		/** return true if ok, return false then sb should be considered broken */
+		private boolean sendKeepAlive(SocketBundle sb) {
+			DataInputStream is = new DataInputStream(sb.is);
+			DataOutputStream os = new DataOutputStream(new BufferedOutputStream(sb.os, 1024));
+
+			try {
+				os.writeInt(Launcher.OPCODE_KEEPALIVE);
+				os.flush();
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when send keep-alive");
+				return false;
+			}
+
+			try {
+				if (is.readInt() != Launcher.OPCODE_KEEPALIVE)
+					throw new Exception("keep-alive reply is wrong");
+			} catch (Exception e) {
+				log.println(sct.datetime() + " error when send keep-alive");
+				return false;
+			}
+
+			return true;
+		}
+
 		public SocketBundle pollTunnel(String dest_hostname, int dest_port) throws InterruptedException {
 			SocketBundle half_tunnel = halfTunnels.poll();
 			if (half_tunnel == null)
