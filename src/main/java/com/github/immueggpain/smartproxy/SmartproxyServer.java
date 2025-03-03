@@ -35,6 +35,7 @@ import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 
+import org.apache.http.ConnectionClosedException;
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.HttpResponseFactory;
 import org.apache.http.config.MessageConstraints;
@@ -565,7 +566,7 @@ public class SmartproxyServer implements Callable<Void> {
 				localContext.clear();
 			}
 			conn.close();
-		} catch (SocketTimeoutException ignore) {
+		} catch (SocketTimeoutException | ConnectionClosedException ignore) {
 		} catch (final Exception ex) {
 			ex.printStackTrace();
 		} finally {
