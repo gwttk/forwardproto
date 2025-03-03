@@ -572,8 +572,7 @@ public class SmartproxyServer implements Callable<Void> {
 		} finally {
 			try {
 				conn.shutdown();
-			} catch (final IOException ex) {
-				ex.printStackTrace();
+			} catch (final IOException ignore) {
 			}
 		}
 	}
