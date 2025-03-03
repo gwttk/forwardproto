@@ -232,7 +232,7 @@ public class Smartproxy implements Callable<Void> {
 
 		tunnelPool = new TunnelPool(server_ip, server_port);
 
-		speedMeter = new SpeedMeter(1000 * 4, tunnelPool.halfTunnels, TunnelContext.allOngoings, this);
+		speedMeter = new SpeedMeter(1000 * 4, tunnelPool, TunnelContext.allOngoings, this);
 
 		ServerSocket ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip));
 		try {
@@ -1480,12 +1480,13 @@ public class Smartproxy implements Callable<Void> {
 		}
 	}
 
-	private class TunnelPool {
+	public class TunnelPool {
 
 		private BlockingQueue<SocketBundle> halfTunnels = new ArrayBlockingQueue<>(hopen_max * 2);
 		private String server_hostname;
 		private int server_port;
 		private Object queueHeadLock = new Object();
+		private long currentLatency;
 
 		public TunnelPool(String server_hostname, int server_port) {
 			this.server_hostname = server_hostname;
@@ -1494,6 +1495,14 @@ public class Smartproxy implements Callable<Void> {
 				scmt.execAsync("tunnel-pool-connect", this::connect);
 			}
 			scmt.execAsync("tunnel-pool-cleaner", this::cleaner);
+		}
+
+		public int getCurrentSize() {
+			return halfTunnels.size();
+		}
+
+		public long getCurrentLatency() {
+			return currentLatency;
 		}
 
 		private void connect() {
@@ -1545,17 +1554,19 @@ public class Smartproxy implements Callable<Void> {
 					}
 				}
 
-				if (sendKeepAlive(sb)) {
-					// keep-alive successful
-					try {
-						halfTunnels.put(sb);
-					} catch (InterruptedException e) {
-						// should be impossible
-						e.printStackTrace(log);
+				if (sb != null) {
+					if (sendKeepAlive(sb)) {
+						// keep-alive successful
+						try {
+							halfTunnels.put(sb);
+						} catch (InterruptedException e) {
+							// should be impossible
+							e.printStackTrace(log);
+						}
+					} else {
+						// keep-alive failed
+						Util.abortiveCloseSocket(sb.socket);
 					}
-				} else {
-					// keep-alive failed
-					Util.abortiveCloseSocket(sb.socket);
 				}
 
 				try {
@@ -1571,6 +1582,7 @@ public class Smartproxy implements Callable<Void> {
 			DataInputStream is = new DataInputStream(sb.is);
 			DataOutputStream os = new DataOutputStream(new BufferedOutputStream(sb.os, 1024));
 
+			long beg = System.currentTimeMillis();
 			try {
 				os.writeInt(Launcher.OPCODE_KEEPALIVE);
 				os.flush();
@@ -1586,9 +1598,12 @@ public class Smartproxy implements Callable<Void> {
 				log.println(sct.datetime() + " error when send keep-alive");
 				return false;
 			}
+			long end = System.currentTimeMillis();
+			long latency = end - beg;
 
 			sb.expireTime = System.currentTimeMillis() + toSvrReadFromCltRest - 10000;
 			sb.nextKeepAliveTime = System.currentTimeMillis() + hopen_keepalive * 1000;
+			currentLatency = latency;
 			return true;
 		}
 

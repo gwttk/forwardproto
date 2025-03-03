@@ -6,18 +6,19 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.github.immueggpain.smartproxy.Smartproxy.TunnelContext;
+import com.github.immueggpain.smartproxy.Smartproxy.TunnelPool;
 
 public class SpeedMeter {
 
 	private AtomicLong atomRecv = new AtomicLong();
 	private AtomicLong atomSend = new AtomicLong();
 	private int reportInterval;
-	private Collection<?> halfOpenPool;
+	private TunnelPool halfOpenPool;
 	private Collection<WeakReference<TunnelContext>> onGoings;
 	private long lastReportTime;
 	private Smartproxy instance;
 
-	public SpeedMeter(int reportInterval, Collection<?> halfOpenPool, Collection<WeakReference<TunnelContext>> onGoings,
+	public SpeedMeter(int reportInterval, TunnelPool halfOpenPool, Collection<WeakReference<TunnelContext>> onGoings,
 			Smartproxy instance) {
 		this.reportInterval = reportInterval;
 		this.halfOpenPool = halfOpenPool;
@@ -47,8 +48,9 @@ public class SpeedMeter {
 				double speedSend = (double) atomSend.getAndSet(0) / ((double) duration / 1000) / 1024;
 				lastReportTime = now;
 				System.out.println(String.format(Locale.ROOT,
-						"half-open: %2d, ongoing: %2d, upload: %6.1f KB/s, download: %7.1f KB/s", halfOpenPool.size(),
-						onGoings.size(), speedSend, speedRecv));
+						"half-open: %2d, ongoing: %2d, upload: %6.1f KB/s, download: %7.1f KB/s, latency: %3d",
+						halfOpenPool.getCurrentSize(), onGoings.size(), speedSend, speedRecv,
+						halfOpenPool.getCurrentLatency()));
 
 				// print ongoings infos
 				for (WeakReference<TunnelContext> weakReference : onGoings) {
