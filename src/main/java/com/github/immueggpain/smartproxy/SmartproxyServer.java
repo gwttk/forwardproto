@@ -490,7 +490,7 @@ public class SmartproxyServer implements Callable<Void> {
 		}
 
 		HashMap<String, HttpRequestHandler> handlerMap = new HashMap<String, HttpRequestHandler>();
-		handlerMap.put("/", new MarkdownRenderHandler());
+		handlerMap.put("/", new HttpCode403Handler());
 
 		HttpRequestHandlerMapper handlerMapperCopy;
 		{

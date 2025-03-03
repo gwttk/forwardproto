@@ -7,7 +7,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.protocol.HttpContext;
 
-public class MarkdownRenderHandler extends BaseHandler {
+public class HttpCode403Handler extends BaseHandler {
 
 	public void handleGet(HttpRequest request, HttpResponse response, HttpContext context, String url)
 			throws Exception {
