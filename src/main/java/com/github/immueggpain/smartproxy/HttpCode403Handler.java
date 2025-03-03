@@ -12,9 +12,9 @@ public class HttpCode403Handler extends BaseHandler {
 	public void handleGet(HttpRequest request, HttpResponse response, HttpContext context, String url)
 			throws Exception {
 
-		String htmlString = "";
+		String content = "403 Forbidden";
 
-		StringEntity entity = new StringEntity(htmlString, ContentType.create("text/plain", "UTF-8"));
+		StringEntity entity = new StringEntity(content, ContentType.create("text/plain", "UTF-8"));
 
 		response.setStatusCode(HttpStatus.SC_FORBIDDEN);
 		response.setEntity(entity);
