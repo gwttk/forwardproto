@@ -285,6 +285,13 @@ public class SmartproxyServer implements Callable<Void> {
 
 				if (opCode == Launcher.OPCODE_KEEPALIVE) {
 					// System.out.println("keep-alive");
+					try {
+						os.writeInt(Launcher.OPCODE_KEEPALIVE);
+					} catch (Throwable e) {
+						System.out.println("exception during reply keep-alive");
+						Util.abortiveCloseSocket(sclient_s);
+						return;
+					}
 					continue;
 				} else {
 					break;
