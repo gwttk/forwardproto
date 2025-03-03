@@ -1539,7 +1539,7 @@ public class Smartproxy implements Callable<Void> {
 			}
 		}
 
-		/** return true if ok, return false then sb should be considered broken */
+		/** return true if ok and update expireTime, return false then sb should be considered broken */
 		private boolean sendKeepAlive(SocketBundle sb) {
 			DataInputStream is = new DataInputStream(sb.is);
 			DataOutputStream os = new DataOutputStream(new BufferedOutputStream(sb.os, 1024));
@@ -1560,6 +1560,7 @@ public class Smartproxy implements Callable<Void> {
 				return false;
 			}
 
+			sb.expireTime = System.currentTimeMillis() + toSvrReadFromCltRest - 10000;
 			return true;
 		}
 
