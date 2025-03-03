@@ -118,6 +118,10 @@ public class Smartproxy implements Callable<Void> {
 			showDefaultValue = Visibility.ALWAYS)
 	public int hopen_rest = 300;
 
+	@Option(names = { "--halfopen-kalive" }, description = "how many seconds before a half-open tunnel send keep-alive",
+			showDefaultValue = Visibility.ALWAYS)
+	public int hopen_keepalive = 90;
+
 	@Option(names = { "--to-basic" }, description = "basic timeout value in sec", showDefaultValue = Visibility.ALWAYS)
 	public int toBasicRead = 300;
 
@@ -1409,6 +1413,7 @@ public class Smartproxy implements Callable<Void> {
 
 			SocketBundle sb = new SocketBundle(cserver_s, raw_is, raw_os);
 			sb.expireTime = System.currentTimeMillis() + toSvrReadFromCltRest - 10000;
+			sb.nextKeepAliveTime = System.currentTimeMillis() + hopen_keepalive * 1000;
 			return sb;
 		} catch (Throwable e) {
 			log.println("there shouldn't be any exception here");
@@ -1480,6 +1485,7 @@ public class Smartproxy implements Callable<Void> {
 		private BlockingQueue<SocketBundle> halfTunnels = new ArrayBlockingQueue<>(hopen_max * 2);
 		private String server_hostname;
 		private int server_port;
+		private Object queueHeadLock = new Object();
 
 		public TunnelPool(String server_hostname, int server_port) {
 			this.server_hostname = server_hostname;
@@ -1524,13 +1530,34 @@ public class Smartproxy implements Callable<Void> {
 
 		private void cleaner() {
 			while (true) {
-				SocketBundle sb = halfTunnels.peek();
-				if (sb != null && sb.expireTime < System.currentTimeMillis()) {
-					if (halfTunnels.remove(sb)) {
-						Util.closeQuietly(sb.socket);
-						// log.println(sct.datetime() + " half tunnel expires");
+				SocketBundle sb;
+
+				synchronized (queueHeadLock) {
+					sb = halfTunnels.peek();
+					if (sb == null) {
+						// empty, do nothing
+					} else if (System.currentTimeMillis() > sb.nextKeepAliveTime) {
+						// need keep-alive, remove it then keep-alive it then add it back
+						halfTunnels.poll();
+					} else {
+						// queue head is normal, do nothing to it
+						sb = null;
 					}
 				}
+
+				if (sendKeepAlive(sb)) {
+					// keep-alive successful
+					try {
+						halfTunnels.put(sb);
+					} catch (InterruptedException e) {
+						// should be impossible
+						e.printStackTrace(log);
+					}
+				} else {
+					// keep-alive failed
+					Util.abortiveCloseSocket(sb.socket);
+				}
+
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -1561,18 +1588,25 @@ public class Smartproxy implements Callable<Void> {
 			}
 
 			sb.expireTime = System.currentTimeMillis() + toSvrReadFromCltRest - 10000;
+			sb.nextKeepAliveTime = System.currentTimeMillis() + hopen_keepalive * 1000;
 			return true;
 		}
 
 		public SocketBundle pollTunnel(String dest_hostname, int dest_port) throws InterruptedException {
-			SocketBundle half_tunnel = halfTunnels.poll();
+			SocketBundle half_tunnel;
+			synchronized (queueHeadLock) {
+				half_tunnel = halfTunnels.poll();
+			}
 			if (half_tunnel == null)
 				return null;
 			return create_full_tunnel(half_tunnel, dest_hostname, dest_port);
 		}
 
 		public SocketBundle pollTunnelUdp(String dest_hostname, int dest_port) throws InterruptedException {
-			SocketBundle half_tunnel = halfTunnels.poll();
+			SocketBundle half_tunnel;
+			synchronized (queueHeadLock) {
+				half_tunnel = halfTunnels.poll();
+			}
 			if (half_tunnel == null)
 				return null;
 			return create_full_tunnel_udp(half_tunnel, dest_hostname, dest_port);
@@ -1684,6 +1718,7 @@ public class Smartproxy implements Callable<Void> {
 		public OutputStream os;
 		// optional
 		public long expireTime;
+		public long nextKeepAliveTime;
 
 		public SocketBundle(Socket socket, InputStream is, OutputStream os) {
 			this.socket = socket;
