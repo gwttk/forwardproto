@@ -180,7 +180,15 @@ public class Http2socks {
 				// since we don't throw anything in handleHttpReq(),
 				// exceptions here can only be related to conn from app!
 
-				if (e instanceof ConnectionClosedException && e.getMessage().equals("Client closed connection")) {
+				if (e instanceof SocketException && e.getMessage().equals("Socket closed")) {
+					// this may be a bug? somewhere socket is closed but continue loop.
+					// but I don't have time to check for it, so just ignore this...
+					try {
+						connFromApp.shutdown(); // this will also close socket
+					} catch (IOException ignore) {
+					}
+				} else if (e instanceof ConnectionClosedException
+						&& e.getMessage().equals("Client closed connection")) {
 					// this is normal, client is just closing conn without sending next request.
 					// this is when remote tcp peer properly closed conn.
 					try {
