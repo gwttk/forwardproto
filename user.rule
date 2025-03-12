@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.opinew.com proxy
+.gethopscotch.com proxy
+.ublockorigin.com proxy
+.rivercombat.com proxy
+.nothingyetdesigns.com proxy
+.getadblock.com proxy
 .opencv.org proxy
 .deltacv.org proxy
 .ann-benchmarks.com proxy
