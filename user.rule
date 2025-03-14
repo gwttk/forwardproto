@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.wikitide.net proxy
+.immersivetranslate.com proxy
+.deepseek.com direct
+.strinova.org proxy
+.miraheze.org proxy
+.gijsq.com direct
 .opinew.com proxy
 .gethopscotch.com proxy
 .ublockorigin.com proxy
