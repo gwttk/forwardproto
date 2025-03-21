@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+.squarecdn.com proxy
+.onrender.com proxy
+.typral.com proxy
 .wikitide.net proxy
 .immersivetranslate.com proxy
 .deepseek.com direct
