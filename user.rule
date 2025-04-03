@@ -7,6 +7,34 @@
 # "reject" means drop connection
 
 #auto rules
+.ntdtv.com proxy
+.report.lagofast.com proxy
+.danryoku.com proxy
+.jdindustry.com direct
+.skwuruhl.dev proxy
+.bytedgame.com proxy
+.yawsens.com proxy
+.cp1-hosting-porkbun.ink proxy
+.lf3-mkcncdn-tos.dailygn.com direct
+.retailmenot.com proxy
+.attr.bid proxy
+.static.lagofast.com direct
+.streamlitstatus.com proxy
+.worthepenny.com proxy
+.v2ph.com proxy
+.cloudses.com direct
+.cosplaytele.com proxy
+.iiooxx.rocks proxy
+.junyun.aihelp.net proxy
+.cbs.lagofast.com direct
+.p1.dailygn.com direct
+.epoch-update.com proxy
+.cdn-aihelp.net proxy
+.gaeamobile-inc.net direct
+.sf1-g-cn.dailygn.com direct
+.p16-sg.dailygn.com proxy
+.jingbantong.com direct
+.www.lagofast.com proxy
 .squarecdn.com proxy
 .onrender.com proxy
 .typral.com proxy
