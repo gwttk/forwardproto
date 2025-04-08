@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.uni-goettingen.de proxy
+.bushiroad.co.jp proxy
+.languagemodels.co proxy
+.gr-assets.com proxy
+.eudml.org proxy
+.openlibrary.org proxy
 .ntdtv.com proxy
 .report.lagofast.com proxy
 .danryoku.com proxy
