@@ -1175,7 +1175,7 @@ public class Smartproxy implements Callable<Void> {
 		public volatile long lastWriteToServer = 0;
 		public final String dest_name;
 		/** client - server */
-		public Socket cserver_s;
+		private Socket cserver_s;
 		/** app - client */
 		public Socket sclient_s;
 		public boolean isBroken = false;

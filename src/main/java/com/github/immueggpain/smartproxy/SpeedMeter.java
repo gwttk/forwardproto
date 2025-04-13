@@ -16,14 +16,12 @@ public class SpeedMeter {
 	private TunnelPool halfOpenPool;
 	private Collection<WeakReference<TunnelContext>> onGoings;
 	private long lastReportTime;
-	private Smartproxy instance;
 
 	public SpeedMeter(int reportInterval, TunnelPool halfOpenPool, Collection<WeakReference<TunnelContext>> onGoings,
 			Smartproxy instance) {
 		this.reportInterval = reportInterval;
 		this.halfOpenPool = halfOpenPool;
 		this.onGoings = onGoings;
-		this.instance = instance;
 		new Thread(this::run, "SpeedMeter").start();
 	}
 
@@ -59,19 +57,8 @@ public class SpeedMeter {
 						onGoings.remove(weakReference);
 						continue;
 					}
-					if (!tc.isBroken && !tc.closing) {
-						int receiveBufferSize = tc.cserver_s.getReceiveBufferSize();
-						int sendBufferSize = tc.cserver_s.getSendBufferSize();
-						// print if not match option values
-						if ((instance.sndbuf_size != 0 && sendBufferSize != instance.sndbuf_size)
-								|| (instance.rcvbuf_size != 0 && receiveBufferSize != instance.rcvbuf_size)) {
-							String str = String.format("    %s %d/%d", tc.cserver_s.getInetAddress(), sendBufferSize,
-									receiveBufferSize);
-							System.out.println(str);
-						}
-					} else {
+					if (tc.isBroken || tc.closing)
 						onGoings.remove(weakReference);
-					}
 				}
 			}
 		} catch (Throwable e) {
