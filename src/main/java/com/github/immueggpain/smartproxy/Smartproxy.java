@@ -1545,9 +1545,14 @@ public class Smartproxy implements Callable<Void> {
 					sb = halfTunnels.peek();
 					if (sb == null) {
 						// empty, do nothing
+					} else if (System.currentTimeMillis() > sb.expireTime) {
+						// expire
+						halfTunnels.remove(sb);
+						Util.closeQuietly(sb.socket);
+						sb = null;
 					} else if (System.currentTimeMillis() > sb.nextKeepAliveTime) {
 						// need keep-alive, remove it then keep-alive it then add it back
-						halfTunnels.poll();
+						halfTunnels.remove(sb);
 					} else {
 						// queue head is normal, do nothing to it
 						sb = null;
