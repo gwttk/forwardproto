@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.carecart.io proxy
+.hextom.com proxy
+.ecomposer.app proxy
+.snatoms.com proxy
 .uni-goettingen.de proxy
 .bushiroad.co.jp proxy
 .languagemodels.co proxy
