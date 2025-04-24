@@ -1011,7 +1011,7 @@ public class Smartproxy implements Callable<Void> {
 				else {
 					if (contxt.closing)
 						break;
-					log.println(String.format("%s sclient read timeout %s", sct.datetime(), contxt.toString()));
+//					log.println(String.format("%s sclient read timeout %s", sct.datetime(), contxt.toString()));
 					contxt.isBroken = true;
 					break;
 				}
@@ -1547,6 +1547,7 @@ public class Smartproxy implements Callable<Void> {
 						// empty, do nothing
 					} else if (System.currentTimeMillis() > sb.expireTime) {
 						// expire
+						log.printf("%s half-open conn expire", sct.datetime()).println();
 						halfTunnels.remove(sb);
 						Util.closeQuietly(sb.socket);
 						sb = null;
