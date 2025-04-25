@@ -1378,7 +1378,7 @@ public class Smartproxy implements Callable<Void> {
 			// random stuff hello
 			try {
 				int len = rand.nextInt(500) + 90;
-				String hellostr = RandomStringUtils.randomAlphanumeric(len);
+				String hellostr = RandomStringUtils.secure().nextAlphanumeric(len);
 				os.writeUTF(hellostr);
 			} catch (Exception e) {
 				log.println(sct.datetime() + " error when send hello " + e);
@@ -1387,8 +1387,9 @@ public class Smartproxy implements Callable<Void> {
 			}
 
 			// send rest timeout
+			int randomRestTime = RandomUtils.secure().randomInt(toSvrReadFromCltRest - 20 * 1000, toSvrReadFromCltRest);
 			try {
-				os.writeInt(toSvrReadFromCltRest);
+				os.writeInt(randomRestTime);
 				os.flush();
 			} catch (Exception e) {
 				log.println(sct.datetime() + " error when send timeout " + e);
@@ -1412,7 +1413,7 @@ public class Smartproxy implements Callable<Void> {
 			}
 
 			SocketBundle sb = new SocketBundle(cserver_s, raw_is, raw_os);
-			sb.expireTime = System.currentTimeMillis() + toSvrReadFromCltRest - 10000;
+			sb.expireTime = System.currentTimeMillis() + randomRestTime - 10000;
 			sb.nextKeepAliveTime = System.currentTimeMillis() + hopen_keepalive * 1000;
 			return sb;
 		} catch (Throwable e) {
@@ -1509,7 +1510,7 @@ public class Smartproxy implements Callable<Void> {
 			while (true) {
 				if (halfTunnels.size() >= hopen_max) {
 					try {
-						Thread.sleep(RandomUtils.nextInt(1000, 2000));
+						Thread.sleep(RandomUtils.secure().randomInt(1000, 2000));
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -1528,7 +1529,7 @@ public class Smartproxy implements Callable<Void> {
 				} else {
 					// can't connect tunnel
 					try {
-						Thread.sleep(RandomUtils.nextInt(2000, 5000));
+						Thread.sleep(RandomUtils.secure().randomInt(2000, 5000));
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
