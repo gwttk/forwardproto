@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.bwg.net direct
+.jscrambler.com proxy
+.someonewhocares.org proxy
+.systeminformer.dev proxy
 .carecart.io proxy
 .hextom.com proxy
 .ecomposer.app proxy
