@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+.bwh81.net proxy
+.internet2.edu proxy
+.bandwagonhost.net proxy
 .bwg.net direct
 .jscrambler.com proxy
 .someonewhocares.org proxy
