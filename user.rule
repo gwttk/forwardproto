@@ -7,6 +7,33 @@
 # "reject" means drop connection
 
 #auto rules
+.trycloudflare.com proxy
+.ivyrc.com proxy
+.mongodb.uservoice.com proxy
+.globalcdn18.buzz proxy
+.globalcdn65.buzz proxy
+.scala-sbt.org proxy
+.globalcdn44.buzz proxy
+.threads.net proxy
+.dyvya.com proxy
+.stable-diffusion-art.com proxy
+.cfglobalcdn.com proxy
+.idocdn.com proxy
+.globalcdn61.buzz proxy
+.globalcdn11.buzz proxy
+.globalcdn90.buzz proxy
+.globalcdn85.buzz proxy
+.commentsmodule.com proxy
+.delphix.com proxy
+.freeimagecdn.net proxy
+.threads.com proxy
+.musz.info proxy
+.iamcdn.net proxy
+.globalcdn55.buzz proxy
+.globalcdn64.buzz proxy
+.globalcdn14.buzz proxy
+.globalcdn72.buzz proxy
+.globalcdn20.buzz proxy
 .bwh81.net proxy
 .internet2.edu proxy
 .bandwagonhost.net proxy
