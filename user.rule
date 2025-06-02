@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.mc-resounding-api.kurogames-global.com proxy
+.bynder.com proxy
+.mc-resounding.kurogames-global.com direct
+.maze.co proxy
+.filezillapro.com proxy
+.shotstack.io proxy
 .trycloudflare.com proxy
 .ivyrc.com proxy
 .mongodb.uservoice.com proxy
