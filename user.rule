@@ -7,6 +7,29 @@
 # "reject" means drop connection
 
 #auto rules
+.cardinaltrusted.com proxy
+.epicgamescdn.com proxy
+.akumachi.com proxy
+.kskwai.com direct
+.cloudatacdn.com proxy
+.turbosplayer.com proxy
+.doodcdn.io proxy
+.5oliviabrown.site proxy
+.imggle.net proxy
+.cdn-centaurus.com proxy
+.turboviplay.com proxy
+.tnmr.org proxy
+.streamhihi.com proxy
+.doply.net proxy
+.ds2play.com proxy
+.stbturbo.xyz proxy
+.cdnfd.me proxy
+.veed.io proxy
+.vocalremover.org proxy
+.xtom.com proxy
+.voicedub.ai proxy
+.kdenlive.org proxy
+.assetsconfigcdn.org proxy
 .mc-resounding-api.kurogames-global.com proxy
 .bynder.com proxy
 .mc-resounding.kurogames-global.com direct
