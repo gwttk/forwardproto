@@ -7,6 +7,18 @@
 # "reject" means drop connection
 
 #auto rules
+.evefrontier.com proxy
+.prj-beatrice.com proxy
+.getbee.io proxy
+.mathworks.com proxy
+.mantidproject.org proxy
+.cdnfonts.com proxy
+.voice.ai proxy
+.umd.edu proxy
+.winhelponline.com proxy
+.nullege.com proxy
+.centerspace.net proxy
+.volclivedvs.com direct
 .cardinaltrusted.com proxy
 .epicgamescdn.com proxy
 .akumachi.com proxy
