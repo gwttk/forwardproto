@@ -7,6 +7,17 @@
 # "reject" means drop connection
 
 #auto rules
+.ahdohpiechei.com direct
+.swphonetics.com proxy
+.squarewebsites.org proxy
+.icspeech.com proxy
+.astesj.com proxy
+.hydrogenaudio.org proxy
+.rhoovhcti.com proxy
+.privazer.com proxy
+.qimphywwej.com proxy
+.static.microsoft proxy
+.timbreandorchestration.org proxy
 .evefrontier.com proxy
 .prj-beatrice.com proxy
 .getbee.io proxy
