@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.reebr.com proxy
+.bluetracktor.com proxy
+.sacdnssedge.com proxy
+.emojitracker.com proxy
+.mnaspm.com proxy
 .tcdnos.com direct
 .worthsee.com proxy
 .netflix.io proxy
