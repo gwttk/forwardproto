@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.dreamtonics.com proxy
+.mida.so proxy
 .reebr.com proxy
 .bluetracktor.com proxy
 .sacdnssedge.com proxy
