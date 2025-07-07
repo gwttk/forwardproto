@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.colab.dev proxy
+.lilsnack.co proxy
 .dreamtonics.com proxy
 .mida.so proxy
 .reebr.com proxy
