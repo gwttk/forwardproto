@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.spacehpc.com direct
+.oplist.org proxy
+.ms.show direct
+.ai-hobbyist.com proxy
+.ai-hobbyist.org proxy
 .colab.dev proxy
 .lilsnack.co proxy
 .dreamtonics.com proxy
