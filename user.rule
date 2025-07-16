@@ -7,6 +7,29 @@
 # "reject" means drop connection
 
 #auto rules
+.sphlabs.com proxy
+.vector.im proxy
+.plot.ly proxy
+.clerk.com proxy
+.acgnai.top proxy
+.haorank.com direct
+.piwheels.org proxy
+.rybbit.io proxy
+.vrp.moe proxy
+.jb51.cc proxy
+.thinkific.com proxy
+.pypistats.org proxy
+.finxter.com proxy
+.axiom.co proxy
+.go.hyper.ai proxy
+.hyper.ai direct
+.matthewzeiler.com proxy
+.conversica.com proxy
+.element.io proxy
+.web-api.hyper.ai proxy
+.openbayes.com direct
+.openbayes.net proxy
+.deepseeksvc.com direct
 .spacehpc.com direct
 .oplist.org proxy
 .ms.show direct
