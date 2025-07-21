@@ -7,6 +7,24 @@
 # "reject" means drop connection
 
 #auto rules
+.backblazeb2.com proxy
+.askdriver.com proxy
+.lightning.ai proxy
+.pirm2018.org proxy
+.springer.com proxy
+.newnuscoxc.com proxy
+.mymatcha.ai proxy
+.cloudwaysapps.com proxy
+.www.kecl.ntt.co.jp proxy
+.funasr.com direct
+.ucsd.edu proxy
+.openreview.net proxy
+.bvdwolf.nl proxy
+.ajolicoeur.ca proxy
+.kasson.com proxy
+.udacity.com proxy
+.matthewtancik.com proxy
+.rdrr.io proxy
 .sphlabs.com proxy
 .vector.im proxy
 .plot.ly proxy
