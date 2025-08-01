@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.gamerhome.com direct
+.ee3e.com proxy
+.delipu.cc direct
+.superworldbox.com proxy
+.wsyhn.com direct
+.cnbhd.xyz direct
+.heroworld.net proxy
+.h3hota.com proxy
 .cosmicwave19.space proxy
 .studybreakmedia.com proxy
 .snva.jp proxy
