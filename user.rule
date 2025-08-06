@@ -7,6 +7,9 @@
 # "reject" means drop connection
 
 #auto rules
+.ww-rm.top proxy
+.kemono.cr proxy
+.formlabs.com proxy
 .gamerhome.com direct
 .ee3e.com proxy
 .delipu.cc direct
