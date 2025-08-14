@@ -7,6 +7,20 @@
 # "reject" means drop connection
 
 #auto rules
+.preternatural.cc direct
+.tweeteraser.com proxy
+.ismir.net proxy
+.bpcontent.cloud proxy
+.npp-user-manual.org proxy
+.internethalloffame.org proxy
+.illinois.edu proxy
+.bobworld.net direct
+.botpress.cloud proxy
+.chaoziran.com direct
+.dafx.de proxy
+.cloud-rtc.net direct
+.ubiquity.press proxy
+.operas-eu.org proxy
 .ww-rm.top proxy
 .kemono.cr proxy
 .formlabs.com proxy
