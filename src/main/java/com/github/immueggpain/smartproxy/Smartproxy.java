@@ -1507,6 +1507,7 @@ public class Smartproxy implements Callable<Void> {
 		}
 
 		private void connect() {
+			long sleepExtra = 0;
 			while (true) {
 				if (halfTunnels.size() >= hopen_max) {
 					try {
@@ -1521,6 +1522,9 @@ public class Smartproxy implements Callable<Void> {
 				if (half_tunnel != null) {
 					try {
 						halfTunnels.put(half_tunnel);
+						sleepExtra -= 2000;
+						if (sleepExtra < 0)
+							sleepExtra = 0;
 						// log.println(sct.datetime() + " new half tunnel to pool " +
 						// halfTunnels.size());
 					} catch (InterruptedException e) {
@@ -1529,12 +1533,14 @@ public class Smartproxy implements Callable<Void> {
 				} else {
 					// can't connect tunnel
 					try {
-						Thread.sleep(RandomUtils.secure().randomInt(2000, 5000));
+						Thread.sleep(RandomUtils.secure().randomInt(2000, 5000) + sleepExtra);
+						sleepExtra += 2000;
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					continue;
 				}
+				if (sleepExtra > 0)
+					log.printf("%s sleepExtra %d", sct.datetime(), sleepExtra);
 			}
 		}
 
