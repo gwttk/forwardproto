@@ -7,6 +7,18 @@
 # "reject" means drop connection
 
 #auto rules
+.pcstarters.net proxy
+.deepmind.com proxy
+.openaudio.com proxy
+.robertsspaceindustries.com proxy
+.gregorygundersen.com proxy
+.antpcdn.com direct
+.microsoftpersonalcontent.com proxy
+.nett.moe proxy
+.duckdb.org proxy
+.superbbenchmark.org proxy
+.pepperdine.edu proxy
+.zephyrsz.com direct
 .preternatural.cc direct
 .tweeteraser.com proxy
 .ismir.net proxy
