@@ -1353,6 +1353,7 @@ public class Smartproxy implements Callable<Void> {
 				cserver_s.startHandshake();
 			} catch (IOException e) {
 				log.println(sct.datetime() + " error when start tls handshake");
+				e.printStackTrace(log);
 				Util.abortiveCloseSocket(cserver_s);
 				return null;
 			}
@@ -1540,7 +1541,7 @@ public class Smartproxy implements Callable<Void> {
 					}
 				}
 				if (sleepExtra > 0)
-					log.printf("%s sleepExtra %d", sct.datetime(), sleepExtra);
+					log.printf("%s sleepExtra %d", sct.datetime(), sleepExtra).println();
 			}
 		}
 
