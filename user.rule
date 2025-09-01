@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.lmarena.ai proxy
+.bettergi.com proxy
+.manzhan.com proxy
+.gewara.com direct
+.taopiaopiao.com direct
+.x-future.com direct
+.fjtdpm.com proxy
+.123865.com direct
 .newshinyd.com proxy
 .vcmdiawe.com proxy
 .bidberry.net proxy
