@@ -7,6 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.mywaifulist.moe proxy
+.animecharactersdatabase.com proxy
+.typesense.net proxy
+.alicesoft.com proxy
+.nd-api.com proxy
+.metahuman.com proxy
+.vercel-storage.com proxy
+.spicychat.ai proxy
+.comicad.net proxy
 .lmarena.ai proxy
 .bettergi.com proxy
 .manzhan.com proxy
