@@ -1541,7 +1541,8 @@ public class Smartproxy implements Callable<Void> {
 					}
 				}
 				if (sleepExtra > 0)
-					log.printf("%s sleepExtra %d", sct.datetime(), sleepExtra).println();
+					log.printf("%s threadID %d sleepExtra %d", sct.datetime(), Thread.currentThread().getId(),
+							sleepExtra).println();
 			}
 		}
 
