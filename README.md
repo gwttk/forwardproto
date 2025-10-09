@@ -8,9 +8,9 @@
 - also redispatches HTTP requests, so some old HTTP clients without keep-alive support will enjoy some performance boost.
 
 ## QuickStart
-* Make sure you have **[Java](https://jdk.java.net/11/) 11+** installed. 
+* Make sure you have **Java 11+** installed. 
 * Prepare a **valid** SSL cert at <cert_file> and its private key at <private_key_file>. The private key must be encoded in PEM.
-* [Download latest build](https://github.com/Immueggpain/forwardproto/releases). Unzip it
+* [Download latest build](../../releases). Unzip it
 * Run `java -jar smartproxy-x.x.x.jar help` to get help.
 * Run client `java -jar smartproxy-x.x.x.jar client -n <local_listening_port> -p <server_listening_port> -s <server_ip> -w <secret_password>`.
 * Run server `java -jar smartproxy-x.x.x.jar server -c <cert_file> -k <private_key_file> -p <server_listening_port> -w <secret_password>`.
