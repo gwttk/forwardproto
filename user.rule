@@ -7,6 +7,29 @@
 # "reject" means drop connection
 
 #auto rules
+.soft112.com proxy
+.streamvidhub.com proxy
+.osboxes.org proxy
+.lawnchair.app proxy
+.threadreaderapp.com proxy
+.stream27.com proxy
+.lanosso.com direct
+.m2osw.com proxy
+.diskgenius.com proxy
+.virtualbox.org proxy
+.takefile.link proxy
+.lanzouq.com direct
+.kernelsu.org proxy
+.lanrar.com direct
+.hlib.cc proxy
+.extrapropertymanagement.com proxy
+.dswx.cyou proxy
+.xydbpbnmo.com proxy
+.bakstotre.com direct
+.561290.xyz proxy
+.sysprogs.org proxy
+.sysprogs.com proxy
+.173577702.xyz proxy
 .heidiancdn.com direct
 .rakka.dev proxy
 .heidianer.com direct
