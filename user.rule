@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.iyx.fun direct
+.bozhihuili.com direct
+.nebulabuds.com direct
+.joyway.net direct
+.sitemaji.com proxy
+.troyhunt.com proxy
+.meldaproduction.com proxy
+.blacktealab.com proxy
 .liaoxuefeng.com direct
 .soft112.com proxy
 .streamvidhub.com proxy
