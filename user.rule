@@ -7,6 +7,23 @@
 # "reject" means drop connection
 
 #auto rules
+.oceancloudapi.com direct
+.ft07.com proxy
+.onlinepngtools.com proxy
+.gifgit.com proxy
+.fotor.com proxy
+.patriotsoftware.com proxy
+.banananano.ai proxy
+.odckmeaqnkro.com proxy
+.onlinetools.com proxy
+.exoclick.com proxy
+.storycrafter.ai proxy
+.botproductions.com proxy
+.static.mailjet.com proxy
+.nanobanana.ai proxy
+.dfyoxcbu.com proxy
+.openrouter.ai proxy
+.hailuoai.com direct
 .iyx.fun direct
 .bozhihuili.com direct
 .nebulabuds.com direct
