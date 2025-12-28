@@ -7,6 +7,31 @@
 # "reject" means drop connection
 
 #auto rules
+.modelstudio.console.alibabacloud.com proxy
+.qoder.com proxy
+.markdown-here.com proxy
+.tablesgenerator.com proxy
+.sourcerer.io proxy
+.agentskills.io proxy
+.qwenlm.ai proxy
+.daringfireball.net proxy
+.springcloud.io proxy
+.qwen.ai proxy
+.netty.io proxy
+.websocket.org proxy
+.devin.ai proxy
+.jotbird.com proxy
+.behzadian.info proxy
+.12factor.net proxy
+.skypack.dev proxy
+.garmin.com proxy
+.telefen.com direct
+.xargs.org proxy
+.deps.dev proxy
+.tenclass.net direct
+.ideasawakened.com proxy
+.inside.java proxy
+.qoder.ai proxy
 .liblib.cloud direct
 .jlc.com direct
 .espressif.com proxy
