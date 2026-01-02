@@ -7,6 +7,32 @@
 # "reject" means drop connection
 
 #auto rules
+.ufa365.email proxy
+.vue-pro.arco.design direct
+.videofk.com proxy
+.deltaverse-intl.com proxy
+.arco.design proxy
+.fnd.io proxy
+.codemirror.net proxy
+.sg-apps.vasdgame.com proxy
+.msdk-dhgrpchw.vasdgame.com direct
+.go-search.org proxy
+.alpharithms.com proxy
+.bbsmi.com direct
+.9gt.net direct
+.maplewiki.net proxy
+.nactp.org proxy
+.bitterbrains.com proxy
+.certipedia.com proxy
+.theunderminejournal.com proxy
+.station-drivers.com proxy
+.mingw-w64.org proxy
+.astellia-mmo.com proxy
+.recalll.co proxy
+.inertiajs.com proxy
+.myalicdn.com direct
+.pro.arco.design direct
+.bytecdn.com direct
 .modelstudio.console.alibabacloud.com proxy
 .qoder.com proxy
 .markdown-here.com proxy
