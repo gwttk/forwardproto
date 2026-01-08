@@ -7,6 +7,8 @@
 # "reject" means drop connection
 
 #auto rules
+.vscode-cdn.net proxy
+.quectel.com direct
 .vuetifyjs.com proxy
 .vite.new proxy
 .mdnplay.dev proxy
