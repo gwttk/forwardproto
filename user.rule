@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.lwjgl.org proxy
+.cherry-world.com proxy
+.avadeaux.net proxy
+.cherry.de proxy
 .vscode-cdn.net proxy
 .quectel.com direct
 .icon-icons.com proxy
@@ -23,7 +27,6 @@
 .cgtn.com direct
 .codingbasic.com proxy
 .catalyst-sz.com direct
-.quectel.com direct
 .nominate.com proxy
 .voiceflow.com proxy
 .kawo.com proxy
