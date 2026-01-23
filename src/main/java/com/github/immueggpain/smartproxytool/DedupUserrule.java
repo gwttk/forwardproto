@@ -3,6 +3,7 @@ package com.github.immueggpain.smartproxytool;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -315,7 +316,7 @@ public class DedupUserrule implements Callable<Void> {
 				String[] segments = line.split(" ");
 				excepRules.put(segments[0], segments[1]);
 			}
-		} catch (FileNotFoundException ignore) {
+		} catch (FileNotFoundException | NoSuchFileException ignore) {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
