@@ -118,6 +118,18 @@ public class SmartproxyServer implements Callable<Void> {
 	public Void call() throws Exception {
 		System.out.println(String.format("running server %s", Launcher.VERSTR));
 
+		// gc loop
+		scmt.execAsync("gc-loop", () -> {
+			while (true) {
+				try {
+					Thread.sleep(5 * 60 * 1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.gc();
+			}
+		});
+
 		// init http server
 		httpService = create();
 

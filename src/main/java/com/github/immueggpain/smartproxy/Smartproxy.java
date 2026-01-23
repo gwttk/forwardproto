@@ -185,6 +185,18 @@ public class Smartproxy implements Callable<Void> {
 		log.println(String.format("--halfopen-rest = %d", hopen_rest));
 		log.println(String.format("--to-basic = %d", toBasicRead));
 
+		// gc loop
+		scmt.execAsync("gc-loop", () -> {
+			while (true) {
+				try {
+					Thread.sleep(5 * 60 * 1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.gc();
+			}
+		});
+
 		// init timeouts
 		toCltReadFromApp = toBasicRead * 1000;
 		toCltReadFromSvr = toBasicRead * 1000;
