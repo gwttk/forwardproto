@@ -7,6 +7,28 @@
 # "reject" means drop connection
 
 #auto rules
+.alyasset.com direct
+.qianwen.com direct
+.cheetahfun.com direct
+.itzmx.com proxy
+.aliyundrive.net direct
+.alipan.com direct
+.kkdzpt.com direct
+.analog.com direct
+.dokimori.com proxy
+.route-6.maj-soul.com proxy
+.route-2.maj-soul.com proxy
+.route-5.maj-soul.com proxy
+.oremanga.net proxy
+.route-4.maj-soul.com proxy
+.route-3.maj-soul.com proxy
+.cdend.com proxy
+.rawjx.net proxy
+.rawxz.xyz proxy
+.maj-soul.net proxy
+.casual-effects.com proxy
+.modelcontextprotocol.io proxy
+.solar-engine.com direct
 .blockadsnot.com proxy
 .gcloudcache.com direct
 .nuwaclass.com direct
