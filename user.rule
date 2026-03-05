@@ -7,6 +7,24 @@
 # "reject" means drop connection
 
 #auto rules
+.szlcsc.com direct
+.iytcdn.com direct
+.coomer.st proxy
+.comfy.org proxy
+.techbenchpro.com proxy
+.worldmarket.com proxy
+.static.pub proxy
+.techreviewadvisor.com proxy
+.breadpayments.com proxy
+.moloco.com proxy
+.fuseplatform.net proxy
+.datagrail.io proxy
+.caveduck.io proxy
+.2345cdn.net direct
+.worldbank.org proxy
+.chenliang.org proxy
+.channel.io proxy
+.coomer.party proxy
 .alyasset.com direct
 .qianwen.com direct
 .cheetahfun.com direct
