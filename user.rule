@@ -7,6 +7,13 @@
 # "reject" means drop connection
 
 #auto rules
+.bouncycastle.org proxy
+.pdf-tools.com proxy
+.transpond.io proxy
+.slproweb.com proxy
+.openssl-library.org proxy
+.cryptlib.com proxy
+.franz.com proxy
 .itad.link proxy
 .isthereanydeal.com proxy
 .featurebase-attachments.com proxy
