@@ -7,6 +7,16 @@
 # "reject" means drop connection
 
 #auto rules
+.itad.link proxy
+.isthereanydeal.com proxy
+.featurebase-attachments.com proxy
+.javfilms.com proxy
+.11bitstudios.com proxy
+.childrenofmorta.com proxy
+.astrbot.app proxy
+.zeabur.com proxy
+.featurebaseapp.com proxy
+.railway.com proxy
 .szlcsc.com direct
 .iytcdn.com direct
 .coomer.st proxy
