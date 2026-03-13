@@ -7,6 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.volcbiz.com direct
+.tcloudbaseapp.com direct
+.sirv.com proxy
+.earthroulette.com proxy
+.qdrant.tech proxy
+.bytepluscdn.com direct
+.byteintlapi.com proxy
+.oceanengine.com direct
+.byteplusbiz.com proxy
 .bouncycastle.org proxy
 .pdf-tools.com proxy
 .transpond.io proxy
