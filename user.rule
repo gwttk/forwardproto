@@ -7,6 +7,24 @@
 # "reject" means drop connection
 
 #auto rules
+.unican.es proxy
+.gluonhq.com proxy
+.s19a.biz proxy
+.vaadin.com proxy
+.playstream.media proxy
+.haoxx.me proxy
+.ilanzou.com direct
+.lvyovo-wiki.tech proxy
+.survicate-cdn.com proxy
+.hitfun.top direct
+.ffmpeg.party proxy
+.yuvsoft.com proxy
+.gostellar.app proxy
+.megascans.se proxy
+.upenn.edu proxy
+.codinglabs.net proxy
+.quixel.com proxy
+.openjfx.io proxy
 .volcbiz.com direct
 .tcloudbaseapp.com direct
 .sirv.com proxy
