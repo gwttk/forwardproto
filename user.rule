@@ -7,6 +7,26 @@
 # "reject" means drop connection
 
 #auto rules
+.surrit.com proxy
+.manwadu.cc proxy
+.salesmartly.com direct
+.fourhoi.com proxy
+.mhttu.cc proxy
+.nineyu.com proxy
+.cdn-website.com proxy
+.mwtt.cc proxy
+.amanhimself.dev proxy
+.picstashpic.com proxy
+.fansky.net proxy
+.suimeng.cc proxy
+.data4.net direct
+.dpscx6.com direct
+.leward.eu proxy
+.mwzu.cc proxy
+.asciitable.com proxy
+.mwfu.cc proxy
+.missav.ws proxy
+.linuxhandbook.com proxy
 .unican.es proxy
 .gluonhq.com proxy
 .s19a.biz proxy
