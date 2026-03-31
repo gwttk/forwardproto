@@ -7,6 +7,13 @@
 # "reject" means drop connection
 
 #auto rules
+.pollinations.ai proxy
+.jensd.de proxy
+.scalar.com proxy
+.herokucdn.com proxy
+.bk-cdn01.com direct
+.oopz.vip direct
+.objectstorage.us-phoenix-1.oraclecloud.com proxy
 .surrit.com proxy
 .manwadu.cc proxy
 .salesmartly.com direct
