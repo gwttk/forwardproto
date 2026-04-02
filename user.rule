@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.chongdiantou.com direct
+.imtintl.com proxy
+.deepsleepai.io proxy
+.inping.com direct
+.cloudflare.dev proxy
 .pollinations.ai proxy
 .jensd.de proxy
 .scalar.com proxy
