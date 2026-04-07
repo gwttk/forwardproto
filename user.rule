@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.inspatio.com proxy
+.uppromote.com proxy
+.fnirsi.com proxy
+.17track.net direct
+.idrsolutions.com proxy
+.synctrack.io proxy
 .chongdiantou.com direct
 .imtintl.com proxy
 .deepsleepai.io proxy
