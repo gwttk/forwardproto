@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.dynamicyield.com proxy
+.xdcdn.net direct
+.widen.net proxy
+.w3champions.com proxy
+.blzstatic.com proxy
 .inspatio.com proxy
 .uppromote.com proxy
 .fnirsi.com proxy
