@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.netcup.com proxy
+.lckfb.com direct
+.z.ai proxy
+.mcmilk.de proxy
+.mintlify.com proxy
 .admaster.cc proxy
 .16302.com direct
 .zzyhh.top proxy
