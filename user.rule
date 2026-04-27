@@ -7,6 +7,10 @@
 # "reject" means drop connection
 
 #auto rules
+.c.gle proxy
+.20130123.com direct
+.beihuo.net direct
+.gokootech.com direct
 .netcup.com proxy
 .lckfb.com direct
 .z.ai proxy
