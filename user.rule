@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.errorprone.info proxy
 .c.gle proxy
 .20130123.com direct
 .beihuo.net direct
