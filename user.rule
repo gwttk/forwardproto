@@ -7,6 +7,26 @@
 # "reject" means drop connection
 
 #auto rules
+.line.biz proxy
+.hdcxtech.com direct
+.999831.xyz proxy
+.abroad.hellogithub.com proxy
+.lymcampus.jp proxy
+.ippure.com proxy
+.crucix.live proxy
+.waitingforcode.com proxy
+.xiaoxia.org proxy
+.martinfowler.com proxy
+.lanzouo.com direct
+.icanhazip.com proxy
+.lazyllm.ai proxy
+.111666.best proxy
+.tenbox.ai proxy
+.hellogithub.com direct
+.onebot.dev proxy
+.apifox.com direct
+.123169.xyz proxy
+.langbot.app proxy
 .dohaxe.com proxy
 .riverbendinnovationworks.cfd proxy
 .biercoff.com proxy
