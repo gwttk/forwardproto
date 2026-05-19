@@ -7,6 +7,35 @@
 # "reject" means drop connection
 
 #auto rules
+.filespace.com proxy
+.opendesign.com proxy
+.babylonjs.com proxy
+.mymyuc.net proxy
+.xnxx2.com proxy
+.gasrv.net proxy
+.erodalabs.com proxy
+.ap-ea.asia proxy
+.firefox.com proxy
+.picstate.com proxy
+.freecad.org proxy
+.ero-labs.work proxy
+.dpic.me proxy
+.openstepviewer.com proxy
+.hare200.com proxy
+.tcl3d.org proxy
+.tcl-lang.org proxy
+.gounlimited.to proxy
+.qpic.ws proxy
+.imagetostl.com proxy
+.fqwuliu.com proxy
+.f3d.app proxy
+.sritwyv.com proxy
+.ionpron.net proxy
+.senseidownload.com proxy
+.oryx-embedded.com proxy
+.abovedomains.com proxy
+.3d-viewers.com proxy
+.cadsofttools.com proxy
 .line.biz proxy
 .hdcxtech.com direct
 .999831.xyz proxy
