@@ -304,6 +304,7 @@ public class DedupUserrule implements Callable<Void> {
 		excepRules.put(".unagi-cn.amazon.com", "direct");
 		excepRules.put(".render-api-cn.worldofwarcraft.com", "direct");
 		excepRules.put(".forums.mihoyo.com", "proxy");
+		excepRules.put(".abroad.hellogithub.com", "proxy");
 
 		// read excepRules from exception.rule
 		try (BOMInputStream is = BOMInputStream.builder()
