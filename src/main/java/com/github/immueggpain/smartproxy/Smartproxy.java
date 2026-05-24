@@ -43,6 +43,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,7 +74,7 @@ public class Smartproxy implements Callable<Void> {
 
 	@Option(names = { "-i", "--local_listen_ip" }, description = "local listening ip",
 			showDefaultValue = Visibility.ALWAYS)
-	public String local_listen_ip = "127.0.0.1";
+	public String local_listen_ips[] = new String[] { "127.0.0.1" };
 
 	@Option(names = { "-n", "--local_listen_port" }, required = true, description = "local listening port",
 			showDefaultValue = Visibility.ALWAYS)
@@ -246,31 +248,44 @@ public class Smartproxy implements Callable<Void> {
 
 		speedMeter = new SpeedMeter(1000 * 4, tunnelPool, TunnelContext.allOngoings, this);
 
-		ServerSocket ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip));
-		try {
-			log.println("listened on port " + local_listen_port);
-			// for local socket, use auto buf size
-			while (true) {
-				Socket s;
+		ExecutorService executor = Executors.newCachedThreadPool();
+		List<Callable<Void>> tasks = new ArrayList<>();
+
+		for (String local_listen_ip : local_listen_ips) {
+			tasks.add(() -> {
+				ServerSocket ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip));
 				try {
-					s = ss.accept();
-				} catch (SocketException e) {
-					// accept will fail sometimes when closing UU
-					// wait a moment then recreate serversocket
-					e.printStackTrace(log);
-					Thread.sleep(1000);
+					log.println(String.format("listened on %s:%d", local_listen_ip, local_listen_port));
+					// for local socket, use auto buf size
+					while (true) {
+						Socket s;
+						try {
+							s = ss.accept();
+						} catch (SocketException e) {
+							// accept will fail sometimes when closing UU
+							// wait a moment then recreate serversocket
+							e.printStackTrace(log);
+							Thread.sleep(1000);
+							ss.close();
+							ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip));
+							continue;
+						}
+						// for local socket, use auto buf size
+						// use source port as id
+						int id = s.getPort();
+						scmt.execAsync("recv_" + id + "_client", () -> recv_client(s));
+					}
+				} finally {
 					ss.close();
-					ss = new ServerSocket(local_listen_port, 50, InetAddress.getByName(local_listen_ip));
-					continue;
 				}
-				// for local socket, use auto buf size
-				// use source port as id
-				int id = s.getPort();
-				scmt.execAsync("recv_" + id + "_client", () -> recv_client(s));
-			}
-		} finally {
-			ss.close();
+			});
 		}
+
+		// Blocks until all tasks in the list are finished
+		executor.invokeAll(tasks);
+		executor.shutdown(); // Always shut down your executor
+
+		return null;
 	}
 
 	private void recv_client(Socket s) {
@@ -482,7 +497,7 @@ public class Smartproxy implements Callable<Void> {
 			// create udp socket
 			DatagramSocket udpSocket;
 			try {
-				udpSocket = new DatagramSocket(new InetSocketAddress(InetAddress.getByName(local_listen_ip), 0));
+				udpSocket = new DatagramSocket(new InetSocketAddress(sclient_s.getLocalAddress(), 0));
 			} catch (Exception e) {
 				log.println("error when creating DatagramSocket");
 				e.printStackTrace(log);
