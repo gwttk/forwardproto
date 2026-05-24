@@ -7,6 +7,15 @@
 # "reject" means drop connection
 
 #auto rules
+.digitalapplied.com proxy
+.vercel-status.com proxy
+.ai-sdk.dev proxy
+.exa.ai proxy
+.openlm.ai proxy
+.grep.app proxy
+.default.com proxy
+.grokipedia.com proxy
+.localhost direct
 .models.dev proxy
 .wezterm.org proxy
 .chatboxai.app proxy
