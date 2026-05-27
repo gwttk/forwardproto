@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.studiodesignapp.com proxy
+.manosaba.com proxy
+.chougoubao.com proxy
+.mintlify.app proxy
+.oneuptime.com proxy
+.open-code.ai proxy
 .digitalapplied.com proxy
 .vercel-status.com proxy
 .ai-sdk.dev proxy
