@@ -7,6 +7,13 @@
 # "reject" means drop connection
 
 #auto rules
+.whatismyip.com proxy
+.ninja-build.org proxy
+.httpbin.org proxy
+.ifconfig.me proxy
+.kitware.com proxy
+.moark.com direct
+.smartdnsproxy.com proxy
 .studiodesignapp.com proxy
 .manosaba.com proxy
 .chougoubao.com proxy
