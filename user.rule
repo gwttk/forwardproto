@@ -7,6 +7,29 @@
 # "reject" means drop connection
 
 #auto rules
+.creem.io proxy
+.monotaro.com proxy
+.hellouniweb.com proxy
+.thefastvideo.com direct
+.seoi.net proxy
+.cfhls.top proxy
+.thefastimg.com direct
+.v2player.top proxy
+.replicateassets.com proxy
+.alcy.cc direct
+.houzz.com proxy
+.acg2day.org proxy
+.replicatestatus.com proxy
+.kirkifyai.net proxy
+.thefastfile.com direct
+.emorikoumuten.com proxy
+.replicate.delivery proxy
+.images-monotaro.com proxy
+.weiwenjia.com direct
+.www.to-plan.co.jp proxy
+.dytt-hot.com proxy
+.dfvah.top direct
+.inkei.net proxy
 .whatismyip.com proxy
 .ninja-build.org proxy
 .httpbin.org proxy
