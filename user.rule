@@ -7,6 +7,32 @@
 # "reject" means drop connection
 
 #auto rules
+.54doctor.net direct
+.unifyintent.com proxy
+.browser-use.com proxy
+.commandbar.com proxy
+.yhgfb-static.com proxy
+.nousresearch.com proxy
+.5118img.com direct
+.privy.io proxy
+.hermes.com proxy
+.browserbase.com proxy
+.democracynow.org proxy
+.rapidapi.com proxy
+.szskqyy.com direct
+.iana.org proxy
+.cr-proxy.com proxy
+.notion.dev proxy
+.claydar.com proxy
+.smithery.ai proxy
+.vector.co proxy
+.feishupkg.com direct
+.cmpassport.com direct
+.dubcdn.com proxy
+.parallel.ai proxy
+.justoneapi.com proxy
+.usbrowserspeed.com proxy
+.5118.com direct
 .creem.io proxy
 .monotaro.com proxy
 .hellouniweb.com proxy
