@@ -7,6 +7,14 @@
 # "reject" means drop connection
 
 #auto rules
+.bytefae.com direct
+.haimawan.com direct
+.detailroi.com direct
+.sud.tech direct
+.bytemaimg.com direct
+.comate.space direct
+.xiaoyaoyou.com direct
+.sudden.ltd direct
 .cdn-plain.com proxy
 .groqstatus.com proxy
 .ldstatic.com proxy
