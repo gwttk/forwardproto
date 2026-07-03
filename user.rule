@@ -7,6 +7,18 @@
 # "reject" means drop connection
 
 #auto rules
+.bad.news proxy
+.pulsemcp.com proxy
+.ozxhasoxc.in proxy
+.secretlygoatsarrangement.com proxy
+.yaw.sh proxy
+.bizcwuhi.in proxy
+.bestpractices.dev proxy
+.lvv2.com proxy
+.fanjuone.top proxy
+.glama.ai proxy
+.angular.io proxy
+.midscenejs.com proxy
 .bytefae.com direct
 .haimawan.com direct
 .detailroi.com direct
