@@ -7,6 +7,29 @@
 # "reject" means drop connection
 
 #auto rules
+.flags.sh proxy
+.cfpa.team direct
+.piliapp.com proxy
+.hsprotect.net proxy
+.ouiheberg.com proxy
+.runoob.com direct
+.audiodamage.com proxy
+.char123.com direct
+.planetminecraft.com proxy
+.minecraft.wiki proxy
+.wherewindsmeetgame.com proxy
+.meloong.com direct
+.chunkbase.com proxy
+.jyshare.com direct
+.i8tq.com direct
+.bbsmc.net direct
+.pili.app proxy
+.vuejs.press proxy
+.weirdgloop.org proxy
+.vanillatweaks.net proxy
+.mpv.io proxy
+.btmessage.com proxy
+.edge-tts.com proxy
 .bebox.net direct
 .usepylon.com proxy
 .coderabbit.ai proxy
