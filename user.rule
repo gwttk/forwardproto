@@ -7,6 +7,35 @@
 # "reject" means drop connection
 
 #auto rules
+.klarnaevt.com proxy
+.stripeassets.com proxy
+.aaai.org proxy
+.consentpro.com proxy
+.sdwyzx.com direct
+.godotengine.org proxy
+.livebench.ai proxy
+.mcgill.ca proxy
+.metamask.io proxy
+.stripefeedback.com proxy
+.reown.com proxy
+.customerioforms.com proxy
+.datacurve.ai proxy
+.longlegmxd.com proxy
+.kilo.ai proxy
+.inori.ai proxy
+.ijcai.org proxy
+.tilda.ws proxy
+.tildacdn.one proxy
+.dynamicauth.com proxy
+.deepwiki.com proxy
+.shipd.ai proxy
+.seeed.cc direct
+.handle.net proxy
+.dynamic-static-assets.com proxy
+.taxfoundation.org proxy
+.p0web.com proxy
+.link.com proxy
+.artificialanalysis.ai proxy
 .roboflow.com proxy
 .cash.app proxy
 .pepy.tech proxy
