@@ -7,6 +7,13 @@
 # "reject" means drop connection
 
 #auto rules
+.bun.sh proxy
+.getopencode.app proxy
+.faster.dev proxy
+.incident.io proxy
+.ampcode.com proxy
+.soloterm.com proxy
+.deepseek.ai proxy
 .klarnaevt.com proxy
 .stripeassets.com proxy
 .aaai.org proxy
