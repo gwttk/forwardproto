@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.opencodebook.xyz proxy
+.swebench.com proxy
+.lmsys.org proxy
+.llm-stats.com proxy
+.scale.com proxy
+.zeroeval.com proxy
 .bun.sh proxy
 .getopencode.app proxy
 .faster.dev proxy
