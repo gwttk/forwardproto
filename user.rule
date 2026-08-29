@@ -7,6 +7,13 @@
 # "reject" means drop connection
 
 #auto rules
+.gmm01.com direct
+.233leyuan.com direct
+.namu.moe proxy
+.mapleartale.com direct
+.maplestorywiki.net proxy
+.liveblocks.io proxy
+.gopkg.in proxy
 .winstall.app proxy
 .ipregistry.co proxy
 .ninjaone.com proxy
