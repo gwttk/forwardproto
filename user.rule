@@ -7,6 +7,16 @@
 # "reject" means drop connection
 
 #auto rules
+.willitrunai.com proxy
+.flux1ai.com proxy
+.aitoolnet.com proxy
+.jarvislabs.ai proxy
+.seasonic.com proxy
+.displaylag.com proxy
+.listenhub.ai proxy
+.labnana.com proxy
+.omenalpha.io proxy
+.lb5.net direct
 .linkedme.cc direct
 .bun.com proxy
 .effectivecpmnetwork.com proxy
