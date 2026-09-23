@@ -7,6 +7,29 @@
 # "reject" means drop connection
 
 #auto rules
+.27-155-117-183.edge.agora.io direct
+.123278.com direct
+.manjuu.com direct
+.222-79-111-220.edge.sd-rtn.com direct
+.222-79-111-220.edge.agora.io direct
+.27-155-117-183.edge.sd-rtn.com direct
+.feimogames.com direct
+.mytrendyphone.eu proxy
+.tencentsecsdk.com direct
+.kteatwnro.in proxy
+.sdnakj.com proxy
+.honkaihaven.com proxy
+.linodeobjects.com proxy
+.ecosia.org proxy
+.redir.me proxy
+.realxxx.com proxy
+.fhgte.com proxy
+.ohdopnoxv.in proxy
+.goughlui.com proxy
+.namethatporn.com proxy
+.main.red proxy
+.bunkr.ru proxy
+.sanspo.com proxy
 .willitrunai.com proxy
 .flux1ai.com proxy
 .aitoolnet.com proxy
