@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.zoovu.com proxy
+.workato.com proxy
+.wincheers.net direct
+.mousetester.net proxy
+.wincheers.com direct
+.semknox.com proxy
 .27-155-117-183.edge.agora.io direct
 .123278.com direct
 .manjuu.com direct
