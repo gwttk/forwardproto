@@ -7,6 +7,11 @@
 # "reject" means drop connection
 
 #auto rules
+.myvidster.com proxy
+.ewdcloud.com direct
+.yatta.moe proxy
+.meropide.com proxy
+.ecywang.com proxy
 .zoovu.com proxy
 .workato.com proxy
 .wincheers.net direct
