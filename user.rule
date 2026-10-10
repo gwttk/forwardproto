@@ -7,6 +7,18 @@
 # "reject" means drop connection
 
 #auto rules
+.111com.net direct
+.areal.me proxy
+.bilibilitoy.com direct
+.pricepedia.it proxy
+.arealme.net proxy
+.kpler.com proxy
+.111cn.net proxy
+.kangehao.com direct
+.enka.network proxy
+.arealme.com proxy
+.frankfurter.dev proxy
+.policycenter.ma proxy
 .myvidster.com proxy
 .ewdcloud.com direct
 .yatta.moe proxy
