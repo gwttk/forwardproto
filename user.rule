@@ -7,6 +7,7 @@
 # "reject" means drop connection
 
 #auto rules
+.jinritemai.com direct
 .111com.net direct
 .areal.me proxy
 .bilibilitoy.com direct
