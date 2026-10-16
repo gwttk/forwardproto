@@ -7,6 +7,12 @@
 # "reject" means drop connection
 
 #auto rules
+.xbase.cloud direct
+.anyin.live proxy
+.88cdn.com direct
+.altzin.com proxy
+.codesocang.com direct
+.mtmup.com direct
 .jinritemai.com direct
 .111com.net direct
 .areal.me proxy
